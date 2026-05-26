@@ -3,7 +3,8 @@ import Combine
 import os.log
 
 // MARK: - HomeViewModelProtocol (US-0018: injectable protocol)
-protocol HomeViewModelProtocol: AnyObject {
+@MainActor
+public protocol HomeViewModelProtocol: AnyObject {
     var itemsPublisher: AnyPublisher<[String], Never> { get }
     var errorPublisher: AnyPublisher<String?, Never> { get }
     var isLoadingPublisher: AnyPublisher<Bool, Never> { get }
@@ -17,7 +18,7 @@ protocol HomeViewModelProtocol: AnyObject {
 // US-0018: Dependencies injected via init — no `let service = UserService()` inside class body.
 // US-0019 / US-0021: URLs resolved via AppConfig / Environment — no raw string literals.
 @MainActor
-final class HomeViewModel: HomeViewModelProtocol, ObservableObject {
+public final class HomeViewModel: HomeViewModelProtocol, ObservableObject {
 
     // MARK: - Published state
     @Published private(set) var items: [String] = []
@@ -25,13 +26,13 @@ final class HomeViewModel: HomeViewModelProtocol, ObservableObject {
     @Published private(set) var isLoading: Bool = false
 
     // Combine publishers for UIKit bindings
-    var itemsPublisher: AnyPublisher<[String], Never> {
+    public var itemsPublisher: AnyPublisher<[String], Never> {
         $items.eraseToAnyPublisher()
     }
-    var errorPublisher: AnyPublisher<String?, Never> {
+    public var errorPublisher: AnyPublisher<String?, Never> {
         $errorMessage.eraseToAnyPublisher()
     }
-    var isLoadingPublisher: AnyPublisher<Bool, Never> {
+    public var isLoadingPublisher: AnyPublisher<Bool, Never> {
         $isLoading.eraseToAnyPublisher()
     }
 
@@ -47,14 +48,18 @@ final class HomeViewModel: HomeViewModelProtocol, ObservableObject {
     }
 
     // MARK: - Init
-    init(network: NetworkServiceProtocol = NetworkService()) {
+    public init() {
+        self.network = NetworkService()
+    }
+
+    init(network: NetworkServiceProtocol) {
         self.network = network
     }
 
     // MARK: - Load Home Data
     // US-0013: URL uses https:// via Environment.Path (no hardcoded http://)
     // US-0020: Routed through NetworkService, not URLSession.shared directly
-    func loadHomeData() async {
+    public func loadHomeData() async {
         isLoading = true
         defer { isLoading = false }
 
@@ -72,7 +77,7 @@ final class HomeViewModel: HomeViewModelProtocol, ObservableObject {
 
     // MARK: - Load Data
     // US-0015 / US-0021 / US-0022: Extracted from ViewController, uses config URL
-    func loadData() async {
+    public func loadData() async {
         isLoading = true
         defer { isLoading = false }
 
