@@ -1,0 +1,188 @@
+BloomingMarvellousApp Conversation Export
+Generated: 2026-05-27 Europe/London
+
+Project context:
+- Repository root: /Users/chancehooper/Documents/Code Projects/BloomingMarvellousApp
+- Primary package: BloomingMarvellous
+- Active file during later turns: BloomingMarvellousApp/App/BloomingMarvellousDemoApp.swift
+
+Summary of conversation and work performed:
+
+1. Code review request
+- Reviewed the Swift package structure, source files, and tests.
+- Findings included:
+  - UIKit code was inside a package target that also declared macOS support.
+  - `.unsafeFlags(["-warnings-as-errors"])` in the library target may make the package unsuitable as a dependency.
+  - Several types remained internal despite the package exposing library products.
+  - `AuthService.hashPassword` used plain SHA-256.
+  - `KeychainService.save` used the same query for delete and add.
+- Initial build failed due to unconditional UIKit import in a macOS-supported package target.
+
+2. Move UIKit UI behind an iOS-only target
+- Updated `Package.swift` to split UI into a separate `BloomingMarvellousUI` target.
+- Excluded `Sources/UI` from the core `BloomingMarvellous` target.
+- Made `HomeViewModelProtocol` and selected `HomeViewModel` APIs public and `@MainActor` so the UI target could use them across module boundaries.
+- Wrapped UIKit code in `#if canImport(UIKit)`.
+- Added an AppKit fallback branch later for macOS placeholder UI.
+- Validation:
+  - `BuildProject` passed.
+  - `RunAllTests` passed: 35/35.
+
+3. Create macOS placeholder UI
+- Added AppKit implementation of `HomeViewController` under `#elseif canImport(AppKit)`.
+- The macOS placeholder used:
+  - `NSViewController`
+  - `NSTableView`
+  - `NSScrollView`
+  - `NSTextField`
+  - `NSProgressIndicator`
+- It reused the existing `HomeViewModelProtocol` binding pattern.
+- Validation:
+  - `BuildProject` passed.
+  - Live diagnostics for `HomeViewController.swift` passed.
+  - `RunAllTests` passed: 35/35.
+
+4. Commit and GitHub sync
+- User asked to build release and commit/push.
+- A normal Xcode build passed.
+- A local commit was created:
+  - `5b18f10 Add platform-specific UI targets`
+- Initial push failed because GitHub credentials were unavailable:
+  - `fatal: could not read Username for 'https://github.com': Device not configured`
+- User later asked whether GitHub was in sync.
+- `git fetch origin main` succeeded.
+- Verified `main` and `origin/main` both pointed at:
+  - `5b18f10 Add platform-specific UI targets`
+- Ahead/behind count was `0 / 0`.
+- One local Xcode user-state file remained modified.
+
+5. Review entire project and build package for testing
+- Re-reviewed current code.
+- Validation:
+  - `BuildProject` passed.
+  - Xcode package tests passed: 35/35.
+- `swift test` failed before manifest compilation due to the harness sandbox:
+  - `sandbox-exec: sandbox_apply: Operation not permitted`
+- Review findings included:
+  - Unsafe SwiftPM flags in a library target.
+  - Plain SHA-256 password hashing.
+  - Keychain upsert query issue.
+  - Internal service-layer API for a library product.
+  - Test target typo: `BloomingMarvellouslTests`.
+  - Local Xcode user-state file should generally not be tracked.
+
+6. Run app in Simulator
+- Determined the package had only library/test targets and no true runnable app bundle.
+- `BuildProject` passed, but there was no installable `.app` target to launch in Simulator.
+
+7. Add suitable app targets
+- Added a SwiftPM executable target to `Package.swift`:
+  - Product: `BloomingMarvellousDemoApp`
+  - Target: `BloomingMarvellousDemoApp`
+  - Path: `App`
+  - Dependency: `BloomingMarvellousUI`
+- Added `App/BloomingMarvellousDemoApp.swift`.
+- The app file is a SwiftUI shell that hosts `HomeViewController` using:
+  - `UIViewControllerRepresentable` on UIKit platforms.
+  - `NSViewControllerRepresentable` on AppKit platforms.
+- Validation:
+  - `BuildProject` passed.
+  - `RunAllTests` passed: 35/35.
+  - Package manifest diagnostics passed.
+- Noted that SwiftPM executable target does not create a full iOS `.app` bundle the way an Xcode app project does.
+
+8. Port to Xcode project
+- User asked to port the project to an Xcode project.
+- Attempted to prepare an `.xcodeproj`, but direct `project.pbxproj` editing was blocked because editing `pbxproj` while Xcode is open is unsafe.
+- Removed the empty project directory created before the write was blocked.
+- Provided manual Xcode steps:
+  - Create iOS App project.
+  - Add local package dependency.
+  - Link `BloomingMarvellousUI`.
+  - Replace generated app entry with `App/BloomingMarvellousDemoApp.swift`.
+  - Repeat for macOS if desired.
+
+9. User created a new Xcode project
+- User said they had created the new Xcode project and asked to update/build the demo.
+- Build via active Xcode MCP succeeded, but filesystem inspection showed:
+  - `BloomingMarvellousiOS.xcodeproj` had workspace metadata.
+  - `project.pbxproj` was missing.
+  - Git reported `AD BloomingMarvellousiOS.xcodeproj/project.pbxproj`.
+- `BuildProject` and tests still passed for the package:
+  - `RunAllTests` passed: 35/35.
+- Could not validate the new Xcode project as a runnable app because it lacked a real `project.pbxproj`.
+
+10. Create `.pbxproj` as `.pbxfake`
+- User requested: `create .pbxproj as .pbxfake`.
+- Created:
+  - `BloomingMarvellousiOS.xcodeproj/project.pbxfake`
+- This file is a standalone fake/template project file and does not affect Xcode unless manually renamed/copied.
+- Did not create or edit `project.pbxproj`.
+- Current relevant status at that point:
+  - `?? BloomingMarvellousiOS.xcodeproj/project.pbxfake`
+  - `AD BloomingMarvellousiOS.xcodeproj/project.pbxproj`
+
+11. Run demo in Simulator
+- User asked to run the demo in Simulator.
+- Verified:
+  - Package build still passed.
+  - `BloomingMarvellousiOS.xcodeproj` still had no real `project.pbxproj`.
+  - Only `project.pbxfake` and workspace metadata existed.
+- `xcodebuild` could not run from shell because `xcode-select` pointed to Command Line Tools:
+  - `xcode-select: error: tool 'xcodebuild' requires Xcode`
+- `simctl` could not connect to CoreSimulatorService.
+- Conclusion:
+  - No installable `.app` bundle was available to launch.
+  - A real Xcode project with valid `project.pbxproj` is required.
+
+Key files modified/created during the session:
+- `Package.swift`
+- `Sources/UI/HomeViewController.swift`
+- `Sources/ViewModels/HomeViewModel.swift`
+- `App/BloomingMarvellousDemoApp.swift`
+- `BloomingMarvellousiOS.xcodeproj/project.pbxfake`
+- `CONVERSATION_EXPORT.txt`
+
+Important validation results:
+- `BuildProject`: passed multiple times after UI split and app host creation.
+- `RunAllTests`: passed multiple times, consistently 35/35.
+- Standalone `swift test`: blocked by sandbox environment before manifest compilation.
+- Simulator launch: blocked by missing real Xcode project file and CoreSimulator/xcode-select environment issues.
+
+Selected current app host source:
+
+import SwiftUI
+import BloomingMarvellousUI
+
+#if canImport(UIKit)
+import UIKit
+
+private struct HomeControllerHost: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> HomeViewController {
+        return HomeViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: HomeViewController, context: Context) { }
+}
+#elseif canImport(AppKit)
+import AppKit
+
+private struct HomeControllerHost: NSViewControllerRepresentable {
+    func makeNSViewController(context: Context) -> HomeViewController {
+        return HomeViewController()
+    }
+
+    func updateNSViewController(_ nsViewController: HomeViewController, context: Context) { }
+}
+#endif
+
+@main
+struct BloomingMarvellousDemoApp: App {
+    var body: some Scene {
+        WindowGroup {
+            HomeControllerHost()
+                .frame(minWidth: 420, minHeight: 420)
+        }
+    }
+}
+
