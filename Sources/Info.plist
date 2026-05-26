@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  BloomingMarvellous — Info.plist
+  US-0005: NSAllowsArbitraryLoads is ABSENT (defaults to false).
+           ATS is fully enforced — no cleartext HTTP permitted.
+  US-0004: All URLs in source code use https:// (see AppConfig.swift).
+-->
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>BloomingMarvellous</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.bloomingmarvellous.app</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>armv7</string>
+    </array>
+    <!--
+        App Transport Security — US-0005
+        NSAllowsArbitraryLoads key is intentionally OMITTED (equivalent to false).
+        ATS enforces HTTPS for all connections by default.
+        Any third-party HTTP exceptions must be added here with a documented
+        business justification per the App Store review guidelines.
+    -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <!-- No NSAllowsArbitraryLoads entry — ATS fully enforced (US-0005) -->
+    </dict>
+    <!--
+        Data Protection — US-0008
+        Set to NSFileProtectionComplete so files are encrypted when device is locked.
+    -->
+    <key>NSFileProtectionComplete</key>
+    <true/>
+</dict>
+</plist>
