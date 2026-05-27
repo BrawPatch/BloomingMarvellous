@@ -19,9 +19,9 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
-  default_tags { tags = local.common_tags }
+  region = "us-east-1"
 }
+
 
 locals {
   common_tags = {
@@ -83,10 +83,11 @@ resource "aws_s3_bucket_public_access_block" "content" {
 resource "aws_s3_bucket_lifecycle_configuration" "content" {
   bucket = aws_s3_bucket.content.id
   rule {
-    id     = "expire-old-versions"
-    status = "Enabled"
-    noncurrent_version_expiration { noncurrent_days = 90 }
-  }
+  		id     = "expire-old-versions"
+  		status = "Enabled"
+  		filter {}
+  		noncurrent_version_expiration { noncurrent_days = 90 }
+  		}
 }
 
 # ── DynamoDB — users (PII) and sessions (token hashes only) ──────────────────
@@ -325,8 +326,8 @@ resource "aws_cloudfront_cache_policy" "no_cache" {
   max_ttl     = 0
   min_ttl     = 0
   parameters_in_cache_key_and_forwarded_to_origin {
-    enable_accept_encoding_gzip   = true
-    enable_accept_encoding_brotli = true
+    enable_accept_encoding_gzip   = false
+    enable_accept_encoding_brotli = false
     headers_config       { header_behavior = "none" }
     query_strings_config { query_string_behavior = "none" }
     cookies_config       { cookie_behavior = "none" }
@@ -350,7 +351,7 @@ resource "aws_cloudfront_distribution" "api" {
   price_class     = "PriceClass_100"
 
   origin {
-    domain_name = replace(aws_apigatewayv2_stage.default.invoke_url, "https://", "")
+    domain_name = trimsuffix(replace(aws_apigatewayv2_stage.default.invoke_url, "https://", ""), "/")
     origin_id   = "api-gateway"
     custom_origin_config {
       http_port              = 80
