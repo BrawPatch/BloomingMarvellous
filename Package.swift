@@ -9,7 +9,8 @@ let package = Package(
     ],
     products: [
         .library(name: "BloomingMarvellous", targets: ["BloomingMarvellous"]),
-        .library(name: "BloomingMarvellousUI", targets: ["BloomingMarvellousUI"])
+        .library(name: "BloomingMarvellousUI", targets: ["BloomingMarvellousUI"]),
+        .executable(name: "BloomingMarvellousDemoApp", targets: ["BloomingMarvellousDemoApp"])
     ],
     dependencies: [],
     targets: [
@@ -25,6 +26,11 @@ let package = Package(
             name: "BloomingMarvellousUI",
             dependencies: ["BloomingMarvellous"],
             path: "Sources/UI"
+        ),
+        .executableTarget(
+            name: "BloomingMarvellousDemoApp",
+            dependencies: ["BloomingMarvellousUI"],
+            path: "App"
         ),
         .testTarget(
             name: "BloomingMarvellouslTests",
