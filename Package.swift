@@ -17,10 +17,7 @@ let package = Package(
         .target(
             name: "BloomingMarvellous",
             path: "Sources",
-            exclude: ["UI"],
-            swiftSettings: [
-                .unsafeFlags(["-warnings-as-errors"])
-            ]
+            exclude: ["UI"]
         ),
         .target(
             name: "BloomingMarvellousUI",

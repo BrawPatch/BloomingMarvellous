@@ -1,0 +1,11 @@
+# Terraform
+infrastructure/terraform/.terraform/
+infrastructure/terraform/.terraform.lock.hcl
+infrastructure/terraform/terraform.tfstate
+infrastructure/terraform/terraform.tfstate.backup
+infrastructure/terraform/terraform.tfvars
+infrastructure/terraform/lambda_package.zip
+
+# Lambda
+lambda/node_modules/
+lambda/package-lock.json

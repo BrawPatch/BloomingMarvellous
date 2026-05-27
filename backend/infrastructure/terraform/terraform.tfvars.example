@@ -1,0 +1,10 @@
+# Copy this file to terraform.tfvars and edit values, then run `terraform apply`.
+
+aws_region  = "eu-west-2"
+environment = "development"
+app_name    = "blooming-marvellous"
+
+# Optional overrides
+# session_ttl_days       = 30
+# throttling_rate_limit  = 100
+# throttling_burst_limit = 200

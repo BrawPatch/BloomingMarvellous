@@ -1,0 +1,14 @@
+{
+  "name": "bloomingmarvellous-api-lambda",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.mjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.620.0",
+    "@aws-sdk/client-s3": "^3.620.0"
+  }
+}
