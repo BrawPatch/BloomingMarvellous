@@ -13,11 +13,13 @@ public struct HomeView: View {
     private let user: UserModel
     private let onLogout: () -> Void
 
-    @StateObject private var viewModel = HomeViewModel()
+    @StateObject private var viewModel: HomeViewModel
     @State private var selectedFilter: ContentFilter = .all
 
+    @MainActor
     public init(user: UserModel, onLogout: @escaping () -> Void) {
         self.user = user
+        self._viewModel = StateObject(wrappedValue: HomeViewModel())
         self.onLogout = onLogout
     }
 
@@ -38,7 +40,7 @@ public struct HomeView: View {
                 .padding(.bottom, 32)
             }
         }
-        .task { await viewModel.loadData() }
+        .task { await viewModel.loadAll() }
     }
 
     // MARK: - Filter pills
@@ -209,47 +211,6 @@ private enum ContentFilter: String, CaseIterable, Identifiable {
         case .all:   return .bmGreen
         case .pro:   return .bmAmber
         case .packs: return .bmLilac
-        }
-    }
-}
-
-// MARK: - HomeViewModel projection
-//
-// HomeViewModel from BloomingMarvellous exposes a single `items` list that
-// gets overwritten by whichever loadX method ran last. We want the welcome
-// (`/home`) and library (`/data`) lists side-by-side, so this small wrapper
-// loads both and projects them into two separate @Published arrays for the
-// SwiftUI view.
-
-@MainActor
-private final class HomeViewModel: ObservableObject {
-
-    @Published var welcomeItems: [String] = []
-    @Published var libraryItems: [String] = []
-    @Published var errorMessage: String?
-    @Published var isLoading: Bool = false
-
-    private let network: NetworkServiceProtocol
-
-    init(network: NetworkServiceProtocol = NetworkService()) {
-        self.network = network
-    }
-
-    func loadData() async {
-        isLoading = true
-        defer { isLoading = false }
-
-        async let home: [String] = (try? await network.request(Endpoint(path: Environment.Path.home))) ?? []
-        async let data: [String] = (try? await network.request(Endpoint(path: Environment.Path.data))) ?? []
-
-        let (h, d) = await (home, data)
-        welcomeItems = h
-        libraryItems = d
-
-        if h.isEmpty && d.isEmpty {
-            errorMessage = "Couldn't load content. Check your connection and try again."
-        } else {
-            errorMessage = nil
         }
     }
 }
