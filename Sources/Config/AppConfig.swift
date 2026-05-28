@@ -25,6 +25,16 @@ struct AppConfig {
 
 // MARK: - Environment (US-0016 / US-0019 / US-0021: centralised URLs, HTTPS enforced)
 // US-0004 / US-0013: All URLs use https://
+//
+// Hostnames:
+//   development → api-dev.brawpatch.com    (live once custom_domain_enabled=true in dev tfvars)
+//   staging     → api-staging.brawpatch.com (reserved; no staging env deployed yet)
+//   production  → api.brawpatch.com         (live once custom_domain_enabled=true in prod tfvars)
+//
+// Before the brawpatch.com nameservers are pointed at Route 53, each env's
+// CloudFront distribution still answers on its *.cloudfront.net hostname;
+// supply that via `BM_API_BASE_URL` (Info.plist or scheme env var) to override
+// at run time without recompiling.
 enum Environment {
     case development
     case staging
@@ -32,23 +42,27 @@ enum Environment {
 
     /// Base URL for the REST API. All environments enforce HTTPS (US-0004, US-0013).
     var baseURL: URL {
+        if let override = ProcessInfo.processInfo.environment["BM_API_BASE_URL"]
+            .flatMap(URL.init(string:)) {
+            return override
+        }
         switch self {
         case .development:
             // swiftlint:disable:next force_unwrap
-            return URL(string: "https://dev-api.bloomingmarvellous.example.com/v1")!
+            return URL(string: "https://api-dev.brawpatch.com/v1")!
         case .staging:
             // swiftlint:disable:next force_unwrap
-            return URL(string: "https://staging-api.bloomingmarvellous.example.com/v1")!
+            return URL(string: "https://api-staging.brawpatch.com/v1")!
         case .production:
             // swiftlint:disable:next force_unwrap
-            return URL(string: "https://api.bloomingmarvellous.example.com/v1")!
+            return URL(string: "https://api.brawpatch.com/v1")!
         }
     }
 
     // MARK: - Endpoint paths (US-0016 / US-0019 / US-0021: no raw strings at call sites)
     enum Path {
-        static let home = "/home"
-        static let data = "/data"
+        static let home  = "/home"
+        static let data  = "/data"
         static let login = "/auth/login"
     }
 }

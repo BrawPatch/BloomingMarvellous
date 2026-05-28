@@ -1,27 +1,23 @@
 ###############################################################################
-# BloomingMarvellousApp — AWS backend infrastructure
+# BloomingMarvellousApp — API stack (per-environment)
 #
-# Mirrors the architecture used in BMFinal: KMS-encrypted S3 + DynamoDB,
-# Lambda-only auth (no Cognito), HTTP API Gateway, CloudFront in front.
+# KMS-encrypted S3 + DynamoDB, Lambda-only auth (no Cognito), HTTP API Gateway,
+# CloudFront in front. Custom domain (ACM + Route 53 alias) is opt-in via
+# var.custom_domain_enabled (see dns.tf).
 #
 # Endpoints exposed (must match BloomingMarvellousApp/Sources/Config/AppConfig.swift):
 #   POST /v1/auth/login   — body {username, password}; returns UserModel JSON
-#   GET  /v1/home         — returns [String]
-#   GET  /v1/data         — returns [String]
+#   GET  /v1/home         — returns filtered [String]
+#   GET  /v1/data         — returns filtered [String]
 ###############################################################################
 
 terraform {
   required_version = ">= 1.6"
   required_providers {
-    aws     = { source = "hashicorp/aws",     version = "~> 5.0" }
+    aws     = { source = "hashicorp/aws",     version = "~> 5.0", configuration_aliases = [aws.us_east_1] }
     archive = { source = "hashicorp/archive", version = "~> 2.4" }
   }
 }
-
-provider "aws" {
-  region = "us-east-1"
-}
-
 
 locals {
   common_tags = {
@@ -29,11 +25,11 @@ locals {
     Environment = var.environment
     ManagedBy   = "terraform"
   }
-  name_prefix   = "${var.app_name}-${var.environment}"
-  bucket_name   = "${local.name_prefix}-content"
-  users_table   = "${local.name_prefix}-users"
+  name_prefix    = "${var.app_name}-${var.environment}"
+  bucket_name    = "${local.name_prefix}-content"
+  users_table    = "${local.name_prefix}-users"
   sessions_table = "${local.name_prefix}-sessions"
-  lambda_name   = "${local.name_prefix}-api"
+  lambda_name    = "${local.name_prefix}-api"
 }
 
 # ── KMS key — encrypts S3 and DynamoDB at rest ───────────────────────────────
@@ -42,6 +38,7 @@ resource "aws_kms_key" "main" {
   description             = "${var.app_name} encryption key (${var.environment})"
   deletion_window_in_days = 14
   enable_key_rotation     = true
+  tags                    = local.common_tags
 }
 
 resource "aws_kms_alias" "main" {
@@ -54,6 +51,7 @@ resource "aws_kms_alias" "main" {
 resource "aws_s3_bucket" "content" {
   bucket        = local.bucket_name
   force_destroy = var.environment != "production"
+  tags          = local.common_tags
 }
 
 resource "aws_s3_bucket_versioning" "content" {
@@ -83,21 +81,19 @@ resource "aws_s3_bucket_public_access_block" "content" {
 resource "aws_s3_bucket_lifecycle_configuration" "content" {
   bucket = aws_s3_bucket.content.id
   rule {
-  		id     = "expire-old-versions"
-  		status = "Enabled"
-  		filter {}
-  		noncurrent_version_expiration { noncurrent_days = 90 }
-  		}
+    id     = "expire-old-versions"
+    status = "Enabled"
+    filter {}
+    noncurrent_version_expiration { noncurrent_days = 90 }
+  }
 }
 
-# ── DynamoDB — users (PII) and sessions (token hashes only) ──────────────────
+# ── DynamoDB — users (PII + tier + packs) and sessions (token hashes only) ───
 #
-# Two-table design:
-#   users    — { username (PK), userId, firstName, passwordHash, salt, createdAt }
-#   sessions — { tokenHash (PK), userId, firstName, expiresAt, ttl }
-#
-# Sessions table stores SHA-256(api_token); the raw token is never persisted
-# server-side. TTL auto-deletes expired sessions.
+# users    — { username (PK), userId, firstName, passwordHash, salt,
+#              tier ("free"|"pro"), purchasedPacks (StringSet), createdAt }
+# sessions — { tokenHash (PK), userId, firstName, tier, purchasedPacks,
+#              expiresAt, ttl }
 
 resource "aws_dynamodb_table" "users" {
   name         = local.users_table
@@ -115,6 +111,7 @@ resource "aws_dynamodb_table" "users" {
   }
 
   point_in_time_recovery { enabled = true }
+  tags = local.common_tags
 }
 
 resource "aws_dynamodb_table" "sessions" {
@@ -138,6 +135,7 @@ resource "aws_dynamodb_table" "sessions" {
   }
 
   point_in_time_recovery { enabled = true }
+  tags = local.common_tags
 }
 
 # ── IAM — Lambda execution role ──────────────────────────────────────────────
@@ -156,6 +154,7 @@ data "aws_iam_policy_document" "lambda_assume" {
 resource "aws_iam_role" "lambda" {
   name               = "${local.lambda_name}-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume.json
+  tags               = local.common_tags
 }
 
 data "aws_iam_policy_document" "lambda_policy" {
@@ -206,12 +205,13 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
 resource "aws_cloudwatch_log_group" "lambda" {
   name              = "/aws/lambda/${local.lambda_name}"
   retention_in_days = 30
+  tags              = local.common_tags
 }
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_dir  = "${path.module}/../../lambda"
-  output_path = "${path.module}/lambda_package.zip"
+  source_dir  = var.lambda_source_dir
+  output_path = "${path.module}/lambda_package_${var.environment}.zip"
 }
 
 resource "aws_lambda_function" "api" {
@@ -235,6 +235,7 @@ resource "aws_lambda_function" "api" {
     }
   }
 
+  tags       = local.common_tags
   depends_on = [aws_cloudwatch_log_group.lambda]
 }
 
@@ -249,6 +250,7 @@ resource "aws_apigatewayv2_api" "main" {
     allow_headers = ["Authorization", "Content-Type", "X-App-Version"]
     max_age       = 86400
   }
+  tags = local.common_tags
 }
 
 resource "aws_apigatewayv2_integration" "lambda" {
@@ -289,21 +291,24 @@ resource "aws_apigatewayv2_stage" "default" {
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gateway.arn
     format = jsonencode({
-      requestId       = "$context.requestId"
-      sourceIp        = "$context.identity.sourceIp"
-      requestTime     = "$context.requestTime"
-      protocol        = "$context.protocol"
-      httpMethod      = "$context.httpMethod"
-      resourcePath    = "$context.routeKey"
-      status          = "$context.status"
-      responseLength  = "$context.responseLength"
+      requestId      = "$context.requestId"
+      sourceIp       = "$context.identity.sourceIp"
+      requestTime    = "$context.requestTime"
+      protocol       = "$context.protocol"
+      httpMethod     = "$context.httpMethod"
+      resourcePath   = "$context.routeKey"
+      status         = "$context.status"
+      responseLength = "$context.responseLength"
     })
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_cloudwatch_log_group" "api_gateway" {
   name              = "/aws/apigateway/${local.name_prefix}"
   retention_in_days = 30
+  tags              = local.common_tags
 }
 
 resource "aws_lambda_permission" "api_gateway" {
@@ -316,9 +321,8 @@ resource "aws_lambda_permission" "api_gateway" {
 
 # ── CloudFront ───────────────────────────────────────────────────────────────
 #
-# Auth and dynamic responses are not cached. Only future static assets behind
-# the same distribution would benefit from caching; here we keep TTLs at 0
-# so token validation always hits Lambda.
+# Auth and dynamic responses are not cached. Custom domain (ACM cert + alias)
+# is added by dns.tf when var.custom_domain_enabled = true.
 
 resource "aws_cloudfront_cache_policy" "no_cache" {
   name        = "${local.name_prefix}-no-cache"
@@ -328,9 +332,9 @@ resource "aws_cloudfront_cache_policy" "no_cache" {
   parameters_in_cache_key_and_forwarded_to_origin {
     enable_accept_encoding_gzip   = false
     enable_accept_encoding_brotli = false
-    headers_config       { header_behavior = "none" }
+    headers_config { header_behavior = "none" }
     query_strings_config { query_string_behavior = "none" }
-    cookies_config       { cookie_behavior = "none" }
+    cookies_config { cookie_behavior = "none" }
   }
 }
 
@@ -341,7 +345,7 @@ resource "aws_cloudfront_origin_request_policy" "auth_forward" {
     headers { items = ["Authorization", "Content-Type", "X-App-Version"] }
   }
   query_strings_config { query_string_behavior = "all" }
-  cookies_config       { cookie_behavior = "none" }
+  cookies_config { cookie_behavior = "none" }
 }
 
 resource "aws_cloudfront_distribution" "api" {
@@ -349,6 +353,8 @@ resource "aws_cloudfront_distribution" "api" {
   is_ipv6_enabled = true
   comment         = "${var.app_name} ${var.environment} API"
   price_class     = "PriceClass_100"
+
+  aliases = var.custom_domain_enabled ? [var.fqdn] : []
 
   origin {
     domain_name = trimsuffix(replace(aws_apigatewayv2_stage.default.invoke_url, "https://", ""), "/")
@@ -374,7 +380,23 @@ resource "aws_cloudfront_distribution" "api" {
     geo_restriction { restriction_type = "none" }
   }
 
-  viewer_certificate {
-    cloudfront_default_certificate = true
+  # Cert: default *.cloudfront.net when custom_domain_enabled = false,
+  # otherwise the ACM cert provisioned in dns.tf (us-east-1).
+  dynamic "viewer_certificate" {
+    for_each = var.custom_domain_enabled ? [] : [1]
+    content {
+      cloudfront_default_certificate = true
+    }
   }
+
+  dynamic "viewer_certificate" {
+    for_each = var.custom_domain_enabled ? [1] : []
+    content {
+      acm_certificate_arn      = aws_acm_certificate_validation.api[0].certificate_arn
+      ssl_support_method       = "sni-only"
+      minimum_protocol_version = "TLSv1.2_2021"
+    }
+  }
+
+  tags = local.common_tags
 }

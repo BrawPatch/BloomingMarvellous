@@ -1,5 +1,59 @@
-# BloomingMarvellous — Code Review Implementation Report
-**Release Build: 1.0.0**
+# BloomingMarvellous — Release Notes
+
+---
+
+## 1.1.0 — Tiered content + parallel environments
+
+### Backend
+
+- **Per-environment AWS stacks.** Terraform restructured into a shared
+  module (`backend/infrastructure/terraform/modules/api/`) plus
+  per-env roots (`environments/development/`, `environments/production/`,
+  `environments/dns/`). Each env has its own state; applying one no longer
+  touches the other. Existing dev state migrated via `moved {}` blocks with
+  zero destroys.
+- **Custom domain (brawpatch.com).** Route 53 hosted zone provisioned in
+  `environments/dns/`. ACM cert + CloudFront alias added behind
+  `var.custom_domain_enabled` (off by default — flip after 123-reg
+  nameservers point at AWS). Dev maps to `api-dev.brawpatch.com`, prod to
+  `api.brawpatch.com`.
+- **us-east-1 fix.** Provider region no longer hardcoded; pulled from
+  `var.aws_region`. Lambda `AWS_REGION_VAR` env var now matches the
+  deployed region (was previously stuck at `eu-west-2` while resources
+  ran in `us-east-1`).
+- **Tier and pack model.** Users carry `tier ∈ {free, pro}` and an
+  optional `purchasedPacks` StringSet of `pack_exotic` / `pack_edible`.
+  Sessions snapshot both at login. Lambda filters S3 content per request
+  by the caller's entitlements (server-side; no client trust).
+- **Content schema v2.** `v1/home.json` and `v1/data.json` now use
+  `{version: 2, items: [{id, label, access}]}`. Lambda projects back to
+  `[String]` so the iOS HTTP contract is unchanged.
+- **Scripts.** `seed-content.mjs` and `create-user.mjs` now require
+  `--env development|production`. `create-user.mjs` accepts `--tier` and
+  repeatable `--pack`. `deploy.sh` rewritten as `deploy.sh <env>` and runs
+  the per-env seed at the end of every deploy so the bucket can't drift.
+
+### iOS
+
+- `UserModel` gains `tier: UserTier` and `purchasedPacks: [ContentPack]`,
+  decoded defensively (`decodeIfPresent`) so older login responses still
+  produce a valid free-tier user.
+- `UserModel.owns(_:)` helper for entitlement checks at call sites.
+- `AppConfig.swift` URLs updated to the brawpatch.com hostnames. A
+  `BM_API_BASE_URL` env-var override lets the app point at the raw
+  CloudFront URL while DNS is propagating.
+
+### Operational notes
+
+- Sessions cache `tier`/`packs`; mid-session pack purchases require a
+  re-login to take effect. Acceptable for v1 — revisit if pack purchases
+  become a hot path.
+- `deploy.sh <env>` re-seeds S3 on every run. The seed step is idempotent
+  (overwrites the same keys) so re-deploying is safe.
+
+---
+
+## 1.0.0 — Code Review Implementation Report
 Generated after applying all 35 User Stories from `swift_review_sample.csv`
 
 ---
