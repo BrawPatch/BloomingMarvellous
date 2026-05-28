@@ -42,6 +42,13 @@
 - `AppConfig.swift` URLs updated to the brawpatch.com hostnames. A
   `BM_API_BASE_URL` env-var override lets the app point at the raw
   CloudFront URL while DNS is propagating.
+- **Bearer token wiring closed.** `Endpoint.requiresAuth` (default `true`)
+  drives `NetworkService.request(_:)` to attach
+  `Authorization: Bearer <token>` from Keychain. Login opts out via
+  `requiresAuth: false`. Missing token short-circuits with
+  `NetworkError.unauthorized` before any HTTP call; a server 401 clears
+  the stored token and surfaces the same error so the UI can re-route to
+  login.
 
 ### Operational notes
 

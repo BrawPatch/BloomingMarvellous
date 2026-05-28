@@ -49,13 +49,13 @@ with `/v1` (the version segment is part of the base URL on the iOS side).
 | GET    | `/v1/home`       | Bearer | —                                         | `200 [String]` — filtered by the caller's tier + packs |
 | GET    | `/v1/data`       | Bearer | —                                         | `200 [String]` — filtered by the caller's tier + packs |
 
-> **iOS gap to be aware of:** the current `NetworkService` only sets
-> `Content-Type` (see `Sources/Networking/NetworkService.swift` line 86) and
-> does not attach an `Authorization` header. After deployment, `/v1/home` and
-> `/v1/data` will return `401` until a one-line change is made in
-> `NetworkService.request(_:)` to inject the token retrieved from
-> `KeychainService.retrieve(forKey: KeychainKey.authToken)`. Flag as
-> follow-up.
+> **Bearer token wiring:** `NetworkService` reads `KeychainKey.authToken`
+> from Keychain and attaches `Authorization: Bearer <token>` to every
+> endpoint where `Endpoint.requiresAuth == true` (the default). The login
+> endpoint is the only one that opts out via `requiresAuth: false` so it
+> can travel unauthenticated and issue the token. If the token is missing
+> or the server returns 401, `NetworkService` clears the stored token and
+> throws `NetworkError.unauthorized` so the UI can route to the login flow.
 
 ### Tier and pack model
 
@@ -375,9 +375,10 @@ Confirm the user exists in the right env's table:
 `aws dynamodb scan --table-name blooming-marvellous-development-users`.
 Re-run `create-user.mjs --env <env> ...` if the row is missing.
 
-**`/v1/home` returns 401 from the iOS app but works with curl**
-Expected — see the "iOS gap" note above. `NetworkService` doesn't attach the
-Bearer token yet.
+**`/v1/home` returns 401 from the iOS app**
+Either the user never logged in (no token in Keychain — `NetworkService`
+throws `.unauthorized` before sending) or the server-side token has been
+revoked / expired. Re-run the login flow and retry.
 
 **`/v1/home` returns 404 "Content not found"**
 You haven't seeded yet. Run `node scripts/seed-content.mjs --env <env>`.

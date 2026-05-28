@@ -49,6 +49,46 @@ final class NetworkServiceTests: XCTestCase {
         XCTAssertEqual(endpoint.method, .get)
     }
 
+    // MARK: - Auth wiring (US-0008 follow-up: Bearer attach)
+
+    func test_endpoint_requiresAuth_defaultsToTrue() {
+        let endpoint = Endpoint(path: "/home")
+        XCTAssertTrue(endpoint.requiresAuth,
+                      "Endpoints must default to authenticated — only login opts out.")
+    }
+
+    func test_endpoint_requiresAuth_canBeOptedOut() {
+        let endpoint = Endpoint(path: "/auth/login", method: .post, requiresAuth: false)
+        XCTAssertFalse(endpoint.requiresAuth)
+    }
+
+    func test_networkService_throwsUnauthorized_whenTokenMissing() async {
+        // Use a keychain mock that reports no stored token. The session should
+        // not be touched at all — NetworkService must short-circuit before any
+        // HTTP request is made.
+        final class EmptyKeychain: KeychainServiceProtocol {
+            func save(_: String, forKey _: String) throws {}
+            func retrieve(forKey _: String) throws -> String { throw KeychainError.itemNotFound }
+            func delete(forKey _: String) throws {}
+        }
+
+        let service = NetworkService(session: .shared,
+                                     baseURL: URL(string: "https://example.invalid/v1")!,
+                                     keychain: EmptyKeychain())
+        do {
+            let _: [String] = try await service.request(Endpoint(path: "/home"))
+            XCTFail("Expected NetworkError.unauthorized")
+        } catch NetworkError.unauthorized {
+            // expected
+        } catch {
+            XCTFail("Wrong error: \(error)")
+        }
+    }
+
+    func test_networkError_unauthorized_hasDescription() {
+        XCTAssertFalse(NetworkError.unauthorized.localizedDescription.isEmpty)
+    }
+
     // MARK: - NetworkError localised descriptions
 
     func test_networkError_invalidURL_hasDescription() {

@@ -39,7 +39,13 @@ final class AuthService: AuthServiceProtocol {
 
         // Build login request body — passwords travel over HTTPS only (US-0004)
         let body = try JSONEncoder().encode(["username": username, "password": pass])
-        let endpoint = Endpoint(path: Environment.Path.login, method: .post, body: body)
+        // requiresAuth=false: login is the endpoint that *issues* the token, so it
+        // must travel without a Bearer header (otherwise NetworkService would throw
+        // NetworkError.unauthorized on the first-ever login when no token exists).
+        let endpoint = Endpoint(path: Environment.Path.login,
+                                method: .post,
+                                body: body,
+                                requiresAuth: false)
 
         let user: UserModel = try await network.request(endpoint)
 
