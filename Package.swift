@@ -17,7 +17,10 @@ let package = Package(
         .target(
             name: "BloomingMarvellous",
             path: "Sources",
-            exclude: ["UI"]
+            exclude: ["UI"],
+            resources: [
+                .process("Resources/Fonts")
+            ]
         ),
         .target(
             name: "BloomingMarvellousUI",

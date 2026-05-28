@@ -2,25 +2,17 @@
 import SwiftUI
 import BloomingMarvellous
 
-// MARK: - LoginView
-//
-// Minimal username/password form that wraps AuthService.login. On success
-// invokes `onSuccess(UserModel)` so the app's root view can swap in the
-// authenticated experience. The auth token is persisted to Keychain by
-// AuthService before this view's callback fires, so subsequent
-// NetworkService calls auto-attach the Bearer header.
+// MARK: - LoginView (BMFinal-styled)
+
 public struct LoginView: View {
 
-    // MARK: - Dependencies
     private let auth: AuthServiceProtocol
     private let onSuccess: (UserModel) -> Void
 
-    // MARK: - Form state
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var isSubmitting: Bool = false
     @State private var errorMessage: String?
-
     @FocusState private var focused: Field?
 
     private enum Field { case username, password }
@@ -32,46 +24,144 @@ public struct LoginView: View {
     }
 
     public var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    TextField("Username", text: $username)
-                        .textContentType(.username)
-                        .autocorrectionDisabled(true)
-                        .textInputAutocapitalization(.never)
-                        .focused($focused, equals: .username)
-                        .onSubmit { focused = .password }
+        ZStack {
+            Color.bmBg.ignoresSafeArea()
 
-                    SecureField("Password", text: $password)
-                        .textContentType(.password)
-                        .focused($focused, equals: .password)
-                        .onSubmit { Task { await submit() } }
-                } header: {
-                    Text("Sign in to Blooming Marvellous")
-                } footer: {
+            // Subtle corner decorations to match the BMFinal aesthetic
+            decorations
+
+            VStack(spacing: 20) {
+                Spacer(minLength: 24)
+
+                titleCard
+
+                VStack(spacing: 14) {
+                    bmField("Username",
+                            text: $username,
+                            isSecure: false,
+                            field: .username,
+                            submitLabel: .next)
+
+                    bmField("Password",
+                            text: $password,
+                            isSecure: true,
+                            field: .password,
+                            submitLabel: .go)
+
                     if let errorMessage {
                         Text(errorMessage)
-                            .foregroundStyle(.red)
-                            .font(.footnote)
+                            .font(.custom("Nunito-SemiBold", size: 12))
+                            .foregroundStyle(Color.bmRed)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                }
 
-                Section {
                     Button {
                         Task { await submit() }
                     } label: {
-                        HStack {
-                            if isSubmitting { ProgressView() }
+                        HStack(spacing: 8) {
+                            if isSubmitting { ProgressView().tint(.white) }
                             Text(isSubmitting ? "Signing in…" : "Sign in")
+                                .font(.custom("Fredoka-SemiBold", size: 16))
+                                .foregroundStyle(.white)
+                                .kerning(0.5)
                         }
                         .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(canSubmit ? Color.bmGreen : Color.bmGreenMid)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .shadow(color: Color.bmGreen.opacity(0.25), radius: 6, y: 2)
                     }
                     .disabled(!canSubmit)
                 }
+                .padding(20)
+                .bmCard()
+                .padding(.horizontal, 24)
+
+                Spacer()
             }
-            .navigationTitle("Welcome")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear { focused = .username }
+        }
+        .onAppear { focused = .username }
+    }
+
+    // MARK: - Title card
+
+    private var titleCard: some View {
+        VStack(spacing: 4) {
+            HStack(spacing: 0) {
+                Text("Blooming ")
+                    .font(.custom("Fredoka-Bold", size: 30))
+                    .foregroundStyle(Color.bmLilac)
+                Text("Marvellous")
+                    .font(.custom("Fredoka-Bold", size: 30))
+                    .foregroundStyle(Color.bmPeach)
+            }
+            Text("Bloom-based Garden Planner")
+                .font(.custom("Nunito-SemiBold", size: 13))
+                .foregroundStyle(Color.bmText2)
+                .kerning(0.3)
+        }
+        .stickerCard(radius: 20)
+        .padding(.horizontal, 24)
+    }
+
+    // MARK: - Form field helper
+
+    @ViewBuilder
+    private func bmField(_ placeholder: String,
+                         text: Binding<String>,
+                         isSecure: Bool,
+                         field: Field,
+                         submitLabel: SubmitLabel) -> some View {
+        HStack {
+            Group {
+                if isSecure {
+                    SecureField(placeholder, text: text)
+                        .textContentType(.password)
+                } else {
+                    TextField(placeholder, text: text)
+                        .textContentType(.username)
+                        .autocorrectionDisabled(true)
+                        .textInputAutocapitalization(.never)
+                }
+            }
+            .font(.custom("Nunito-SemiBold", size: 15))
+            .foregroundStyle(Color.bmText1)
+            .focused($focused, equals: field)
+            .submitLabel(submitLabel)
+            .onSubmit {
+                if field == .username { focused = .password }
+                else { Task { await submit() } }
+            }
+        }
+        .padding(.horizontal, 14).padding(.vertical, 12)
+        .background(Color.bmBgSoft)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12)
+            .stroke(focused == field ? Color.bmBorderAct : Color.bmBorder, lineWidth: 1.5))
+    }
+
+    // MARK: - Decorations
+
+    private var decorations: some View {
+        GeometryReader { geo in
+            Group {
+                FlowerView(size: 56, petalColor: .bmFlowerPink, centerColor: .bmLilac)
+                    .rotationEffect(.degrees(-12))
+                    .position(x: 40, y: 80)
+                    .opacity(0.55)
+                FlowerView(size: 38, petalColor: .bmLilac, centerColor: .bmAmber)
+                    .rotationEffect(.degrees(20))
+                    .position(x: geo.size.width - 42, y: 120)
+                    .opacity(0.5)
+                LeafView(size: 34, color: .bmLeafSage)
+                    .rotationEffect(.degrees(20))
+                    .position(x: 30, y: geo.size.height - 80)
+                    .opacity(0.4)
+                LeafView(size: 26, color: .bmLeafSage)
+                    .rotationEffect(.degrees(-30))
+                    .position(x: geo.size.width - 36, y: geo.size.height - 60)
+                    .opacity(0.4)
+            }
         }
     }
 
@@ -88,13 +178,10 @@ public struct LoginView: View {
         isSubmitting = true
         errorMessage = nil
         defer { isSubmitting = false }
-
         do {
             let user = try await auth.login(username: username, pass: password)
             onSuccess(user)
         } catch {
-            // Surface a short, non-sensitive message. Real error stays in os_log
-            // via AuthService's logger; we never echo the raw password back.
             errorMessage = userFacingMessage(for: error)
         }
     }
@@ -102,21 +189,20 @@ public struct LoginView: View {
     private func userFacingMessage(for error: Error) -> String {
         if let net = error as? NetworkError {
             switch net {
-            case .httpError(let code) where code == 401:
-                return "Incorrect username or password."
             case .unauthorized:
+                return "Incorrect username or password."
+            case .httpError(let code) where code == 401:
                 return "Incorrect username or password."
             case .httpError(let code):
                 return "Server error (\(code)). Try again in a moment."
             case .invalidURL, .noData, .decodingError, .unknown:
-                return "Couldn't reach the server. Check your connection and try again."
+                return "Couldn't reach the server."
             }
         }
         return "Sign in failed. Try again."
     }
 }
 
-// MARK: - Preview
 #Preview {
     LoginView { _ in }
 }
