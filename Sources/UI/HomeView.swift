@@ -2,24 +2,24 @@
 import SwiftUI
 import BloomingMarvellous
 
-// MARK: - HomeView
-//
-// SwiftUI home screen that replaces the legacy UIKit HomeViewController.
-// Visual language is ported from the BMFinal design (mint background,
-// Fredoka title, Nunito body, sticker-card header, BMCard rows).
+// MARK: - HomeView (dashboard)
 
 public struct HomeView: View {
 
     private let user: UserModel
     private let onLogout: () -> Void
 
-    @StateObject private var viewModel: HomeViewModel
-    @State private var selectedFilter: ContentFilter = .all
+    @EnvironmentObject private var store: GardenStore
+    @State private var showingGardenPicker = false
+    @State private var showingCreateGarden = false
+    @State private var showingManageGardens = false
+    @State private var showingSettings = false
+    @State private var showingTasks = false
+    @State private var showingBeds = false
+    @State private var toast: ToastBanner.Message?
 
-    @MainActor
     public init(user: UserModel, onLogout: @escaping () -> Void) {
         self.user = user
-        self._viewModel = StateObject(wrappedValue: HomeViewModel())
         self.onLogout = onLogout
     }
 
@@ -29,200 +29,184 @@ public struct HomeView: View {
 
             ScrollView {
                 VStack(spacing: 18) {
-                    BMAppHeader(user: user, onLogout: onLogout)
+                    GardenTopBar(
+                        user: user,
+                        store: store,
+                        onSwitchGarden: { showingGardenPicker = true },
+                        onAddGarden:    { showingCreateGarden = true },
+                        onLogout: onLogout
+                    )
 
-                    filterRow
+                    if let garden = store.selectedGarden {
+                        gardenSummary(garden)
+                        shortcutCards(garden)
+                    }
 
-                    welcomeSection
-
-                    librarySection
+                    Spacer(minLength: 12)
                 }
                 .padding(.bottom, 32)
             }
+
+            ToastBanner(message: $toast)
         }
-        .task { await viewModel.loadAll() }
-    }
-
-    // MARK: - Filter pills
-
-    private var filterRow: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                ForEach(ContentFilter.allCases) { f in
-                    PillButton(f.label,
-                               isActive: selectedFilter == f,
-                               color: f.tint) {
-                        selectedFilter = f
-                    }
-                }
+        .navigationBarHidden(true)
+        .confirmationDialog("Select garden",
+                            isPresented: $showingGardenPicker,
+                            titleVisibility: .visible) {
+            ForEach(store.gardens) { g in
+                Button(g.name) { store.selectedGardenId = g.id }
             }
-            .padding(.horizontal, 20)
-        }
-    }
-
-    // MARK: - "Welcome" section (server /home items)
-
-    private var welcomeSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            SectionLabel("Welcome back, \(user.firstName)", icon: "🌿")
-                .padding(.horizontal, 24)
-
-            VStack(alignment: .leading, spacing: 12) {
-                if viewModel.isLoading && viewModel.welcomeItems.isEmpty {
-                    placeholder
-                } else if viewModel.welcomeItems.isEmpty {
-                    Text("No welcome content yet.")
-                        .font(.custom("Nunito-SemiBold", size: 13))
-                        .foregroundStyle(Color.bmText2)
-                } else {
-                    ForEach(viewModel.welcomeItems, id: \.self) { msg in
-                        HStack(alignment: .top, spacing: 10) {
-                            FlowerView(size: 18,
-                                       petalColor: .bmFlowerPink,
-                                       centerColor: .bmLilac)
-                            Text(msg)
-                                .font(.custom("Nunito-SemiBold", size: 14))
-                                .foregroundStyle(Color.bmText1)
-                            Spacer(minLength: 0)
-                        }
-                    }
-                }
+            if store.canManageGardens {
+                Button("Manage gardens…") { showingManageGardens = true }
             }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .bmCard()
-            .padding(.horizontal, 20)
+            Button("Cancel", role: .cancel) { }
         }
-    }
-
-    // MARK: - "Plant library" section (server /data items)
-
-    private var librarySection: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        .sheet(isPresented: $showingCreateGarden) {
+            CreateGardenView { newGarden in
+                store.addGarden(newGarden)
+                toast = .init(text: "Garden created", icon: "🌱")
+            }
+        }
+        .sheet(isPresented: $showingManageGardens) {
+            ManageGardensView()
+                .environmentObject(store)
+        }
+        .sheet(isPresented: $showingSettings) {
+            SettingsView(user: user)
+        }
+        .sheet(isPresented: $showingTasks) {
+            TaskListView()
+        }
+        .navigationDestination(isPresented: $showingBeds) {
+            GardenBedsView()
+                .environmentObject(store)
+        }
+        .safeAreaInset(edge: .top, spacing: 0) {
             HStack {
-                SectionLabel("Plant library", icon: "🌸")
                 Spacer()
-                Text("\(filteredItems.count) items")
-                    .font(.custom("Nunito-Bold", size: 11))
+                Button { showingSettings = true } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(Color.bmText2)
+                        .padding(8)
+                        .background(Circle().fill(Color.white.opacity(0.75)))
+                        .shadow(color: .black.opacity(0.08), radius: 2, y: 1)
+                }
+                .padding(.trailing, 14)
+            }
+            .padding(.top, 6)
+            .background(Color.clear)
+        }
+    }
+
+    // MARK: - Garden summary card
+
+    @ViewBuilder
+    private func gardenSummary(_ garden: Garden) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SectionLabel("Garden defaults", icon: "🌿")
+            HStack(spacing: 10) {
+                badge("Soil", garden.soilType.label, .bmGreen)
+                badge("Wet",  garden.wetness.shortLabel, .bmSky)
+                badge("Sun",  garden.sunlight.shortLabel, .bmAmber)
+            }
+            HStack(spacing: 10) {
+                badge("Exposure", garden.exposure.label, .bmLeafSage)
+                Spacer(minLength: 0)
+                Text("\(store.beds(in: garden.id).count) beds")
+                    .font(.custom("Nunito-Bold", size: 12))
                     .foregroundStyle(Color.bmText3)
             }
-            .padding(.horizontal, 24)
-
-            VStack(spacing: 10) {
-                if viewModel.isLoading && viewModel.libraryItems.isEmpty {
-                    placeholder
-                } else if filteredItems.isEmpty {
-                    Text("No plants in this filter.")
-                        .font(.custom("Nunito-SemiBold", size: 13))
-                        .foregroundStyle(Color.bmText2)
-                        .padding(16)
-                        .frame(maxWidth: .infinity)
-                        .bmCard()
-                } else {
-                    ForEach(Array(filteredItems.enumerated()), id: \.offset) { idx, item in
-                        plantRow(item, tint: tintFor(index: idx))
-                    }
-                }
-            }
-            .padding(.horizontal, 20)
-
-            if let err = viewModel.errorMessage {
-                Text(err)
-                    .font(.custom("Nunito-SemiBold", size: 12))
-                    .foregroundStyle(Color.bmRed)
-                    .padding(.horizontal, 24)
-            }
         }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+        .padding(.horizontal, 20)
     }
 
-    private func plantRow(_ item: String, tint: Color) -> some View {
-        HStack(spacing: 12) {
-            // Coloured circular badge with a leaf
-            ZStack {
-                Circle().fill(tint.opacity(0.18))
-                    .frame(width: 40, height: 40)
-                LeafView(size: 18, color: tint)
-            }
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(item)
-                    .font(.custom("Nunito-Bold", size: 14))
-                    .foregroundStyle(Color.bmText1)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.right")
-                .font(.system(size: 12, weight: .semibold))
+    private func badge(_ label: String, _ value: String, _ color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(label.uppercased())
+                .font(.custom("Fredoka-SemiBold", size: 9))
                 .foregroundStyle(Color.bmText3)
+                .kerning(0.5)
+            Text(value)
+                .font(.custom("Nunito-Bold", size: 12))
+                .foregroundStyle(.white)
         }
-        .padding(14)
-        .background(Color.bmBgCard)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .overlay(RoundedRectangle(cornerRadius: 16)
-            .stroke(Color.bmBorder, lineWidth: 1.5))
-        .shadow(color: Color.bmGreen.opacity(0.06), radius: 4, y: 1)
+        .padding(.horizontal, 10).padding(.vertical, 6)
+        .background(color)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
-    private var placeholder: some View {
-        HStack {
-            ProgressView().tint(.bmGreen)
-            Text("Loading…")
-                .font(.custom("Nunito-SemiBold", size: 13))
-                .foregroundStyle(Color.bmText2)
+    // MARK: - Shortcut cards
+
+    @ViewBuilder
+    private func shortcutCards(_ garden: Garden) -> some View {
+        VStack(spacing: 12) {
+            shortcut(title: "Garden beds",
+                     subtitle: "\(store.beds(in: garden.id).count) bed\(store.beds(in: garden.id).count == 1 ? "" : "s")",
+                     icon: "🪴",
+                     tint: .bmGreen) { showingBeds = true }
+            shortcut(title: "This week's tasks",
+                     subtitle: "Sow · Transplant · Harvest",
+                     icon: "✅",
+                     tint: .bmSky) { showingTasks = true }
+            shortcut(title: "Add to schedule",
+                     subtitle: "Plan plant + event",
+                     icon: "🌸",
+                     tint: .bmPeach) { /* will link into Picker in a future turn */ }
         }
+        .padding(.horizontal, 20)
     }
 
-    // MARK: - Helpers
-
-    private var filteredItems: [String] {
-        let items = viewModel.libraryItems
-        // Server already filtered by tier/packs; the pills here are a
-        // simple visual cue — we just shorten the list to give a sense of
-        // categorisation. A real implementation would tag items server-side.
-        switch selectedFilter {
-        case .all:   return items
-        case .pro:   return user.tier == .pro ? items : []
-        case .packs: return user.purchasedPacks.isEmpty ? [] : items
+    private func shortcut(title: String,
+                          subtitle: String,
+                          icon: String,
+                          tint: Color,
+                          action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                ZStack {
+                    Circle().fill(tint.opacity(0.18))
+                        .frame(width: 46, height: 46)
+                    Text(icon).font(.system(size: 22))
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.custom("Nunito-Bold", size: 15))
+                        .foregroundStyle(Color.bmText1)
+                    Text(subtitle)
+                        .font(.custom("Nunito-SemiBold", size: 12))
+                        .foregroundStyle(Color.bmText2)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(Color.bmText3)
+            }
+            .padding(14)
+            .background(Color.bmBgCard)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.bmBorder, lineWidth: 1.5))
+            .shadow(color: Color.bmGreen.opacity(0.06), radius: 4, y: 1)
         }
-    }
-
-    private func tintFor(index: Int) -> Color {
-        let palette: [Color] = [.bmGreen, .bmLilac, .bmPeach, .bmAmber, .bmSky, .bmLeafSage]
-        return palette[index % palette.count]
+        .buttonStyle(.plain)
     }
 }
 
-// MARK: - ContentFilter
-
-private enum ContentFilter: String, CaseIterable, Identifiable {
-    case all, pro, packs
-    var id: String { rawValue }
-    var label: String {
-        switch self {
-        case .all:   return "All"
-        case .pro:   return "Pro"
-        case .packs: return "Packs"
-        }
-    }
-    var tint: Color {
-        switch self {
-        case .all:   return .bmGreen
-        case .pro:   return .bmAmber
-        case .packs: return .bmLilac
-        }
-    }
-}
-
-// MARK: - BMAppHeader
+// MARK: - GardenTopBar
 //
-// Trimmed port of BMFinal's AppHeader — the multi-coloured "Blooming
-// Marvellous" sticker card on a mint gradient with a tier badge and a
-// logout button.
+// The mint-gradient sticker header from BMFinal, with a Free or Pro
+// garden picker integrated. Free → static label. Pro → tappable dropdown
+// with + Add garden affordance.
 
-private struct BMAppHeader: View {
+private struct GardenTopBar: View {
     let user: UserModel
+    let store: GardenStore
+    let onSwitchGarden: () -> Void
+    let onAddGarden: () -> Void
     let onLogout: () -> Void
 
     var body: some View {
@@ -236,39 +220,72 @@ private struct BMAppHeader: View {
             decorations
 
             VStack(spacing: 8) {
-                VStack(spacing: 1) {
-                    HStack(spacing: 0) {
-                        Text("Blooming ")
-                            .font(.custom("Fredoka-Bold", size: 24))
-                            .foregroundStyle(Color.bmLilac)
-                        Text("Marvellous")
-                            .font(.custom("Fredoka-Bold", size: 24))
-                            .foregroundStyle(Color.bmPeach)
-                    }
-                    Text("Bloom-based Garden Planner")
-                        .font(.custom("Nunito-SemiBold", size: 12))
-                        .foregroundStyle(Color.bmText2)
-                        .kerning(0.3)
+                HStack(spacing: 0) {
+                    Text("Blooming ")
+                        .font(.custom("Fredoka-Bold", size: 22))
+                        .foregroundStyle(Color.bmLilac)
+                    Text("Marvellous")
+                        .font(.custom("Fredoka-Bold", size: 22))
+                        .foregroundStyle(Color.bmPeach)
                 }
-                .stickerCard(radius: 16)
+                .stickerCard(radius: 14)
 
-                tierBadge
+                if user.tier == .pro {
+                    HStack(spacing: 8) {
+                        Button(action: onSwitchGarden) {
+                            HStack(spacing: 4) {
+                                Text(store.selectedGarden?.name ?? "Select garden")
+                                    .font(.custom("Nunito-Bold", size: 12))
+                                    .foregroundStyle(Color.bmText1)
+                                Image(systemName: "chevron.down")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundStyle(Color.bmText2)
+                            }
+                            .padding(.horizontal, 12).padding(.vertical, 5)
+                            .background(Color.white.opacity(0.75))
+                            .clipShape(Capsule())
+                        }
+                        Button(action: onAddGarden) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundStyle(.white)
+                                .padding(7)
+                                .background(Circle().fill(Color.bmGreen))
+                        }
+                        .disabled(!store.canAddGarden)
+                        .opacity(store.canAddGarden ? 1 : 0.35)
+                    }
+                } else {
+                    HStack(spacing: 6) {
+                        Text("🌱")
+                        Text(store.selectedGarden?.name ?? "My Garden")
+                            .font(.custom("Nunito-Bold", size: 12))
+                            .foregroundStyle(Color.bmText1)
+                        Text("FREE")
+                            .font(.custom("Fredoka-SemiBold", size: 9))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 6).padding(.vertical, 2)
+                            .background(Color.bmLeafSage)
+                            .clipShape(Capsule())
+                    }
+                    .padding(.horizontal, 12).padding(.vertical, 5)
+                    .background(Color.white.opacity(0.75))
+                    .clipShape(Capsule())
+                }
             }
             .padding(.vertical, 14)
         }
         .frame(maxWidth: .infinity)
         .overlay(alignment: .topTrailing) {
             Button(action: onLogout) {
-                ZStack {
-                    Circle().fill(Color.white.opacity(0.75))
-                        .frame(width: 32, height: 32)
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
-                        .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(Color.bmLilac)
-                }
-                .shadow(color: .black.opacity(0.08), radius: 3, y: 1)
+                Image(systemName: "rectangle.portrait.and.arrow.right")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(Color.bmLilac)
+                    .padding(8)
+                    .background(Circle().fill(Color.white.opacity(0.75)))
+                    .shadow(color: .black.opacity(0.08), radius: 3, y: 1)
             }
-            .padding(.trailing, 12)
+            .padding(.trailing, 50)
             .padding(.top, 8)
             .accessibilityLabel("Sign out")
         }
@@ -277,57 +294,62 @@ private struct BMAppHeader: View {
         }
     }
 
-    @ViewBuilder
-    private var tierBadge: some View {
-        HStack(spacing: 6) {
-            Text("🌱")
-            Text("\(user.firstName) · \(user.tier == .pro ? "PRO" : "FREE")")
-                .font(.custom("Nunito-Bold", size: 12))
-                .foregroundStyle(Color.bmText1)
-            if user.tier == .pro {
-                Text("PRO")
-                    .font(.custom("Fredoka-SemiBold", size: 10))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 7).padding(.vertical, 2)
-                    .background(Color.bmAmber)
-                    .clipShape(Capsule())
-            }
-        }
-        .padding(.horizontal, 14).padding(.vertical, 5)
-        .background(Color.white.opacity(0.7))
-        .clipShape(Capsule())
-        .shadow(color: .black.opacity(0.06), radius: 3, y: 1)
-    }
-
     private var decorations: some View {
         GeometryReader { geo in
             Group {
-                FlowerView(size: 32, petalColor: .bmFlowerPink, centerColor: .bmLilac)
+                FlowerView(size: 28, petalColor: .bmFlowerPink, centerColor: .bmLilac)
                     .rotationEffect(.degrees(-20))
-                    .position(x: 20, y: 14)
-                    .opacity(0.55)
-                FlowerView(size: 24, petalColor: .bmLilac, centerColor: .bmPeach)
+                    .position(x: 22, y: 16)
+                    .opacity(0.5)
+                FlowerView(size: 22, petalColor: .bmLilac, centerColor: .bmPeach)
                     .rotationEffect(.degrees(15))
-                    .position(x: geo.size.width - 18, y: 12)
-                    .opacity(0.55)
-                LeafView(size: 22, color: .bmLeafSage)
+                    .position(x: geo.size.width - 22, y: 18)
+                    .opacity(0.5)
+                LeafView(size: 20, color: .bmLeafSage)
                     .rotationEffect(.degrees(10))
-                    .position(x: 32, y: geo.size.height - 8)
-                    .opacity(0.4)
-                LeafView(size: 18, color: .bmLeafSage)
-                    .rotationEffect(.degrees(-25))
-                    .position(x: geo.size.width - 30, y: geo.size.height - 10)
+                    .position(x: 32, y: geo.size.height - 10)
                     .opacity(0.4)
             }
         }
     }
 }
 
-#Preview {
-    HomeView(user: UserModel(userId: 1,
-                             firstName: "Chance",
-                             apiToken: "preview",
-                             tier: .pro,
-                             purchasedPacks: [.exotic, .edible])) { }
+// MARK: - Toast banner
+
+public struct ToastBanner: View {
+
+    public struct Message: Equatable {
+        public let text: String
+        public let icon: String
+        public init(text: String, icon: String = "✓") {
+            self.text = text; self.icon = icon
+        }
+    }
+
+    @Binding public var message: Message?
+
+    public init(message: Binding<Message?>) { self._message = message }
+
+    public var body: some View {
+        if let m = message {
+            HStack(spacing: 8) {
+                Text(m.icon)
+                Text(m.text)
+                    .font(.custom("Nunito-Bold", size: 13))
+                    .foregroundStyle(Color.bmText1)
+            }
+            .padding(.horizontal, 16).padding(.vertical, 10)
+            .background(Color.white)
+            .clipShape(Capsule())
+            .overlay(Capsule().stroke(Color.bmBorder, lineWidth: 1.5))
+            .shadow(color: .black.opacity(0.1), radius: 6, y: 2)
+            .padding(.top, 8)
+            .transition(.move(edge: .top).combined(with: .opacity))
+            .task(id: m) {
+                try? await Task.sleep(nanoseconds: 1_800_000_000)
+                withAnimation { message = nil }
+            }
+        }
+    }
 }
 #endif
