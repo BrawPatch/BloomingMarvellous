@@ -3,12 +3,12 @@ import Security
 import os.log
 
 // MARK: - KeychainError
-enum KeychainError: Error, LocalizedError {
+public enum KeychainError: Error, LocalizedError {
     case duplicateItem
     case itemNotFound
     case unexpectedStatus(OSStatus)
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .duplicateItem:        return "Keychain item already exists."
         case .itemNotFound:         return "Keychain item not found."
@@ -18,7 +18,7 @@ enum KeychainError: Error, LocalizedError {
 }
 
 // MARK: - KeychainServiceProtocol (US-0018: injectable via protocol)
-protocol KeychainServiceProtocol {
+public protocol KeychainServiceProtocol {
     func save(_ value: String, forKey key: String) throws
     func retrieve(forKey key: String) throws -> String
     func delete(forKey key: String) throws
@@ -28,13 +28,15 @@ protocol KeychainServiceProtocol {
 // US-0001 / US-0002: Replaces hardcoded apiKey / password literals.
 // US-0008: Replaces UserDefaults storage of sensitive data.
 // kSecAttrAccessible set to kSecAttrAccessibleWhenUnlockedThisDeviceOnly per OWASP M2.
-final class KeychainService: KeychainServiceProtocol {
+public final class KeychainService: KeychainServiceProtocol {
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.bloomingmarvellous",
                                 category: "KeychainService")
 
+    public init() {}
+
     // MARK: - Save
-    func save(_ value: String, forKey key: String) throws {
+    public func save(_ value: String, forKey key: String) throws {
         guard let data = value.data(using: .utf8) else {
             throw KeychainError.unexpectedStatus(errSecParam)
         }
@@ -58,7 +60,7 @@ final class KeychainService: KeychainServiceProtocol {
     }
 
     // MARK: - Retrieve
-    func retrieve(forKey key: String) throws -> String {
+    public func retrieve(forKey key: String) throws -> String {
         let query: [CFString: Any] = [
             kSecClass:               kSecClassGenericPassword,
             kSecAttrAccount:         key,
@@ -84,7 +86,7 @@ final class KeychainService: KeychainServiceProtocol {
     }
 
     // MARK: - Delete
-    func delete(forKey key: String) throws {
+    public func delete(forKey key: String) throws {
         let query: [CFString: Any] = [
             kSecClass:       kSecClassGenericPassword,
             kSecAttrAccount: key
@@ -97,8 +99,8 @@ final class KeychainService: KeychainServiceProtocol {
 }
 
 // MARK: - Keychain Keys Namespace
-enum KeychainKey {
-    static let apiKey    = "com.bloomingmarvellous.apiKey"    // US-0001
-    static let password  = "com.bloomingmarvellous.password"  // US-0002
-    static let authToken = "com.bloomingmarvellous.authToken" // US-0008
+public enum KeychainKey {
+    public static let apiKey    = "com.bloomingmarvellous.apiKey"    // US-0001
+    public static let password  = "com.bloomingmarvellous.password"  // US-0002
+    public static let authToken = "com.bloomingmarvellous.authToken" // US-0008
 }

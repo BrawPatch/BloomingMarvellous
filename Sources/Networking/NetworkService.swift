@@ -2,7 +2,7 @@ import Foundation
 import os.log
 
 // MARK: - NetworkError
-enum NetworkError: Error, LocalizedError {
+public enum NetworkError: Error, LocalizedError {
     case invalidURL
     case unauthorized
     case httpError(statusCode: Int)
@@ -10,7 +10,7 @@ enum NetworkError: Error, LocalizedError {
     case noData
     case unknown(Error)
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .invalidURL:               return "The URL was invalid."
         case .unauthorized:             return "Not signed in. Please log in again."
@@ -24,26 +24,26 @@ enum NetworkError: Error, LocalizedError {
 
 // MARK: - NetworkServiceProtocol
 // US-0020 / US-0022: All URLSession usage is behind this protocol — testable via MockNetworkService.
-protocol NetworkServiceProtocol {
+public protocol NetworkServiceProtocol {
     func request<T: Decodable>(_ endpoint: Endpoint) async throws -> T
 }
 
 // MARK: - Endpoint
-struct Endpoint {
-    let path: String
-    let method: HTTPMethod
-    let queryItems: [URLQueryItem]?
-    let body: Data?
+public struct Endpoint {
+    public let path: String
+    public let method: HTTPMethod
+    public let queryItems: [URLQueryItem]?
+    public let body: Data?
     /// When true (default), `NetworkService` retrieves the Bearer token from
     /// Keychain and attaches it as `Authorization`. Set false for endpoints
     /// that issue a token (e.g. login) and therefore must travel unauthenticated.
-    let requiresAuth: Bool
+    public let requiresAuth: Bool
 
-    init(path: String,
-         method: HTTPMethod = .get,
-         queryItems: [URLQueryItem]? = nil,
-         body: Data? = nil,
-         requiresAuth: Bool = true) {
+    public init(path: String,
+                method: HTTPMethod = .get,
+                queryItems: [URLQueryItem]? = nil,
+                body: Data? = nil,
+                requiresAuth: Bool = true) {
         self.path = path
         self.method = method
         self.queryItems = queryItems
@@ -51,7 +51,7 @@ struct Endpoint {
         self.requiresAuth = requiresAuth
     }
 
-    func url(relativeTo base: URL) -> URL? {
+    public func url(relativeTo base: URL) -> URL? {
         var components = URLComponents(url: base.appendingPathComponent(path),
                                        resolvingAgainstBaseURL: true)
         components?.queryItems = queryItems
@@ -59,7 +59,7 @@ struct Endpoint {
     }
 }
 
-enum HTTPMethod: String {
+public enum HTTPMethod: String {
     case get    = "GET"
     case post   = "POST"
     case put    = "PUT"
@@ -69,7 +69,7 @@ enum HTTPMethod: String {
 // MARK: - NetworkService (concrete implementation)
 // US-0004 / US-0013: base URL always https:// (from AppConfig / Environment)
 // US-0020 / US-0022: single URLSession wrapper — no direct URLSession.shared at call sites
-final class NetworkService: NetworkServiceProtocol {
+public final class NetworkService: NetworkServiceProtocol {
 
     private let session: URLSession
     private let baseURL: URL
@@ -77,15 +77,15 @@ final class NetworkService: NetworkServiceProtocol {
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.bloomingmarvellous",
                                 category: "NetworkService")
 
-    init(session: URLSession = .shared,
-         baseURL: URL = AppConfig.current.baseURL,
-         keychain: KeychainServiceProtocol = KeychainService()) {
+    public init(session: URLSession = .shared,
+                baseURL: URL = AppConfig.current.baseURL,
+                keychain: KeychainServiceProtocol = KeychainService()) {
         self.session = session
         self.baseURL = baseURL
         self.keychain = keychain
     }
 
-    func request<T: Decodable>(_ endpoint: Endpoint) async throws -> T {
+    public func request<T: Decodable>(_ endpoint: Endpoint) async throws -> T {
         guard let url = endpoint.url(relativeTo: baseURL) else {
             throw NetworkError.invalidURL
         }

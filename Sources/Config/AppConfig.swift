@@ -4,15 +4,15 @@ import Foundation
 // US-0005: NSAllowsArbitraryLoads removed — enforced via Info.plist
 // US-0001/US-0002: secretKey removed — stored in Keychain (see KeychainService)
 
-struct AppConfig {
+public struct AppConfig {
 
     // MARK: - Timeouts & Retry (US-0024: named constants, no magic numbers)
-    static let requestTimeoutSeconds: TimeInterval = 30
-    static let resourceTimeoutSeconds: TimeInterval = 60
-    static let maxRetryCount: Int = 3
+    public static let requestTimeoutSeconds: TimeInterval = 30
+    public static let resourceTimeoutSeconds: TimeInterval = 60
+    public static let maxRetryCount: Int = 3
 
     // MARK: - Build Environment
-    static var current: Environment {
+    public static var current: Environment {
 #if DEBUG
         return .development
 #elseif STAGING
@@ -35,13 +35,13 @@ struct AppConfig {
 // CloudFront distribution still answers on its *.cloudfront.net hostname;
 // supply that via `BM_API_BASE_URL` (Info.plist or scheme env var) to override
 // at run time without recompiling.
-enum Environment {
+public enum Environment {
     case development
     case staging
     case production
 
     /// Base URL for the REST API. All environments enforce HTTPS (US-0004, US-0013).
-    var baseURL: URL {
+    public var baseURL: URL {
         if let override = ProcessInfo.processInfo.environment["BM_API_BASE_URL"]
             .flatMap(URL.init(string:)) {
             return override
@@ -60,9 +60,9 @@ enum Environment {
     }
 
     // MARK: - Endpoint paths (US-0016 / US-0019 / US-0021: no raw strings at call sites)
-    enum Path {
-        static let home  = "/home"
-        static let data  = "/data"
-        static let login = "/auth/login"
+    public enum Path {
+        public static let home  = "/home"
+        public static let data  = "/data"
+        public static let login = "/auth/login"
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import BloomingMarvellous
 import BloomingMarvellousUI
 
 struct HomeControllerHost: UIViewControllerRepresentable {
@@ -11,10 +12,26 @@ struct HomeControllerHost: UIViewControllerRepresentable {
 
 @main
 struct BloomingMarvellousiOSApp: App {
+
+    private let auth: AuthService
+    @State private var isAuthenticated: Bool
+
+    init() {
+        let auth = AuthService()
+        self.auth = auth
+        self._isAuthenticated = State(initialValue: auth.hasStoredToken())
+    }
+
     var body: some Scene {
         WindowGroup {
-            HomeControllerHost()
-                .ignoresSafeArea(.container, edges: .bottom)
+            if isAuthenticated {
+                HomeControllerHost()
+                    .ignoresSafeArea(.container, edges: .bottom)
+            } else {
+                LoginView(auth: auth) { _ in
+                    isAuthenticated = true
+                }
+            }
         }
     }
 }
