@@ -10,7 +10,7 @@ public struct BedDetailView: View {
     @State private var showingSoilOverride = false
     @State private var showingEdit = false
     @State private var showingDeleteConfirm = false
-    @Environment(\.dismiss) private var dismiss
+    @SwiftUI.Environment(\.dismiss) private var dismiss
 
     let bedId: UUID
 
@@ -210,7 +210,7 @@ public struct BedDetailView: View {
 
 struct EditBedView: View {
     @EnvironmentObject private var store: GardenStore
-    @Environment(\.dismiss) private var dismiss
+    @SwiftUI.Environment(\.dismiss) private var dismiss
     @State var bed: Bed
 
     var body: some View {

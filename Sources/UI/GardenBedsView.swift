@@ -9,6 +9,8 @@ public struct GardenBedsView: View {
     @EnvironmentObject private var store: GardenStore
     @State private var search: String = ""
     @State private var statusFilter: BedStatus?
+    @State private var sunFilter: Sunlight?
+    @State private var soilFilter: SoilType?
     @State private var showingAddBed = false
 
     public init() {}
@@ -65,6 +67,32 @@ public struct GardenBedsView: View {
                     ForEach(BedStatus.allCases) { s in
                         PillButton(s.label, isActive: statusFilter == s, color: tint(for: s)) {
                             statusFilter = (statusFilter == s) ? nil : s
+                        }
+                    }
+                }
+            }
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    Text("Sun")
+                        .font(.custom("Fredoka-SemiBold", size: 11))
+                        .foregroundStyle(Color.bmText3)
+                    ForEach(Sunlight.allCases) { s in
+                        PillButton(s.shortLabel, isActive: sunFilter == s, color: .bmAmber) {
+                            sunFilter = (sunFilter == s) ? nil : s
+                        }
+                    }
+                }
+            }
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    Text("Soil")
+                        .font(.custom("Fredoka-SemiBold", size: 11))
+                        .foregroundStyle(Color.bmText3)
+                    ForEach(SoilType.allCases) { s in
+                        PillButton(s.label, isActive: soilFilter == s, color: .bmGreen) {
+                            soilFilter = (soilFilter == s) ? nil : s
                         }
                     }
                 }
@@ -193,6 +221,16 @@ public struct GardenBedsView: View {
     private var filteredBeds: [Bed] {
         var list = store.bedsInSelectedGarden
         if let s = statusFilter { list = list.filter { $0.status == s } }
+        if let sun = sunFilter {
+            list = list.filter { b in
+                store.effectiveConditions(forBed: b)?.3 == sun
+            }
+        }
+        if let soil = soilFilter {
+            list = list.filter { b in
+                store.effectiveConditions(forBed: b)?.0 == soil
+            }
+        }
         let needle = search.trimmingCharacters(in: .whitespaces).lowercased()
         if !needle.isEmpty {
             list = list.filter { $0.name.lowercased().contains(needle) }

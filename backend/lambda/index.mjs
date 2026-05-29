@@ -7,6 +7,8 @@
  *                         → 401 on bad credentials
  *   GET  /v1/home         Bearer auth → 200 [String]  (filtered by tier + packs)
  *   GET  /v1/data         Bearer auth → 200 [String]  (filtered by tier + packs)
+ *   GET  /v1/library      Bearer auth → 200 [Plant]   (filtered by tier + packs)
+ *                         Payload mirrors Sources/Models/Plant.swift Codable.
  *
  * Tier model:
  *   - users table: { username, userId, firstName, passwordHash, salt,
@@ -275,6 +277,44 @@ async function handleStaticList(event, s3Key) {
   return respond(200, filtered.map((item) => item.label));
 }
 
+// ── GET /v1/library ──────────────────────────────────────────────────────────
+//
+// Returns the full Plant payload (not just labels) so the iOS Plant Picker
+// can render hero photos, tips, buy links, etc. Same v2 envelope as /home
+// and /data — { version: 2, items: [Plant, ...] } — and the same tier filter.
+
+async function handleLibrary(event) {
+  const session = await validateBearer(event);
+  if (!session) return respond(401, { error: "Authentication required" });
+
+  let raw;
+  try {
+    raw = await getS3Object("v1/library.json");
+  } catch (err) {
+    if (err.name === "NoSuchKey") {
+      return respond(404, { error: "Library not found. Run scripts/seed-content.mjs." });
+    }
+    console.error("[library]", err.message);
+    return respond(503, { error: "Library temporarily unavailable" });
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.error("[library] payload is not JSON");
+    return respond(500, { error: "Malformed library" });
+  }
+
+  if (parsed?.version !== 2 || !Array.isArray(parsed.items)) {
+    console.error("[library] schema mismatch (expected v2 {items[]})");
+    return respond(500, { error: "Malformed library" });
+  }
+
+  const filtered = filterByEntitlements(parsed.items, session.tier, session.purchasedPacks);
+  return respond(200, filtered);
+}
+
 // ── Router ───────────────────────────────────────────────────────────────────
 
 export async function handler(event) {
@@ -286,6 +326,7 @@ export async function handler(event) {
   if (path === "/v1/auth/login" && method === "POST") return handleLogin(event);
   if (path === "/v1/home"       && method === "GET")  return handleStaticList(event, "v1/home.json");
   if (path === "/v1/data"       && method === "GET")  return handleStaticList(event, "v1/data.json");
+  if (path === "/v1/library"    && method === "GET")  return handleLibrary(event);
 
   return respond(404, { error: "Not found" });
 }

@@ -10,7 +10,7 @@ import BloomingMarvellous
 
 public struct SoilView: View {
 
-    public enum Scope: Equatable {
+    public enum Scope: Hashable {
         case garden
         case bed(UUID)
     }
@@ -77,7 +77,7 @@ public struct SoilView: View {
                 .font(.custom("Nunito-SemiBold", size: 11))
                 .foregroundStyle(Color.bmText2)
         }
-        .onChange(of: scope) { _, _ in reloadFromStore() }
+        .onChange(of: scope) { _ in reloadFromStore() }
     }
 
     private var scopeHelp: String {

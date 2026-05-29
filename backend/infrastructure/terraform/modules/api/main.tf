@@ -9,6 +9,7 @@
 #   POST /v1/auth/login   — body {username, password}; returns UserModel JSON
 #   GET  /v1/home         — returns filtered [String]
 #   GET  /v1/data         — returns filtered [String]
+#   GET  /v1/library      — returns filtered [Plant] (rich payload)
 ###############################################################################
 
 terraform {
@@ -217,7 +218,7 @@ data "archive_file" "lambda" {
 resource "aws_lambda_function" "api" {
   function_name    = local.lambda_name
   role             = aws_iam_role.lambda.arn
-  runtime          = "nodejs20.x"
+  runtime          = "nodejs22.x"
   handler          = "index.handler"
   filename         = data.archive_file.lambda.output_path
   source_code_hash = data.archive_file.lambda.output_base64sha256
@@ -275,6 +276,12 @@ resource "aws_apigatewayv2_route" "home" {
 resource "aws_apigatewayv2_route" "data" {
   api_id    = aws_apigatewayv2_api.main.id
   route_key = "GET /v1/data"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
+}
+
+resource "aws_apigatewayv2_route" "library" {
+  api_id    = aws_apigatewayv2_api.main.id
+  route_key = "GET /v1/library"
   target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
 }
 

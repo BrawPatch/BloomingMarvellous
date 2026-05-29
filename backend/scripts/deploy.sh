@@ -15,7 +15,7 @@
 #      Idempotent — re-running a deploy is safe.
 #   4. Prints the canonical API URL for that env.
 #
-# Requires: terraform >= 1.6, node >= 20, awscli configured (AWS_PROFILE
+# Requires: terraform >= 1.6, node >= 22, awscli configured (AWS_PROFILE
 # pointing at an SSO profile for the target account).
 
 set -euo pipefail

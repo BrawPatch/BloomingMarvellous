@@ -211,7 +211,7 @@
 			mainGroup = 8ADE5FB32FC6617B004F1ABB;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				8A95B7F62FC66D3900ECF1B6 /* XCLocalSwiftPackageReference "BloomingMarvellousApp" */,
+				8A95B7F62FC66D3900ECF1B6 /* XCLocalSwiftPackageReference "." */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8ADE5FBD2FC6617B004F1ABB /* Products */;
@@ -603,7 +603,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		8A95B7F62FC66D3900ECF1B6 /* XCLocalSwiftPackageReference "BloomingMarvellousApp" */ = {
+		8A95B7F62FC66D3900ECF1B6 /* XCLocalSwiftPackageReference "." */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = .;
 		};

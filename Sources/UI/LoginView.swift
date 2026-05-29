@@ -13,6 +13,7 @@ public struct LoginView: View {
     @State private var password: String = ""
     @State private var isSubmitting: Bool = false
     @State private var errorMessage: String?
+    @State private var showingSignUp: Bool = false
     @FocusState private var focused: Field?
 
     private enum Field { case username, password }
@@ -77,10 +78,24 @@ public struct LoginView: View {
                 .bmCard()
                 .padding(.horizontal, 24)
 
+                Button {
+                    showingSignUp = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Text("New to Blooming Marvellous?")
+                            .font(.custom("Nunito-SemiBold", size: 12))
+                            .foregroundStyle(Color.bmText2)
+                        Text("Create account")
+                            .font(.custom("Fredoka-SemiBold", size: 12))
+                            .foregroundStyle(Color.bmGreen)
+                    }
+                }
+
                 Spacer()
             }
         }
         .onAppear { focused = .username }
+        .sheet(isPresented: $showingSignUp) { SignUpView() }
     }
 
     // MARK: - Title card

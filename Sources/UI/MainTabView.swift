@@ -17,6 +17,7 @@ import BloomingMarvellous
 public struct MainTabView: View {
 
     @StateObject private var store: GardenStore
+    @StateObject private var library: LibraryStore
     private let user: UserModel
     private let onLogout: () -> Void
     @State private var selection: AppTab = .home
@@ -24,14 +25,17 @@ public struct MainTabView: View {
     @MainActor
     public init(user: UserModel, onLogout: @escaping () -> Void) {
         self.user = user
-        self._store = StateObject(wrappedValue: GardenStore(user: user))
+        self._store   = StateObject(wrappedValue: GardenStore(user: user))
+        self._library = StateObject(wrappedValue: LibraryStore())
         self.onLogout = onLogout
     }
 
     public var body: some View {
         TabView(selection: $selection) {
             NavigationStack {
-                HomeView(user: user, onLogout: onLogout)
+                HomeView(user: user,
+                         onLogout: onLogout,
+                         onSelectTab: { selection = $0 })
             }
             .tabItem { Label("Home", systemImage: "house.fill") }
             .tag(AppTab.home)
@@ -62,6 +66,8 @@ public struct MainTabView: View {
         }
         .tint(Color.bmGreen)
         .environmentObject(store)
+        .environmentObject(library)
+        .task { await library.loadIfNeeded() }
     }
 }
 

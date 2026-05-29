@@ -8,6 +8,7 @@ public struct HomeView: View {
 
     private let user: UserModel
     private let onLogout: () -> Void
+    private let onSelectTab: (AppTab) -> Void
 
     @EnvironmentObject private var store: GardenStore
     @State private var showingGardenPicker = false
@@ -18,9 +19,12 @@ public struct HomeView: View {
     @State private var showingBeds = false
     @State private var toast: ToastBanner.Message?
 
-    public init(user: UserModel, onLogout: @escaping () -> Void) {
+    public init(user: UserModel,
+                onLogout: @escaping () -> Void,
+                onSelectTab: @escaping (AppTab) -> Void = { _ in }) {
         self.user = user
         self.onLogout = onLogout
+        self.onSelectTab = onSelectTab
     }
 
     public var body: some View {
@@ -155,7 +159,7 @@ public struct HomeView: View {
             shortcut(title: "Add to schedule",
                      subtitle: "Plan plant + event",
                      icon: "🌸",
-                     tint: .bmPeach) { /* will link into Picker in a future turn */ }
+                     tint: .bmPeach) { onSelectTab(.picker) }
         }
         .padding(.horizontal, 20)
     }

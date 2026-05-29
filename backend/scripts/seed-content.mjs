@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /**
- * seed-content.mjs — uploads /home and /data content to S3 for one environment.
+ * seed-content.mjs — uploads /home, /data and /library content to S3.
  *
  * Idempotent: re-running overwrites the same S3 keys. Safe to call on every
- * deploy. The Lambda fetches these on every /v1/home and /v1/data request
- * and filters items based on the caller's tier and purchased packs.
+ * deploy. The Lambda fetches these on every /v1/home, /v1/data and
+ * /v1/library request and filters items based on the caller's tier and
+ * purchased packs.
  *
- * Schema (v2):
+ * Schema (v2) — /home and /data:
  *   {
  *     "version": 2,
  *     "items": [
@@ -16,6 +17,11 @@
  *       { "id": "tomato-gardener","label": "Tomato — sow Mar–Apr",   "access": "pack_edible" }
  *     ]
  *   }
+ *
+ * Schema (v2) — /library: items[] are Plant objects whose shape MUST mirror
+ * Sources/Models/Plant.swift Codable. Enum values use raw string values
+ * ("loam", "sunny_always", "perennial", ...). Optional fields (heightCm,
+ * colorHex, buyLink) may be omitted.
  *
  * `access` values:
  *   "free"         visible to every authenticated user
@@ -127,6 +133,103 @@ const DATA = {
   ],
 };
 
+// ── Plant library (mirrors Sources/Models/Plant.swift Codable) ───────────────
+//
+// Keep this in sync with Sources/Models/PlantLibrary.swift. The Swift bundle
+// stays as the offline fallback; this payload is what the Lambda serves
+// (tier-filtered) via GET /v1/library.
+
+const LIBRARY = {
+  version: 2,
+  items: [
+    // ── Free tier ──
+    {
+      id: "lavender", name: "Lavender", latin: "Lavandula angustifolia",
+      type: "perennial", heightCm: 60, colorHex: "#b8a0d8",
+      bloomMonths: [6, 7, 8],
+      sowIndoorMonths: [3, 4], sowDirectMonths: [4, 5],
+      transplantMonths: [5, 6], harvestMonths: [7, 8],
+      preferredSoil: ["loam", "sandy", "chalky"],
+      preferredSunlight: ["sunny_always", "sunny_pm"],
+      growersTips: "Prefers free-draining soil and full sun. Prune after flowering to keep compact.",
+      germinationRequirements: "Light required. Surface-sow at 18–22°C. 14–21 days.",
+      companions: ["marigold"],
+      access: "free",
+    },
+    {
+      id: "sunflower", name: "Sunflower", latin: "Helianthus annuus",
+      type: "annual", heightCm: 200, colorHex: "#e8b070",
+      bloomMonths: [7, 8, 9],
+      sowIndoorMonths: [3, 4], sowDirectMonths: [4, 5],
+      transplantMonths: [5], harvestMonths: [9, 10],
+      preferredSoil: ["loam", "sandy"],
+      preferredSunlight: ["sunny_always"],
+      growersTips: "Deep watering once a week. Stake tall varieties.",
+      germinationRequirements: "Sow 2 cm deep at 18–24°C. 7–14 days.",
+      companions: ["cosmos"],
+      access: "free",
+    },
+    {
+      id: "cosmos", name: "Cosmos", latin: "Cosmos bipinnatus",
+      type: "annual", heightCm: 90, colorHex: "#f0a898",
+      bloomMonths: [6, 7, 8, 9, 10],
+      sowIndoorMonths: [3, 4], sowDirectMonths: [4, 5],
+      transplantMonths: [5, 6], harvestMonths: [],
+      preferredSoil: ["loam", "sandy"],
+      preferredSunlight: ["sunny_always", "sunny_pm"],
+      growersTips: "Deadhead regularly for continuous bloom. Tolerates poor soil.",
+      germinationRequirements: "Sow 5 mm deep at 18°C. 7–10 days.",
+      companions: ["sunflower"],
+      access: "free",
+    },
+
+    // ── Pro tier ──
+    {
+      id: "dahlia", name: "Dahlia", latin: "Dahlia variabilis",
+      type: "perennial", heightCm: 120, colorHex: "#e07070",
+      bloomMonths: [7, 8, 9, 10],
+      sowIndoorMonths: [], sowDirectMonths: [],
+      transplantMonths: [5], harvestMonths: [],
+      preferredSoil: ["loam"],
+      preferredSunlight: ["sunny_always"],
+      growersTips: "Plant tubers Apr–May after last frost. Lift in autumn in cold areas.",
+      germinationRequirements: "Tubers, not seed.",
+      companions: [],
+      access: "pro",
+    },
+
+    // ── Exotic pack ──
+    {
+      id: "phalaenopsis", name: "Phalaenopsis Orchid", latin: "Phalaenopsis spp.",
+      type: "perennial", heightCm: 45, colorHex: "#c0a0d8",
+      bloomMonths: [1, 2, 3, 4, 11, 12],
+      sowIndoorMonths: [], sowDirectMonths: [],
+      transplantMonths: [], harvestMonths: [],
+      preferredSoil: ["peaty"],
+      preferredSunlight: ["sunny_am"],
+      growersTips: "Indoor-only. Bright indirect light. Water by soaking once a week.",
+      germinationRequirements: "Bought as flowering plants — propagation needs lab conditions.",
+      companions: [],
+      access: "pack_exotic",
+    },
+
+    // ── Edible pack ──
+    {
+      id: "tomato-gardener", name: "Tomato 'Gardener's Delight'", latin: "Solanum lycopersicum",
+      type: "annual", heightCm: 180, colorHex: "#e07070",
+      bloomMonths: [6, 7],
+      sowIndoorMonths: [2, 3], sowDirectMonths: [],
+      transplantMonths: [5, 6], harvestMonths: [7, 8, 9],
+      preferredSoil: ["loam"],
+      preferredSunlight: ["sunny_always"],
+      growersTips: "Side-shoot weekly. Feed weekly once trusses set.",
+      germinationRequirements: "Sow 5 mm at 21°C. 7–14 days.",
+      companions: ["basil"],
+      access: "pack_edible",
+    },
+  ],
+};
+
 // ── Upload ───────────────────────────────────────────────────────────────────
 
 async function put(key, payload) {
@@ -139,7 +242,8 @@ async function put(key, payload) {
   console.log(`✓ s3://${bucket}/${key} (${payload.items.length} items)`);
 }
 
-await put("v1/home.json", HOME);
-await put("v1/data.json", DATA);
+await put("v1/home.json",    HOME);
+await put("v1/data.json",    DATA);
+await put("v1/library.json", LIBRARY);
 
-console.log(`\nSeeded ${env} content. The iOS app will see filtered subsets on the next /home and /data fetch.`);
+console.log(`\nSeeded ${env} content. The iOS app will see filtered subsets on the next /home, /data and /library fetch.`);
