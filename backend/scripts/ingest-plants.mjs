@@ -38,7 +38,7 @@ import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 // ── Args ─────────────────────────────────────────────────────────────────────
 
 function parseArgs(argv) {
-  const args = { limit: null, out: null, dryRun: false, verbose: false, softFail: false, noTips: false, refreshTips: false };
+  const args = { limit: null, out: null, dryRun: false, verbose: false, softFail: false, noTips: false, refreshTips: false, discover: false };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--limit") args.limit = parseInt(argv[++i], 10);
@@ -47,6 +47,7 @@ function parseArgs(argv) {
     else if (a === "--soft-fail") args.softFail = true;
     else if (a === "--no-tips") args.noTips = true;
     else if (a === "--refresh-tips") args.refreshTips = true;
+    else if (a === "--discover") args.discover = true;
     else if (a === "--verbose" || a === "-v") args.verbose = true;
   }
   return args;
@@ -324,6 +325,8 @@ async function enrichTips(records) {
       }
     }
     if (i % 20 === 0) console.log(`  ${i}/${records.length} (live ${calls}, cached ${cacheHits})`);
+    // Persist the cache every 50 calls so a mid-run crash doesn't waste API spend.
+    if (i % 50 === 0) saveTipsCache(cache);
   }
   saveTipsCache(cache);
   console.log(`✓ Tips ready — ${calls} fresh, ${cacheHits} cached, ${records.length - calls - cacheHits} fallback to family.`);
@@ -744,7 +747,217 @@ function cleanCommonName(title) {
   return stripped;
 }
 
+// ── Bulk discovery via Wikidata SPARQL ───────────────────────────────────────
+//
+// The seed list above is hand-curated; for a 3,000+ plant catalogue we run
+// SPARQL queries per family Q-id and harvest every taxon in that family that
+// has both a Wikimedia Commons image (P18) and an English Wikipedia article.
+// One SPARQL call replaces ~5 per-plant wbgetentities calls because the
+// result already includes qid, taxon name, image, and family/genus labels.
+
+// Family list — QIDs resolved at runtime via wbsearchentities so we don't
+// have to hand-author them. `kind` controls which tier-pool the matched
+// taxa land in. The family label is what gets stored on the plant record.
+const FAMILY_LIST = [
+  // Vegetable + edible families → pack_edible
+  { family: "Solanaceae",     kind: "vegetable" },
+  { family: "Brassicaceae",   kind: "vegetable" },
+  { family: "Cucurbitaceae",  kind: "vegetable" },
+  { family: "Apiaceae",       kind: "vegetable" },
+  { family: "Polygonaceae",   kind: "vegetable" }, // rhubarb / sorrel
+  { family: "Amaranthaceae",  kind: "vegetable" }, // beets / spinach (formerly Chenopodiaceae)
+  { family: "Amaryllidaceae", kind: "vegetable" }, // alliums (onion, garlic, chives)
+
+  // Ornamental flowering families → free / pro / pack_exotic by Latin order
+  { family: "Asteraceae",     kind: "ornamental" },
+  { family: "Rosaceae",       kind: "ornamental" },
+  { family: "Lamiaceae",      kind: "ornamental" }, // lavender, salvia, monarda
+  { family: "Iridaceae",      kind: "ornamental" },
+  { family: "Liliaceae",      kind: "ornamental" },
+  { family: "Ranunculaceae",  kind: "ornamental" },
+  { family: "Ericaceae",      kind: "ornamental" },
+  { family: "Hydrangeaceae",  kind: "ornamental" },
+  { family: "Caryophyllaceae",kind: "ornamental" },
+  { family: "Geraniaceae",    kind: "ornamental" },
+  { family: "Boraginaceae",   kind: "ornamental" },
+  { family: "Saxifragaceae",  kind: "ornamental" },
+  { family: "Crassulaceae",   kind: "ornamental" },
+  { family: "Plantaginaceae", kind: "ornamental" },
+  { family: "Papaveraceae",   kind: "ornamental" },
+  { family: "Onagraceae",     kind: "ornamental" },
+  { family: "Orchidaceae",    kind: "ornamental" },
+  { family: "Fabaceae",       kind: "ornamental" }, // sweet pea, lupins…
+  { family: "Magnoliaceae",   kind: "ornamental" },
+  { family: "Asparagaceae",   kind: "ornamental" }, // hostas, hyacinths
+];
+
+async function resolveFamilyQid(familyName) {
+  const url = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(familyName)}&language=en&type=item&limit=5&format=json&origin=*`;
+  try {
+    const data = await getJson(url, { timeoutMs: 10000 });
+    const hits = data?.search ?? [];
+    // Prefer hits whose description mentions "family of plants" / "family of flowering plants".
+    const familyHit = hits.find(h => /family of (flowering )?plants?|plant family/i.test(h.description ?? ""));
+    if (familyHit) return familyHit.id;
+    // Fall back to label-exact match.
+    const exact = hits.find(h => h.label === familyName);
+    return exact?.id ?? hits[0]?.id ?? null;
+  } catch { return null; }
+}
+
+async function buildFamilyQids() {
+  console.log(`→ Resolving QIDs for ${FAMILY_LIST.length} family entries…`);
+  const out = {};
+  for (const entry of FAMILY_LIST) {
+    const key = entry.family + (entry.suffix ?? "");
+    const qid = await resolveFamilyQid(entry.family);
+    if (!qid) {
+      console.warn(`  · skipped ${key}: no Wikidata match`);
+      continue;
+    }
+    out[key] = { qid, kind: entry.kind, displayLabel: entry.family };
+    if (args.verbose) console.log(`  ${key.padEnd(22)} → ${qid}`);
+  }
+  return out;
+}
+
+// Per-family discovery target. Smaller for families that are mostly weedy
+// or tropical; larger for showy garden mainstays. The total across all
+// families should comfortably exceed 3,250 after dedupe.
+const FAMILY_TARGET = 200;
+
+const SPARQL_ENDPOINT_URL = "https://query.wikidata.org/sparql";
+
+async function sparqlSelect(query, { timeoutMs = 60000 } = {}) {
+  const url = `${SPARQL_ENDPOINT_URL}?format=json&query=${encodeURIComponent(query)}`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": USER_AGENT, Accept: "application/sparql-results+json" },
+      signal: ctrl.signal,
+    });
+    if (!res.ok) throw new Error(`SPARQL ${res.status}`);
+    const data = await res.json();
+    return data?.results?.bindings ?? [];
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function discoverFamily(familyName, familyQid, kind, target) {
+  // Taxa in or under this family that have a Latin name (P225), a Wikimedia
+  // image (P18), and an English Wikipedia article. Limit kept tight to stay
+  // under the SPARQL 60s timeout; we'll cap per-family at `target` post-fetch.
+  const limit = Math.min(target * 2, 600);
+  const query = `
+    SELECT DISTINCT ?item ?taxon ?image ?genusLabel WHERE {
+      ?item wdt:P171/wdt:P171* wd:${familyQid} .
+      ?item wdt:P225 ?taxon .
+      ?item wdt:P18 ?image .
+      ?article schema:about ?item ;
+               schema:isPartOf <https://en.wikipedia.org/> .
+      OPTIONAL {
+        ?item wdt:P171 ?genus .
+        ?genus rdfs:label ?genusLabel . FILTER (lang(?genusLabel) = "en")
+      }
+    }
+    LIMIT ${limit}
+  `;
+  let rows = [];
+  try {
+    rows = await sparqlSelect(query);
+  } catch (err) {
+    console.warn(`  · SPARQL family ${familyName} failed: ${err.message}`);
+    return [];
+  }
+  const seen = new Set();
+  const out = [];
+  for (const r of rows) {
+    const latin = r.taxon?.value;
+    if (!latin || seen.has(latin)) continue;
+    seen.add(latin);
+    const imageRaw = r.image?.value ?? null;
+    const imageFile = imageRaw ? decodeURIComponent(imageRaw.split("/").pop() ?? "") : null;
+    if (!imageFile) continue;
+    out.push({
+      qid: r.item?.value?.split("/").pop() ?? null,
+      label: capitalize(latin),
+      latin,
+      imageUrl: `${COMMONS_FILE_BASE}${encodeURIComponent(imageFile)}?width=800`,
+      genusLabel: r.genusLabel?.value ?? null,
+      familyLabel: familyName.replace(/_.*$/, ""),
+      kind,
+    });
+    if (out.length >= target) break;
+  }
+  return out;
+}
+
+async function discoverAll() {
+  const familyQids = await buildFamilyQids();
+  console.log(`→ SPARQL discovery across ${Object.keys(familyQids).length} resolved families…`);
+  const all = [];
+  const dedupe = new Map(); // latin → first record
+  for (const [key, meta] of Object.entries(familyQids)) {
+    const rows = await discoverFamily(meta.displayLabel, meta.qid, meta.kind, FAMILY_TARGET);
+    let kept = 0;
+    for (const r of rows) {
+      if (dedupe.has(r.latin)) continue;
+      dedupe.set(r.latin, r);
+      all.push(r);
+      kept++;
+    }
+    console.log(`  ${key.padEnd(22)} ${rows.length.toString().padStart(4)} found, ${kept.toString().padStart(4)} new (total ${all.length})`);
+  }
+  // Photographic filter — strip illustrations / SVGs since SPARQL P18 isn't a
+  // strict photo guarantee.
+  const photographic = all.filter(r => isPhotographic(r.imageUrl));
+  console.log(`✓ Discovered ${photographic.length} unique taxa with photographic images.`);
+  return photographic;
+}
+
+// Tier assignment.
+//
+// - `vegetable`-kind taxa → pack_edible (full pool, up to TARGET_PACK_EDIBLE)
+// - `ornamental`-kind taxa, ordered alphabetically by Latin name:
+//     first TARGET_FREE       → "free"
+//     next  TARGET_PRO        → "pro"
+//     next  TARGET_PACK_EXOTIC → "pack_exotic"
+//     rest dropped (catalogue is already enormous)
+
+const TARGET_FREE        = 250;
+const TARGET_PRO         = 1000;
+const TARGET_PACK_EXOTIC = 1000;
+const TARGET_PACK_EDIBLE = 1000;
+
+function assignTiers(rows) {
+  const veg = rows.filter(r => r.kind === "vegetable").slice(0, TARGET_PACK_EDIBLE);
+  for (const r of veg) r.access = "pack_edible";
+
+  const orn = rows.filter(r => r.kind === "ornamental")
+    .sort((a, b) => a.latin.localeCompare(b.latin));
+  let i = 0;
+  for (const r of orn) {
+    if (i < TARGET_FREE)                                                r.access = "free";
+    else if (i < TARGET_FREE + TARGET_PRO)                              r.access = "pro";
+    else if (i < TARGET_FREE + TARGET_PRO + TARGET_PACK_EXOTIC)         r.access = "pack_exotic";
+    else                                                                r.access = null;
+    i++;
+  }
+  return [...veg, ...orn.filter(r => r.access !== null)];
+}
+
 async function fetchAgmList(limit) {
+  if (args.discover) {
+    const discovered = await discoverAll();
+    const tiered = assignTiers(discovered);
+    if (limit) {
+      console.log(`  (--limit ${limit} applied; trimming pre-tier-balancing)`);
+      return tiered.slice(0, limit);
+    }
+    return tiered;
+  }
   const slice = limit ? SEED_LATINS.slice(0, limit) : SEED_LATINS;
   console.log(`→ Wikidata lookup for ${slice.length} seed taxa (search + entity fetch + parent taxa)…`);
   const out = [];
@@ -1003,7 +1216,10 @@ async function buildRawRecord(row, ix) {
     growersTips: "",
     germinationRequirements: "",
     companions: [],
-    access: pickAccessTier(ix),
+    // Honour the access tier baked in by `assignTiers` (SPARQL discovery
+    // path); fall back to the index-based assignment for the legacy seed
+    // list path.
+    access: row.access ?? pickAccessTier(ix),
     imageUrl: isPhotographic(row.imageUrl) ? row.imageUrl : null,
   };
 }
