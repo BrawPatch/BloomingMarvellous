@@ -48,6 +48,17 @@ public struct Plant: Identifiable, Codable, Equatable {
     // Preferences
     public var preferredSoil:     [SoilType]
     public var preferredSunlight: [Sunlight]
+    // Optional so old payloads still decode; nil/empty = no acidity preference
+    // (the matched filter will treat that as "tolerates anything").
+    public var preferredAcidity:  [SoilAcidity]?
+
+    // Structured sowing details — surfaced in the Plant Detail "Sowing
+    // details" card. All optional; the free-text `germinationRequirements`
+    // remains the fallback narrative when these are absent.
+    public var seedDepthMm:         Int?
+    public var germinationTempC:    Int?
+    public var germinationDays:     String?
+    public var lightForGermination: String?
 
     // Editorial copy
     public var growersTips: String
@@ -80,6 +91,11 @@ public struct Plant: Identifiable, Codable, Equatable {
                 harvestMonths: [Int] = [],
                 preferredSoil: [SoilType] = [],
                 preferredSunlight: [Sunlight] = [],
+                preferredAcidity: [SoilAcidity]? = nil,
+                seedDepthMm: Int? = nil,
+                germinationTempC: Int? = nil,
+                germinationDays: String? = nil,
+                lightForGermination: String? = nil,
                 growersTips: String = "",
                 germinationRequirements: String = "",
                 companions: [String] = [],
@@ -99,6 +115,11 @@ public struct Plant: Identifiable, Codable, Equatable {
         self.harvestMonths = harvestMonths
         self.preferredSoil = preferredSoil
         self.preferredSunlight = preferredSunlight
+        self.preferredAcidity = preferredAcidity
+        self.seedDepthMm = seedDepthMm
+        self.germinationTempC = germinationTempC
+        self.germinationDays = germinationDays
+        self.lightForGermination = lightForGermination
         self.growersTips = growersTips
         self.germinationRequirements = germinationRequirements
         self.companions = companions

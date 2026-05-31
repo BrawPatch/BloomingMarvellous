@@ -29,6 +29,7 @@ public struct SetupView: View {
     @State private var wetness: Wetness = .normalWell
     @State private var exposure: WeatherExposure = .normal
     @State private var sunlight: Sunlight = .sunnyAlways
+    @State private var acidity: SoilAcidity = .neutral
 
     // Bed
     @State private var bedName: String = "Bed 1"
@@ -173,6 +174,7 @@ public struct SetupView: View {
                         .stroke(Color.bmBorder, lineWidth: 1.5))
 
                 picker(title: "Soil type",          selection: $soilType, options: SoilType.allCases)        { $0.label }
+                picker(title: "Soil acidity (pH)",  selection: $acidity,  options: SoilAcidity.allCases)    { $0.label }
                 picker(title: "Wetness / drainage", selection: $wetness,  options: Wetness.allCases)         { $0.label }
                 picker(title: "Weather exposure",   selection: $exposure, options: WeatherExposure.allCases) { $0.label }
                 picker(title: "Sunlight",           selection: $sunlight, options: Sunlight.allCases)        { $0.label }
@@ -314,7 +316,8 @@ public struct SetupView: View {
                             soilType: soilType,
                             wetness: wetness,
                             exposure: exposure,
-                            sunlight: sunlight)
+                            sunlight: sunlight,
+                            acidity: acidity)
         store.addGarden(garden)
         store.selectedGardenId = garden.id
         let bed = Bed(gardenId: garden.id,

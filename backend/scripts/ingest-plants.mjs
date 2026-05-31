@@ -58,6 +58,7 @@ const OUT_PATH = args.out
 
 const SOIL_TYPES = ["clay", "loam", "sandy", "chalky", "peaty", "silty"];
 const SUNLIGHT   = ["sunny_always", "sunny_am", "sunny_pm", "shaded_always"];
+const ACIDITY    = ["very_acidic", "mildly_acidic", "neutral", "mildly_alkaline", "very_alkaline"];
 const PLANT_TYPES = ["annual", "perennial", "biennial", "bulb", "shrub", "herb", "vegetable"];
 
 const MONTHS = [
@@ -66,23 +67,25 @@ const MONTHS = [
 ];
 
 // Family-level defaults — used as the last fallback when neither the species
-// nor its genus aggregate filled the field. These are deliberately generous
-// (i.e. lots of matches in the picker) rather than precise. The user told us
-// to "inherit from cultivar then genus" and that "it can always be over-written
-// as the information becomes available", so wider defaults > empty data.
+// nor its genus aggregate filled the field. Wider defaults > empty data:
+// the user told us to "inherit from cultivar then genus", and that the data
+// can always be overwritten later. preferredAcidity follows known family
+// pH preferences (Ericaceae acidic, most veg neutral, etc.).
 const FAMILY_DEFAULTS = {
-  // family → { plantType, preferredSoil[], preferredSunlight[], bloomMonths[], colorHex }
-  Lamiaceae:    { type: "perennial", preferredSoil: ["loam","sandy","chalky"], preferredSunlight: ["sunny_always","sunny_pm"], bloomMonths: [6,7,8], colorHex: "#b8a0d8" },
-  Asteraceae:   { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            bloomMonths: [6,7,8,9], colorHex: "#e8b070" },
-  Rosaceae:     { type: "shrub",     preferredSoil: ["loam","clay"],           preferredSunlight: ["sunny_always","sunny_pm"], bloomMonths: [5,6,7], colorHex: "#f4b8b0" },
-  Ranunculaceae:{ type: "perennial", preferredSoil: ["loam","peaty"],          preferredSunlight: ["sunny_pm","shaded_always"],bloomMonths: [4,5,6], colorHex: "#c0a0d8" },
-  Fabaceae:     { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            bloomMonths: [6,7,8], colorHex: "#88c8e0" },
-  Iridaceae:    { type: "bulb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], bloomMonths: [4,5,6], colorHex: "#c0a0d8" },
-  Liliaceae:    { type: "bulb",      preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], bloomMonths: [5,6,7], colorHex: "#f4b8b0" },
-  Solanaceae:   { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            bloomMonths: [6,7,8], colorHex: "#e07070" },
-  Apiaceae:     { type: "herb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], bloomMonths: [6,7], colorHex: "#7aaa8a" },
-  Cucurbitaceae:{ type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            bloomMonths: [6,7,8,9], colorHex: "#7aaa8a" },
-  Orchidaceae:  { type: "perennial", preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_am","sunny_pm"],     bloomMonths: [1,2,3,4,11,12], colorHex: "#c0a0d8" },
+  Lamiaceae:    { type: "perennial", preferredSoil: ["loam","sandy","chalky"], preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [6,7,8], colorHex: "#b8a0d8" },
+  Asteraceae:   { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_acidic","mildly_alkaline"], bloomMonths: [6,7,8,9], colorHex: "#e8b070" },
+  Rosaceae:     { type: "shrub",     preferredSoil: ["loam","clay"],           preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [5,6,7], colorHex: "#f4b8b0" },
+  Ranunculaceae:{ type: "perennial", preferredSoil: ["loam","peaty"],          preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [4,5,6], colorHex: "#c0a0d8" },
+  Fabaceae:     { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [6,7,8], colorHex: "#88c8e0" },
+  Iridaceae:    { type: "bulb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   bloomMonths: [4,5,6], colorHex: "#c0a0d8" },
+  Liliaceae:    { type: "bulb",      preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [5,6,7], colorHex: "#f4b8b0" },
+  Solanaceae:   { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8], colorHex: "#e07070" },
+  Apiaceae:     { type: "herb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   bloomMonths: [6,7], colorHex: "#7aaa8a" },
+  Cucurbitaceae:{ type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8,9], colorHex: "#7aaa8a" },
+  Orchidaceae:  { type: "perennial", preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_am","sunny_pm"],     preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [1,2,3,4,11,12], colorHex: "#c0a0d8" },
+  Ericaceae:    { type: "shrub",     preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["very_acidic","mildly_acidic"], bloomMonths: [4,5,6], colorHex: "#c0a0d8" },
+  Brassicaceae: { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [4,5,6], colorHex: "#f4b8b0" },
+  Hydrangeaceae:{ type: "shrub",     preferredSoil: ["loam"],                   preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8], colorHex: "#c0a0d8" },
 };
 
 // Generic UK-garden defaults, used when family is unknown.
@@ -90,6 +93,7 @@ const GENERIC_DEFAULT = {
   type: "perennial",
   preferredSoil: ["loam"],
   preferredSunlight: ["sunny_always", "sunny_pm"],
+  preferredAcidity: ["mildly_acidic", "neutral"],
   bloomMonths: [6, 7, 8],
   colorHex: "#a8d8bc",
 };
@@ -456,6 +460,57 @@ function parsePlantType(text, familyDefault) {
   return familyDefault ?? null;
 }
 
+function parseAcidity(text) {
+  if (!text) return null;
+  const t = text.toLowerCase();
+  const out = new Set();
+  if (/\bericaceous\b|\bvery\s+acidic?\b|\bstrongly\s+acidic?\b/.test(t)) out.add("very_acidic");
+  if (/\bacidic?\b|\bacid[- ]loving\b|\blow\s+pH\b/.test(t))             out.add("mildly_acidic");
+  if (/\bneutral\s+pH\b|\bneutral\s+soil\b|\bneutral\b/.test(t))         out.add("neutral");
+  if (/\bmildly\s+alkaline\b|\bslightly\s+alkaline\b/.test(t))           out.add("mildly_alkaline");
+  if (/\balkaline\b|\bchalky\b|\blime[- ]?loving\b|\bcalcareous\b/.test(t)) out.add("mildly_alkaline");
+  if (/\bstrongly\s+alkaline\b|\bvery\s+alkaline\b/.test(t))             out.add("very_alkaline");
+  return out.size ? [...out] : null;
+}
+
+function parseSeedDepthMm(text) {
+  if (!text) return null;
+  // "sow 5 mm deep" / "1.5 cm deep" / "2 cm deep"
+  let m = text.match(/(\d+(?:\.\d+)?)\s*mm\s+deep/i);
+  if (m) return Math.round(parseFloat(m[1]));
+  m = text.match(/(\d+(?:\.\d+)?)\s*cm\s+deep/i);
+  if (m) return Math.round(parseFloat(m[1]) * 10);
+  return null;
+}
+
+function parseGerminationTempC(text) {
+  if (!text) return null;
+  // "at 18-22°C" / "at 21°C" / "18°C to 24°C"
+  const m = text.match(/(\d{2})\s*(?:[°º]?C|degrees)/i);
+  if (!m) return null;
+  const v = parseInt(m[1], 10);
+  return (v >= 5 && v <= 35) ? v : null;
+}
+
+function parseGerminationDays(text) {
+  if (!text) return null;
+  // "7-14 days" / "5–10 days" / "14 to 21 days"
+  const m = text.match(/(\d{1,3})\s*(?:[-–—]|to)\s*(\d{1,3})\s*days?/i);
+  if (m) return `${m[1]}–${m[2]}`;
+  const single = text.match(/(\d{1,3})\s*days?/i);
+  if (single) return single[1];
+  return null;
+}
+
+function parseLightForGermination(text) {
+  if (!text) return null;
+  const t = text.toLowerCase();
+  if (/\blight\s+required\b|\bsurface[- ]sow\b|\bneeds\s+light/.test(t)) return "Light required (surface sow)";
+  if (/\bdark\b.*germin|\bcover\s+seeds?\s+(?:well|fully)/.test(t))      return "Cover seed (excludes light)";
+  if (/\beither\b|\beither\s+dark\s+or\s+light/.test(t))                  return "Either";
+  return null;
+}
+
 function parseHeight(text) {
   if (!text) return null;
   // "grows to 60 cm" / "reaches 1.2 m" / "up to 200 cm tall".
@@ -537,6 +592,11 @@ async function buildRawRecord(row, ix) {
     harvestMonths: [],
     preferredSoil: parseSoil(summary),
     preferredSunlight: parseSunlight(summary),
+    preferredAcidity: parseAcidity(summary),
+    seedDepthMm: parseSeedDepthMm(summary),
+    germinationTempC: parseGerminationTempC(summary),
+    germinationDays: parseGerminationDays(summary),
+    lightForGermination: parseLightForGermination(summary),
     growersTips: summary ? summary.slice(0, 260).trim() : "",
     germinationRequirements: "",
     companions: [],
@@ -563,10 +623,19 @@ function aggregateByKey(records, keyFn) {
   for (const r of records) {
     const k = keyFn(r);
     if (!k) continue;
-    const cur = agg.get(k) ?? { type: null, preferredSoil: new Set(), preferredSunlight: new Set(), bloomMonths: new Set(), heightSamples: [], colorHex: null };
+    const cur = agg.get(k) ?? {
+      type: null,
+      preferredSoil: new Set(),
+      preferredSunlight: new Set(),
+      preferredAcidity: new Set(),
+      bloomMonths: new Set(),
+      heightSamples: [],
+      colorHex: null,
+    };
     cur.type ??= r.type;
     (r.preferredSoil ?? []).forEach(s => cur.preferredSoil.add(s));
     (r.preferredSunlight ?? []).forEach(s => cur.preferredSunlight.add(s));
+    (r.preferredAcidity ?? []).forEach(s => cur.preferredAcidity.add(s));
     (r.bloomMonths ?? []).forEach(m => cur.bloomMonths.add(m));
     if (r.heightCm != null) cur.heightSamples.push(r.heightCm);
     cur.colorHex ??= r.colorHex;
@@ -616,6 +685,14 @@ function inherit(records) {
         family && [...family.preferredSunlight],
         famD?.preferredSunlight,
         gen.preferredSunlight,
+      ) || [],
+      preferredAcidity: pickFrom(
+        "preferredAcidity",
+        r.preferredAcidity ?? null,
+        genus && [...genus.preferredAcidity],
+        family && [...family.preferredAcidity],
+        famD?.preferredAcidity,
+        gen.preferredAcidity,
       ) || [],
       bloomMonths: pickFrom(
         "bloomMonths",
@@ -680,6 +757,13 @@ function toLibraryItem(r) {
   if (r.heightCm != null) item.heightCm = r.heightCm;
   if (r.colorHex)         item.colorHex = r.colorHex;
   if (r.imageUrl)         item.imageUrl = r.imageUrl;
+  if (Array.isArray(r.preferredAcidity) && r.preferredAcidity.length) {
+    item.preferredAcidity = r.preferredAcidity;
+  }
+  if (r.seedDepthMm != null)        item.seedDepthMm = r.seedDepthMm;
+  if (r.germinationTempC != null)   item.germinationTempC = r.germinationTempC;
+  if (r.germinationDays)            item.germinationDays = r.germinationDays;
+  if (r.lightForGermination)        item.lightForGermination = r.lightForGermination;
   return item;
 }
 

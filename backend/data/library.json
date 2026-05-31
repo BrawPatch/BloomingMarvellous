@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generated": "2026-05-31T15:37:27.698Z",
+  "generated": "2026-05-31T17:14:41.113Z",
   "source": "wikidata-rhs-agm + wikipedia + commons + inheritance",
   "items": [
     {
@@ -30,7 +30,11 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "free",
-      "colorHex": "#b8a0d8"
+      "colorHex": "#b8a0d8",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "lavandula-stoechas",
@@ -60,7 +64,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Topped%20lavendar%20flowerhead.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Topped%20lavendar%20flowerhead.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "lavandula-intermedia",
@@ -90,7 +98,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lavand%C3%AD%202012.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lavand%C3%AD%202012.JPG?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "salvia-nemorosa",
@@ -120,7 +132,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Salvia%20farinacea%200.9%20R.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Salvia%20farinacea%200.9%20R.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "salvia-officinalis",
@@ -150,7 +166,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Salvia%20officinalis0.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Salvia%20officinalis0.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "rosmarinus-officinalis",
@@ -180,7 +200,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rosemary%20bush.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rosemary%20bush.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "nepeta-faassenii",
@@ -210,7 +234,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepeta%20faassenii6.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepeta%20faassenii6.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "stachys-byzantina",
@@ -240,7 +268,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/0%20Stachys%20byzantina%20-%20Yvoire%20(2).JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/0%20Stachys%20byzantina%20-%20Yvoire%20(2).JPG?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "thymus-serpyllum",
@@ -271,7 +303,13 @@
       "access": "free",
       "heightCm": 10,
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Thymus%20serpyllum1.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Thymus%20serpyllum1.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ],
+      "germinationTempC": 10,
+      "lightForGermination": "Either"
     },
     {
       "id": "origanum-vulgare",
@@ -301,7 +339,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Origanum%20vulgare%20inflorescence%20-%20Keila.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Origanum%20vulgare%20inflorescence%20-%20Keila.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "mentha-spicata",
@@ -331,7 +373,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Minze.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Minze.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "mentha-piperita",
@@ -360,7 +406,11 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "free",
-      "colorHex": "#b8a0d8"
+      "colorHex": "#b8a0d8",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "monarda-didyma",
@@ -390,7 +440,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/RubyThroatedHummingbird(Crop).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/RubyThroatedHummingbird(Crop).jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "perovskia-atriplicifolia",
@@ -419,7 +473,11 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "free",
-      "colorHex": "#b8a0d8"
+      "colorHex": "#b8a0d8",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "helianthus-annuus",
@@ -445,7 +503,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Helianthus%20annuus%20exposed%202004-05-22.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Helianthus%20annuus%20exposed%202004-05-22.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "cosmos-bipinnatus",
@@ -471,7 +534,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CosmosBipinnatus002.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CosmosBipinnatus002.JPG?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "cosmos-sulphureus",
@@ -497,7 +565,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Correo%20-%20Cadillo%20(Cosmos%20sulphureus)%20(15183920495).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Correo%20-%20Cadillo%20(Cosmos%20sulphureus)%20(15183920495).jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "echinacea-purpurea",
@@ -523,7 +596,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Echinacea%20purpurea%20Feldanbau.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Echinacea%20purpurea%20Feldanbau.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "rudbeckia-fulgida",
@@ -549,7 +627,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rudbeckia%20fulgida.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rudbeckia%20fulgida.JPG?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "rudbeckia-hirta",
@@ -575,7 +658,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Black%20eyed%20susan%2020040717%20110754%202.1474.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Black%20eyed%20susan%2020040717%20110754%202.1474.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "tagetes-patula",
@@ -601,7 +689,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/French%20marigold%20Tagetes%20patula.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/French%20marigold%20Tagetes%20patula.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "tagetes-erecta",
@@ -627,7 +720,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tagetes%20x%20erecta1.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tagetes%20x%20erecta1.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "calendula-officinalis",
@@ -652,7 +750,12 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "free",
-      "colorHex": "#e8b070"
+      "colorHex": "#e8b070",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "aster-amellus",
@@ -678,7 +781,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aster%20amellus%201.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aster%20amellus%201.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "symphyotrichum-novi-belgii",
@@ -704,7 +812,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Symphyotrichum%20novi-belgii%20138399587%20(cropped).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Symphyotrichum%20novi-belgii%20138399587%20(cropped).jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "achillea-millefolium",
@@ -730,7 +843,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Achillea%20millefolium%20vallee-de-grace-amiens%2080%2022062007%201.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Achillea%20millefolium%20vallee-de-grace-amiens%2080%2022062007%201.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "leucanthemum-superbum",
@@ -756,7 +874,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Leucanthemum%20x%20superbum%20'Becky'%20in%20NH.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Leucanthemum%20x%20superbum%20'Becky'%20in%20NH.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "coreopsis-grandiflora",
@@ -782,7 +905,12 @@
       "companions": [],
       "access": "free",
       "colorHex": "#e8b070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Alois%20Lunzer04.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Alois%20Lunzer04.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "dahlia-pinnata",
@@ -810,7 +938,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/%2C00%200904%20Dahlia%20%C3%97%20pinnata.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/%2C00%200904%20Dahlia%20%C3%97%20pinnata.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "chrysanthemum-morifolium",
@@ -838,7 +970,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Chrysanthemum%20morifolium%2008NOV.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Chrysanthemum%20morifolium%2008NOV.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "rosa-rugosa",
@@ -869,7 +1005,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rosa%20rugosa%20Sakhalin%201.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rosa%20rugosa%20Sakhalin%201.JPG?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "rosa-canina",
@@ -900,7 +1040,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Divlja%20ruza%20cvijet%20270508.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Divlja%20ruza%20cvijet%20270508.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "geum-chiloense",
@@ -931,7 +1075,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Geum%20chiloense%20'Mrs%20Bradshaw'.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Geum%20chiloense%20'Mrs%20Bradshaw'.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "geum-rivale",
@@ -962,7 +1110,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Geum%20rivale%20-%20flower%20and%20bottoms.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Geum%20rivale%20-%20flower%20and%20bottoms.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "alchemilla-mollis",
@@ -994,7 +1146,11 @@
       "access": "free",
       "heightCm": 45,
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Alchemilla%20mollis%20ies.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Alchemilla%20mollis%20ies.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "filipendula-ulmaria",
@@ -1025,7 +1181,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Filipendula-ulmaria.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Filipendula-ulmaria.JPG?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "potentilla-fruticosa",
@@ -1056,7 +1216,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dasiphora%20fruticosa%205698.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dasiphora%20fruticosa%205698.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "prunus-laurocerasus",
@@ -1087,7 +1251,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Karayemi%C5%9F-8.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Karayemi%C5%9F-8.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "prunus-avium",
@@ -1118,7 +1286,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Prunus%20avium%20fruit.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Prunus%20avium%20fruit.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "pyracantha-coccinea",
@@ -1149,7 +1321,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Feuerdorn%20(Pyracantha%20coccinea).JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Feuerdorn%20(Pyracantha%20coccinea).JPG?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "helleborus-orientalis",
@@ -1177,7 +1353,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Helleborus%20orientalis2.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Helleborus%20orientalis2.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "helleborus-niger",
@@ -1205,7 +1385,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bloem%20van%20een%20kerstroos%20(Helleborus%20niger)%2016-12-2021.%20(d.j.b)%2002.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bloem%20van%20een%20kerstroos%20(Helleborus%20niger)%2016-12-2021.%20(d.j.b)%2002.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "helleborus-foetidus",
@@ -1233,7 +1417,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/2007-04-06Helleborus%20foetidus21Habitus.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/2007-04-06Helleborus%20foetidus21Habitus.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "aquilegia-vulgaris",
@@ -1261,7 +1449,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aquilegia%20vulgaris%20-%20Harilik%20kurekell.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aquilegia%20vulgaris%20-%20Harilik%20kurekell.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "anemone-blanda",
@@ -1289,7 +1481,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anemone%20blanda1GrooverFW.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anemone%20blanda1GrooverFW.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "anemone-hybrida",
@@ -1317,7 +1513,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anemone%20x%20hybrida%2001.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anemone%20x%20hybrida%2001.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "clematis-montana",
@@ -1345,7 +1545,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Clematis%20Montana%2002.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Clematis%20Montana%2002.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "clematis-viticella",
@@ -1373,7 +1577,11 @@
       "companions": [],
       "access": "free",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Clematis%20viticella3UME.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Clematis%20viticella3UME.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "delphinium-elatum",
@@ -1402,7 +1610,11 @@
       "access": "free",
       "heightCm": 180,
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Delphinium%20elatum%20-%20panoramio.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Delphinium%20elatum%20-%20panoramio.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "aconitum-napellus",
@@ -1431,7 +1643,12 @@
       "access": "free",
       "heightCm": 10,
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aconitum%20napellus%20230705.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aconitum%20napellus%20230705.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ],
+      "germinationTempC": 10
     },
     {
       "id": "ranunculus-acris",
@@ -1459,7 +1676,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ranunculus%20acris%20niittyleinikki.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ranunculus%20acris%20niittyleinikki.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "lathyrus-odoratus",
@@ -1487,7 +1708,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lathyrus%20odoratus%20Painted%20Lady.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lathyrus%20odoratus%20Painted%20Lady.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "lupinus-polyphyllus",
@@ -1515,7 +1740,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Evans%20Creek%20Preserve%20-%20021%20-%20flowers%20(27390131175).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Evans%20Creek%20Preserve%20-%20021%20-%20flowers%20(27390131175).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "wisteria-sinensis",
@@ -1544,7 +1773,11 @@
       "access": "pro",
       "heightCm": 3000,
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Wisteria%20sinensis%2C%20Gibraltar.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Wisteria%20sinensis%2C%20Gibraltar.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "trifolium-repens",
@@ -1572,7 +1805,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Trifolium%20repens%20inflorescence%20-%20Niitv%C3%A4lja.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Trifolium%20repens%20inflorescence%20-%20Niitv%C3%A4lja.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "vicia-faba",
@@ -1599,7 +1836,11 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc"
+      "colorHex": "#a8d8bc",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "iris-germanica",
@@ -1628,7 +1869,10 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Iris%20germanica%20001.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Iris%20germanica%20001.jpg?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "iris-reticulata",
@@ -1657,7 +1901,10 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Iris%20reticulata.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Iris%20reticulata.jpg?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "iris-sibirica",
@@ -1685,7 +1932,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/.00%203385%20Sibirische%20Schwertlilie%20(Iris%20sibirica).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/.00%203385%20Sibirische%20Schwertlilie%20(Iris%20sibirica).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "crocus-vernus",
@@ -1715,7 +1966,11 @@
       "access": "pro",
       "heightCm": 15,
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Crocus%20vernus%20group1.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Crocus%20vernus%20group1.jpg?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "germinationTempC": 15
     },
     {
       "id": "crocus-tommasinianus",
@@ -1745,7 +2000,10 @@
       "access": "pro",
       "heightCm": 15,
       "colorHex": "#c0a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Crocus%20tommasinianus%20(Xytram).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Crocus%20tommasinianus%20(Xytram).jpg?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "tulipa-gesneriana",
@@ -1773,7 +2031,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tulipa%20gesneriana%20001.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tulipa%20gesneriana%20001.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "narcissus-pseudonarcissus",
@@ -1801,7 +2063,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Narcissus%20pseudonarcissus%20030405.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Narcissus%20pseudonarcissus%20030405.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "narcissus-poeticus",
@@ -1829,7 +2095,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Grandalla%20(Narcissus%20poeticus)%20al%20Montseny%20(Catalunya).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Grandalla%20(Narcissus%20poeticus)%20al%20Montseny%20(Catalunya).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "galanthus-nivalis",
@@ -1857,7 +2127,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Snowdrops%20in%20Lothersdale%20Churchyard.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Snowdrops%20in%20Lothersdale%20Churchyard.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "hyacinthoides-non-scripta",
@@ -1885,7 +2159,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hyacinthoides%20non-scripta%20(Common%20Bluebell).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hyacinthoides%20non-scripta%20(Common%20Bluebell).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "lilium-regale",
@@ -1913,7 +2191,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lilium%20regale%20(K%C3%B6nigslilie).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lilium%20regale%20(K%C3%B6nigslilie).jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "lilium-martagon",
@@ -1941,7 +2223,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lilium%20martagon%20a.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lilium%20martagon%20a.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "allium-giganteum",
@@ -1969,7 +2255,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Allium%20giganteum1.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Allium%20giganteum1.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "allium-hollandicum",
@@ -1997,7 +2287,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Allium%20hollandicum.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Allium%20hollandicum.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "fritillaria-meleagris",
@@ -2025,7 +2319,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Fritillaria%20meleagris%20LJ%20barje2.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Fritillaria%20meleagris%20LJ%20barje2.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "hyacinthus-orientalis",
@@ -2053,7 +2351,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hyacinth%20bloem.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hyacinth%20bloem.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "solanum-lycopersicum",
@@ -2080,7 +2382,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#e07070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pomodorini%20sulla%20pianta.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pomodorini%20sulla%20pianta.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "solanum-tuberosum",
@@ -2107,7 +2413,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#e07070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Potato%20sprout%2C%20January%2023%2C%202006.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Potato%20sprout%2C%20January%2023%2C%202006.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "capsicum-annuum",
@@ -2133,7 +2443,11 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#e07070"
+      "colorHex": "#e07070",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "solanum-melongena",
@@ -2160,7 +2474,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#e07070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Solanum%20melongena%2024%2008%202012%20(1).JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Solanum%20melongena%2024%2008%202012%20(1).JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "petunia-hybrida",
@@ -2187,7 +2505,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#e07070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Petunia%20x%20hybrida%20a2.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Petunia%20x%20hybrida%20a2.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "nicotiana-sylvestris",
@@ -2214,7 +2536,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#e07070",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nicotiana%20sylvestris%20(flowers).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nicotiana%20sylvestris%20(flowers).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "petroselinum-crispum",
@@ -2242,7 +2568,10 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Petroselinum%20crispum%20003.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Petroselinum%20crispum%20003.JPG?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "coriandrum-sativum",
@@ -2270,7 +2599,10 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/A%20scene%20of%20Coriander%20leaves.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/A%20scene%20of%20Coriander%20leaves.JPG?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "anethum-graveolens",
@@ -2298,7 +2630,10 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anethum%20graveolens%2002.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anethum%20graveolens%2002.jpg?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "foeniculum-vulgare",
@@ -2326,7 +2661,10 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Foeniculum%20vulgare%20in%202025.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Foeniculum%20vulgare%20in%202025.jpg?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "daucus-carota-subsp-sativus",
@@ -2354,7 +2692,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bunches%20of%20carrots.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bunches%20of%20carrots.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "astrantia-major",
@@ -2383,7 +2725,10 @@
       "access": "pro",
       "heightCm": 90,
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/PlantsInArvenbul1400m.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/PlantsInArvenbul1400m.jpg?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "eryngium-giganteum",
@@ -2411,7 +2756,10 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/0%20Eryngium%20giganteum%20-%20Panicaut%20g%C3%A9ant.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/0%20Eryngium%20giganteum%20-%20Panicaut%20g%C3%A9ant.JPG?width=800",
+      "preferredAcidity": [
+        "neutral"
+      ]
     },
     {
       "id": "cucurbita-pepo",
@@ -2439,7 +2787,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20pepo%20collage%201.png?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20pepo%20collage%201.png?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "cucurbita-maxima",
@@ -2467,7 +2819,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20maxima%20Blanco2.320.png?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20maxima%20Blanco2.320.png?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "cucumis-sativus",
@@ -2495,7 +2851,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucumis%20sativus20090812%20497.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucumis%20sativus20090812%20497.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "cucurbita-moschata",
@@ -2523,17 +2883,21 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#7aaa8a",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20moschata%20Butternut%202012%20G2.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20moschata%20Butternut%202012%20G2.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "brassica-oleracea",
       "name": "Wild cabbage",
       "latin": "Brassica oleracea",
-      "type": "perennial",
+      "type": "vegetable",
       "bloomMonths": [
-        6,
-        7,
-        8
+        4,
+        5,
+        6
       ],
       "sowIndoorMonths": [],
       "sowDirectMonths": [],
@@ -2550,18 +2914,22 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Brassica%20oleracea0.jpg?width=800"
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Brassica%20oleracea0.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "lobularia-maritima",
       "name": "Lobularia maritima",
       "latin": "Lobularia maritima",
-      "type": "perennial",
+      "type": "vegetable",
       "bloomMonths": [
-        6,
-        7,
-        8
+        4,
+        5,
+        6
       ],
       "sowIndoorMonths": [],
       "sowDirectMonths": [],
@@ -2578,18 +2946,22 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Caps%20blancs%20pel%20Bellveret%2C%20X%C3%A0tiva.jpg?width=800"
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Caps%20blancs%20pel%20Bellveret%2C%20X%C3%A0tiva.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "erysimum-cheiri",
       "name": "Cheiranthus cheiri L.",
       "latin": "Erysimum cheiri",
-      "type": "perennial",
+      "type": "vegetable",
       "bloomMonths": [
-        6,
-        7,
-        8
+        4,
+        5,
+        6
       ],
       "sowIndoorMonths": [],
       "sowDirectMonths": [],
@@ -2606,18 +2978,22 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Erysimum%20cheiri3.jpg?width=800"
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Erysimum%20cheiri3.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "hesperis-matronalis",
       "name": "Rogue's gillyflower",
       "latin": "Hesperis matronalis",
-      "type": "perennial",
+      "type": "vegetable",
       "bloomMonths": [
-        6,
-        7,
-        8
+        4,
+        5,
+        6
       ],
       "sowIndoorMonths": [],
       "sowDirectMonths": [],
@@ -2634,8 +3010,12 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/20160530Hesperis%20matronalis1.jpg?width=800"
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/20160530Hesperis%20matronalis1.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "dianthus-barbatus",
@@ -2664,7 +3044,11 @@
       "access": "pro",
       "heightCm": 92,
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dianthus%20barbatus%20PID1688-4.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dianthus%20barbatus%20PID1688-4.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "dianthus-caryophyllus",
@@ -2693,7 +3077,11 @@
       "access": "pro",
       "heightCm": 92,
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Gartennelke%201.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Gartennelke%201.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "lychnis-coronaria",
@@ -2721,7 +3109,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lychnis%20coronaria%20A.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lychnis%20coronaria%20A.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "silene-dioica",
@@ -2749,7 +3141,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20campion%20close%20700.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20campion%20close%20700.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "bergenia-cordifolia",
@@ -2777,7 +3173,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bergenia-cordifolia.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bergenia-cordifolia.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "heuchera-micrantha",
@@ -2805,7 +3205,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Heuchera%20micrantha%204940.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Heuchera%20micrantha%204940.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "pulmonaria-officinalis",
@@ -2833,7 +3237,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pulmonaria%20officinalis%20800.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pulmonaria%20officinalis%20800.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "brunnera-macrophylla",
@@ -2861,7 +3269,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Brunnera%20macrophylla%2C%20flowers%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Brunnera%20macrophylla%2C%20flowers%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "borago-officinalis",
@@ -2889,7 +3301,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Blue%20borage%20flowers%202526205868%206b35bbac29%20b.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Blue%20borage%20flowers%202526205868%206b35bbac29%20b.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "phlox-paniculata",
@@ -2917,7 +3333,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Phlox%20paniculata%20famous%20light%20purple%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Phlox%20paniculata%20famous%20light%20purple%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "phlox-subulata",
@@ -2945,7 +3365,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/PurpleFlowerWade.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/PurpleFlowerWade.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "rhododendron-ponticum",
@@ -2965,15 +3389,18 @@
         "peaty"
       ],
       "preferredSunlight": [
-        "sunny_always",
-        "sunny_pm"
+        "sunny_pm",
+        "shaded_always"
       ],
       "growersTips": "Rhododendron ponticum, called common rhododendron or pontic rhododendron, is a species of flowering plant in the Rhododendron genus of the heath family Ericaceae. It is native to the Iberian Peninsula in southwest Europe and the Caucasus region in northern Wes",
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B4%D0%B6%D0%B0%D0%BD%D1%81%D0%BA%D0%B0%20%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%BA%D0%B0%20Rhododendron%20ponticum.jpg?width=800"
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B4%D0%B6%D0%B0%D0%BD%D1%81%D0%BA%D0%B0%20%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%BA%D0%B0%20Rhododendron%20ponticum.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic"
+      ]
     },
     {
       "id": "camellia-japonica",
@@ -3001,7 +3428,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Camellia%20japonica%20var.%20decumbens%203.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Camellia%20japonica%20var.%20decumbens%203.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "erica-carnea",
@@ -3021,15 +3452,18 @@
         "peaty"
       ],
       "preferredSunlight": [
-        "sunny_always",
-        "sunny_pm"
+        "sunny_pm",
+        "shaded_always"
       ],
       "growersTips": "Erica carnea, the winter heath, winter-flowering heather, spring heath or alpine heath, is a species of flowering plant in the family Ericaceae, native to mountainous areas of central, eastern and southern Europe, where it grows in coniferous woodlands or ston",
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Erica%20carnea0.jpg?width=800"
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Erica%20carnea0.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic"
+      ]
     },
     {
       "id": "calluna-vulgaris",
@@ -3049,15 +3483,18 @@
         "peaty"
       ],
       "preferredSunlight": [
-        "sunny_always",
-        "sunny_pm"
+        "sunny_pm",
+        "shaded_always"
       ],
       "growersTips": "Calluna vulgaris, common heather, ling, or simply heather, is the sole species in the genus Calluna in the flowering plant family Ericaceae. It is a low-growing evergreen shrub growing to 20 to 50 centimetres tall, or rarely to 1 metre (40 in) and taller, and",
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CallunaVulgaris.jpg?width=800"
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CallunaVulgaris.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic"
+      ]
     },
     {
       "id": "pieris-japonica",
@@ -3077,15 +3514,18 @@
         "peaty"
       ],
       "preferredSunlight": [
-        "sunny_always",
-        "sunny_pm"
+        "sunny_pm",
+        "shaded_always"
       ],
       "growersTips": "Pieris japonica, the Japanese andromeda or Japanese pieris, is a species of flowering plant in the heath family Ericaceae. It is native to eastern China, Taiwan, and Japan, where it grows in mountain thickets. This medium-sized evergreen shrub or tree is widel",
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pieris%20japonica%2010.jpg?width=800"
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pieris%20japonica%2010.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic"
+      ]
     },
     {
       "id": "hydrangea-macrophylla",
@@ -3105,16 +3545,20 @@
         "loam"
       ],
       "preferredSunlight": [
-        "sunny_always",
-        "sunny_pm"
+        "sunny_pm",
+        "shaded_always"
       ],
       "growersTips": "Hydrangea macrophylla is a species of flowering plant in the family Hydrangeaceae, native and endemic to Japan. It is a deciduous shrub growing to 3 m (10 ft) tall by 2.5 m (8 ft) or more broad with large heads of pink or blue flowers in summer and autumn. It",
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
       "heightCm": 300,
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(Natural)%20Hydrangea%20macrophylla%2C%20Iwafune%2C%20Isumi%2C%20Chiba%2C%20Japan%202.jpg?width=800"
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(Natural)%20Hydrangea%20macrophylla%2C%20Iwafune%2C%20Isumi%2C%20Chiba%2C%20Japan%202.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "hydrangea-paniculata",
@@ -3134,16 +3578,20 @@
         "loam"
       ],
       "preferredSunlight": [
-        "sunny_always",
-        "sunny_pm"
+        "sunny_pm",
+        "shaded_always"
       ],
       "growersTips": "Hydrangea paniculata, or panicled hydrangea, is a species of flowering plant in the family Hydrangeaceae native to southern and eastern China, Korea, Japan and Russia (Sakhalin). It was first formally described by Philipp Franz von Siebold in 1829.",
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
       "heightCm": 250,
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hydrangea%20paniculata%20IMG%206629.JPG?width=800"
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hydrangea%20paniculata%20IMG%206629.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "hydrangea-arborescens",
@@ -3163,16 +3611,20 @@
         "loam"
       ],
       "preferredSunlight": [
-        "sunny_always",
-        "sunny_pm"
+        "sunny_pm",
+        "shaded_always"
       ],
       "growersTips": "Hydrangea arborescens, commonly known as smooth hydrangea or sevenbark, is a species of flowering plant in the family Hydrangeaceae. It is a small- to medium-sized, multi-stemmed, deciduous shrub up to 2 m (7 ft) tall that is native to the eastern United State",
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
       "heightCm": 200,
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hydrangea%20arborescens%20001.JPG?width=800"
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hydrangea%20arborescens%20001.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "oenothera-biennis",
@@ -3200,7 +3652,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oenothera%20biennis%2020050825%20962.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oenothera%20biennis%2020050825%20962.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "fuchsia-magellanica",
@@ -3228,7 +3684,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/00%208211%20Scharlach-Fuchsie.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/00%208211%20Scharlach-Fuchsie.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "tropaeolum-majus",
@@ -3256,7 +3716,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tropaeolum%20majus%202005%20G1.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tropaeolum%20majus%202005%20G1.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "geranium-pratense",
@@ -3285,7 +3749,12 @@
       "access": "pro",
       "heightCm": 100,
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Geranium%20pratense%20(Meadow%20Cranesbill).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Geranium%20pratense%20(Meadow%20Cranesbill).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ],
+      "germinationTempC": 20
     },
     {
       "id": "geranium-sanguineum",
@@ -3314,7 +3783,11 @@
       "access": "pro",
       "heightCm": 100,
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Geranium%20sanguineum%20-%20Flower%20and%20leaf%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Geranium%20sanguineum%20-%20Flower%20and%20leaf%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "pelargonium-hortorum",
@@ -3342,7 +3815,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pelargonium%20flower.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pelargonium%20flower.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "papaver-orientale",
@@ -3370,7 +3847,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oriental%20poppy.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oriental%20poppy.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "papaver-rhoeas",
@@ -3398,7 +3879,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Papaver%20rhoeas%20LC0050.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Papaver%20rhoeas%20LC0050.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "eschscholzia-californica",
@@ -3426,7 +3911,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kaldari%20Eschscholzia%20californica%2001.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kaldari%20Eschscholzia%20californica%2001.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "digitalis-purpurea",
@@ -3454,7 +3943,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Digitalis%20purpurea%20220605.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Digitalis%20purpurea%20220605.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "digitalis-grandiflora",
@@ -3482,7 +3975,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Digitalis%20grandiflora%20(massif%20des%20Vosges).JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Digitalis%20grandiflora%20(massif%20des%20Vosges).JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "antirrhinum-majus",
@@ -3510,7 +4007,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Antirrhinum%20majus%20from%20Thasos.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Antirrhinum%20majus%20from%20Thasos.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "penstemon-barbatus",
@@ -3538,7 +4039,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Beardlip%20Penstemon%20Upper%20Huachuca%20Canyon%20Sierra%20Vista%20AZ%202018-08-05%2011-01-38%20(43106621645).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Beardlip%20Penstemon%20Upper%20Huachuca%20Canyon%20Sierra%20Vista%20AZ%202018-08-05%2011-01-38%20(43106621645).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "verbascum-thapsus",
@@ -3566,7 +4071,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kleinbl%C3%BCtige%20K%C3%B6nigskerze.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kleinbl%C3%BCtige%20K%C3%B6nigskerze.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "sedum-spectabile",
@@ -3594,7 +4103,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sedum%20spectabile%203.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sedum%20spectabile%203.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "hylotelephium-telephium",
@@ -3622,7 +4135,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Hylotelephium%20telephium%20-%20Habitus.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Hylotelephium%20telephium%20-%20Habitus.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "sempervivum-tectorum",
@@ -3650,7 +4167,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sempervivum%20tectorum%20Almindelig%20Husl%C3%B8g.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sempervivum%20tectorum%20Almindelig%20Husl%C3%B8g.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "buxus-sempervirens",
@@ -3678,7 +4199,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Buxus%20sempervirens.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Buxus%20sempervirens.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "ilex-aquifolium",
@@ -3705,7 +4230,11 @@
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc"
+      "colorHex": "#a8d8bc",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "verbena-bonariensis",
@@ -3733,7 +4262,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Verbena%20bonariensis.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Verbena%20bonariensis.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "verbena-hybrida",
@@ -3761,7 +4294,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Verbena%20hybrida%203.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Verbena%20hybrida%203.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "lythrum-salicaria",
@@ -3789,7 +4326,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lythrum%20salicaria%20-%20harilik%20kukesaba.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lythrum%20salicaria%20-%20harilik%20kukesaba.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "paeonia-lactiflora",
@@ -3817,7 +4358,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lactiflora1b.UME.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lactiflora1b.UME.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "paeonia-officinalis",
@@ -3845,7 +4390,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Paeonia%20officinalis%201.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Paeonia%20officinalis%201.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "strelitzia-reginae",
@@ -3873,7 +4422,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bird%20of%20Paradise%20flower.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bird%20of%20Paradise%20flower.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "phalaenopsis-amabilis",
@@ -3901,7 +4454,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Phalaenopsis%20amabilis%20Orchi%2003.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Phalaenopsis%20amabilis%20Orchi%2003.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "cymbidium-hybrid",
@@ -3929,7 +4486,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/A%20and%20B%20Larsen%20orchids%20-%20Cymbidium%20Eastern%20Star%20Kawano%20DSCN4732.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/A%20and%20B%20Larsen%20orchids%20-%20Cymbidium%20Eastern%20Star%20Kawano%20DSCN4732.JPG?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "dendrobium-nobile",
@@ -3957,7 +4518,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dendrobium%20nobile%20(12863000234).jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dendrobium%20nobile%20(12863000234).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "fragaria-ananassa",
@@ -3988,7 +4553,12 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Strawberries.JPG?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Strawberries.JPG?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ],
+      "lightForGermination": "Either"
     },
     {
       "id": "rubus-idaeus",
@@ -4019,7 +4589,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#f4b8b0",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Rubus%20idaeus%20-%20Feuillage.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Rubus%20idaeus%20-%20Feuillage.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ]
     },
     {
       "id": "ribes-nigrum",
@@ -4047,7 +4621,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Schwarzejohannisbeere.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Schwarzejohannisbeere.jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ]
     },
     {
       "id": "vaccinium-corymbosum",
@@ -4067,15 +4645,18 @@
         "peaty"
       ],
       "preferredSunlight": [
-        "sunny_always",
-        "sunny_pm"
+        "sunny_pm",
+        "shaded_always"
       ],
       "growersTips": "Vaccinium corymbosum is a North American species of blueberry that became commonly cultivated as a fresh fruit crop in the 20th century. Dozens of commercial cultivars exist.",
       "germinationRequirements": "",
       "companions": [],
       "access": "pro",
-      "colorHex": "#a8d8bc",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Vaccinium%20corymbosum(01).jpg?width=800"
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Vaccinium%20corymbosum(01).jpg?width=800",
+      "preferredAcidity": [
+        "mildly_acidic"
+      ]
     },
     {
       "id": "ocimum-basilicum",
@@ -4105,7 +4686,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Basil-Basilico-Ocimum%20basilicum-albahaca.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Basil-Basilico-Ocimum%20basilicum-albahaca.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     },
     {
       "id": "mentha-piperita",
@@ -4135,7 +4720,11 @@
       "companions": [],
       "access": "pro",
       "colorHex": "#b8a0d8",
-      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pfefferminze%20natur%20peppermint.jpg?width=800"
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pfefferminze%20natur%20peppermint.jpg?width=800",
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ]
     }
   ]
 }

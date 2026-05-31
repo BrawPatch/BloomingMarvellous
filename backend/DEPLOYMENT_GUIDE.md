@@ -307,10 +307,16 @@ external APIs are flapping.
 * **Common name:** Wikipedia sitelink title → multi-word English alias →
   Latin fallback. Single-word aliases (cultivar nicknames, brand names)
   are rejected.
-* **Tips / sun / soil / bloom / type / height:** Wikipedia REST summary,
-  parsed by conservative regex. Empty fields cascade through:
-  *cultivar → species → genus → family (`FAMILY_DEFAULTS`) → generic
-  UK-garden defaults*. The picker always has a match.
+* **Tips / sun / soil / bloom / type / height / acidity / sowing details:**
+  Wikipedia REST summary, parsed by conservative regex. Acidity keywords
+  (`ericaceous`, `acidic`, `alkaline`, `lime-loving`, `calcareous`, etc.)
+  map onto the 5-band `SoilAcidity` enum. Structured sowing fields
+  (`seedDepthMm`, `germinationTempC`, `germinationDays`,
+  `lightForGermination`) are extracted when present; absent values fall
+  back to the free-text `germinationRequirements` in the iOS detail card.
+  Empty fields cascade through: *cultivar → species → genus → family
+  (`FAMILY_DEFAULTS`) → generic UK-garden defaults*. The picker always
+  has a match.
 * **Validation:** records still missing `preferredSoil`,
   `preferredSunlight`, or `bloomMonths` after inheritance are dropped
   with a count in the script output (typically 0).
