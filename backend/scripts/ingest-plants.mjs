@@ -38,7 +38,7 @@ import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 // ── Args ─────────────────────────────────────────────────────────────────────
 
 function parseArgs(argv) {
-  const args = { limit: null, out: null, dryRun: false, verbose: false, softFail: false, noTips: false, refreshTips: false, discover: false };
+  const args = { limit: null, out: null, dryRun: false, verbose: false, softFail: false, noTips: false, refreshTips: false, discover: false, rebalance: false };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--limit") args.limit = parseInt(argv[++i], 10);
@@ -48,6 +48,7 @@ function parseArgs(argv) {
     else if (a === "--no-tips") args.noTips = true;
     else if (a === "--refresh-tips") args.refreshTips = true;
     else if (a === "--discover") args.discover = true;
+    else if (a === "--rebalance") args.rebalance = true;
     else if (a === "--verbose" || a === "-v") args.verbose = true;
   }
   return args;
@@ -1443,10 +1444,164 @@ function toLibraryItem(r) {
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 
+// ── Rebalance mode ───────────────────────────────────────────────────────────
+//
+// Used when we want to re-run common-name resolution + genus-based tier
+// rebalancing on the existing library.json without touching the Wikipedia
+// summaries, Gemini tips, sowing details, or images. Two phases:
+//
+//   1. Common name: for every plant that's still labelled with its Latin
+//      binomial, look up its Wikidata QID via wbsearchentities, fetch the
+//      entity for sitelink + aliases, and pick the best common name.
+//      Cached in backend/data/common-names-cache.json so re-runs are free.
+//
+//   2. Genus rebalance: group plants by genus (first word of Latin binomial).
+//      For each genus with ≥10 non-free species, sort the species alphabetically
+//      and split 50/50 between pro (first half) and the appropriate paid pack
+//      (second half) — preserves the widest genus *breadth* for pro users
+//      while filling paid packs with ≥5 cultivars of every popular genus.
+//      Small genera (<10 species) and free-tier picks are left alone.
+
+const COMMON_NAMES_CACHE_PATH = fileURLToPath(new URL("../data/common-names-cache.json", import.meta.url));
+
+function loadCommonNamesCache() {
+  if (!existsSync(COMMON_NAMES_CACHE_PATH)) return {};
+  try { return JSON.parse(readFileSync(COMMON_NAMES_CACHE_PATH, "utf-8")); }
+  catch { return {}; }
+}
+
+function saveCommonNamesCache(cache) {
+  try {
+    mkdirSync(path.dirname(COMMON_NAMES_CACHE_PATH), { recursive: true });
+    writeFileSync(COMMON_NAMES_CACHE_PATH, JSON.stringify(cache, null, 2) + "\n");
+  } catch (err) {
+    console.warn(`⚠️ Failed to save common-names cache: ${err.message}`);
+  }
+}
+
+async function resolveCommonName(latin) {
+  const qid = await wikidataSearch(latin);
+  if (!qid) return null;
+  const entity = await wikidataGetEntity(qid);
+  if (!entity) return null;
+  const wikiTitle = entity?.sitelinks?.enwiki?.title ?? null;
+  return cleanCommonName(wikiTitle)
+    ?? commonName(entity)
+    ?? entityLabel(entity)
+    ?? null;
+}
+
+async function enrichCommonNames(items) {
+  console.log(`→ Resolving common names for ${items.length} plants…`);
+  const cache = loadCommonNamesCache();
+  let hits = 0;
+  let calls = 0;
+  let skipped = 0;
+  for (let i = 0; i < items.length; i++) {
+    const p = items[i];
+    // Skip if the record already has a non-Latin name.
+    const isStillLatin = p.name === p.latin || (p.name && p.latin && p.name.startsWith(p.latin));
+    if (!isStillLatin) { skipped++; continue; }
+
+    if (cache[p.latin]) {
+      p.name = cache[p.latin];
+      hits++;
+    } else {
+      const name = await resolveCommonName(p.latin);
+      if (name) {
+        p.name = capitalize(name);
+        cache[p.latin] = p.name;
+        calls++;
+      }
+    }
+    if ((i + 1) % 50 === 0) {
+      console.log(`  ${i + 1}/${items.length} (live ${calls}, cached ${hits}, skipped ${skipped})`);
+      saveCommonNamesCache(cache);
+    }
+  }
+  saveCommonNamesCache(cache);
+  console.log(`✓ Common-name pass — ${calls} fresh lookups, ${hits} cached, ${skipped} already had a name.`);
+}
+
+function rebalanceByGenus(items) {
+  console.log("→ Rebalancing by genus…");
+  const byGenus = new Map();
+  for (const p of items) {
+    const genus = (p.latin?.split(/\s+/)[0] ?? "").trim();
+    if (!genus) continue;
+    if (!byGenus.has(genus)) byGenus.set(genus, []);
+    byGenus.get(genus).push(p);
+  }
+
+  let rebalanced = 0;
+  let movedToPaid = 0;
+  for (const [genus, species] of byGenus) {
+    // Free-tier picks are curated — leave them where they are.
+    const nonFree = species.filter(p => p.access !== "free");
+    if (nonFree.length < 10) continue;
+
+    // Use whichever paid pack is already represented in the genus. If the
+    // genus straddles edible + ornamental, lean ornamental (rare anyway).
+    const hasEdible = nonFree.some(p => p.access === "pack_edible");
+    const paidTier = hasEdible ? "pack_edible" : "pack_exotic";
+
+    // Deterministic split by Latin so re-runs are stable.
+    nonFree.sort((a, b) => a.latin.localeCompare(b.latin));
+    const halfIndex = Math.ceil(nonFree.length / 2);
+    for (let i = 0; i < nonFree.length; i++) {
+      const target = i < halfIndex ? "pro" : paidTier;
+      if (nonFree[i].access !== target) {
+        if (target.startsWith("pack_")) movedToPaid++;
+        nonFree[i].access = target;
+      }
+    }
+    rebalanced++;
+  }
+  console.log(`✓ Rebalanced ${rebalanced} genera (${byGenus.size} total). ${movedToPaid} species nudged toward paid packs.`);
+
+  // Final tier breakdown.
+  const tiers = {};
+  for (const p of items) tiers[p.access] = (tiers[p.access] ?? 0) + 1;
+  console.log(`  Tiers: ${JSON.stringify(tiers)}`);
+}
+
+async function runRebalance() {
+  if (!existsSync(OUT_PATH)) {
+    console.error(`Cannot rebalance — ${OUT_PATH} does not exist. Run --discover first.`);
+    process.exit(1);
+  }
+  const payload = JSON.parse(readFileSync(OUT_PATH, "utf-8"));
+  if (!Array.isArray(payload.items)) {
+    console.error(`Cannot rebalance — ${OUT_PATH} is not a v2 LIBRARY blob.`);
+    process.exit(1);
+  }
+  console.log(`Loaded ${payload.items.length} plants from ${OUT_PATH}.`);
+
+  await enrichCommonNames(payload.items);
+  rebalanceByGenus(payload.items);
+
+  payload.generated = new Date().toISOString();
+  payload.source = (payload.source ?? "") + " + rebalance/common-name pass";
+
+  if (args.dryRun) {
+    console.log("→ Dry run — first item:");
+    console.log(JSON.stringify(payload.items[0], null, 2));
+    return;
+  }
+
+  writeFileSync(OUT_PATH, JSON.stringify(payload, null, 2) + "\n");
+  console.log(`✓ Wrote ${OUT_PATH} (${payload.items.length} items).`);
+}
+
 async function main() {
   console.log("Blooming Marvellous — plant ingest");
   console.log(`Output: ${OUT_PATH}${args.dryRun ? " (dry run)" : ""}`);
   if (args.limit) console.log(`Limit:  ${args.limit}`);
+
+  if (args.rebalance) {
+    await runRebalance();
+    return;
+  }
 
   const rows = await fetchAgmList(args.limit);
   if (rows.length === 0) {
