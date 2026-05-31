@@ -30,20 +30,22 @@
  * required field is still empty after inheritance (logged at the end).
  */
 
-import { writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 // ── Args ─────────────────────────────────────────────────────────────────────
 
 function parseArgs(argv) {
-  const args = { limit: null, out: null, dryRun: false, verbose: false, softFail: false };
+  const args = { limit: null, out: null, dryRun: false, verbose: false, softFail: false, noTips: false, refreshTips: false };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--limit") args.limit = parseInt(argv[++i], 10);
     else if (a === "--out") args.out = argv[++i];
     else if (a === "--dry-run") args.dryRun = true;
     else if (a === "--soft-fail") args.softFail = true;
+    else if (a === "--no-tips") args.noTips = true;
+    else if (a === "--refresh-tips") args.refreshTips = true;
     else if (a === "--verbose" || a === "-v") args.verbose = true;
   }
   return args;
@@ -145,6 +147,126 @@ async function getJson(url, { timeoutMs = 20000 } = {}) {
   } finally {
     clearTimeout(timer);
   }
+}
+
+// ── Gemini growers' tips (optional, cached) ──────────────────────────────────
+//
+// When GEMINI_API_KEY (or GOOGLE_API_KEY) is set in the environment, the
+// ingest asks Google Gemini for 5 short cultivar-specific UK gardening tips
+// per plant. Results are cached at backend/data/tips-cache.json keyed by the
+// plant's slug id; subsequent ingests reuse the cache so we only pay for new
+// taxa or refreshes. Falls back to FAMILY_DEFAULTS.tips when no key is set
+// or the call fails.
+//
+// Cost guard: at the time of writing Gemini 2.0 Flash is roughly $0.10 per
+// million input tokens / $0.40 per million output tokens. 382 plants × ~150
+// in + ~120 out tokens ≈ a few US cents per full refresh — safe enough to
+// rerun. Re-running without `--refresh-tips` is free past the first time.
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || null;
+const GEMINI_MODEL   = process.env.GEMINI_MODEL   || "gemini-2.0-flash";
+const TIPS_CACHE_PATH = fileURLToPath(new URL("../data/tips-cache.json", import.meta.url));
+
+function loadTipsCache() {
+  if (!existsSync(TIPS_CACHE_PATH)) return {};
+  try { return JSON.parse(readFileSync(TIPS_CACHE_PATH, "utf-8")); }
+  catch { return {}; }
+}
+
+function saveTipsCache(cache) {
+  try {
+    mkdirSync(path.dirname(TIPS_CACHE_PATH), { recursive: true });
+    writeFileSync(TIPS_CACHE_PATH, JSON.stringify(cache, null, 2) + "\n");
+  } catch (err) {
+    console.warn(`⚠️ Failed to save tips cache: ${err.message}`);
+  }
+}
+
+async function geminiTipsFor({ id, name, latin, type, familyLabel }) {
+  if (!GEMINI_API_KEY) return null;
+  const prompt = [
+    `Give me the FIVE most useful practical UK gardening tips specific to`,
+    `${name} (Latin name: ${latin}; family: ${familyLabel ?? "unknown"};`,
+    `growth habit: ${type ?? "unknown"}).`,
+    `Rules:`,
+    `- Output exactly five lines, one tip per line, with no numbering, no markdown,`,
+    `  no bold, no leading dash or bullet.`,
+    `- Each line must be 100 characters or less.`,
+    `- Each tip must be specific and actionable (planting depth, watering pattern,`,
+    `  pest watch, pruning timing, soil prep, companion plants, cultivar-specific`,
+    `  quirks). Avoid generic gardening clichés that apply to anything.`,
+    `- Focus on UK-relevant climate and the typical home gardener.`,
+  ].join(" ");
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent?key=${GEMINI_API_KEY}`;
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "User-Agent": USER_AGENT },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.4,
+          maxOutputTokens: 320,
+          // Block obvious safety mishaps; gardening shouldn't trip them but
+          // explicit thresholds avoid surprises across model upgrades.
+          responseMimeType: "text/plain",
+        },
+      }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    const bullets = text
+      .split(/\r?\n/)
+      .map(s => s.replace(/^[\-•*•]\s*/, "").replace(/^\d+[.)\s]+\s*/, "").trim())
+      .filter(b => b.length > 0)
+      .slice(0, 5);
+    return bullets.length ? bullets.join("\n") : null;
+  } catch {
+    return null;
+  }
+}
+
+async function enrichTips(records) {
+  if (args.noTips || !GEMINI_API_KEY) {
+    if (!GEMINI_API_KEY && !args.noTips) {
+      console.log("ℹ︎  GEMINI_API_KEY not set — keeping family-level grower's tips. Set the env var to enable per-plant tips.");
+    }
+    return records;
+  }
+
+  console.log(`→ Gemini per-plant grower's tips (model: ${GEMINI_MODEL})…`);
+  const cache = loadTipsCache();
+  let calls = 0;
+  let cacheHits = 0;
+  let i = 0;
+  for (const r of records) {
+    i++;
+    const cached = cache[r.id];
+    if (cached && !args.refreshTips) {
+      r.growersTips = cached;
+      cacheHits++;
+    } else {
+      const tips = await geminiTipsFor({
+        id: r.id,
+        name: r.name,
+        latin: r.latin,
+        type: r.type,
+        familyLabel: r.family ?? r.familyLabel ?? null,
+      });
+      if (tips) {
+        r.growersTips = tips;
+        cache[r.id] = tips;
+        calls++;
+        // Light throttle to stay under Gemini's free-tier RPM.
+        await new Promise(res => setTimeout(res, 250));
+      }
+    }
+    if (i % 20 === 0) console.log(`  ${i}/${records.length} (live ${calls}, cached ${cacheHits})`);
+  }
+  saveTipsCache(cache);
+  console.log(`✓ Tips ready — ${calls} fresh, ${cacheHits} cached, ${records.length - calls - cacheHits} fallback to family.`);
+  return records;
 }
 
 // ── Seed list: curated UK garden Latin names ─────────────────────────────────
@@ -1071,6 +1193,11 @@ async function main() {
 
   console.log("→ Applying cultivar → genus → family inheritance…");
   const inherited = inherit(raw);
+
+  // Per-cultivar tips from Gemini (optional). Runs after inheritance so the
+  // prompt can include the resolved family label even when Wikidata didn't
+  // provide one directly.
+  await enrichTips(inherited);
 
   const { kept, dropped } = validate(inherited);
   console.log(`✓ ${kept.length} plants ready, ${dropped.length} dropped (still missing required fields after inheritance).`);

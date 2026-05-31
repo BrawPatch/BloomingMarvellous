@@ -295,6 +295,37 @@ Then commit the regenerated `backend/data/library.json` so the next
 deploy's `--soft-fail` ingest has a freshly-good fallback even if the
 external APIs are flapping.
 
+#### Per-cultivar grower's tips via Gemini
+
+The ingest will ask **Google Gemini** for 5 short cultivar-specific UK
+gardening tips per plant when a `GEMINI_API_KEY` (or `GOOGLE_API_KEY`)
+is set in the environment. Without a key the script keeps the
+family-level bullets defined in `FAMILY_DEFAULTS` and prints a one-line
+notice — so an unset key is safe.
+
+```bash
+# One-time API key (create at https://aistudio.google.com/apikey).
+export GEMINI_API_KEY="..."          # or GOOGLE_API_KEY
+# Optionally override the model — defaults to gemini-2.0-flash.
+export GEMINI_MODEL="gemini-2.0-flash"
+
+# First run will spend ~382 calls and cost a few US cents; results are
+# cached at backend/data/tips-cache.json keyed by plant id, so subsequent
+# runs are free.
+node scripts/ingest-plants.mjs
+
+# Force a refresh of every plant (re-runs Gemini even where cached).
+node scripts/ingest-plants.mjs --refresh-tips
+
+# Skip Gemini for this run only — useful if the key is set but you want
+# to iterate quickly on the rest of the pipeline.
+node scripts/ingest-plants.mjs --no-tips
+```
+
+The deploy script (`deploy.sh`) passes through the env, so adding the
+key to a shell profile and running `./scripts/deploy.sh <env>` is enough
+to land cultivar-specific tips in S3.
+
 #### How the ingest is sourced
 
 * **Seed list:** 148 curated UK garden Latin names in
