@@ -164,7 +164,9 @@ async function getJson(url, { timeoutMs = 20000 } = {}) {
 // rerun. Re-running without `--refresh-tips` is free past the first time.
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || null;
-const GEMINI_MODEL   = process.env.GEMINI_MODEL   || "gemini-2.0-flash";
+// `gemini-flash-latest` rolls forward with the current cheapest flash model;
+// override with `GEMINI_MODEL` if you want to pin or trial something else.
+const GEMINI_MODEL   = process.env.GEMINI_MODEL   || "gemini-flash-latest";
 const TIPS_CACHE_PATH = fileURLToPath(new URL("../data/tips-cache.json", import.meta.url));
 
 function loadTipsCache() {
@@ -206,23 +208,39 @@ async function geminiTipsFor({ id, name, latin, type, familyLabel }) {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.4,
-          maxOutputTokens: 320,
-          // Block obvious safety mishaps; gardening shouldn't trip them but
-          // explicit thresholds avoid surprises across model upgrades.
+          maxOutputTokens: 400,
           responseMimeType: "text/plain",
+          // Newer Gemini models burn output budget on internal reasoning by
+          // default — disable it so the 5 bullets actually fit.
+          thinkingConfig: { thinkingBudget: 0 },
         },
       }),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      if (args.verbose) {
+        const body = await res.text().catch(() => "");
+        console.warn(`  · gemini ${res.status} for ${name}: ${body.slice(0, 160)}`);
+      }
+      return null;
+    }
     const data = await res.json();
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
     const bullets = text
       .split(/\r?\n/)
-      .map(s => s.replace(/^[\-•*•]\s*/, "").replace(/^\d+[.)\s]+\s*/, "").trim())
-      .filter(b => b.length > 0)
+      .map(s => s
+        // Strip leading numbering / bullet / markdown markers.
+        .replace(/^[\-•*–—]+\s*/, "")
+        .replace(/^\d+[.)\s]+\s*/, "")
+        // Strip residual markdown bold/italic from any model that ignored
+        // the no-markdown instruction.
+        .replace(/\*\*/g, "")
+        .replace(/^\*\s+/, "")
+        .trim())
+      .filter(b => b.length > 0 && b.length <= 140)
       .slice(0, 5);
     return bullets.length ? bullets.join("\n") : null;
-  } catch {
+  } catch (err) {
+    if (args.verbose) console.warn(`  · gemini exception for ${name}: ${err.message}`);
     return null;
   }
 }
