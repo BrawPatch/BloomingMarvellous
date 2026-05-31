@@ -21,25 +21,21 @@ public struct TaskListView: View {
 
     public var body: some View {
         NavigationStack {
-            ZStack {
-                Color.bmBg.ignoresSafeArea()
+            VStack(spacing: 12) {
+                filterBar
 
-                VStack(spacing: 12) {
-                    filterBar
-
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            section("This week", tasks: thisWeek)
-                            section("Upcoming",  tasks: upcoming)
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 24)
+                ScrollView {
+                    VStack(spacing: 16) {
+                        section("This week", tasks: thisWeek)
+                        section("Upcoming",  tasks: upcoming)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 24)
                 }
-                .padding(.top, 12)
             }
-            .navigationTitle("Tasks")
-            .navigationBarTitleDisplayMode(.inline)
+            .padding(.top, 12)
+            .bmSheetBackdrop()
+            .bmNavTitle("Tasks", icon: "✅")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Back") { dismiss() }

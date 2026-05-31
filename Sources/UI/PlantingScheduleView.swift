@@ -5,9 +5,19 @@ import BloomingMarvellous
 // MARK: - PlantingScheduleView
 //
 // Wireframe: Planting Schedule (Calendar). Month grid with event markers
-// derived from the picked plants' sow / transplant / harvest windows.
-// A future /v1/gardens/{id}/events endpoint will replace the derivation
-// with real persisted events.
+// derived deterministically from the user's bloom picks. The contract is:
+//
+//   • Sow event = (bloom month – 12 weeks), day 1. The 12 weeks is the
+//     *earliest* end of an 8–12 week sowing window, per product brief —
+//     gardeners want the marker at the **start** of the window so they
+//     don't miss it.
+//   • Transplant event = earliest month in the plant's `transplantMonths`,
+//     day 1. Skipped if the plant has no transplant guidance.
+//   • Harvest event = earliest month in the plant's `harvestMonths`,
+//     day 1. Skipped if the plant has no harvest guidance (e.g. ornamentals).
+//
+// Manual "Add to calendar" was removed — schedule events are always derived
+// from picks, working backwards from the bloom date.
 
 public struct PlantingScheduleView: View {
 
@@ -17,72 +27,65 @@ public struct PlantingScheduleView: View {
     @State private var showSow: Bool = true
     @State private var showTransplant: Bool = true
     @State private var showHarvest: Bool = true
-    @State private var events: [GardenEvent] = []
-    @State private var showingAddEvent: Bool = false
 
     public init() {}
 
     public var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Color.bmBg.ignoresSafeArea()
-            ScrollView {
-                VStack(spacing: 14) {
-                    header
-                    filters
-                    monthGrid
-                    legend
-                    if !eventsInDisplayedMonth.isEmpty {
-                        eventList
-                    }
+        ScrollView {
+            VStack(spacing: 14) {
+                header
+                filters
+                monthGrid
+                legend
+                let evs = eventsInDisplayedMonth
+                if evs.isEmpty {
+                    emptyHint
+                } else {
+                    eventList(evs)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 16)
-                .padding(.bottom, 80)
             }
-
-            fab
+            .padding(.horizontal, 16)
+            .padding(.vertical, 16)
         }
-        .navigationTitle("Planting schedule")
-        .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showingAddEvent) {
-            AddEventView { newEvent in
-                events.append(newEvent)
-                displayedMonth = Calendar.current.startOfMonth(for: newEvent.date)
-            }
+        .bmFloralBackdrop()
+        .bmNavTitle("Planting schedule", icon: "🗓")
+    }
+
+    private var emptyHint: some View {
+        VStack(spacing: 6) {
+            Text("🌱").font(.system(size: 32))
+            Text("No events this month")
+                .font(.custom("Fredoka-SemiBold", size: 14))
+                .foregroundStyle(Color.bmText1)
+            Text("Pick plants in the Plant Picker — sow, transplant, and harvest events will appear here, scheduled back from each bloom month.")
+                .font(.custom("Nunito-SemiBold", size: 11))
+                .foregroundStyle(Color.bmText2)
+                .multilineTextAlignment(.center)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity)
+        .bmCard()
+    }
+
+    private var eventsInDisplayedMonth: [ScheduledEvent] {
+        let m = Calendar.current.component(.month, from: displayedMonth)
+        return generatedEvents
+            .filter { $0.month == m && isVisible($0.kind) }
+            .sorted { ($0.day, $0.plantName) < ($1.day, $1.plantName) }
+    }
+
+    private func isVisible(_ kind: EventKind) -> Bool {
+        switch kind {
+        case .sow:        return showSow
+        case .transplant: return showTransplant
+        case .harvest:    return showHarvest
         }
     }
 
-    private var fab: some View {
-        Button {
-            showingAddEvent = true
-        } label: {
-            HStack(spacing: 6) {
-                Image(systemName: "plus")
-                    .font(.system(size: 14, weight: .bold))
-                Text("Add to calendar")
-                    .font(.custom("Fredoka-SemiBold", size: 14))
-            }
-            .foregroundStyle(.white)
-            .padding(.horizontal, 18).padding(.vertical, 12)
-            .background(Color.bmGreen)
-            .clipShape(Capsule())
-            .shadow(color: Color.bmGreen.opacity(0.35), radius: 8, y: 3)
-        }
-        .padding(.trailing, 20)
-        .padding(.bottom, 20)
-    }
-
-    private var eventsInDisplayedMonth: [GardenEvent] {
-        let cal = Calendar.current
-        return events
-            .filter { cal.isDate($0.date, equalTo: displayedMonth, toGranularity: .month) }
-            .sorted { $0.date < $1.date }
-    }
-
-    private var eventList: some View {
+    private func eventList(_ events: [ScheduledEvent]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            SectionLabel("Scheduled events", icon: "📌")
-            ForEach(eventsInDisplayedMonth) { event in
+            SectionLabel("Activities this month", icon: "📌")
+            ForEach(events) { event in
                 eventRow(event)
             }
         }
@@ -92,46 +95,35 @@ public struct PlantingScheduleView: View {
     }
 
     @ViewBuilder
-    private func eventRow(_ event: GardenEvent) -> some View {
+    private func eventRow(_ event: ScheduledEvent) -> some View {
         HStack(spacing: 10) {
             ZStack {
                 Circle().fill(event.kind.color.opacity(0.2)).frame(width: 32, height: 32)
                 Text(event.kind.emoji).font(.system(size: 16))
             }
             VStack(alignment: .leading, spacing: 1) {
-                HStack(spacing: 4) {
-                    Text(event.kind.label)
-                        .font(.custom("Nunito-Bold", size: 13))
-                        .foregroundStyle(Color.bmText1)
-                    if let bedId = event.bedId, let bed = store.bed(id: bedId) {
-                        Text("· \(bed.name)")
-                            .font(.custom("Nunito-SemiBold", size: 11))
-                            .foregroundStyle(Color.bmText2)
-                    }
-                }
-                Text(Self.dayLabel(event.date))
+                Text("\(event.kind.label) \(event.plantName)")
+                    .font(.custom("Nunito-Bold", size: 13))
+                    .foregroundStyle(Color.bmText1)
+                Text("For \(Self.monthName(event.bloomMonth)) bloom · start \(Self.dayLabel(month: event.month, day: event.day))")
                     .font(.custom("Nunito-SemiBold", size: 11))
                     .foregroundStyle(Color.bmText2)
             }
             Spacer()
-            Button {
-                events.removeAll { $0.id == event.id }
-            } label: {
-                Image(systemName: "trash")
-                    .foregroundStyle(Color.bmRed)
-            }
-            .buttonStyle(.plain)
         }
         .padding(.horizontal, 10).padding(.vertical, 6)
         .background(Color.bmBgSoft)
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
-    private static func dayLabel(_ d: Date) -> String {
+    private static func dayLabel(month: Int, day: Int) -> String {
+        "\(day) \(monthName(month))"
+    }
+
+    private static func monthName(_ m: Int) -> String {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
-        f.dateFormat = "EEE d MMM"
-        return f.string(from: d)
+        return f.shortMonthSymbols[m - 1]
     }
 
     private var header: some View {
@@ -242,14 +234,13 @@ public struct PlantingScheduleView: View {
 
     // MARK: - Event derivation
     //
-    // Until the backend exposes /v1/gardens/{id}/events, we synthesise
-    // markers by reading the picked plants' sow / transplant / harvest
-    // windows: any day in the displayed month that belongs to one of
-    // those windows surfaces a coloured dot. The day number itself is
-    // arbitrary — the picker view will land first; an Add Event flow
-    // can later choose real dates.
+    // Events are derived from the user's bloom picks. For each (plant, bloom
+    // month) pick we generate up to three events — sow / transplant / harvest —
+    // pinning each to day 1 of the earliest applicable month. The sow date
+    // works backwards from bloom by 12 weeks (≈ 3 months); transplant and
+    // harvest use the plant's own earliest-month windows when present.
 
-    private enum EventKind: Hashable {
+    fileprivate enum EventKind: Hashable {
         case sow, transplant, harvest
         var color: Color {
             switch self {
@@ -258,40 +249,64 @@ public struct PlantingScheduleView: View {
             case .harvest:    return .bmPeach
             }
         }
-    }
-
-    private func bucketedEvents(month: Int) -> [Int: [EventKind]] {
-        var byDay: [Int: [EventKind]] = [:]
-        let plants = (1...12).flatMap { store.picks(month: $0).compactMap(PlantLibrary.plant(id:)) }
-        // De-dup by id to avoid double counting picks across multiple bloom months.
-        let unique = Array(Set(plants.map(\.id))).compactMap(PlantLibrary.plant(id:))
-
-        for plant in unique {
-            if showSow {
-                if plant.sowIndoorMonths.contains(month) { byDay[5, default: []].append(.sow) }
-                if plant.sowDirectMonths.contains(month) { byDay[12, default: []].append(.sow) }
-            }
-            if showTransplant, plant.transplantMonths.contains(month) {
-                byDay[20, default: []].append(.transplant)
-            }
-            if showHarvest, plant.harvestMonths.contains(month) {
-                byDay[26, default: []].append(.harvest)
+        var label: String {
+            switch self {
+            case .sow:        return "Sow"
+            case .transplant: return "Transplant"
+            case .harvest:    return "Harvest"
             }
         }
-
-        // Overlay user-added events on their actual day.
-        let cal = Calendar.current
-        for event in events where cal.component(.month, from: event.date) == month
-            && cal.component(.year, from: event.date) == cal.component(.year, from: displayedMonth) {
-            let day = cal.component(.day, from: event.date)
-            let kind: EventKind?
-            switch event.kind {
-            case .sow:        kind = showSow        ? .sow        : nil
-            case .transplant: kind = showTransplant ? .transplant : nil
-            case .harvest:    kind = showHarvest    ? .harvest    : nil
-            case .water, .fertilise: kind = nil // legend doesn't cover these dots — surfaced in event list below
+        var emoji: String {
+            switch self {
+            case .sow:        return "🌱"
+            case .transplant: return "🪴"
+            case .harvest:    return "🧺"
             }
-            if let k = kind { byDay[day, default: []].append(k) }
+        }
+    }
+
+    fileprivate struct ScheduledEvent: Identifiable, Hashable {
+        let id: String          // deterministic so SwiftUI diffing stays stable
+        let kind: EventKind
+        let month: Int          // 1-12
+        let day: Int            // 1 = start of window
+        let plantId: String
+        let plantName: String
+        let bloomMonth: Int
+    }
+
+    fileprivate var generatedEvents: [ScheduledEvent] {
+        var out: [ScheduledEvent] = []
+        for bloomMonth in 1...12 {
+            for plantId in store.picks(month: bloomMonth) {
+                guard let plant = PlantLibrary.plant(id: plantId) else { continue }
+                // Sow start: 12 weeks (~3 months) before bloom, wrapped 1...12.
+                let sowMonth = ((bloomMonth - 3 - 1) % 12 + 12) % 12 + 1
+                out.append(ScheduledEvent(
+                    id: "sow|\(plantId)|\(bloomMonth)",
+                    kind: .sow, month: sowMonth, day: 1,
+                    plantId: plantId, plantName: plant.name, bloomMonth: bloomMonth))
+                if let t = plant.transplantMonths.min() {
+                    out.append(ScheduledEvent(
+                        id: "trans|\(plantId)|\(bloomMonth)",
+                        kind: .transplant, month: t, day: 1,
+                        plantId: plantId, plantName: plant.name, bloomMonth: bloomMonth))
+                }
+                if let h = plant.harvestMonths.min() {
+                    out.append(ScheduledEvent(
+                        id: "harv|\(plantId)|\(bloomMonth)",
+                        kind: .harvest, month: h, day: 1,
+                        plantId: plantId, plantName: plant.name, bloomMonth: bloomMonth))
+                }
+            }
+        }
+        return out
+    }
+
+    fileprivate func bucketedEvents(month: Int) -> [Int: [EventKind]] {
+        var byDay: [Int: [EventKind]] = [:]
+        for e in generatedEvents where e.month == month && isVisible(e.kind) {
+            byDay[e.day, default: []].append(e.kind)
         }
         return byDay
     }

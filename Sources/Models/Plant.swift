@@ -63,6 +63,10 @@ public struct Plant: Identifiable, Codable, Equatable {
     // Affiliate / purchase link (Amazon stub).
     public var buyLink: URL?
 
+    // Photographic image (Wikimedia Commons hosted, sourced by Latin name
+    // from the ingest pipeline). Optional — older library payloads may omit.
+    public var imageUrl: URL?
+
     public init(id: String,
                 name: String,
                 latin: String,
@@ -80,7 +84,8 @@ public struct Plant: Identifiable, Codable, Equatable {
                 germinationRequirements: String = "",
                 companions: [String] = [],
                 access: String = "free",
-                buyLink: URL? = nil) {
+                buyLink: URL? = nil,
+                imageUrl: URL? = nil) {
         self.id = id
         self.name = name
         self.latin = latin
@@ -99,6 +104,7 @@ public struct Plant: Identifiable, Codable, Equatable {
         self.companions = companions
         self.access = access
         self.buyLink = buyLink
+        self.imageUrl = imageUrl
     }
 
     public func blooms(in month: Int) -> Bool { bloomMonths.contains(month) }

@@ -17,9 +17,7 @@ public struct BedDetailView: View {
     public init(bedId: UUID) { self.bedId = bedId }
 
     public var body: some View {
-        ZStack {
-            Color.bmBg.ignoresSafeArea()
-
+        Group {
             if let bed = store.bed(id: bedId),
                let garden = store.garden(id: bed.gardenId) {
                 ScrollView {
@@ -39,8 +37,8 @@ public struct BedDetailView: View {
                     .foregroundStyle(Color.bmText2)
             }
         }
-        .navigationTitle("Bed detail")
-        .navigationBarTitleDisplayMode(.inline)
+        .bmFloralBackdrop()
+        .bmNavTitle("Bed detail", icon: "🪴")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Edit") { showingEdit = true }
@@ -161,16 +159,89 @@ public struct BedDetailView: View {
         .bmCard()
     }
 
+    @ViewBuilder
     private func cropsCard(_ bed: Bed) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionLabel("Crops in bed", icon: "🌱")
-            Text("No crops yet. Add one from the Plant Picker.")
-                .font(.custom("Nunito-SemiBold", size: 12))
-                .foregroundStyle(Color.bmText2)
+            HStack {
+                SectionLabel("Crops in bed", icon: "🌱")
+                Spacer()
+                if store.user.tier == .pro {
+                    let total = store.picksByMonth(bedId: bed.id).reduce(0) { $0 + $1.plants.count }
+                    if total > 0 {
+                        Text("\(total) pick\(total == 1 ? "" : "s")")
+                            .font(.custom("Nunito-Bold", size: 11))
+                            .foregroundStyle(Color.bmText3)
+                    }
+                }
+            }
+
+            if store.user.tier == .free {
+                Text("Free tier — crops are planned at the garden level. Upgrade to Pro to plan per bed.")
+                    .font(.custom("Nunito-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+            } else {
+                let groups = store.picksByMonth(bedId: bed.id)
+                if groups.isEmpty {
+                    Text("No crops yet. Open the Plant Picker, choose a plant, and tap the months you want it to bloom in this bed.")
+                        .font(.custom("Nunito-SemiBold", size: 12))
+                        .foregroundStyle(Color.bmText2)
+                    NavigationLink {
+                        PlantPickerMonthView()
+                            .onAppear { store.selectedBedId = bed.id }
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 12, weight: .bold))
+                            Text("Pick plants for this bed")
+                                .font(.custom("Fredoka-SemiBold", size: 13))
+                        }
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14).padding(.vertical, 8)
+                        .background(Color.bmGreen)
+                        .clipShape(Capsule())
+                    }
+                    .padding(.top, 4)
+                } else {
+                    ForEach(groups, id: \.month) { group in
+                        cropRow(bed: bed, month: group.month, plants: group.plants)
+                    }
+                }
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
+    }
+
+    private func cropRow(bed: Bed, month: Int, plants: [Plant]) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(monthAbbr(month))
+                .font(.custom("Fredoka-SemiBold", size: 11))
+                .foregroundStyle(Color.bmGreen)
+                .kerning(0.5)
+            ForEach(plants) { p in
+                HStack {
+                    Text(p.name)
+                        .font(.custom("Nunito-Bold", size: 13))
+                        .foregroundStyle(Color.bmText1)
+                    Text(p.latin)
+                        .font(.custom("Nunito-SemiBold", size: 11))
+                        .foregroundStyle(Color.bmText3)
+                        .italic()
+                    Spacer()
+                    Button {
+                        store.togglePick(plantId: p.id, month: month, bedId: bed.id)
+                    } label: {
+                        Image(systemName: "minus.circle.fill")
+                            .foregroundStyle(Color.bmRed.opacity(0.8))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal, 8).padding(.vertical, 4)
+                .background(Color.bmBgSoft)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+        }
     }
 
     private var deleteButton: some View {
@@ -225,8 +296,9 @@ struct EditBedView: View {
                     }
                 }
             }
-            .navigationTitle("Edit bed")
-            .navigationBarTitleDisplayMode(.inline)
+            .scrollContentBackground(.hidden)
+            .bmSheetBackdrop()
+            .bmNavTitle("Edit bed", icon: "🪴")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }

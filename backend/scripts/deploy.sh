@@ -48,6 +48,11 @@ echo "→ terraform init ($ENV)"
 echo "→ terraform apply ($ENV)"
 ( cd "$ENV_DIR" && terraform apply -auto-approve )
 
+echo "→ Refreshing plant library from Wikidata / Wikipedia / Commons"
+# --soft-fail keeps the deploy moving even if an external API is down — the
+# already-committed backend/data/library.json is the fallback in that case.
+( cd "$BACKEND_DIR" && node scripts/ingest-plants.mjs --soft-fail )
+
 echo "→ Seeding S3 content ($ENV)"
 ( cd "$BACKEND_DIR" && node scripts/seed-content.mjs --env "$ENV" )
 

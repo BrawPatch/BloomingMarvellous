@@ -246,11 +246,83 @@ node scripts/seed-content.mjs --env development
 node scripts/seed-content.mjs --env production
 ```
 
-`deploy.sh` already invokes this at the end of each deploy, so the only
-time you'd run it manually is to update content **without** redeploying
-infrastructure. Edit the `HOME` and `DATA` arrays at the top of
-`scripts/seed-content.mjs` and re-run; the items carry `access` markers and
-the Lambda filters them per request.
+`deploy.sh` already invokes this at the end of each deploy, so each
+release build automatically refreshes `v1/home.json`, `v1/data.json`, and
+`v1/library.json` in the env's S3 bucket. The only time you'd run seed
+manually is to update content without redeploying infrastructure.
+
+* `HOME` and `DATA` items live inline in `scripts/seed-content.mjs` —
+  edit them in place and re-run.
+* `LIBRARY` (the Plant Picker / Bloom Schedule catalogue) is loaded from
+  `backend/data/library.json`. That file is committed and is overwritten
+  by `scripts/ingest-plants.mjs` (see §4a). The seed script falls back to
+  a small inline list if the JSON is missing.
+
+### 4a. Plant library — automatic on every deploy
+
+`deploy.sh` runs `scripts/ingest-plants.mjs --soft-fail` immediately before
+`scripts/seed-content.mjs`. That means every `./scripts/deploy.sh <env>`
+publishes a freshly-fetched library to that environment's S3 bucket — no
+manual ingest step is required.
+
+```bash
+# Standard release: refreshes infra, re-ingests the library, pushes to dev S3.
+./scripts/deploy.sh development
+
+# Same for prod.
+./scripts/deploy.sh production
+```
+
+The `--soft-fail` flag means if Wikidata or Wikipedia is temporarily
+unreachable, the ingest exits 0 and the deploy continues with the existing
+`backend/data/library.json` (the last good committed snapshot). A failed
+ingest never blocks a release.
+
+#### Manual ingest
+
+You can also re-run the ingest outside of a deploy:
+
+```bash
+cd backend
+# Full run — writes backend/data/library.json (~148 seed taxa, ~146 published).
+node scripts/ingest-plants.mjs
+
+# Smoke test — first 25 taxa, sample printed instead of written.
+node scripts/ingest-plants.mjs --limit 25 --dry-run
+```
+
+Then commit the regenerated `backend/data/library.json` so the next
+deploy's `--soft-fail` ingest has a freshly-good fallback even if the
+external APIs are flapping.
+
+#### How the ingest is sourced
+
+* **Seed list:** 148 curated UK garden Latin names in
+  `SEED_LATINS` inside `ingest-plants.mjs`. Each name is resolved to a
+  Wikidata QID via `wbsearchentities`, preferring species-rank hits and
+  rejecting cultivar / lexeme matches.
+* **Photos:** Wikidata `P18` → Wikimedia Commons
+  `Special:FilePath/<file>?width=800` (always photographic — illustrations,
+  botanical plates, and SVGs are filtered out).
+* **Common name:** Wikipedia sitelink title → multi-word English alias →
+  Latin fallback. Single-word aliases (cultivar nicknames, brand names)
+  are rejected.
+* **Tips / sun / soil / bloom / type / height:** Wikipedia REST summary,
+  parsed by conservative regex. Empty fields cascade through:
+  *cultivar → species → genus → family (`FAMILY_DEFAULTS`) → generic
+  UK-garden defaults*. The picker always has a match.
+* **Validation:** records still missing `preferredSoil`,
+  `preferredSunlight`, or `bloomMonths` after inheritance are dropped
+  with a count in the script output (typically 0).
+
+| Concern | Where |
+|---------|-------|
+| Add a plant by Latin name             | append to `SEED_LATINS` in `scripts/ingest-plants.mjs` |
+| Add a new field to `Plant`            | `Sources/Models/Plant.swift`, then add to `toLibraryItem` in `ingest-plants.mjs` |
+| Different external source             | replace `fetchAgmList()` in `ingest-plants.mjs` |
+| Override an inherited field           | edit `backend/data/library.json` directly — your edits survive until the next ingest |
+| Family-level defaults are wrong       | `FAMILY_DEFAULTS` map in `ingest-plants.mjs` |
+| Skip ingest for one deploy            | comment out the ingest line in `scripts/deploy.sh` for the run |
 
 ## 5. Create users
 
@@ -323,6 +395,7 @@ that override first.
 | Lambda code (`lambda/index.mjs`)  | `./scripts/deploy.sh <env>` (re-archives + re-uploads function)     |
 | Infrastructure (`modules/api/*.tf`) | `./scripts/deploy.sh <env>`                                       |
 | `/home` or `/data` content        | edit `scripts/seed-content.mjs`, re-run `node scripts/seed-content.mjs --env <env>` |
+| Plant `/library` content          | automatic on every deploy (`scripts/deploy.sh` calls `ingest-plants.mjs --soft-fail` before seed). Out-of-band refresh: `node scripts/ingest-plants.mjs && git commit data/library.json` |
 | Add a user                        | `node scripts/create-user.mjs --env <env> --username ... ...`        |
 | Upgrade a free user to pro        | re-run `create-user.mjs` with `--tier pro` (idempotent)              |
 | Grant a pack purchase             | re-run `create-user.mjs` with `--tier pro --pack pack_exotic …`      |
