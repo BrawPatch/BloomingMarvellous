@@ -28,20 +28,17 @@ public struct SettingsView: View {
 
     public var body: some View {
         NavigationStack {
-            ZStack {
-                Color.bmBg.ignoresSafeArea()
-                ScrollView {
-                    VStack(spacing: 16) {
-                        preferencesSection
-                        notificationsSection
-                        aboutSection
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 16)
+            ScrollView {
+                VStack(spacing: 16) {
+                    preferencesSection
+                    notificationsSection
+                    aboutSection
                 }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
             }
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
+            .bmSheetBackdrop()
+            .bmNavTitle("Settings", icon: "⚙️")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Back") { dismiss() }

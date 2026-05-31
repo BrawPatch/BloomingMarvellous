@@ -1,0 +1,4141 @@
+{
+  "version": 2,
+  "generated": "2026-05-31T15:37:27.698Z",
+  "source": "wikidata-rhs-agm + wikipedia + commons + inheritance",
+  "items": [
+    {
+      "id": "lavandula-angustifolia",
+      "name": "Lavender plant",
+      "latin": "Lavandula angustifolia",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Lavandula angustifolia, formerly L. officinalis, is a flowering plant in the family Lamiaceae, native to the Mediterranean basin. Its common names include lavender, true lavender and English lavender ; also garden lavender, common lavender and narrow-leaved la",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8"
+    },
+    {
+      "id": "lavandula-stoechas",
+      "name": "Lavandula stoechas",
+      "latin": "Lavandula stoechas",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Lavandula stoechas, the Spanish lavender or topped lavender (U.S.) or French lavender (U.K.), is a species of lavender native to the Mediterranean Basin.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Topped%20lavendar%20flowerhead.jpg?width=800"
+    },
+    {
+      "id": "lavandula-intermedia",
+      "name": "Lavandula ×intermedia",
+      "latin": "Lavandula × intermedia",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lavand%C3%AD%202012.JPG?width=800"
+    },
+    {
+      "id": "salvia-nemorosa",
+      "name": "Blue sage",
+      "latin": "Salvia nemorosa",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Salvia nemorosa, the woodland sage, Balkan clary, blue sage or wild sage, is a hardy herbaceous perennial plant native to a wide area of central Europe and Western Asia.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Salvia%20farinacea%200.9%20R.jpg?width=800"
+    },
+    {
+      "id": "salvia-officinalis",
+      "name": "Salvia officinalis",
+      "latin": "Salvia officinalis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Salvia officinalis, common sage or sage, is a perennial, evergreen subshrub, with woody stems, grayish leaves, and blue to purplish flowers. It is a member of the mint family (Lamiaceae) and native to the Mediterranean region, though it has been naturalized in",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Salvia%20officinalis0.jpg?width=800"
+    },
+    {
+      "id": "rosmarinus-officinalis",
+      "name": "Rosmarinus officinalis",
+      "latin": "Rosmarinus officinalis",
+      "type": "shrub",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Salvia rosmarinus, synonym Rosmarinus officinalis, commonly known as rosemary, is a shrub with fragrant, evergreen, needle-like leaves and purple or sometimes white, pink, or blue flowers. It is a member of the mint family, Lamiaceae. The species is native to",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rosemary%20bush.jpg?width=800"
+    },
+    {
+      "id": "nepeta-faassenii",
+      "name": "Faassen's catnip",
+      "latin": "Nepeta × faassenii",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Nepeta × faassenii, a flowering plant also known as catmint and Faassen's catnip, is a primary hybrid of garden origin. The parent species are Nepeta racemosa and Nepeta nepetella.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepeta%20faassenii6.jpg?width=800"
+    },
+    {
+      "id": "stachys-byzantina",
+      "name": "Stachys byzantina",
+      "latin": "Stachys byzantina",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Stachys byzantina, the lamb's-ear Monty plant or woolly hedgenettle, is a species of flowering plant in the mint family Lamiaceae, native to Armenia, Iran, and Turkey. It is cultivated throughout much of the temperate world as an ornamental plant, and is natur",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/0%20Stachys%20byzantina%20-%20Yvoire%20(2).JPG?width=800"
+    },
+    {
+      "id": "thymus-serpyllum",
+      "name": "Wild thyme",
+      "latin": "Thymus serpyllum",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Thymus serpyllum, known by the common names of Breckland thyme, Breckland wild thyme, wild thyme, creeping thyme, or elfin thyme, is a species of flowering plant in the mint family, Lamiaceae. It is a low, usually prostrate subshrub forming creeping stems up t",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "heightCm": 10,
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Thymus%20serpyllum1.jpg?width=800"
+    },
+    {
+      "id": "origanum-vulgare",
+      "name": "Oregano",
+      "latin": "Origanum vulgare",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Oregano is a species of flowering plant in the mint family, Lamiaceae. It was native to the Mediterranean region, but widely naturalised elsewhere in the temperate Northern Hemisphere.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Origanum%20vulgare%20inflorescence%20-%20Keila.jpg?width=800"
+    },
+    {
+      "id": "mentha-spicata",
+      "name": "Spearmint",
+      "latin": "Mentha spicata",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Spearmint, also known as garden mint, common mint, lamb mint and mackerel mint, is native to Europe and southern temperate Asia, extending from Ireland in the west to southern China in the east. It is naturalized in many other temperate parts of the world, inc",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Minze.jpg?width=800"
+    },
+    {
+      "id": "mentha-piperita",
+      "name": "Mentha piperita",
+      "latin": "Mentha piperita",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Peppermint is a hybrid species of mint, a cross between watermint and spearmint. Indigenous to Europe and the Middle East, the plant is now widely spread and cultivated in many regions of the world. It is occasionally found in the wild with its parent species.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8"
+    },
+    {
+      "id": "monarda-didyma",
+      "name": "Scarlet beebalm, Oswego tea",
+      "latin": "Monarda didyma",
+      "type": "herb",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Monarda didyma, the crimson beebalm, scarlet beebalm, scarlet monarda, Eau-de-Cologne plant, Oswego tea, or bergamot, is a North American aromatic herb in the family Lamiaceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/RubyThroatedHummingbird(Crop).jpg?width=800"
+    },
+    {
+      "id": "perovskia-atriplicifolia",
+      "name": "Perovskia atriplicifolia",
+      "latin": "Perovskia atriplicifolia",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Salvia yangii, previously known as Perovskia atriplicifolia, and commonly called Russian sage, is a flowering herbaceous perennial plant and subshrub. Although not previously a member of Salvia, the genus widely known as sage, since 2017 it has been included w",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#b8a0d8"
+    },
+    {
+      "id": "helianthus-annuus",
+      "name": "Common sunflower",
+      "latin": "Helianthus annuus",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "The common sunflower is a large annual forb in the daisy family Asteraceae. The domesticated form of common sunflower is harvested for its edible seeds, which come in two types: oil and confectionary seeds. Oilseed sunflowers are widely grown globally and repr",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Helianthus%20annuus%20exposed%202004-05-22.jpg?width=800"
+    },
+    {
+      "id": "cosmos-bipinnatus",
+      "name": "Garden cosmos",
+      "latin": "Cosmos bipinnatus",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Cosmos bipinnatus, commonly called the garden cosmos, Mexican aster or cosmea, is a medium-sized flowering herbaceous plant in the daisy family Asteraceae, native to the Americas. The species and its varieties and cultivars are popular as ornamental plants in",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CosmosBipinnatus002.JPG?width=800"
+    },
+    {
+      "id": "cosmos-sulphureus",
+      "name": "Cosmos sulphureus",
+      "latin": "Cosmos sulphureus",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Cosmos sulphureus is a species of flowering plant in the sunflower family Asteraceae, also known as sulfur cosmos and yellow cosmos. It is native to Mexico, Central America, and northern South America, and naturalized in other parts of North and South America",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Correo%20-%20Cadillo%20(Cosmos%20sulphureus)%20(15183920495).jpg?width=800"
+    },
+    {
+      "id": "echinacea-purpurea",
+      "name": "Purple coneflower",
+      "latin": "Echinacea purpurea",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Echinacea purpurea, the eastern purple coneflower, purple coneflower, hedgehog coneflower, or Echinacea, is a North American species of flowering plant in the family Asteraceae. It is native to parts of eastern North America and present to some extent in the w",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Echinacea%20purpurea%20Feldanbau.jpg?width=800"
+    },
+    {
+      "id": "rudbeckia-fulgida",
+      "name": "Rudbeckia fulgida",
+      "latin": "Rudbeckia fulgida",
+      "type": "perennial",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Rudbeckia fulgida, the orange coneflower or perennial coneflower, is a species of flowering plant in the family Asteraceae, native to eastern North America.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rudbeckia%20fulgida.JPG?width=800"
+    },
+    {
+      "id": "rudbeckia-hirta",
+      "name": "Black-eyed Susan",
+      "latin": "Rudbeckia hirta",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Rudbeckia hirta, commonly called black-eyed Susan and yellow coneflower, is a North American flowering plant in the family Asteraceae. It grows to 1 metre tall with daisy-like yellow flower heads. There are numerous cultivars. It was used medicinally by Native",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Black%20eyed%20susan%2020040717%20110754%202.1474.jpg?width=800"
+    },
+    {
+      "id": "tagetes-patula",
+      "name": "French marigold 'Dainty Marietta'",
+      "latin": "Tagetes patula",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Tagetes patula, the French marigold, is a species of flowering plant in the family Asteraceae, native to Mexico and Guatemala with several naturalised populations in many other countries. It is widely cultivated as an easily grown bedding plant with hundreds o",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/French%20marigold%20Tagetes%20patula.jpg?width=800"
+    },
+    {
+      "id": "tagetes-erecta",
+      "name": "Aztec mariwanol relagantus",
+      "latin": "Tagetes erecta",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Tagetes erecta, the Aztec marigold, Mexican marigold, big marigold, cempaxochitl or cempasúchil, is a species of flowering plant in the genus Tagetes native to Mexico and Central America. Despite being native to the Americas, it is often called the African mar",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tagetes%20x%20erecta1.jpg?width=800"
+    },
+    {
+      "id": "calendula-officinalis",
+      "name": "Pot marigold",
+      "latin": "Calendula officinalis",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Calendula officinalis, Mary's gold, common marigold, the pot marigold, Scotch marigold, or ruddles, is a flowering plant in the daisy family, Asteraceae. It is probably native to southern Europe, but its long history of cultivation makes its precise origin unk",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070"
+    },
+    {
+      "id": "aster-amellus",
+      "name": "Garden aster",
+      "latin": "Aster amellus",
+      "type": "perennial",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Aster amellus, the European Michaelmas daisy, is a perennial herbaceous plant and the type species of the genus Aster and the family Asteraceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aster%20amellus%201.jpg?width=800"
+    },
+    {
+      "id": "symphyotrichum-novi-belgii",
+      "name": "New York aster",
+      "latin": "Symphyotrichum novi-belgii",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Symphyotrichum novi-belgii, commonly called New York aster, is a species of flowering plant. It is the type species for Symphyotrichum, a genus in the family Asteraceae, whose species were once considered to be part of the genus Aster. Plants in both these gen",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Symphyotrichum%20novi-belgii%20138399587%20(cropped).jpg?width=800"
+    },
+    {
+      "id": "achillea-millefolium",
+      "name": "Common yarrow",
+      "latin": "Achillea millefolium",
+      "type": "annual",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Achillea millefolium, commonly known as yarrow or common yarrow, is a flowering plant in the family Asteraceae. Growing to 1 metre tall, it is characterized by small whitish flowers, a tall stem of fernlike leaves, and a pungent odor.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Achillea%20millefolium%20vallee-de-grace-amiens%2080%2022062007%201.jpg?width=800"
+    },
+    {
+      "id": "leucanthemum-superbum",
+      "name": "Leucanthemum ×superbum",
+      "latin": "Leucanthemum × superbum",
+      "type": "perennial",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Leucanthemum × superbum, the Shasta daisy, is a commonly grown flowering herbaceous perennial plant with the classic daisy appearance of white petals around a yellow disc, similar to the oxeye daisy Leucanthemum vulgare Lam, but larger.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Leucanthemum%20x%20superbum%20'Becky'%20in%20NH.jpg?width=800"
+    },
+    {
+      "id": "coreopsis-grandiflora",
+      "name": "Large-flowered tickseed",
+      "latin": "Coreopsis grandiflora",
+      "type": "perennial",
+      "bloomMonths": [
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Coreopsis grandiflora is a North American species of perennial plant in the family Asteraceae. The common name is large-flowered tickseed. It is found in eastern Canada and much of the United States, especially the south-central part of the country. The specie",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#e8b070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Alois%20Lunzer04.jpg?width=800"
+    },
+    {
+      "id": "dahlia-pinnata",
+      "name": "D. pinnata",
+      "latin": "Dahlia pinnata",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Dahlia pinnata is a species in the genus Dahlia, family Asteraceae, with the common name garden dahlia. It is the type species of the genus and is widely cultivated.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/%2C00%200904%20Dahlia%20%C3%97%20pinnata.jpg?width=800"
+    },
+    {
+      "id": "chrysanthemum-morifolium",
+      "name": "Chrysanthemum morifolium",
+      "latin": "Chrysanthemum × morifolium",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Chrysanthemum × morifolium is a hybrid species of perennial plant in the genus Chrysanthemum of the family Asteraceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Chrysanthemum%20morifolium%2008NOV.jpg?width=800"
+    },
+    {
+      "id": "rosa-rugosa",
+      "name": "Rugosa rose",
+      "latin": "Rosa rugosa",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Rosa rugosa is a species of rose native to eastern Asia, in northeastern China, Japan, Korea and southeastern Siberia, where it grows on beach coasts, often on sand dunes. It is naturalized in much of Europe and parts of the United States and Canada. It should",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rosa%20rugosa%20Sakhalin%201.JPG?width=800"
+    },
+    {
+      "id": "rosa-canina",
+      "name": "Dog rose",
+      "latin": "Rosa canina",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Rosa canina, the dog rose, is a variable climbing, wild rose species native to Europe, northwest Africa, and western Asia.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Divlja%20ruza%20cvijet%20270508.jpg?width=800"
+    },
+    {
+      "id": "geum-chiloense",
+      "name": "Geum chiloense",
+      "latin": "Geum chiloense",
+      "type": "perennial",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Geum quellyon, commonly called scarlet avens, Chilean avens or Grecian rose, is a perennial herb in the family Rosaceae. It is native to the central and southern regions of Chile. G. quellyon has been introduced to other countries including Belgium, Bolivia, a",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Geum%20chiloense%20'Mrs%20Bradshaw'.jpg?width=800"
+    },
+    {
+      "id": "geum-rivale",
+      "name": "Water Avens",
+      "latin": "Geum rivale",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Geum rivale, the water avens, is a flowering plant in the genus Geum within the family Rosaceae. Other names of the plant are nodding avens, drooping avens, cure-all, water flower and Indian chocolate. It is native to the temperate regions of Europe, Central A",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Geum%20rivale%20-%20flower%20and%20bottoms.jpg?width=800"
+    },
+    {
+      "id": "alchemilla-mollis",
+      "name": "Alchemilla mollis",
+      "latin": "Alchemilla mollis",
+      "type": "perennial",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Alchemilla mollis, the garden lady's-mantle or lady's-mantle, is a species of flowering plant in the family Rosaceae. This herbaceous perennial plant is native to Southern Europe and grown throughout the world as an ornamental garden plant. It grows 30 to 45 c",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "heightCm": 45,
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Alchemilla%20mollis%20ies.jpg?width=800"
+    },
+    {
+      "id": "filipendula-ulmaria",
+      "name": "Mead wort",
+      "latin": "Filipendula ulmaria",
+      "type": "perennial",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Filipendula ulmaria, commonly known as meadowsweet or mead wort, is a perennial herbaceous plant in the family Rosaceae that grows in damp meadows. It is native throughout most of Europe and Western Asia. It has been introduced and naturalised in North America",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Filipendula-ulmaria.JPG?width=800"
+    },
+    {
+      "id": "potentilla-fruticosa",
+      "name": "Shrubby Cinquefoil",
+      "latin": "Potentilla fruticosa",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Dasiphora fruticosa is a species of hardy deciduous flowering shrub in the family Rosaceae, native to the cool temperate and subarctic regions of the northern hemisphere, often growing at high elevations in mountains. Dasiphora fruticosa is still widely refere",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dasiphora%20fruticosa%205698.jpg?width=800"
+    },
+    {
+      "id": "prunus-laurocerasus",
+      "name": "Common laurel",
+      "latin": "Prunus laurocerasus",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Prunus laurocerasus, also known as cherry laurel, common laurel and sometimes English laurel in North America, is an evergreen species of cherry (Prunus), native to regions bordering the Black Sea in southwestern Asia and southeastern Europe, from Albania and",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Karayemi%C5%9F-8.jpg?width=800"
+    },
+    {
+      "id": "prunus-avium",
+      "name": "Wild cherry",
+      "latin": "Prunus avium",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Prunus avium, commonly called wild cherry, sweet cherry or gean, is a species of cherry, a flowering plant in the rose family, Rosaceae. It is native to western Eurasia and naturalized elsewhere. It is an ancestor of P. cerasus.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Prunus%20avium%20fruit.jpg?width=800"
+    },
+    {
+      "id": "pyracantha-coccinea",
+      "name": "Scarlet firethorn",
+      "latin": "Pyracantha coccinea",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Pyracantha coccinea, the scarlet firethorn is the European species of firethorn or red firethorn that has been cultivated in gardens since the late 16th century. The tree has small white flowers. It produces small, bright red berries. Its leaves are slightly t",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Feuerdorn%20(Pyracantha%20coccinea).JPG?width=800"
+    },
+    {
+      "id": "helleborus-orientalis",
+      "name": "Helleborus orientalis",
+      "latin": "Helleborus orientalis",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Helleborus orientalis, or the Lenten rose, is a perennial flowering plant and species of hellebore in the buttercup family, Ranunculaceae, native to Greece and Turkey.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Helleborus%20orientalis2.jpg?width=800"
+    },
+    {
+      "id": "helleborus-niger",
+      "name": "Black hellebore",
+      "latin": "Helleborus niger",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Helleborus niger, commonly called Christmas rose or black hellebore, is an evergreen perennial flowering plant in the buttercup family, Ranunculaceae. It is one of about 20 species from the genus Helleborus.\nIt is a poisonous cottage garden favourite because i",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bloem%20van%20een%20kerstroos%20(Helleborus%20niger)%2016-12-2021.%20(d.j.b)%2002.jpg?width=800"
+    },
+    {
+      "id": "helleborus-foetidus",
+      "name": "Stinking hellebore",
+      "latin": "Helleborus foetidus",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Helleborus foetidus, known variously as stinking hellebore, dungwort, setterwort and bear's foot, is a species of flowering plant in the buttercup family Ranunculaceae, native to the mountainous regions of Central and Southern Europe and Asia Minor. It is foun",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/2007-04-06Helleborus%20foetidus21Habitus.jpg?width=800"
+    },
+    {
+      "id": "aquilegia-vulgaris",
+      "name": "Common columbine",
+      "latin": "Aquilegia vulgaris",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Aquilegia vulgaris is a species of perennial flowering plant of the genus Aquilegia (columbine) in the family Ranunculaceae. Commonly called the common columbine, European crowfoot, and granny's bonnet, it presently possesses the most expansive range and great",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aquilegia%20vulgaris%20-%20Harilik%20kurekell.jpg?width=800"
+    },
+    {
+      "id": "anemone-blanda",
+      "name": "Winter windflower",
+      "latin": "Anemone blanda",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Anemonoides blanda, syn. Anemone blanda, the Balkan anemone, Grecian windflower, or winter windflower, is a species of flowering plant in the family Ranunculaceae. The species is native to southeastern Europe and the Middle East. The specific epithet blanda me",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anemone%20blanda1GrooverFW.jpg?width=800"
+    },
+    {
+      "id": "anemone-hybrida",
+      "name": "Anemone ×hybrida",
+      "latin": "Anemone × hybrida",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Eriocapitella × hybrida is a hybrid of flowering plant in the buttercup family Ranunculaceae. The parents of the hybrid are E. japonica and E. vitifolia. Cultivars of the hybrid are commonly known as Japanese anemone hybrids.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anemone%20x%20hybrida%2001.jpg?width=800"
+    },
+    {
+      "id": "clematis-montana",
+      "name": "Indian virgin's bower",
+      "latin": "Clematis montana",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Clematis montana, the mountain clematis, also Himalayan clematis or anemone clematis, is a flowering plant in the buttercup family Ranunculaceae. A vigorous deciduous climber, in late spring it is covered with a mass of small blooms for a period of about four",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Clematis%20Montana%2002.jpg?width=800"
+    },
+    {
+      "id": "clematis-viticella",
+      "name": "Clematis viticella",
+      "latin": "Clematis viticella",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Clematis viticella, the Italian leather flower, purple clematis, or virgin's bower, is a species of flowering plant in the buttercup family Ranunculaceae, native to Southern Europe and Western Asia, from the Italic Peninsula to Iran. This deciduous climber was",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Clematis%20viticella3UME.jpg?width=800"
+    },
+    {
+      "id": "delphinium-elatum",
+      "name": "Delphinium elatum",
+      "latin": "Delphinium elatum",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Delphinium elatum is a species of flowering plant in the buttercup family Ranunculaceae, known by the common names alpine delphinium, bee larkspur, or candle larkspur. It is native to temperate Asia and Europe, it is an erect herbaceous perennial growing to 1.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "heightCm": 180,
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Delphinium%20elatum%20-%20panoramio.jpg?width=800"
+    },
+    {
+      "id": "aconitum-napellus",
+      "name": "Wolf's bane",
+      "latin": "Aconitum napellus",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Aconitum napellus, monkshood, aconite, Venus' chariot or wolfsbane, is a species of highly toxic flowering plants in the genus Aconitum of the family Ranunculaceae, native and endemic to western and central Europe. A perennial plant, it is herbaceous and grows",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "free",
+      "heightCm": 10,
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aconitum%20napellus%20230705.jpg?width=800"
+    },
+    {
+      "id": "ranunculus-acris",
+      "name": "Tall buttercup",
+      "latin": "Ranunculus acris",
+      "type": "perennial",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "growersTips": "Ranunculus acris is a species of flowering plant in the family Ranunculaceae, and is one of the more common buttercups across Europe and temperate Eurasia. Common names include meadow buttercup, tall buttercup, common buttercup and giant buttercup.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ranunculus%20acris%20niittyleinikki.jpg?width=800"
+    },
+    {
+      "id": "lathyrus-odoratus",
+      "name": "Sweet pea 'Millennium'",
+      "latin": "Lathyrus odoratus",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "The sweet pea, Lathyrus odoratus, is a flowering plant in the genus Lathyrus in the family Fabaceae (legumes), native to Sicily, southern Italy and the Aegean Islands.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lathyrus%20odoratus%20Painted%20Lady.jpg?width=800"
+    },
+    {
+      "id": "lupinus-polyphyllus",
+      "name": "Bigleaf Lupine",
+      "latin": "Lupinus polyphyllus",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Lupinus polyphyllus, the large-leaved lupine, big-leaved lupine, many-leaved lupine, blue-pod lupine, or, primarily in cultivation, garden lupin, is a species of lupine (lupin) native to western North America from southern Alaska and British Columbia and weste",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Evans%20Creek%20Preserve%20-%20021%20-%20flowers%20(27390131175).jpg?width=800"
+    },
+    {
+      "id": "wisteria-sinensis",
+      "name": "Wisteria sinensis",
+      "latin": "Wisteria sinensis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Wisteria sinensis, commonly known as the Chinese wisteria, is a species of flowering plant in the pea family, native to China, in the provinces of Guangxi, Guizhou, Hebei, Henan, Hubei, Shaanxi, and Yunnan. Growing 20–30 m (66–98 ft) tall, it is a deciduous vi",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 3000,
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Wisteria%20sinensis%2C%20Gibraltar.JPG?width=800"
+    },
+    {
+      "id": "trifolium-repens",
+      "name": "White clover",
+      "latin": "Trifolium repens",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Trifolium repens, the white clover, is a herbaceous perennial plant in the bean family, Fabaceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Trifolium%20repens%20inflorescence%20-%20Niitv%C3%A4lja.jpg?width=800"
+    },
+    {
+      "id": "vicia-faba",
+      "name": "Tic bean",
+      "latin": "Vicia faba",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Vicia faba, commonly known as the broad bean, fava bean, or faba bean, is a species of vetch, a flowering plant in the pea and bean family Fabaceae. It is widely cultivated as a crop for human consumption, and also as a cover crop. Varieties with smaller, hard",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc"
+    },
+    {
+      "id": "iris-germanica",
+      "name": "Bearded iris",
+      "latin": "Iris germanica",
+      "type": "bulb",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Iris × germanica is the accepted name for a species of flowering plants in the family Iridaceae commonly known as the bearded iris or the German bearded iris. It is of hybrid origin. Varieties include I. × g. var. florentina.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Iris%20germanica%20001.jpg?width=800"
+    },
+    {
+      "id": "iris-reticulata",
+      "name": "Iris reticulata",
+      "latin": "Iris reticulata",
+      "type": "bulb",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Iris reticulata, the snow iris, netted iris, or golden netted iris, is a species of flowering plant in the family Iridaceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Iris%20reticulata.jpg?width=800"
+    },
+    {
+      "id": "iris-sibirica",
+      "name": "Iris sibirica",
+      "latin": "Iris sibirica",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Iris sibirica, commonly known as Siberian iris or Siberian flag, is a species of flowering plant in the family Iridaceae. It is a rhizomatous herbaceous perennial, from Europe and Central Asia. It has long green grass-like leaves, tall stem, 2–5 violet-blue, t",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/.00%203385%20Sibirische%20Schwertlilie%20(Iris%20sibirica).jpg?width=800"
+    },
+    {
+      "id": "crocus-vernus",
+      "name": "Giant crocus",
+      "latin": "Crocus vernus",
+      "type": "bulb",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Crocus vernus is a species of flowering plant in the family Iridaceae, native to the Alps, the Pyrenees, and the Balkans. Its cultivars and those of Crocus flavus are used as ornamental plants. The Dutch crocuses are larger than the other cultivated crocus spe",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 15,
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Crocus%20vernus%20group1.jpg?width=800"
+    },
+    {
+      "id": "crocus-tommasinianus",
+      "name": "Early crocus",
+      "latin": "Crocus tommasinianus",
+      "type": "bulb",
+      "bloomMonths": [
+        4,
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Crocus tommasinianus, the woodland crocus, early crocus, or Tommasini's crocus, is a species of flowering plant in the family Iridaceae. It is named after the botanist Muzio G. Spirito de Tommasini (1794–1879). It is native to Bulgaria, Hungary, Albania, and t",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 15,
+      "colorHex": "#c0a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Crocus%20tommasinianus%20(Xytram).jpg?width=800"
+    },
+    {
+      "id": "tulipa-gesneriana",
+      "name": "Didier's tulip",
+      "latin": "Tulipa gesneriana",
+      "type": "bulb",
+      "bloomMonths": [
+        5,
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Tulipa gesneriana, the Didier's tulip or garden tulip, is a species of plant in the lily family, cultivated as an ornamental in many countries because of its large, showy flowers. This tall, late-blooming species has a single blooming flower and linear or broa",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tulipa%20gesneriana%20001.jpg?width=800"
+    },
+    {
+      "id": "narcissus-pseudonarcissus",
+      "name": "Common daffodil",
+      "latin": "Narcissus pseudonarcissus",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Narcissus pseudonarcissus, commonly named the wild daffodil or Lent lily, is a perennial flowering plant.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Narcissus%20pseudonarcissus%20030405.jpg?width=800"
+    },
+    {
+      "id": "narcissus-poeticus",
+      "name": "Poet's daffodil",
+      "latin": "Narcissus poeticus",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Narcissus poeticus, the poet's daffodil, poet's narcissus, nargis, pheasant's eye, findern flower or pinkster lily, was one of the first daffodils to be cultivated, and is frequently identified as the narcissus of ancient times. It is also often associated wit",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Grandalla%20(Narcissus%20poeticus)%20al%20Montseny%20(Catalunya).jpg?width=800"
+    },
+    {
+      "id": "galanthus-nivalis",
+      "name": "Galanthus nivalis",
+      "latin": "Galanthus nivalis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Galanthus nivalis, the snowdrop or common snowdrop, is the best-known and most widespread of the 20 species in its genus, Galanthus. Snowdrops are among the first bulbs to bloom in spring and can form impressive carpets of white in areas where they are native",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Snowdrops%20in%20Lothersdale%20Churchyard.jpg?width=800"
+    },
+    {
+      "id": "hyacinthoides-non-scripta",
+      "name": "Wood bell",
+      "latin": "Hyacinthoides non-scripta",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Hyacinthoides non-scripta is a bulbous perennial plant found in Atlantic areas from the north-western part of the Iberian Peninsula to the British Isles, and also frequently used as a garden plant. It is known in English as the common bluebell, English bluebel",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hyacinthoides%20non-scripta%20(Common%20Bluebell).jpg?width=800"
+    },
+    {
+      "id": "lilium-regale",
+      "name": "Lilium regale",
+      "latin": "Lilium regale",
+      "type": "bulb",
+      "bloomMonths": [
+        5,
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Lilium regale, called the regal lily, royal lily, king's lily,or, in New Zealand, the Christmas lily, is a species of flowering plant in the lily family Liliaceae, with trumpet-shaped flowers. It is native to the western part of Sichuan Province in southwester",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lilium%20regale%20(K%C3%B6nigslilie).jpg?width=800"
+    },
+    {
+      "id": "lilium-martagon",
+      "name": "Martagon lily",
+      "latin": "Lilium martagon",
+      "type": "bulb",
+      "bloomMonths": [
+        5,
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Lilium martagon, the martagon lily or Turk's cap lily, is a Eurasian species of lily. It has a widespread native region extending from Portugal east through Europe and Asia as far east as Mongolia.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lilium%20martagon%20a.jpg?width=800"
+    },
+    {
+      "id": "allium-giganteum",
+      "name": "Allium giganteum",
+      "latin": "Allium giganteum",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Allium giganteum, common name giant onion or giant leek, is an Asian species of onion in the amaryllis family (Amaryllidaceae), subfamily Allioideae, native to central and southwestern Asia but cultivated in many countries as a flowering garden plant. It is th",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Allium%20giganteum1.jpg?width=800"
+    },
+    {
+      "id": "allium-hollandicum",
+      "name": "Purple Sensation",
+      "latin": "Allium hollandicum",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Allium hollandicum, the Persian onion or Dutch garlic, is a species of flowering plant native to Iran and Kyrgyzstan but widely cultivated as an ornamental because of its umbels of attractive purple flowers. It is reportedly naturalized in Saint Louis County,",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Allium%20hollandicum.jpg?width=800"
+    },
+    {
+      "id": "fritillaria-meleagris",
+      "name": "Fritillaria meleagris",
+      "latin": "Fritillaria meleagris",
+      "type": "perennial",
+      "bloomMonths": [
+        5,
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Fritillaria meleagris is a Eurasian species of flowering plant in the lily family Liliaceae. Its common names include snake's head fritillary, snake's head, chess flower, frog-cup, guinea-hen flower, guinea flower, leper lily, Lazarus bell, chequered lily, che",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Fritillaria%20meleagris%20LJ%20barje2.jpg?width=800"
+    },
+    {
+      "id": "hyacinthus-orientalis",
+      "name": "Common hyacinth",
+      "latin": "Hyacinthus orientalis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Hyacinthus orientalis, the common hyacinth, garden hyacinth or Dutch hyacinth, is a species of flowering plant in the family Asparagaceae, subfamily Scilloideae. It is native to western Asia, from southern Turkey, through Syria and Lebanon to northern Israel.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hyacinth%20bloem.jpg?width=800"
+    },
+    {
+      "id": "solanum-lycopersicum",
+      "name": "Tomato",
+      "latin": "Solanum lycopersicum",
+      "type": "vegetable",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "The tomato is a plant whose fruit is an edible berry that is eaten as a vegetable. The tomato is a member of the nightshade family that includes tobacco, potato, and chili peppers. It originated from western South America, and may have been domesticated there,",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#e07070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pomodorini%20sulla%20pianta.jpg?width=800"
+    },
+    {
+      "id": "solanum-tuberosum",
+      "name": "Potato",
+      "latin": "Solanum tuberosum",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "The potato is a starchy tuberous vegetable native to the Americas that is consumed as a staple food in many parts of the world. Potatoes are underground stem tubers of the plant Solanum tuberosum, a perennial in the nightshade family Solanaceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#e07070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Potato%20sprout%2C%20January%2023%2C%202006.jpg?width=800"
+    },
+    {
+      "id": "capsicum-annuum",
+      "name": "Capsicum annuum",
+      "latin": "Capsicum annuum",
+      "type": "vegetable",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Capsicum annuum is a flowering plant in the family Solanaceae (nightshades), native to the northern regions of South America and to southwestern North America. The plant produces berries of many colors including red, green, and yellow, often with pungent taste",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#e07070"
+    },
+    {
+      "id": "solanum-melongena",
+      "name": "Eggplant",
+      "latin": "Solanum melongena",
+      "type": "vegetable",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Eggplant, aubergine, brinjal, or baigan is a plant species in the nightshade family Solanaceae. Solanum melongena is grown worldwide for its edible fruit, typically used as a vegetable in cooking.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#e07070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Solanum%20melongena%2024%2008%202012%20(1).JPG?width=800"
+    },
+    {
+      "id": "petunia-hybrida",
+      "name": "Petunia × hybrida",
+      "latin": "Petunia × hybrida",
+      "type": "vegetable",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Petunia × atkinsiana is a Petunia plant \"nothospecies\" (hybrid), which encompasses all hybrid species of petunia between P. axillaris and P. integrifolia. Most of the petunias sold for cultivation in home gardens are this type and belong to this nothospecies.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#e07070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Petunia%20x%20hybrida%20a2.JPG?width=800"
+    },
+    {
+      "id": "nicotiana-sylvestris",
+      "name": "Nicotiana sylvestris",
+      "latin": "Nicotiana sylvestris",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Nicotiana sylvestris is a species of flowering plant in the nightshade family Solanaceae, known by the common names woodland tobacco, flowering tobacco, and South American tobacco. It is a biennial or short-lived perennial plant in the tobacco genus Nicotiana,",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#e07070",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nicotiana%20sylvestris%20(flowers).jpg?width=800"
+    },
+    {
+      "id": "petroselinum-crispum",
+      "name": "Parsley",
+      "latin": "Petroselinum crispum",
+      "type": "herb",
+      "bloomMonths": [
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Parsley, or garden parsley, is a species of flowering plant in the family Apiaceae that is native to the Balkans. It has been introduced and naturalized in Europe and elsewhere in the world with suitable climates, and is widely cultivated as a herb and a veget",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Petroselinum%20crispum%20003.JPG?width=800"
+    },
+    {
+      "id": "coriandrum-sativum",
+      "name": "Coriander",
+      "latin": "Coriandrum sativum",
+      "type": "annual",
+      "bloomMonths": [
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Coriander, or Coriandrum sativum, is an annual herb in the family Apiaceae. The leaves are known as cilantro in the US. Most people perceive the leaves as having a fresh, slightly citrus taste. Due to variations in the gene OR6A2, some people perceive its flav",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/A%20scene%20of%20Coriander%20leaves.JPG?width=800"
+    },
+    {
+      "id": "anethum-graveolens",
+      "name": "Dill",
+      "latin": "Anethum graveolens",
+      "type": "annual",
+      "bloomMonths": [
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Dill is an annual herb in the celery family Apiaceae. Native to North Africa and West Asia, dill is grown widely in Eurasia, where its leaves and seeds are used as a herb or spice for flavouring food.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anethum%20graveolens%2002.jpg?width=800"
+    },
+    {
+      "id": "foeniculum-vulgare",
+      "name": "Fennel",
+      "latin": "Foeniculum vulgare",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Fennel is a flowering plant species in the carrot family. It is a hardy, perennial herb with yellow flowers and feathery leaves. It is indigenous to the shores of the Mediterranean but has become widely naturalized in many parts of the world, especially on dry",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Foeniculum%20vulgare%20in%202025.jpg?width=800"
+    },
+    {
+      "id": "daucus-carota-subsp-sativus",
+      "name": "Daucus carota sativus",
+      "latin": "Daucus carota subsp. sativus",
+      "type": "biennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "The carrot is a root vegetable in the umbellifer family Apiaceae. Carrots are typically orange in colour due to their beta-carotene content, which makes them a rich source of vitamin A. Heirloom variants may be white, yellow, red, purple, or black. They are bi",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bunches%20of%20carrots.jpg?width=800"
+    },
+    {
+      "id": "astrantia-major",
+      "name": "Great masterwort",
+      "latin": "Astrantia major",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Astrantia major, the great masterwort, is a species of flowering plant in the family Apiaceae, native to central and eastern Europe. Growing up to 90 cm (35 in) tall by 45 cm (18 in) broad, it is an herbaceous perennial, much used in gardens.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 90,
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/PlantsInArvenbul1400m.jpg?width=800"
+    },
+    {
+      "id": "eryngium-giganteum",
+      "name": "Eryngium giganteum",
+      "latin": "Eryngium giganteum",
+      "type": "herb",
+      "bloomMonths": [
+        6,
+        7
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Eryngium giganteum, with the common name Miss Willmott's ghost, is a species of flowering plant in the family Apiaceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/0%20Eryngium%20giganteum%20-%20Panicaut%20g%C3%A9ant.JPG?width=800"
+    },
+    {
+      "id": "cucurbita-pepo",
+      "name": "Field pumpkin",
+      "latin": "Cucurbita pepo",
+      "type": "vegetable",
+      "bloomMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Cucurbita pepo is a cultivated plant of the genus Cucurbita. It yields varieties of winter squash and pumpkin, but the most widespread varieties belong to the subspecies Cucurbita pepo subsp. pepo, called summer squash.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20pepo%20collage%201.png?width=800"
+    },
+    {
+      "id": "cucurbita-maxima",
+      "name": "Cucurbita maxima",
+      "latin": "Cucurbita maxima",
+      "type": "vegetable",
+      "bloomMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Cucurbita maxima, one of at least five species of cultivated squash, is one of the most diverse domesticated species. This species originated in South America from the wild subspecies Cucurbita maxima subsp. andreana over 4,000 years ago. Cucurbita maxima, kno",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20maxima%20Blanco2.320.png?width=800"
+    },
+    {
+      "id": "cucumis-sativus",
+      "name": "Cucumber",
+      "latin": "Cucumis sativus",
+      "type": "annual",
+      "bloomMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "The cucumber is a widely-cultivated creeping vine plant in the family Cucurbitaceae that bears cylindrical to spherical fruits, used as culinary vegetables. Considered an annual plant, there are three main types: slicing, pickling, and seedless.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucumis%20sativus20090812%20497.jpg?width=800"
+    },
+    {
+      "id": "cucurbita-moschata",
+      "name": "Cucurbita moschata",
+      "latin": "Cucurbita moschata",
+      "type": "vegetable",
+      "bloomMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "growersTips": "Cucurbita moschata is a species originating in the tropical Americas which is cultivated for edible flesh, flowers, greens, and seeds. It includes cultivars known in English as squash or pumpkin. Cultivars of C. moschata are generally more tolerant of hot, hum",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#7aaa8a",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Cucurbita%20moschata%20Butternut%202012%20G2.jpg?width=800"
+    },
+    {
+      "id": "brassica-oleracea",
+      "name": "Wild cabbage",
+      "latin": "Brassica oleracea",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Brassica oleracea, also known as wild cabbage in its uncultivated form, is a plant of the family Brassicaceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Brassica%20oleracea0.jpg?width=800"
+    },
+    {
+      "id": "lobularia-maritima",
+      "name": "Lobularia maritima",
+      "latin": "Lobularia maritima",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Lobularia maritima is a species of low-growing flowering plant in the family Brassicaceae. Its common name is sweet alyssum or sweet Alison, also commonly referred to as just alyssum.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Caps%20blancs%20pel%20Bellveret%2C%20X%C3%A0tiva.jpg?width=800"
+    },
+    {
+      "id": "erysimum-cheiri",
+      "name": "Cheiranthus cheiri L.",
+      "latin": "Erysimum cheiri",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Erysimum cheiri, syn. Cheiranthus cheiri, the wallflower, is a species of flowering plant in the family Brassicaceae (Cruciferae), native to Greece, but widespread as an introduced species elsewhere. It is also treated as a hybrid under the name Erysimum × che",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Erysimum%20cheiri3.jpg?width=800"
+    },
+    {
+      "id": "hesperis-matronalis",
+      "name": "Rogue's gillyflower",
+      "latin": "Hesperis matronalis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Hesperis matronalis is an herbaceous flowering plant species in the family Brassicaceae. It has numerous common names, including dame's rocket, damask-violet, dame's-violet, dames-wort, dame's gilliflower, night-scented gilliflower, queen's gilliflower, rogue'",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/20160530Hesperis%20matronalis1.jpg?width=800"
+    },
+    {
+      "id": "dianthus-barbatus",
+      "name": "Sweet William",
+      "latin": "Dianthus barbatus",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Dianthus barbatus, the sweet William, is a species of flowering plant in the family Caryophyllaceae, native to southern Europe and parts of Asia. It has become a popular ornamental garden plant. It is a herbaceous biennial or short-lived perennial plant growin",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 92,
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dianthus%20barbatus%20PID1688-4.jpg?width=800"
+    },
+    {
+      "id": "dianthus-caryophyllus",
+      "name": "Clove pink",
+      "latin": "Dianthus caryophyllus",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Dianthus caryophyllus, commonly known as carnation or clove pink, is a species of Dianthus native to the Mediterranean region. While its exact natural range is uncertain due to extensive cultivation over the last 2,000 years, wild carnations are most common in",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 92,
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Gartennelke%201.jpg?width=800"
+    },
+    {
+      "id": "lychnis-coronaria",
+      "name": "Lychnis coronaria",
+      "latin": "Lychnis coronaria",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Silene coronaria, the rose campion, is a species of flowering plant in the family Caryophyllaceae, native to Eurasia. Other common names include dusty miller, mullein-pink and bloody William. In the United Kingdom it is still widely referenced under its synony",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lychnis%20coronaria%20A.jpg?width=800"
+    },
+    {
+      "id": "silene-dioica",
+      "name": "Red catchfly",
+      "latin": "Silene dioica",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Silene dioica, known as red campion and red catchfly, is a herbaceous flowering plant in the family Caryophyllaceae, native to Europe and introduced to the Americas.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20campion%20close%20700.jpg?width=800"
+    },
+    {
+      "id": "bergenia-cordifolia",
+      "name": "Bergenia cordifolia",
+      "latin": "Bergenia cordifolia",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Bergenia crassifolia is a species of flowering plant of the genus Bergenia in the family Saxifragaceae. Common names for the species include heart-leaved bergenia, heartleaf bergenia, leather bergenia, winter-blooming bergenia, elephant-ears, elephant's ears,",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bergenia-cordifolia.JPG?width=800"
+    },
+    {
+      "id": "heuchera-micrantha",
+      "name": "Heuchera micrantha",
+      "latin": "Heuchera micrantha",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Heuchera micrantha is a species of flowering plant in the saxifrage family known by the common name crevice alumroot, or small-flowered alumroot.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Heuchera%20micrantha%204940.JPG?width=800"
+    },
+    {
+      "id": "pulmonaria-officinalis",
+      "name": "Pulmonaria officinalis",
+      "latin": "Pulmonaria officinalis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Pulmonaria officinalis, common names lungwort, common lungwort, Mary's tears or Our Lady's milk drops, is a herbaceous rhizomatous evergreen perennial plant of the genus Pulmonaria, belonging to the family Boraginaceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pulmonaria%20officinalis%20800.jpg?width=800"
+    },
+    {
+      "id": "brunnera-macrophylla",
+      "name": "Brunnera macrophylla",
+      "latin": "Brunnera macrophylla",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Brunnera macrophylla, the Siberian bugloss, great forget-me-not, largeleaf brunnera or heartleaf, is a species of flowering plant in the family Boraginaceae, native to the Caucasus. It is a hardy, rhizomatous, herbaceous perennial, that can reach from 12 to 18",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Brunnera%20macrophylla%2C%20flowers%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800"
+    },
+    {
+      "id": "borago-officinalis",
+      "name": "Borage",
+      "latin": "Borago officinalis",
+      "type": "annual",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Borage, also known as starflower, is an annual herb in the flowering plant family Boraginaceae native to the Mediterranean region. Although the plant contains small amounts of pyrrolizidine alkaloids, some parts are edible and its seeds provide oil.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Blue%20borage%20flowers%202526205868%206b35bbac29%20b.jpg?width=800"
+    },
+    {
+      "id": "phlox-paniculata",
+      "name": "Fall phlox",
+      "latin": "Phlox paniculata",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Phlox paniculata is a species of flowering plant in the phlox family (Polemoniaceae). It is native to parts of the eastern and central United States. It is extensively cultivated in temperate regions as an ornamental plant and has become established in the wil",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Phlox%20paniculata%20famous%20light%20purple%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800"
+    },
+    {
+      "id": "phlox-subulata",
+      "name": "Phlox subulata",
+      "latin": "Phlox subulata",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Phlox subulata the creeping phlox, moss phlox, moss pink or mountain phlox, is a species of flowering plant in the family Polemoniaceae, native to the eastern and central United States, and widely cultivated.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/PurpleFlowerWade.JPG?width=800"
+    },
+    {
+      "id": "rhododendron-ponticum",
+      "name": "Pontic rhododendron",
+      "latin": "Rhododendron ponticum",
+      "type": "shrub",
+      "bloomMonths": [
+        1,
+        2,
+        12
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "peaty"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Rhododendron ponticum, called common rhododendron or pontic rhododendron, is a species of flowering plant in the Rhododendron genus of the heath family Ericaceae. It is native to the Iberian Peninsula in southwest Europe and the Caucasus region in northern Wes",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B4%D0%B6%D0%B0%D0%BD%D1%81%D0%BA%D0%B0%20%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%BA%D0%B0%20Rhododendron%20ponticum.jpg?width=800"
+    },
+    {
+      "id": "camellia-japonica",
+      "name": "Camellia japonica",
+      "latin": "Camellia japonica",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Camellia japonica, known as common camellia, or Japanese camellia, is a species of flowering plant from the genus Camellia in the tea family Theaceae. It is native to China and Japan, and grows naturally in forests at altitudes of around 300–1,100 metres (980–",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Camellia%20japonica%20var.%20decumbens%203.JPG?width=800"
+    },
+    {
+      "id": "erica-carnea",
+      "name": "Spring heath",
+      "latin": "Erica carnea",
+      "type": "shrub",
+      "bloomMonths": [
+        1,
+        2,
+        12
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "peaty"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Erica carnea, the winter heath, winter-flowering heather, spring heath or alpine heath, is a species of flowering plant in the family Ericaceae, native to mountainous areas of central, eastern and southern Europe, where it grows in coniferous woodlands or ston",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Erica%20carnea0.jpg?width=800"
+    },
+    {
+      "id": "calluna-vulgaris",
+      "name": "Calluna vulgaris",
+      "latin": "Calluna vulgaris",
+      "type": "shrub",
+      "bloomMonths": [
+        1,
+        2,
+        12
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "peaty"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Calluna vulgaris, common heather, ling, or simply heather, is the sole species in the genus Calluna in the flowering plant family Ericaceae. It is a low-growing evergreen shrub growing to 20 to 50 centimetres tall, or rarely to 1 metre (40 in) and taller, and",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CallunaVulgaris.jpg?width=800"
+    },
+    {
+      "id": "pieris-japonica",
+      "name": "Pieris japonica",
+      "latin": "Pieris japonica",
+      "type": "shrub",
+      "bloomMonths": [
+        1,
+        2,
+        12
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "peaty"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Pieris japonica, the Japanese andromeda or Japanese pieris, is a species of flowering plant in the heath family Ericaceae. It is native to eastern China, Taiwan, and Japan, where it grows in mountain thickets. This medium-sized evergreen shrub or tree is widel",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pieris%20japonica%2010.jpg?width=800"
+    },
+    {
+      "id": "hydrangea-macrophylla",
+      "name": "Penny mac",
+      "latin": "Hydrangea macrophylla",
+      "type": "shrub",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Hydrangea macrophylla is a species of flowering plant in the family Hydrangeaceae, native and endemic to Japan. It is a deciduous shrub growing to 3 m (10 ft) tall by 2.5 m (8 ft) or more broad with large heads of pink or blue flowers in summer and autumn. It",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 300,
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(Natural)%20Hydrangea%20macrophylla%2C%20Iwafune%2C%20Isumi%2C%20Chiba%2C%20Japan%202.jpg?width=800"
+    },
+    {
+      "id": "hydrangea-paniculata",
+      "name": "Hydrangea paniculata",
+      "latin": "Hydrangea paniculata",
+      "type": "shrub",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Hydrangea paniculata, or panicled hydrangea, is a species of flowering plant in the family Hydrangeaceae native to southern and eastern China, Korea, Japan and Russia (Sakhalin). It was first formally described by Philipp Franz von Siebold in 1829.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 250,
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hydrangea%20paniculata%20IMG%206629.JPG?width=800"
+    },
+    {
+      "id": "hydrangea-arborescens",
+      "name": "Hydrangea arborescens",
+      "latin": "Hydrangea arborescens",
+      "type": "shrub",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Hydrangea arborescens, commonly known as smooth hydrangea or sevenbark, is a species of flowering plant in the family Hydrangeaceae. It is a small- to medium-sized, multi-stemmed, deciduous shrub up to 2 m (7 ft) tall that is native to the eastern United State",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 200,
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hydrangea%20arborescens%20001.JPG?width=800"
+    },
+    {
+      "id": "oenothera-biennis",
+      "name": "Hog weed",
+      "latin": "Oenothera biennis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Oenothera biennis, the common evening-primrose, is a species of flowering plant in the family Onagraceae, native to eastern and central North America, from Newfoundland west to Alberta, southeast to Florida, and southwest to Texas, and widely naturalized elsew",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oenothera%20biennis%2020050825%20962.jpg?width=800"
+    },
+    {
+      "id": "fuchsia-magellanica",
+      "name": "Fuchsia magellanica",
+      "latin": "Fuchsia magellanica",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Fuchsia magellanica – commonly known as the hummingbird fuchsia, hardy fuchsia or chilco – is a species of flowering plant in the evening primrose family Onagraceae, native to the lower Southern Cone of southern South America.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/00%208211%20Scharlach-Fuchsie.jpg?width=800"
+    },
+    {
+      "id": "tropaeolum-majus",
+      "name": "Cardamindum majus Moench",
+      "latin": "Tropaeolum majus",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Tropaeolum majus, the garden nasturtium, nasturtium, Indian cress or monk's cress, is a species of flowering plant in the family Tropaeolaceae. An annual or a short-lived perennial with disc-shaped leaves and brilliant yellow, orange or red flowers, it is of c",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tropaeolum%20majus%202005%20G1.jpg?width=800"
+    },
+    {
+      "id": "geranium-pratense",
+      "name": "Meadow Geranium",
+      "latin": "Geranium pratense",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Geranium pratense, the meadow crane's-bill or meadow geranium, is a species of flowering plant in the family Geraniaceae, native to Europe and Asia. Forming a clump up to 1 m (3.3 ft) broad, it is a herbaceous perennial with hairy stems and lax saucer-shaped b",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 100,
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Geranium%20pratense%20(Meadow%20Cranesbill).jpg?width=800"
+    },
+    {
+      "id": "geranium-sanguineum",
+      "name": "Geranium sanguineum",
+      "latin": "Geranium sanguineum",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Geranium sanguineum, common name bloody crane's-bill or bloody geranium, is a species of hardy flowering herbaceous perennial plant in the cranesbill family Geraniaceae. It is the county flower of Northumberland.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "heightCm": 100,
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Geranium%20sanguineum%20-%20Flower%20and%20leaf%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg?width=800"
+    },
+    {
+      "id": "pelargonium-hortorum",
+      "name": "Pelargonium ×hortorum",
+      "latin": "Pelargonium × hortorum",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Pelargonium × hortorum, commonly called zonal geranium, or garden geranium, is a nothospecies of Pelargonium most commonly used as an ornamental plant. It is a hybrid between Pelargonium zonale and Pelargonium inquinans. They are the group of Pelargonium culti",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pelargonium%20flower.jpg?width=800"
+    },
+    {
+      "id": "papaver-orientale",
+      "name": "Papaver orientale",
+      "latin": "Papaver orientale",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Papaver orientale, the Oriental poppy, is a perennial flowering plant native to the Caucasus, northeastern Turkey, and northern Iran.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oriental%20poppy.jpg?width=800"
+    },
+    {
+      "id": "papaver-rhoeas",
+      "name": "Red poppy",
+      "latin": "Papaver rhoeas",
+      "type": "annual",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Papaver rhoeas, with common names including common poppy, corn poppy, corn rose, field poppy, Flanders poppy, red poppy, and Odai, is an annual herbaceous species of flowering plant in the poppy family Papaveraceae. It is native to north Africa and temperate E",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Papaver%20rhoeas%20LC0050.jpg?width=800"
+    },
+    {
+      "id": "eschscholzia-californica",
+      "name": "Eschscholzia californica",
+      "latin": "Eschscholzia californica",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Eschscholzia californica, the California poppy, golden poppy, Mexican poppy, California sunlight or cup of gold, is a species of flowering plant in the family Papaveraceae, native to the United States and Mexico. It is cultivated as an ornamental plant floweri",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kaldari%20Eschscholzia%20californica%2001.jpg?width=800"
+    },
+    {
+      "id": "digitalis-purpurea",
+      "name": "Digitalis purpurea",
+      "latin": "Digitalis purpurea",
+      "type": "biennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Digitalis purpurea, the foxglove or common foxglove, is a toxic species of flowering plant in the plantain family Plantaginaceae, native to and widespread throughout most of temperate Europe. It has also naturalized in parts of North America, as well as some o",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Digitalis%20purpurea%20220605.jpg?width=800"
+    },
+    {
+      "id": "digitalis-grandiflora",
+      "name": "Yellow foxglove",
+      "latin": "Digitalis grandiflora",
+      "type": "biennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Digitalis grandiflora, the yellow foxglove, big-flowered foxglove, or large yellow foxglove, is a species of flowering plant in the genus Digitalis, family Plantaginaceae. It is native to southern Europe and Asia. In mountains it grows on warm, bushy slopes or",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Digitalis%20grandiflora%20(massif%20des%20Vosges).JPG?width=800"
+    },
+    {
+      "id": "antirrhinum-majus",
+      "name": "Antirrhinum majus",
+      "latin": "Antirrhinum majus",
+      "type": "biennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Antirrhinum majus, the common snapdragon, is a species of flowering plant belonging to the genus Antirrhinum. The plant was placed in the family Plantaginaceae following a revision of its prior classical family, Scrophulariaceae.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Antirrhinum%20majus%20from%20Thasos.JPG?width=800"
+    },
+    {
+      "id": "penstemon-barbatus",
+      "name": "Penstemon barbatus",
+      "latin": "Penstemon barbatus",
+      "type": "biennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Penstemon barbatus, known by the common names golden-beard penstemon, and beardlip penstemon, is a flowering plant native to the western United States.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Beardlip%20Penstemon%20Upper%20Huachuca%20Canyon%20Sierra%20Vista%20AZ%202018-08-05%2011-01-38%20(43106621645).jpg?width=800"
+    },
+    {
+      "id": "verbascum-thapsus",
+      "name": "Great mullein",
+      "latin": "Verbascum thapsus",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Verbascum thapsus, the great mullein, greater mullein or common mullein, is a species of mullein native to Europe, northern Africa, and Asia, and introduced in the Americas, Australia and New Zealand.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kleinbl%C3%BCtige%20K%C3%B6nigskerze.JPG?width=800"
+    },
+    {
+      "id": "sedum-spectabile",
+      "name": "Sedum spectabile",
+      "latin": "Sedum spectabile",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Hylotelephium spectabile is a species of flowering plant in the stonecrop family Crassulaceae, native to China and Korea. Its common names include showy stonecrop, iceplant, and butterfly stonecrop.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sedum%20spectabile%203.jpg?width=800"
+    },
+    {
+      "id": "hylotelephium-telephium",
+      "name": "Hylotelephium telephium",
+      "latin": "Hylotelephium telephium",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Hylotelephium telephium, known as orpine, livelong, frog's-stomach, harping Johnny, life-everlasting, live-forever, midsummer-men, Orphan John, witch's moneybags, and garden stonecrop is a succulent perennial plant of the family Crassulaceae native to Eurasia.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Hylotelephium%20telephium%20-%20Habitus.jpg?width=800"
+    },
+    {
+      "id": "sempervivum-tectorum",
+      "name": "Sempervivum tectorum",
+      "latin": "Sempervivum tectorum",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Sempervivum tectorum, the common houseleek, is a species of flowering plant in the family Crassulaceae, native to the mountains of southern Europe, cultivated in the whole of Europe for its appearance and a Roman-era tradition claiming that it protects buildin",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sempervivum%20tectorum%20Almindelig%20Husl%C3%B8g.jpg?width=800"
+    },
+    {
+      "id": "buxus-sempervirens",
+      "name": "Common box",
+      "latin": "Buxus sempervirens",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Buxus sempervirens, the common box, European box, or boxwood, is a species of flowering plant in the genus Buxus, native to western and southern Europe, northwest Africa, and southwest Asia, from southern England south to northern Morocco, and east through the",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Buxus%20sempervirens.jpg?width=800"
+    },
+    {
+      "id": "ilex-aquifolium",
+      "name": "Common holly",
+      "latin": "Ilex aquifolium",
+      "type": "shrub",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Ilex aquifolium, the holly, common holly, English holly, European holly, or occasionally Christmas holly, is a species of flowering plant in the family Aquifoliaceae, native to western and southern Europe, northwest Africa, and southwest Asia. It is regarded a",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc"
+    },
+    {
+      "id": "verbena-bonariensis",
+      "name": "Verbena bonariensis",
+      "latin": "Verbena bonariensis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Verbena bonariensis, commonly known as the purpletop vervain, clustertop vervain, Argentinian vervain, tall verbena or pretty verbena, is a member of the verbena family cultivated as a flowering annual or herbaceous perennial plant. In United States horticultu",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Verbena%20bonariensis.jpg?width=800"
+    },
+    {
+      "id": "verbena-hybrida",
+      "name": "Verbena ×hybrida",
+      "latin": "Verbena × hybrida",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Verbena%20hybrida%203.JPG?width=800"
+    },
+    {
+      "id": "lythrum-salicaria",
+      "name": "Purple loosestrife",
+      "latin": "Lythrum salicaria",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Lythrum salicaria or purple-loosestrife is a flowering plant belonging to the family Lythraceae. It should not be confused with other plants sharing the name loosestrife that are members of the genus Lysimachia in the family Primulaceae. This herbaceous perenn",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lythrum%20salicaria%20-%20harilik%20kukesaba.jpg?width=800"
+    },
+    {
+      "id": "paeonia-lactiflora",
+      "name": "Common garden peony",
+      "latin": "Paeonia lactiflora",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Paeonia lactiflora is a species of herbaceous perennial flowering plant in the family Paeoniaceae, native to central and eastern Asia from eastern Tibet across northern China to eastern Siberia.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lactiflora1b.UME.jpg?width=800"
+    },
+    {
+      "id": "paeonia-officinalis",
+      "name": "Garden peony",
+      "latin": "Paeonia officinalis",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Paeonia officinalis, the common peony, or garden peony, is a species of flowering plant in the family Paeoniaceae, native to mainly mountainous areas of Southern Europe and introduced in Central and Western Europe and North America.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Paeonia%20officinalis%201.jpg?width=800"
+    },
+    {
+      "id": "strelitzia-reginae",
+      "name": "Strelitzia reginae",
+      "latin": "Strelitzia reginae",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Strelitzia reginae, commonly known as the crane flower, bird of paradise, or isigude in Nguni, is a species of flowering plant native to the Cape Provinces and KwaZulu-Natal in South Africa. An evergreen perennial, it is widely cultivated for its dramatic flow",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bird%20of%20Paradise%20flower.JPG?width=800"
+    },
+    {
+      "id": "phalaenopsis-amabilis",
+      "name": "Phalaenopsis amabilis",
+      "latin": "Phalaenopsis amabilis",
+      "type": "herb",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Phalaenopsis amabilis, commonly known as moon orchid, moth orchid, or mariposa orchid, is a species of flowering plant in the orchid family Orchidaceae. It is widely cultivated as a decorative houseplant. It is an epiphytic or lithophytic herb with long, thick",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Phalaenopsis%20amabilis%20Orchi%2003.jpg?width=800"
+    },
+    {
+      "id": "cymbidium-hybrid",
+      "name": "Cymbidium hybridum",
+      "latin": "Cymbidium hybrid",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/A%20and%20B%20Larsen%20orchids%20-%20Cymbidium%20Eastern%20Star%20Kawano%20DSCN4732.JPG?width=800"
+    },
+    {
+      "id": "dendrobium-nobile",
+      "name": "Noble Dendrobium",
+      "latin": "Dendrobium nobile",
+      "type": "herb",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Dendrobium nobile, also known as the noble dendrobium, is a member of the family Orchidaceae. It is one of the most widespread ornamental members of the orchid family. It is the state flower of the Indian state of Sikkim.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dendrobium%20nobile%20(12863000234).jpg?width=800"
+    },
+    {
+      "id": "fragaria-ananassa",
+      "name": "Strawberry",
+      "latin": "Fragaria × ananassa",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "The garden strawberry is a widely grown hybrid plant cultivated worldwide for its fruit. The genus Fragaria, the strawberries, is in the rose family, Rosaceae. The fruit is appreciated for its aroma, bright red colour, juicy texture, and sweetness. It is eaten",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Strawberries.JPG?width=800"
+    },
+    {
+      "id": "rubus-idaeus",
+      "name": "Red raspberry",
+      "latin": "Rubus idaeus",
+      "type": "shrub",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "clay"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Rubus idaeus is a red-fruited species of Rubus native to Eurasia and commonly cultivated in other temperate regions.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#f4b8b0",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/(MHNT)%20Rubus%20idaeus%20-%20Feuillage.jpg?width=800"
+    },
+    {
+      "id": "ribes-nigrum",
+      "name": "Blackcurrant",
+      "latin": "Ribes nigrum",
+      "type": "shrub",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "The blackcurrant, black currant or cassis is a deciduous shrub in the family Grossulariaceae grown for its edible berries. It is native to temperate parts of central and northern Europe and northern Asia, where it prefers damp fertile soils. It is widely culti",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Schwarzejohannisbeere.jpg?width=800"
+    },
+    {
+      "id": "vaccinium-corymbosum",
+      "name": "High blueberry",
+      "latin": "Vaccinium corymbosum",
+      "type": "shrub",
+      "bloomMonths": [
+        1,
+        2,
+        12
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "peaty"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Vaccinium corymbosum is a North American species of blueberry that became commonly cultivated as a fresh fruit crop in the 20th century. Dozens of commercial cultivars exist.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#a8d8bc",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Vaccinium%20corymbosum(01).jpg?width=800"
+    },
+    {
+      "id": "ocimum-basilicum",
+      "name": "Basil",
+      "latin": "Ocimum basilicum",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Basil, also called great basil, is a culinary herb of the family Lamiaceae (mints). It is a tender plant, and is used in cuisines worldwide. In Western cuisine, the generic term \"basil\" refers to the variety also known as Genovese basil or sweet basil. Basil i",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Basil-Basilico-Ocimum%20basilicum-albahaca.jpg?width=800"
+    },
+    {
+      "id": "mentha-piperita",
+      "name": "Peppermint",
+      "latin": "Mentha × piperita",
+      "type": "perennial",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "growersTips": "Peppermint is a hybrid species of mint, a cross between watermint and spearmint. Indigenous to Europe and the Middle East, the plant is now widely spread and cultivated in many regions of the world. It is occasionally found in the wild with its parent species.",
+      "germinationRequirements": "",
+      "companions": [],
+      "access": "pro",
+      "colorHex": "#b8a0d8",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pfefferminze%20natur%20peppermint.jpg?width=800"
+    }
+  ]
+}

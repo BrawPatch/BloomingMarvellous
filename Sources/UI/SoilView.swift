@@ -29,26 +29,22 @@ public struct SoilView: View {
     public init(scope: Scope? = nil) { self.initialScope = scope }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            Color.bmBg.ignoresSafeArea()
-
-            ScrollView {
-                VStack(spacing: 18) {
-                    scopePicker
-                    soilTypeSection
-                    wetnessSection
-                    exposureSection
-                    sunlightSection
-                    saveButton
-                    Spacer(minLength: 12)
-                }
-                .padding(20)
-                .padding(.top, 20)
+        ScrollView {
+            VStack(spacing: 18) {
+                scopePicker
+                soilTypeSection
+                wetnessSection
+                exposureSection
+                sunlightSection
+                saveButton
+                Spacer(minLength: 12)
             }
-            ToastBanner(message: $toast)
+            .padding(20)
+            .padding(.top, 20)
         }
-        .navigationTitle("Soil & Conditions")
-        .navigationBarTitleDisplayMode(.inline)
+        .bmFloralBackdrop()
+        .overlay(alignment: .top) { ToastBanner(message: $toast) }
+        .bmNavTitle("Soil & Conditions", icon: "🌿")
         .onAppear(perform: loadIfNeeded)
     }
 

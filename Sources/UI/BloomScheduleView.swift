@@ -15,20 +15,17 @@ public struct BloomScheduleView: View {
     public init() {}
 
     public var body: some View {
-        ZStack {
-            Color.bmBg.ignoresSafeArea()
-            ScrollView {
-                VStack(spacing: 14) {
-                    ForEach(1...12, id: \.self) { m in
-                        monthCard(month: m)
-                    }
+        ScrollView {
+            VStack(spacing: 14) {
+                ForEach(1...12, id: \.self) { m in
+                    monthCard(month: m)
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 18)
             }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 18)
         }
-        .navigationTitle("Bloom schedule")
-        .navigationBarTitleDisplayMode(.inline)
+        .bmFloralBackdrop()
+        .bmNavTitle("Bloom schedule", icon: "🌺")
     }
 
     @ViewBuilder

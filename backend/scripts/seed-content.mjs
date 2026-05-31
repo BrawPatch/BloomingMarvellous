@@ -41,6 +41,7 @@
 
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { readFileSync, existsSync } from "node:fs";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 // ── Args ─────────────────────────────────────────────────────────────────────
@@ -133,16 +134,18 @@ const DATA = {
   ],
 };
 
-// ── Plant library (mirrors Sources/Models/Plant.swift Codable) ───────────────
+// ── Plant library ────────────────────────────────────────────────────────────
 //
-// Keep this in sync with Sources/Models/PlantLibrary.swift. The Swift bundle
-// stays as the offline fallback; this payload is what the Lambda serves
-// (tier-filtered) via GET /v1/library.
+// Loaded from backend/data/library.json (committed; refreshed by
+// `node scripts/ingest-plants.mjs`). Falls back to an inline minimal seed
+// so a fresh checkout / first deploy still produces a usable /v1/library
+// without first running ingest. Schema mirrors Sources/Models/Plant.swift.
 
-const LIBRARY = {
+const LIBRARY_FILE = fileURLToPath(new URL("../data/library.json", import.meta.url));
+
+const INLINE_LIBRARY_FALLBACK = {
   version: 2,
   items: [
-    // ── Free tier ──
     {
       id: "lavender", name: "Lavender", latin: "Lavandula angustifolia",
       type: "perennial", heightCm: 60, colorHex: "#b8a0d8",
@@ -151,10 +154,9 @@ const LIBRARY = {
       transplantMonths: [5, 6], harvestMonths: [7, 8],
       preferredSoil: ["loam", "sandy", "chalky"],
       preferredSunlight: ["sunny_always", "sunny_pm"],
-      growersTips: "Prefers free-draining soil and full sun. Prune after flowering to keep compact.",
+      growersTips: "Free-draining soil and full sun. Prune after flowering.",
       germinationRequirements: "Light required. Surface-sow at 18–22°C. 14–21 days.",
-      companions: ["marigold"],
-      access: "free",
+      companions: ["marigold"], access: "free",
     },
     {
       id: "sunflower", name: "Sunflower", latin: "Helianthus annuus",
@@ -164,10 +166,9 @@ const LIBRARY = {
       transplantMonths: [5], harvestMonths: [9, 10],
       preferredSoil: ["loam", "sandy"],
       preferredSunlight: ["sunny_always"],
-      growersTips: "Deep watering once a week. Stake tall varieties.",
+      growersTips: "Deep water weekly. Stake tall varieties.",
       germinationRequirements: "Sow 2 cm deep at 18–24°C. 7–14 days.",
-      companions: ["cosmos"],
-      access: "free",
+      companions: ["cosmos"], access: "free",
     },
     {
       id: "cosmos", name: "Cosmos", latin: "Cosmos bipinnatus",
@@ -177,58 +178,32 @@ const LIBRARY = {
       transplantMonths: [5, 6], harvestMonths: [],
       preferredSoil: ["loam", "sandy"],
       preferredSunlight: ["sunny_always", "sunny_pm"],
-      growersTips: "Deadhead regularly for continuous bloom. Tolerates poor soil.",
+      growersTips: "Deadhead for continuous bloom.",
       germinationRequirements: "Sow 5 mm deep at 18°C. 7–10 days.",
-      companions: ["sunflower"],
-      access: "free",
-    },
-
-    // ── Pro tier ──
-    {
-      id: "dahlia", name: "Dahlia", latin: "Dahlia variabilis",
-      type: "perennial", heightCm: 120, colorHex: "#e07070",
-      bloomMonths: [7, 8, 9, 10],
-      sowIndoorMonths: [], sowDirectMonths: [],
-      transplantMonths: [5], harvestMonths: [],
-      preferredSoil: ["loam"],
-      preferredSunlight: ["sunny_always"],
-      growersTips: "Plant tubers Apr–May after last frost. Lift in autumn in cold areas.",
-      germinationRequirements: "Tubers, not seed.",
-      companions: [],
-      access: "pro",
-    },
-
-    // ── Exotic pack ──
-    {
-      id: "phalaenopsis", name: "Phalaenopsis Orchid", latin: "Phalaenopsis spp.",
-      type: "perennial", heightCm: 45, colorHex: "#c0a0d8",
-      bloomMonths: [1, 2, 3, 4, 11, 12],
-      sowIndoorMonths: [], sowDirectMonths: [],
-      transplantMonths: [], harvestMonths: [],
-      preferredSoil: ["peaty"],
-      preferredSunlight: ["sunny_am"],
-      growersTips: "Indoor-only. Bright indirect light. Water by soaking once a week.",
-      germinationRequirements: "Bought as flowering plants — propagation needs lab conditions.",
-      companions: [],
-      access: "pack_exotic",
-    },
-
-    // ── Edible pack ──
-    {
-      id: "tomato-gardener", name: "Tomato 'Gardener's Delight'", latin: "Solanum lycopersicum",
-      type: "annual", heightCm: 180, colorHex: "#e07070",
-      bloomMonths: [6, 7],
-      sowIndoorMonths: [2, 3], sowDirectMonths: [],
-      transplantMonths: [5, 6], harvestMonths: [7, 8, 9],
-      preferredSoil: ["loam"],
-      preferredSunlight: ["sunny_always"],
-      growersTips: "Side-shoot weekly. Feed weekly once trusses set.",
-      germinationRequirements: "Sow 5 mm at 21°C. 7–14 days.",
-      companions: ["basil"],
-      access: "pack_edible",
+      companions: ["sunflower"], access: "free",
     },
   ],
 };
+
+function loadLibrary() {
+  if (existsSync(LIBRARY_FILE)) {
+    try {
+      const parsed = JSON.parse(readFileSync(LIBRARY_FILE, "utf-8"));
+      if (parsed?.version === 2 && Array.isArray(parsed.items) && parsed.items.length > 0) {
+        console.log(`✓ Loaded library from ${LIBRARY_FILE} (${parsed.items.length} items)`);
+        return parsed;
+      }
+      console.warn(`⚠️ ${LIBRARY_FILE} is malformed — falling back to inline seed.`);
+    } catch (err) {
+      console.warn(`⚠️ Failed to parse ${LIBRARY_FILE}: ${err.message} — falling back to inline seed.`);
+    }
+  } else {
+    console.warn(`⚠️ ${LIBRARY_FILE} not found — using inline seed (run scripts/ingest-plants.mjs to populate).`);
+  }
+  return INLINE_LIBRARY_FALLBACK;
+}
+
+const LIBRARY = loadLibrary();
 
 // ── Upload ───────────────────────────────────────────────────────────────────
 

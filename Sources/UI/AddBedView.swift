@@ -27,22 +27,19 @@ public struct AddBedView: View {
 
     public var body: some View {
         NavigationStack {
-            ZStack {
-                Color.bmBg.ignoresSafeArea()
-                ScrollView {
-                    VStack(spacing: 16) {
-                        nameField
-                        gardenPicker
-                        sizeFields
-                        statusPicker
-                        overridesSection
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 18)
+            ScrollView {
+                VStack(spacing: 16) {
+                    nameField
+                    gardenPicker
+                    sizeFields
+                    statusPicker
+                    overridesSection
                 }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 18)
             }
-            .navigationTitle("Add bed")
-            .navigationBarTitleDisplayMode(.inline)
+            .bmSheetBackdrop()
+            .bmNavTitle("Add bed", icon: "🪴")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") { dismiss() }

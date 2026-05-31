@@ -24,19 +24,16 @@ public struct CreateGardenView: View {
 
     public var body: some View {
         NavigationStack {
-            ZStack {
-                Color.bmBg.ignoresSafeArea()
-                ScrollView {
-                    VStack(spacing: 16) {
-                        nameField
-                        defaultsSection
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 18)
+            ScrollView {
+                VStack(spacing: 16) {
+                    nameField
+                    defaultsSection
                 }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 18)
             }
-            .navigationTitle("Create garden")
-            .navigationBarTitleDisplayMode(.inline)
+            .bmSheetBackdrop()
+            .bmNavTitle("Create garden", icon: "🌱")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") { dismiss() }
