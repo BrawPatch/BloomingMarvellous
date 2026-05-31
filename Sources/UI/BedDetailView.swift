@@ -7,6 +7,7 @@ import BloomingMarvellous
 public struct BedDetailView: View {
 
     @EnvironmentObject private var store: GardenStore
+    @EnvironmentObject private var library: LibraryStore
     @State private var showingSoilOverride = false
     @State private var showingEdit = false
     @State private var showingDeleteConfirm = false
@@ -166,7 +167,7 @@ public struct BedDetailView: View {
                 SectionLabel("Crops in bed", icon: "🌱")
                 Spacer()
                 if store.user.tier == .pro {
-                    let total = store.picksByMonth(bedId: bed.id).reduce(0) { $0 + $1.plants.count }
+                    let total = picksByMonth(forBed: bed.id).reduce(0) { $0 + $1.plants.count }
                     if total > 0 {
                         Text("\(total) pick\(total == 1 ? "" : "s")")
                             .font(.custom("Nunito-Bold", size: 11))
@@ -180,7 +181,7 @@ public struct BedDetailView: View {
                     .font(.custom("Nunito-SemiBold", size: 12))
                     .foregroundStyle(Color.bmText2)
             } else {
-                let groups = store.picksByMonth(bedId: bed.id)
+                let groups = picksByMonth(forBed: bed.id)
                 if groups.isEmpty {
                     Text("No crops yet. Open the Plant Picker, choose a plant, and tap the months you want it to bloom in this bed.")
                         .font(.custom("Nunito-SemiBold", size: 12))
@@ -211,6 +212,16 @@ public struct BedDetailView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
+    }
+
+    /// Resolves picks per month for `bedId` against the LibraryStore (so
+    /// plants from the server library are surfaced, not just the bundled
+    /// fallback).
+    private func picksByMonth(forBed bedId: UUID) -> [(month: Int, plants: [Plant])] {
+        (1...12).compactMap { m in
+            let plants = store.picks(month: m, bedId: bedId).compactMap(library.plant(id:))
+            return plants.isEmpty ? nil : (m, plants)
+        }
     }
 
     private func cropRow(bed: Bed, month: Int, plants: [Plant]) -> some View {

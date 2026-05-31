@@ -334,6 +334,26 @@ public final class GardenStore: ObservableObject {
         bedPicks[bedId] = byMonth.isEmpty ? nil : byMonth
     }
 
+    /// Whether `plantId` is picked anywhere in the user's current scope
+    /// (any month, any bed inside the selected garden on Pro; any month on
+    /// the selected garden on Free). Used by the gallery tile to overlay a
+    /// "already in your plan" indicator.
+    public func isPickedInSelectedScope(plantId: String) -> Bool {
+        switch user.tier {
+        case .free:
+            guard let gid = selectedGardenId else { return false }
+            return (bloomPicks[gid] ?? [:]).values.contains { $0.contains(plantId) }
+        case .pro:
+            guard let gid = selectedGardenId else { return false }
+            for bid in beds.filter({ $0.gardenId == gid }).map(\.id) {
+                if (bedPicks[bid] ?? [:]).values.contains(where: { $0.contains(plantId) }) {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+
     /// Whether `plantId` is currently picked for `month` in the active scope.
     public func isPicked(plantId: String, month: Int) -> Bool {
         switch user.tier {

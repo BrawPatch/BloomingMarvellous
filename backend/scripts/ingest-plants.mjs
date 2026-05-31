@@ -59,6 +59,7 @@ const OUT_PATH = args.out
 const SOIL_TYPES = ["clay", "loam", "sandy", "chalky", "peaty", "silty"];
 const SUNLIGHT   = ["sunny_always", "sunny_am", "sunny_pm", "shaded_always"];
 const ACIDITY    = ["very_acidic", "mildly_acidic", "neutral", "mildly_alkaline", "very_alkaline"];
+const WETNESS    = ["soggy", "normal_poor", "normal_well", "slightly_dry", "arid"];
 const PLANT_TYPES = ["annual", "perennial", "biennial", "bulb", "shrub", "herb", "vegetable"];
 
 const MONTHS = [
@@ -75,20 +76,34 @@ const MONTHS = [
 // "Sowing details" card always has something actionable even when Wikipedia
 // didn't volunteer it.
 const FAMILY_DEFAULTS = {
-  Lamiaceae:    { type: "perennial", preferredSoil: ["loam","sandy","chalky"], preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [6,7,8], sowIndoorMonths: [3,4], sowDirectMonths: [4,5], transplantMonths: [5,6], harvestMonths: [], colorHex: "#b8a0d8" },
-  Asteraceae:   { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_acidic","mildly_alkaline"], bloomMonths: [6,7,8,9], sowIndoorMonths: [3,4], sowDirectMonths: [4,5], transplantMonths: [5], harvestMonths: [9,10], colorHex: "#e8b070" },
-  Rosaceae:     { type: "shrub",     preferredSoil: ["loam","clay"],           preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [5,6,7], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,3], harvestMonths: [], colorHex: "#f4b8b0" },
-  Ranunculaceae:{ type: "perennial", preferredSoil: ["loam","peaty"],          preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [9], transplantMonths: [9,10], harvestMonths: [], colorHex: "#c0a0d8" },
-  Fabaceae:     { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [6,7,8], sowIndoorMonths: [2,3], sowDirectMonths: [3,4], transplantMonths: [5], harvestMonths: [], colorHex: "#88c8e0" },
-  Iridaceae:    { type: "bulb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [9,10,11], harvestMonths: [], colorHex: "#c0a0d8" },
-  Liliaceae:    { type: "bulb",      preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [5,6,7], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [9,10,11], harvestMonths: [], colorHex: "#f4b8b0" },
-  Solanaceae:   { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8], sowIndoorMonths: [2,3], sowDirectMonths: [], transplantMonths: [5,6], harvestMonths: [7,8,9,10], colorHex: "#e07070" },
-  Apiaceae:     { type: "herb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   bloomMonths: [6,7], sowIndoorMonths: [3,4], sowDirectMonths: [4,5,6], transplantMonths: [5,6], harvestMonths: [6,7,8,9], colorHex: "#7aaa8a" },
-  Cucurbitaceae:{ type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8,9], sowIndoorMonths: [4,5], sowDirectMonths: [5,6], transplantMonths: [6], harvestMonths: [7,8,9], colorHex: "#7aaa8a" },
-  Orchidaceae:  { type: "perennial", preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_am","sunny_pm"],     preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [1,2,3,4,11,12], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [4,5], harvestMonths: [], colorHex: "#c0a0d8" },
-  Ericaceae:    { type: "shrub",     preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["very_acidic","mildly_acidic"], bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,3], harvestMonths: [], colorHex: "#c0a0d8" },
-  Brassicaceae: { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [4,5,6], sowIndoorMonths: [2,3], sowDirectMonths: [3,4,5], transplantMonths: [5], harvestMonths: [6,7,8,9,10], colorHex: "#f4b8b0" },
-  Hydrangeaceae:{ type: "shrub",     preferredSoil: ["loam"],                   preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,12,3], harvestMonths: [], colorHex: "#c0a0d8" },
+  Lamiaceae:    { type: "perennial", preferredSoil: ["loam","sandy","chalky"], preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], preferredWetness: ["normal_well","slightly_dry"], bloomMonths: [6,7,8], sowIndoorMonths: [3,4], sowDirectMonths: [4,5], transplantMonths: [5,6], harvestMonths: [], colorHex: "#b8a0d8",
+    tips: ["Prefers free-draining soil — never wet feet.","Full sun for the strongest fragrance.","Prune lightly after flowering to keep compact.","Hardy down to about −10 °C once established.","Excellent companion for pollinators."] },
+  Asteraceae:   { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_acidic","mildly_alkaline"], preferredWetness: ["normal_well"], bloomMonths: [6,7,8,9], sowIndoorMonths: [3,4], sowDirectMonths: [4,5], transplantMonths: [5], harvestMonths: [9,10], colorHex: "#e8b070",
+    tips: ["Deadhead to keep flowers coming through autumn.","Sun-loving — give the brightest spot you have.","Tolerates poor soil; don't over-feed.","Leave seed heads in winter for birds.","Tall varieties may need staking."] },
+  Rosaceae:     { type: "shrub",     preferredSoil: ["loam","clay"],           preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   preferredWetness: ["normal_well"], bloomMonths: [5,6,7], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,3], harvestMonths: [], colorHex: "#f4b8b0",
+    tips: ["Mulch in spring with well-rotted manure.","Prune after flowering on summer-flowerers.","Water deeply at the base, not on foliage.","Watch for blackspot and aphids — act early.","Feed with a rose fertiliser in spring + midsummer."] },
+  Ranunculaceae:{ type: "perennial", preferredSoil: ["loam","peaty"],          preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["neutral","mildly_acidic"],   preferredWetness: ["normal_well","normal_poor"], bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [9], transplantMonths: [9,10], harvestMonths: [], colorHex: "#c0a0d8",
+    tips: ["Most members enjoy dappled shade.","Mulch annually to retain spring moisture.","Many are toxic — handle with gloves.","Cut back hard after flowering for a second flush.","Lift and divide every 3–4 years."] },
+  Fabaceae:     { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_alkaline"], preferredWetness: ["normal_well"], bloomMonths: [6,7,8], sowIndoorMonths: [2,3], sowDirectMonths: [3,4], transplantMonths: [5], harvestMonths: [], colorHex: "#88c8e0",
+    tips: ["Fix nitrogen in soil — good rotation crop.","Soak seed overnight to speed germination.","Provide canes or trellis for climbers.","Pinch tips to encourage branching.","Pick pods regularly to keep cropping."] },
+  Iridaceae:    { type: "bulb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   preferredWetness: ["normal_well"], bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [9,10,11], harvestMonths: [], colorHex: "#c0a0d8",
+    tips: ["Plant corms 3× their height deep.","Leave foliage to die back naturally — feeds next year's bloom.","Lift and divide congested clumps in late summer.","Free-draining soil is essential — they hate wet feet.","Underplant with hardy annuals for continuity."] },
+  Liliaceae:    { type: "bulb",      preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   preferredWetness: ["normal_well"], bloomMonths: [5,6,7], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [9,10,11], harvestMonths: [], colorHex: "#f4b8b0",
+    tips: ["Plant bulbs at 3× their height for stable stems.","Add grit to heavy soil before planting.","Stake tall varieties before they flop.","Watch for red lily beetle — pick off by hand.","Leave foliage to die back to feed next year's bulbs."] },
+  Solanaceae:   { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   preferredWetness: ["normal_well"], bloomMonths: [6,7,8], sowIndoorMonths: [2,3], sowDirectMonths: [], transplantMonths: [5,6], harvestMonths: [7,8,9,10], colorHex: "#e07070",
+    tips: ["Start indoors in heat (20 °C+) for best germination.","Pinch out side-shoots on cordon tomatoes.","Feed weekly with high-potash food once fruit sets.","Keep watering even and consistent to avoid splits.","Watch for blight in damp summers — remove affected foliage."] },
+  Apiaceae:     { type: "herb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   preferredWetness: ["normal_well"], bloomMonths: [6,7], sowIndoorMonths: [3,4], sowDirectMonths: [4,5,6], transplantMonths: [5,6], harvestMonths: [6,7,8,9], colorHex: "#7aaa8a",
+    tips: ["Direct-sow once soil is reliably warm — they dislike root disturbance.","Pinch tips often to delay bolting.","Harvest leaves before flowers form for best flavour.","Allow some plants to flower — beneficial insects love them.","Some self-seed prolifically — let them or deadhead before set."] },
+  Cucurbitaceae:{ type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   preferredWetness: ["normal_well"], bloomMonths: [6,7,8,9], sowIndoorMonths: [4,5], sowDirectMonths: [5,6], transplantMonths: [6], harvestMonths: [7,8,9], colorHex: "#7aaa8a",
+    tips: ["Hungry feeders — work plenty of compost into planting holes.","Water deeply at the base, especially when fruiting.","Pick courgettes/cucumbers young for tender best flavour.","Mulch to keep moisture in and slugs out.","Hand-pollinate early flowers if pollinators are scarce."] },
+  Orchidaceae:  { type: "perennial", preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_am","sunny_pm"],     preferredAcidity: ["mildly_acidic","neutral"],   preferredWetness: ["normal_well"], bloomMonths: [1,2,3,4,11,12], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [4,5], harvestMonths: [], colorHex: "#c0a0d8",
+    tips: ["Bright indirect light — no direct midday sun.","Water by soaking once weekly, then let drain fully.","Use orchid bark mix, not normal compost.","Re-pot every 2 years after flowering.","Feed weakly, weekly — `feed-weak-weekly`."] },
+  Ericaceae:    { type: "shrub",     preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["very_acidic","mildly_acidic"], preferredWetness: ["normal_well"], bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,3], harvestMonths: [], colorHex: "#c0a0d8",
+    tips: ["Acid soil (pH 4.5–5.5) is essential — use ericaceous compost.","Mulch with pine needles or bark.","Water with rainwater where possible (tap water is alkaline).","Light dappled shade gives best leaf colour.","Avoid feeding with general fertilisers — use ericaceous feed."] },
+  Brassicaceae: { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], preferredWetness: ["normal_well"], bloomMonths: [4,5,6], sowIndoorMonths: [2,3], sowDirectMonths: [3,4,5], transplantMonths: [5], harvestMonths: [6,7,8,9,10], colorHex: "#f4b8b0",
+    tips: ["Lime the soil if pH is below 6.5 to prevent club root.","Net against cabbage white butterflies from May.","Firm the soil before planting — they like compaction.","Water in well at transplanting and during dry spells.","Rotate crops on a 3–4 year cycle."] },
+  Hydrangeaceae:{ type: "shrub",     preferredSoil: ["loam"],                   preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["mildly_acidic","neutral"],   preferredWetness: ["normal_well","normal_poor"], bloomMonths: [6,7,8], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,12,3], harvestMonths: [], colorHex: "#c0a0d8",
+    tips: ["Acidic soil keeps flowers blue; alkaline turns them pink.","Mulch in spring; never let roots dry out in summer.","Prune dead wood + last year's flower stems in early spring.","Tolerates light shade — great for north-facing borders.","Cut blooms for drying once papery — Aug/Sep."] },
 };
 
 // Generic UK-garden defaults, used when family is unknown.
@@ -97,12 +112,20 @@ const GENERIC_DEFAULT = {
   preferredSoil: ["loam"],
   preferredSunlight: ["sunny_always", "sunny_pm"],
   preferredAcidity: ["mildly_acidic", "neutral"],
+  preferredWetness: ["normal_well"],
   bloomMonths: [6, 7, 8],
   sowIndoorMonths: [3, 4],
   sowDirectMonths: [4, 5],
   transplantMonths: [5],
   harvestMonths: [],
   colorHex: "#a8d8bc",
+  tips: [
+    "Plant in a sheltered spot until established.",
+    "Water deeply during dry spells in the first year.",
+    "Mulch in spring to suppress weeds and retain moisture.",
+    "Feed once in spring with a balanced fertiliser.",
+    "Watch for slugs and aphids on tender new growth.",
+  ],
 };
 
 // ── HTTP helpers ─────────────────────────────────────────────────────────────
@@ -641,6 +664,18 @@ function parsePlantType(text, familyDefault) {
   return familyDefault ?? null;
 }
 
+function parseWetness(text) {
+  if (!text) return null;
+  const t = text.toLowerCase();
+  const out = new Set();
+  if (/\bboggy?\b|\bwetlands?\b|\bmarsh\b|\bsaturated\b/.test(t))   out.add("soggy");
+  if (/\bmoist\b|\bdamp\b|\bmoisture[- ]?retentive\b/.test(t))      out.add("normal_poor");
+  if (/\bwell[- ]?drained\b|\baverage\s+moisture\b|\bevenly\s+moist\b/.test(t)) out.add("normal_well");
+  if (/\bdrought[- ]?tolerant\b|\bdry\b|\bxeric\b/.test(t))         out.add("slightly_dry");
+  if (/\barid\b|\bdesert\b|\bsucculent\b/.test(t))                  out.add("arid");
+  return out.size ? [...out] : null;
+}
+
 function parseAcidity(text) {
   if (!text) return null;
   const t = text.toLowerCase();
@@ -774,11 +809,15 @@ async function buildRawRecord(row, ix) {
     preferredSoil: parseSoil(summary),
     preferredSunlight: parseSunlight(summary),
     preferredAcidity: parseAcidity(summary),
+    preferredWetness: parseWetness(summary),
     seedDepthMm: parseSeedDepthMm(summary),
     germinationTempC: parseGerminationTempC(summary),
     germinationDays: parseGerminationDays(summary),
     lightForGermination: parseLightForGermination(summary),
-    growersTips: summary ? summary.slice(0, 260).trim() : "",
+    // Wikipedia narrative now lives on `description`; `growersTips` is
+    // populated from FAMILY_DEFAULTS during inheritance as bullet text.
+    description: summary ? summary.slice(0, 600).trim() : "",
+    growersTips: "",
     germinationRequirements: "",
     companions: [],
     access: pickAccessTier(ix),
@@ -809,6 +848,7 @@ function aggregateByKey(records, keyFn) {
       preferredSoil: new Set(),
       preferredSunlight: new Set(),
       preferredAcidity: new Set(),
+      preferredWetness: new Set(),
       bloomMonths: new Set(),
       sowIndoorMonths: new Set(),
       sowDirectMonths: new Set(),
@@ -821,6 +861,7 @@ function aggregateByKey(records, keyFn) {
     (r.preferredSoil ?? []).forEach(s => cur.preferredSoil.add(s));
     (r.preferredSunlight ?? []).forEach(s => cur.preferredSunlight.add(s));
     (r.preferredAcidity ?? []).forEach(s => cur.preferredAcidity.add(s));
+    (r.preferredWetness ?? []).forEach(s => cur.preferredWetness.add(s));
     (r.bloomMonths ?? []).forEach(m => cur.bloomMonths.add(m));
     (r.sowIndoorMonths ?? []).forEach(m => cur.sowIndoorMonths.add(m));
     (r.sowDirectMonths ?? []).forEach(m => cur.sowDirectMonths.add(m));
@@ -883,6 +924,15 @@ function inherit(records) {
         famD?.preferredAcidity,
         gen.preferredAcidity,
       ) || [],
+      preferredWetness: pickFrom(
+        "preferredWetness",
+        r.preferredWetness ?? null,
+        genus && [...genus.preferredWetness],
+        family && [...family.preferredWetness],
+        famD?.preferredWetness,
+        gen.preferredWetness,
+      ) || [],
+      growersTips: (famD?.tips ?? gen.tips ?? []).join("\n"),
       bloomMonths: pickFrom(
         "bloomMonths",
         r.bloomMonths ?? null,
@@ -981,6 +1031,10 @@ function toLibraryItem(r) {
   if (Array.isArray(r.preferredAcidity) && r.preferredAcidity.length) {
     item.preferredAcidity = r.preferredAcidity;
   }
+  if (Array.isArray(r.preferredWetness) && r.preferredWetness.length) {
+    item.preferredWetness = r.preferredWetness;
+  }
+  if (r.description) item.description = r.description;
   if (r.seedDepthMm != null)        item.seedDepthMm = r.seedDepthMm;
   if (r.germinationTempC != null)   item.germinationTempC = r.germinationTempC;
   if (r.germinationDays)            item.germinationDays = r.germinationDays;

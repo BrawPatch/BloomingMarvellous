@@ -403,7 +403,13 @@ struct PlantPickerGalleryView: View {
             } else {
                 acidOk = true
             }
-            return soilOk && sunOk && acidOk
+            let wetOk: Bool
+            if let wetnesses = p.preferredWetness, !wetnesses.isEmpty {
+                wetOk = wetnesses.contains(g.wetness)
+            } else {
+                wetOk = true
+            }
+            return soilOk && sunOk && acidOk && wetOk
         }
 
         func suitsColor(_ p: Plant) -> Bool {
@@ -528,6 +534,14 @@ struct PlantPickerGalleryView: View {
                         .padding(6)
                         .accessibilityLabel("Prefers \(acid.label) soil")
                 }
+                if store.isPickedInSelectedScope(plantId: p.id) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 22))
+                        .foregroundStyle(Color.white, Color.bmGreen)
+                        .padding(6)
+                        .accessibilityLabel("Already in your plan")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
             }
             Text(p.name)
                 .font(.custom("Nunito-Bold", size: 14))
@@ -586,7 +600,7 @@ struct PlantPickerGalleryView: View {
 // the picker tile (96 px) and the detail hero (180 px). The Wikimedia Commons
 // URLs come pre-thumbnailed at width=800 by the ingest pipeline.
 
-fileprivate struct BMPlantImage: View {
+struct BMPlantImage: View {
     let plant: Plant
     let height: CGFloat
     let cornerRadius: CGFloat
@@ -712,19 +726,17 @@ struct PlantDetailView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
                         hero(p)
+                        descriptionSection(p)
                         details(p)
+                        growersTipsSection(p)
                         sowingDetailsSection(p)
                         addToPlanSection(p)
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 18)
                 }
-                .onAppear {
-                    if !didSeed {
-                        pending = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
-                        didSeed = true
-                    }
-                }
+                .onAppear { syncPendingFromStore(p) }
+                .onChange(of: store.selectedBedId) { _ in syncPendingFromStore(p) }
             } else {
                 Text("Plant not found.")
                     .font(.custom("Nunito-SemiBold", size: 14))
@@ -750,13 +762,62 @@ struct PlantDetailView: View {
     }
 
     private func hero(_ p: Plant) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 4) {
             BMPlantImage(plant: p, height: 180, cornerRadius: 18)
+            Text(p.name)
+                .font(.custom("Fredoka-SemiBold", size: 18))
+                .foregroundStyle(Color.bmText1)
+                .padding(.top, 4)
             Text(p.latin)
                 .font(.custom("Nunito-SemiBold", size: 12))
                 .foregroundStyle(Color.bmText2)
                 .italic()
         }
+    }
+
+    @ViewBuilder
+    private func descriptionSection(_ p: Plant) -> some View {
+        if let desc = p.description, !desc.isEmpty {
+            VStack(alignment: .leading, spacing: 6) {
+                SectionLabel("Description", icon: "📖")
+                Text(desc)
+                    .font(.custom("Nunito-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText1)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .bmCard()
+        }
+    }
+
+    @ViewBuilder
+    private func growersTipsSection(_ p: Plant) -> some View {
+        if !p.growersTips.isEmpty {
+            VStack(alignment: .leading, spacing: 6) {
+                SectionLabel("Grower's tips", icon: "💡")
+                let bullets = p.growersTips
+                    .split(separator: "\n", omittingEmptySubsequences: true)
+                    .map(String.init)
+                ForEach(Array(bullets.enumerated()), id: \.offset) { _, bullet in
+                    HStack(alignment: .top, spacing: 8) {
+                        Text("•")
+                            .font(.custom("Nunito-Bold", size: 13))
+                            .foregroundStyle(Color.bmGreen)
+                        Text(bullet)
+                            .font(.custom("Nunito-SemiBold", size: 12))
+                            .foregroundStyle(Color.bmText1)
+                    }
+                }
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .bmCard()
+        }
+    }
+
+    private func syncPendingFromStore(_ p: Plant) {
+        pending = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
+        didSeed = true
     }
 
     private func details(_ p: Plant) -> some View {
@@ -766,12 +827,11 @@ struct PlantDetailView: View {
             if let h = p.heightCm { row("Height", "\(h) cm") }
             row("Preferred soil",     p.preferredSoil.map(\.label).joined(separator: ", "))
             row("Preferred sunlight", p.preferredSunlight.map(\.label).joined(separator: ", "))
+            if let wet = p.preferredWetness, !wet.isEmpty {
+                row("Preferred moisture", wet.map(\.label).joined(separator: ", "))
+            }
             if let acid = p.preferredAcidity, !acid.isEmpty {
                 row("Preferred pH",   acid.map(\.label).joined(separator: ", "))
-            }
-
-            if !p.growersTips.isEmpty {
-                paragraph("Growers' tips", p.growersTips)
             }
 
             if let link = p.buyLink {

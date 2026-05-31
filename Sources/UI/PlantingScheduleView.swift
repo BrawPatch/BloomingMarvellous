@@ -22,6 +22,7 @@ import BloomingMarvellous
 public struct PlantingScheduleView: View {
 
     @EnvironmentObject private var store: GardenStore
+    @EnvironmentObject private var library: LibraryStore
 
     @State private var displayedMonth: Date = Calendar.current.startOfMonth(for: Date())
     @State private var showSow: Bool = true
@@ -279,7 +280,7 @@ public struct PlantingScheduleView: View {
         var out: [ScheduledEvent] = []
         for bloomMonth in 1...12 {
             for plantId in store.picks(month: bloomMonth) {
-                guard let plant = PlantLibrary.plant(id: plantId) else { continue }
+                guard let plant = library.plant(id: plantId) else { continue }
                 // Sow start: 12 weeks (~3 months) before bloom, wrapped 1...12.
                 let sowMonth = ((bloomMonth - 3 - 1) % 12 + 12) % 12 + 1
                 out.append(ScheduledEvent(

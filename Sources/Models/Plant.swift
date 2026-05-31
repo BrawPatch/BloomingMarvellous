@@ -48,9 +48,10 @@ public struct Plant: Identifiable, Codable, Equatable {
     // Preferences
     public var preferredSoil:     [SoilType]
     public var preferredSunlight: [Sunlight]
-    // Optional so old payloads still decode; nil/empty = no acidity preference
-    // (the matched filter will treat that as "tolerates anything").
+    // Optional so old payloads still decode; nil/empty = no preference
+    // (the matched filter treats that as "tolerates anything").
     public var preferredAcidity:  [SoilAcidity]?
+    public var preferredWetness:  [Wetness]?
 
     // Structured sowing details — surfaced in the Plant Detail "Sowing
     // details" card. All optional; the free-text `germinationRequirements`
@@ -61,6 +62,11 @@ public struct Plant: Identifiable, Codable, Equatable {
     public var lightForGermination: String?
 
     // Editorial copy
+    /// Narrative description of the plant (typically a Wikipedia summary).
+    /// Optional so older payloads keep decoding.
+    public var description: String?
+    /// Bulleted, actionable grower's tips — should be short and per-cultivar
+    /// where possible, family-level otherwise. One bullet per `\n`.
     public var growersTips: String
     public var germinationRequirements: String
 
@@ -92,10 +98,12 @@ public struct Plant: Identifiable, Codable, Equatable {
                 preferredSoil: [SoilType] = [],
                 preferredSunlight: [Sunlight] = [],
                 preferredAcidity: [SoilAcidity]? = nil,
+                preferredWetness: [Wetness]? = nil,
                 seedDepthMm: Int? = nil,
                 germinationTempC: Int? = nil,
                 germinationDays: String? = nil,
                 lightForGermination: String? = nil,
+                description: String? = nil,
                 growersTips: String = "",
                 germinationRequirements: String = "",
                 companions: [String] = [],
@@ -116,10 +124,12 @@ public struct Plant: Identifiable, Codable, Equatable {
         self.preferredSoil = preferredSoil
         self.preferredSunlight = preferredSunlight
         self.preferredAcidity = preferredAcidity
+        self.preferredWetness = preferredWetness
         self.seedDepthMm = seedDepthMm
         self.germinationTempC = germinationTempC
         self.germinationDays = germinationDays
         self.lightForGermination = lightForGermination
+        self.description = description
         self.growersTips = growersTips
         self.germinationRequirements = germinationRequirements
         self.companions = companions
