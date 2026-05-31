@@ -69,23 +69,26 @@ const MONTHS = [
 // Family-level defaults — used as the last fallback when neither the species
 // nor its genus aggregate filled the field. Wider defaults > empty data:
 // the user told us to "inherit from cultivar then genus", and that the data
-// can always be overwritten later. preferredAcidity follows known family
-// pH preferences (Ericaceae acidic, most veg neutral, etc.).
+// can always be overwritten later. preferredAcidity follows known family pH
+// preferences (Ericaceae acidic, most veg neutral, etc.). sow/transplant/
+// harvest months are typical UK garden rules-of-thumb so the Plant Detail
+// "Sowing details" card always has something actionable even when Wikipedia
+// didn't volunteer it.
 const FAMILY_DEFAULTS = {
-  Lamiaceae:    { type: "perennial", preferredSoil: ["loam","sandy","chalky"], preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [6,7,8], colorHex: "#b8a0d8" },
-  Asteraceae:   { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_acidic","mildly_alkaline"], bloomMonths: [6,7,8,9], colorHex: "#e8b070" },
-  Rosaceae:     { type: "shrub",     preferredSoil: ["loam","clay"],           preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [5,6,7], colorHex: "#f4b8b0" },
-  Ranunculaceae:{ type: "perennial", preferredSoil: ["loam","peaty"],          preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [4,5,6], colorHex: "#c0a0d8" },
-  Fabaceae:     { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [6,7,8], colorHex: "#88c8e0" },
-  Iridaceae:    { type: "bulb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   bloomMonths: [4,5,6], colorHex: "#c0a0d8" },
-  Liliaceae:    { type: "bulb",      preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [5,6,7], colorHex: "#f4b8b0" },
-  Solanaceae:   { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8], colorHex: "#e07070" },
-  Apiaceae:     { type: "herb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   bloomMonths: [6,7], colorHex: "#7aaa8a" },
-  Cucurbitaceae:{ type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8,9], colorHex: "#7aaa8a" },
-  Orchidaceae:  { type: "perennial", preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_am","sunny_pm"],     preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [1,2,3,4,11,12], colorHex: "#c0a0d8" },
-  Ericaceae:    { type: "shrub",     preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["very_acidic","mildly_acidic"], bloomMonths: [4,5,6], colorHex: "#c0a0d8" },
-  Brassicaceae: { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [4,5,6], colorHex: "#f4b8b0" },
-  Hydrangeaceae:{ type: "shrub",     preferredSoil: ["loam"],                   preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8], colorHex: "#c0a0d8" },
+  Lamiaceae:    { type: "perennial", preferredSoil: ["loam","sandy","chalky"], preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [6,7,8], sowIndoorMonths: [3,4], sowDirectMonths: [4,5], transplantMonths: [5,6], harvestMonths: [], colorHex: "#b8a0d8" },
+  Asteraceae:   { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_acidic","mildly_alkaline"], bloomMonths: [6,7,8,9], sowIndoorMonths: [3,4], sowDirectMonths: [4,5], transplantMonths: [5], harvestMonths: [9,10], colorHex: "#e8b070" },
+  Rosaceae:     { type: "shrub",     preferredSoil: ["loam","clay"],           preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [5,6,7], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,3], harvestMonths: [], colorHex: "#f4b8b0" },
+  Ranunculaceae:{ type: "perennial", preferredSoil: ["loam","peaty"],          preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [9], transplantMonths: [9,10], harvestMonths: [], colorHex: "#c0a0d8" },
+  Fabaceae:     { type: "annual",    preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always"],            preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [6,7,8], sowIndoorMonths: [2,3], sowDirectMonths: [3,4], transplantMonths: [5], harvestMonths: [], colorHex: "#88c8e0" },
+  Iridaceae:    { type: "bulb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [9,10,11], harvestMonths: [], colorHex: "#c0a0d8" },
+  Liliaceae:    { type: "bulb",      preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_acidic"],   bloomMonths: [5,6,7], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [9,10,11], harvestMonths: [], colorHex: "#f4b8b0" },
+  Solanaceae:   { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8], sowIndoorMonths: [2,3], sowDirectMonths: [], transplantMonths: [5,6], harvestMonths: [7,8,9,10], colorHex: "#e07070" },
+  Apiaceae:     { type: "herb",      preferredSoil: ["loam","sandy"],          preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral"],                   bloomMonths: [6,7], sowIndoorMonths: [3,4], sowDirectMonths: [4,5,6], transplantMonths: [5,6], harvestMonths: [6,7,8,9], colorHex: "#7aaa8a" },
+  Cucurbitaceae:{ type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always"],            preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8,9], sowIndoorMonths: [4,5], sowDirectMonths: [5,6], transplantMonths: [6], harvestMonths: [7,8,9], colorHex: "#7aaa8a" },
+  Orchidaceae:  { type: "perennial", preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_am","sunny_pm"],     preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [1,2,3,4,11,12], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [4,5], harvestMonths: [], colorHex: "#c0a0d8" },
+  Ericaceae:    { type: "shrub",     preferredSoil: ["peaty"],                  preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["very_acidic","mildly_acidic"], bloomMonths: [4,5,6], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,3], harvestMonths: [], colorHex: "#c0a0d8" },
+  Brassicaceae: { type: "vegetable", preferredSoil: ["loam"],                   preferredSunlight: ["sunny_always","sunny_pm"], preferredAcidity: ["neutral","mildly_alkaline"], bloomMonths: [4,5,6], sowIndoorMonths: [2,3], sowDirectMonths: [3,4,5], transplantMonths: [5], harvestMonths: [6,7,8,9,10], colorHex: "#f4b8b0" },
+  Hydrangeaceae:{ type: "shrub",     preferredSoil: ["loam"],                   preferredSunlight: ["sunny_pm","shaded_always"],preferredAcidity: ["mildly_acidic","neutral"],   bloomMonths: [6,7,8], sowIndoorMonths: [], sowDirectMonths: [], transplantMonths: [10,11,12,3], harvestMonths: [], colorHex: "#c0a0d8" },
 };
 
 // Generic UK-garden defaults, used when family is unknown.
@@ -95,6 +98,10 @@ const GENERIC_DEFAULT = {
   preferredSunlight: ["sunny_always", "sunny_pm"],
   preferredAcidity: ["mildly_acidic", "neutral"],
   bloomMonths: [6, 7, 8],
+  sowIndoorMonths: [3, 4],
+  sowDirectMonths: [4, 5],
+  transplantMonths: [5],
+  harvestMonths: [],
   colorHex: "#a8d8bc",
 };
 
@@ -803,6 +810,10 @@ function aggregateByKey(records, keyFn) {
       preferredSunlight: new Set(),
       preferredAcidity: new Set(),
       bloomMonths: new Set(),
+      sowIndoorMonths: new Set(),
+      sowDirectMonths: new Set(),
+      transplantMonths: new Set(),
+      harvestMonths: new Set(),
       heightSamples: [],
       colorHex: null,
     };
@@ -811,6 +822,10 @@ function aggregateByKey(records, keyFn) {
     (r.preferredSunlight ?? []).forEach(s => cur.preferredSunlight.add(s));
     (r.preferredAcidity ?? []).forEach(s => cur.preferredAcidity.add(s));
     (r.bloomMonths ?? []).forEach(m => cur.bloomMonths.add(m));
+    (r.sowIndoorMonths ?? []).forEach(m => cur.sowIndoorMonths.add(m));
+    (r.sowDirectMonths ?? []).forEach(m => cur.sowDirectMonths.add(m));
+    (r.transplantMonths ?? []).forEach(m => cur.transplantMonths.add(m));
+    (r.harvestMonths ?? []).forEach(m => cur.harvestMonths.add(m));
     if (r.heightCm != null) cur.heightSamples.push(r.heightCm);
     cur.colorHex ??= r.colorHex;
     agg.set(k, cur);
@@ -875,6 +890,38 @@ function inherit(records) {
         family && [...family.bloomMonths].sort((a,b)=>a-b),
         famD?.bloomMonths,
         gen.bloomMonths,
+      ) || [],
+      sowIndoorMonths: pickFrom(
+        "sowIndoorMonths",
+        (r.sowIndoorMonths?.length ? r.sowIndoorMonths : null),
+        genus && [...genus.sowIndoorMonths].sort((a,b)=>a-b),
+        family && [...family.sowIndoorMonths].sort((a,b)=>a-b),
+        famD?.sowIndoorMonths,
+        gen.sowIndoorMonths,
+      ) || [],
+      sowDirectMonths: pickFrom(
+        "sowDirectMonths",
+        (r.sowDirectMonths?.length ? r.sowDirectMonths : null),
+        genus && [...genus.sowDirectMonths].sort((a,b)=>a-b),
+        family && [...family.sowDirectMonths].sort((a,b)=>a-b),
+        famD?.sowDirectMonths,
+        gen.sowDirectMonths,
+      ) || [],
+      transplantMonths: pickFrom(
+        "transplantMonths",
+        (r.transplantMonths?.length ? r.transplantMonths : null),
+        genus && [...genus.transplantMonths].sort((a,b)=>a-b),
+        family && [...family.transplantMonths].sort((a,b)=>a-b),
+        famD?.transplantMonths,
+        gen.transplantMonths,
+      ) || [],
+      harvestMonths: pickFrom(
+        "harvestMonths",
+        (r.harvestMonths?.length ? r.harvestMonths : null),
+        genus && [...genus.harvestMonths].sort((a,b)=>a-b),
+        family && [...family.harvestMonths].sort((a,b)=>a-b),
+        famD?.harvestMonths,
+        gen.harvestMonths,
       ) || [],
       heightCm: r.heightCm
         ?? (genus?.heightSamples?.length ? Math.round(genus.heightSamples.reduce((a,b)=>a+b,0)/genus.heightSamples.length) : null)

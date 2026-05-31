@@ -794,44 +794,79 @@ struct PlantDetailView: View {
         .bmCard()
     }
 
-    @ViewBuilder
     private func sowingDetailsSection(_ p: Plant) -> some View {
-        let hasAnyStructured = p.seedDepthMm != nil
-            || p.germinationTempC != nil
-            || p.germinationDays != nil
-            || p.lightForGermination != nil
-            || !p.sowIndoorMonths.isEmpty
-            || !p.sowDirectMonths.isEmpty
-            || !p.transplantMonths.isEmpty
-            || !p.harvestMonths.isEmpty
-        if hasAnyStructured || !p.germinationRequirements.isEmpty {
-            VStack(alignment: .leading, spacing: 10) {
-                SectionLabel("Sowing details", icon: "🌱")
-                if let d = p.seedDepthMm        { row("Seed depth", "\(d) mm") }
-                if let t = p.germinationTempC   { row("Temperature", "\(t) °C") }
-                if let days = p.germinationDays { row("Days to germinate", days) }
-                if let light = p.lightForGermination {
-                    row("Light at germination", light)
-                }
-                if !p.sowIndoorMonths.isEmpty {
-                    row("Sow indoors", monthList(p.sowIndoorMonths))
-                }
-                if !p.sowDirectMonths.isEmpty {
-                    row("Sow direct",  monthList(p.sowDirectMonths))
-                }
-                if !p.transplantMonths.isEmpty {
-                    row("Transplant",  monthList(p.transplantMonths))
-                }
-                if !p.harvestMonths.isEmpty {
-                    row("Harvest",     monthList(p.harvestMonths))
-                }
-                if !p.germinationRequirements.isEmpty {
-                    paragraph("Notes", p.germinationRequirements)
-                }
+        // Always render the card — when data is sparse we surface a
+        // rule-of-thumb derived from bloom months + plant type so the
+        // gardener still has actionable guidance.
+        VStack(alignment: .leading, spacing: 10) {
+            SectionLabel("Sowing details", icon: "🌱")
+
+            if !p.bloomMonths.isEmpty {
+                row("Target bloom", monthList(p.bloomMonths))
             }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .bmCard()
+            if let d = p.seedDepthMm        { row("Seed depth", "\(d) mm") }
+            if let t = p.germinationTempC   { row("Temperature", "\(t) °C") }
+            if let days = p.germinationDays { row("Days to germinate", days) }
+            if let light = p.lightForGermination {
+                row("Light at germination", light)
+            }
+            if !p.sowIndoorMonths.isEmpty {
+                row("Sow indoors", monthList(p.sowIndoorMonths))
+            }
+            if !p.sowDirectMonths.isEmpty {
+                row("Sow direct",  monthList(p.sowDirectMonths))
+            }
+            if !p.transplantMonths.isEmpty {
+                row("Transplant",  monthList(p.transplantMonths))
+            }
+            if !p.harvestMonths.isEmpty {
+                row("Harvest",     monthList(p.harvestMonths))
+            }
+            if !p.germinationRequirements.isEmpty {
+                paragraph("Germination requirements", p.germinationRequirements)
+            }
+            if !hasSpecificSowingDetail(p) {
+                Text(sowingRuleOfThumb(p))
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmText3)
+                    .padding(.top, 4)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func hasSpecificSowingDetail(_ p: Plant) -> Bool {
+        p.seedDepthMm != nil
+        || p.germinationTempC != nil
+        || p.germinationDays != nil
+        || p.lightForGermination != nil
+        || !p.sowIndoorMonths.isEmpty
+        || !p.sowDirectMonths.isEmpty
+        || !p.transplantMonths.isEmpty
+        || !p.harvestMonths.isEmpty
+        || !p.germinationRequirements.isEmpty
+    }
+
+    /// Plain-English fallback derived from bloom month + plant type. Mirrors
+    /// the same "12 weeks before bloom" rule the planting schedule uses.
+    private func sowingRuleOfThumb(_ p: Plant) -> String {
+        let firstBloom = p.bloomMonths.sorted().first ?? 6
+        let bloomName = PlantPickerMonthView.monthName(firstBloom)
+        switch p.type {
+        case .annual, .biennial:
+            return "Detailed sowing data isn't recorded yet. Rule of thumb for a \(bloomName)-blooming \(p.type.label.lowercased()): start indoors 8–12 weeks before bloom, prick out into pots, harden off, and plant out after the last frost."
+        case .perennial:
+            return "Detailed sowing data isn't recorded yet. Most \(p.type.label.lowercased())s prefer autumn sowing or division — buy potted in spring for a \(bloomName) first bloom."
+        case .bulb:
+            return "Detailed sowing data isn't recorded yet. For \(bloomName) flowers plant bulbs in autumn at a depth of about 3× the bulb's height; spring-flowering bulbs go in Sep–Nov, summer ones in Apr–May."
+        case .shrub:
+            return "Detailed sowing data isn't recorded yet. \(p.type.label) — plant bare-root from late autumn to early spring; container-grown any frost-free month."
+        case .herb:
+            return "Detailed sowing data isn't recorded yet. Sow indoors 6–8 weeks before last frost or direct outdoors once soil is warm; pinch tips often to keep leafy."
+        case .vegetable:
+            return "Detailed sowing data isn't recorded yet. Start indoors 6–8 weeks before last frost, transplant after the frost, harvest from \(bloomName) onwards."
         }
     }
 
