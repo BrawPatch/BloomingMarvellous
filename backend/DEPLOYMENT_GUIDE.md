@@ -297,34 +297,82 @@ external APIs are flapping.
 
 #### Per-cultivar grower's tips via Gemini
 
-The ingest will ask **Google Gemini** for 5 short cultivar-specific UK
-gardening tips per plant when a `GEMINI_API_KEY` (or `GOOGLE_API_KEY`)
-is set in the environment. Without a key the script keeps the
-family-level bullets defined in `FAMILY_DEFAULTS` and prints a one-line
-notice — so an unset key is safe.
+The ingest asks **Google Gemini** for 5 short cultivar-specific UK
+gardening tips per plant. The default model is `gemini-flash-latest`
+with `thinkingBudget: 0` (override via `GEMINI_MODEL`). Without a key
+the script keeps the family-level bullets defined in `FAMILY_DEFAULTS`
+and prints a one-line notice — so a missing key is always safe.
+
+##### Key lifecycle
+
+The Gemini API key is **never committed to git**. `API_Keys/` is in
+`.gitignore`. The canonical store is an object in each env's S3
+bucket, KMS-encrypted by the bucket's default server-side encryption.
+
+`scripts/ingest-plants.mjs` resolves the key at runtime in this order:
+
+1. **Environment variable** — `GEMINI_API_KEY` or `GOOGLE_API_KEY`.
+   Cheapest; useful for CI / one-off overrides.
+2. **Local file** — `API_Keys/GeminiKey.txt` at the repo root.
+   Gitignored. The recommended source on a developer machine.
+3. **S3 fallback** — `s3://blooming-marvellous-<env>-content/secrets/gemini.key`.
+   Defaults to the development env; override with
+   `GEMINI_KEY_S3_ENV=production` (the `deploy.sh` script sets this to
+   the env being deployed automatically).
+
+First non-empty value wins. Log line on startup says which source was
+used so you can confirm.
+
+##### Bootstrapping a new machine
 
 ```bash
-# One-time API key (create at https://aistudio.google.com/apikey).
-export GEMINI_API_KEY="..."          # or GOOGLE_API_KEY
-# Optionally override the model — defaults to gemini-2.0-flash.
-export GEMINI_MODEL="gemini-2.0-flash"
+# 1. Create a key at https://aistudio.google.com/apikey, then drop it in:
+mkdir -p API_Keys
+echo "..." > API_Keys/GeminiKey.txt    # this file is gitignored
 
-# First run will spend ~382 calls and cost a few US cents; results are
-# cached at backend/data/tips-cache.json keyed by plant id, so subsequent
-# runs are free.
+# 2. Push it to both env S3 buckets via the normal deploy.
+./scripts/deploy.sh development
+./scripts/deploy.sh production
+```
+
+From then on, machines without the local file can still re-ingest —
+they'll pull the key from S3.
+
+##### Rotating the key
+
+Treat any key that appears in shell history, chat transcripts, or
+non-secret channels as compromised.
+
+```bash
+# 1. Create a new key in AI Studio; revoke the old one.
+echo "<new-key>" > API_Keys/GeminiKey.txt
+
+# 2. Push to S3 for both envs (deploy.sh does this end-to-end, but a
+#    standalone sync is fine too):
+aws s3 cp API_Keys/GeminiKey.txt \
+  s3://blooming-marvellous-development-content/secrets/gemini.key
+aws s3 cp API_Keys/GeminiKey.txt \
+  s3://blooming-marvellous-production-content/secrets/gemini.key
+```
+
+##### Running the ingest
+
+```bash
+# Standard run — picks up the key from env / local file / S3.
 node scripts/ingest-plants.mjs
 
-# Force a refresh of every plant (re-runs Gemini even where cached).
+# Force re-generation of every plant (bypass tips-cache.json).
 node scripts/ingest-plants.mjs --refresh-tips
 
-# Skip Gemini for this run only — useful if the key is set but you want
-# to iterate quickly on the rest of the pipeline.
+# Skip Gemini for this run only — useful when iterating on the rest of
+# the pipeline.
 node scripts/ingest-plants.mjs --no-tips
 ```
 
-The deploy script (`deploy.sh`) passes through the env, so adding the
-key to a shell profile and running `./scripts/deploy.sh <env>` is enough
-to land cultivar-specific tips in S3.
+Results are cached at `backend/data/tips-cache.json` keyed by plant id,
+so re-runs are free unless you pass `--refresh-tips`.
+
+`./scripts/deploy.sh <env>` does the sync + ingest + seed in one shot.
 
 #### How the ingest is sourced
 

@@ -33,6 +33,7 @@
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
 // ── Args ─────────────────────────────────────────────────────────────────────
 
@@ -163,10 +164,45 @@ async function getJson(url, { timeoutMs = 20000 } = {}) {
 // in + ~120 out tokens ≈ a few US cents per full refresh — safe enough to
 // rerun. Re-running without `--refresh-tips` is free past the first time.
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || null;
+// The Gemini key is resolved at runtime via `resolveGeminiKey()`. Search
+// order: env var → local API_Keys/GeminiKey.txt (repo-root, gitignored) →
+// KMS-encrypted s3://blooming-marvellous-<env>-content/secrets/gemini.key.
+// First non-empty wins. Set GEMINI_KEY_S3_ENV to override which env's S3
+// bucket is consulted (default: development).
+let GEMINI_API_KEY = null;
+let GEMINI_API_KEY_SOURCE = null;
 // `gemini-flash-latest` rolls forward with the current cheapest flash model;
 // override with `GEMINI_MODEL` if you want to pin or trial something else.
 const GEMINI_MODEL   = process.env.GEMINI_MODEL   || "gemini-flash-latest";
+
+const LOCAL_KEY_PATH = fileURLToPath(new URL("../../API_Keys/GeminiKey.txt", import.meta.url));
+const S3_KEY_OBJECT  = "secrets/gemini.key";
+
+async function resolveGeminiKey() {
+  // 1. Env var — cheapest, takes precedence so CI / one-off runs can override.
+  const fromEnv = (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "").trim();
+  if (fromEnv) return { key: fromEnv, source: "env (GEMINI_API_KEY)" };
+
+  // 2. Local file (gitignored). Repo root: ../../API_Keys/GeminiKey.txt
+  if (existsSync(LOCAL_KEY_PATH)) {
+    const text = readFileSync(LOCAL_KEY_PATH, "utf-8").trim();
+    if (text) return { key: text, source: `local ${path.relative(process.cwd(), LOCAL_KEY_PATH)}` };
+  }
+
+  // 3. KMS-encrypted object in S3 (the canonical cross-machine store).
+  const env = (process.env.GEMINI_KEY_S3_ENV || "development").trim();
+  const bucket = `blooming-marvellous-${env}-content`;
+  try {
+    const s3 = new S3Client({ region: process.env.AWS_REGION ?? "us-east-1" });
+    const res = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: S3_KEY_OBJECT }));
+    const text = (await res.Body.transformToString()).trim();
+    if (text) return { key: text, source: `s3://${bucket}/${S3_KEY_OBJECT}` };
+  } catch (err) {
+    if (args.verbose) console.warn(`  · S3 key fetch failed (${bucket}/${S3_KEY_OBJECT}): ${err.message}`);
+  }
+
+  return { key: null, source: null };
+}
 const TIPS_CACHE_PATH = fileURLToPath(new URL("../data/tips-cache.json", import.meta.url));
 
 function loadTipsCache() {
@@ -246,14 +282,21 @@ async function geminiTipsFor({ id, name, latin, type, familyLabel }) {
 }
 
 async function enrichTips(records) {
-  if (args.noTips || !GEMINI_API_KEY) {
-    if (!GEMINI_API_KEY && !args.noTips) {
-      console.log("ℹ︎  GEMINI_API_KEY not set — keeping family-level grower's tips. Set the env var to enable per-plant tips.");
-    }
+  if (args.noTips) {
+    if (args.verbose) console.log("ℹ︎  --no-tips set — keeping family-level grower's tips.");
     return records;
   }
 
-  console.log(`→ Gemini per-plant grower's tips (model: ${GEMINI_MODEL})…`);
+  const resolved = await resolveGeminiKey();
+  GEMINI_API_KEY = resolved.key;
+  GEMINI_API_KEY_SOURCE = resolved.source;
+
+  if (!GEMINI_API_KEY) {
+    console.log("ℹ︎  No Gemini key found (env var, local file, or S3) — keeping family-level grower's tips.");
+    console.log("    Set GEMINI_API_KEY, drop a key at API_Keys/GeminiKey.txt, or run deploy.sh to sync from S3.");
+    return records;
+  }
+  console.log(`→ Gemini per-plant grower's tips (model: ${GEMINI_MODEL}, key source: ${GEMINI_API_KEY_SOURCE})…`);
   const cache = loadTipsCache();
   let calls = 0;
   let cacheHits = 0;

@@ -48,10 +48,28 @@ echo "→ terraform init ($ENV)"
 echo "→ terraform apply ($ENV)"
 ( cd "$ENV_DIR" && terraform apply -auto-approve )
 
+# Sync the Gemini API key to the env's S3 bucket, KMS-encrypted by the
+# bucket's default server-side encryption. The local file is gitignored
+# (canonical store is S3). Skipped silently when no local copy exists —
+# in that case the ingest will fall back to whatever's already in S3 or
+# to family-level grower's tips.
+LOCAL_GEMINI_KEY="$BACKEND_DIR/../API_Keys/GeminiKey.txt"
+if [ -f "$LOCAL_GEMINI_KEY" ]; then
+  CONTENT_BUCKET="$( cd "$ENV_DIR" && terraform output -raw s3_bucket_name )"
+  echo "→ Syncing Gemini API key to s3://$CONTENT_BUCKET/secrets/gemini.key"
+  aws s3 cp "$LOCAL_GEMINI_KEY" "s3://$CONTENT_BUCKET/secrets/gemini.key" \
+    --content-type "text/plain" \
+    --metadata "purpose=gemini-ingest,managed-by=deploy.sh" \
+    --no-progress
+else
+  echo "→ Skipping Gemini key sync (no local API_Keys/GeminiKey.txt)"
+fi
+
 echo "→ Refreshing plant library from Wikidata / Wikipedia / Commons"
 # --soft-fail keeps the deploy moving even if an external API is down — the
 # already-committed backend/data/library.json is the fallback in that case.
-( cd "$BACKEND_DIR" && node scripts/ingest-plants.mjs --soft-fail )
+# GEMINI_KEY_S3_ENV scopes the S3-key fallback to the env we're deploying.
+( cd "$BACKEND_DIR" && GEMINI_KEY_S3_ENV="$ENV" node scripts/ingest-plants.mjs --soft-fail )
 
 echo "→ Seeding S3 content ($ENV)"
 ( cd "$BACKEND_DIR" && node scripts/seed-content.mjs --env "$ENV" )
