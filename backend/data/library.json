@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "generated": "2026-05-31T23:15:57.046Z",
-  "source": "wikidata-rhs-agm + wikipedia + commons + inheritance + rebalance/common-name pass",
+  "generated": "2026-06-01T11:21:29.712Z",
+  "source": "wikidata-rhs-agm + wikipedia + commons + inheritance + rebalance/common-name pass + trefle gap-fill",
   "items": [
     {
       "id": "dracaena-suffruticosa",
@@ -106,7 +106,7 @@
     },
     {
       "id": "maianthemum-canadense",
-      "name": "Maianthemum canadense",
+      "name": "Canadian may-lily",
       "latin": "Maianthemum canadense",
       "type": "perennial",
       "bloomMonths": [
@@ -260,7 +260,7 @@
     },
     {
       "id": "dracaena-surculosa",
-      "name": "Dracaena surculosa",
+      "name": "Spotted dracaena",
       "latin": "Dracaena surculosa",
       "type": "vegetable",
       "bloomMonths": [
@@ -457,7 +457,7 @@
     },
     {
       "id": "ruscus-hypophyllum",
-      "name": "Ruscus hypophyllum",
+      "name": "Spineless butcher's-broom",
       "latin": "Ruscus hypophyllum",
       "type": "shrub",
       "bloomMonths": [
@@ -761,7 +761,7 @@
     },
     {
       "id": "maianthemum-bifolium",
-      "name": "Maianthemum bifolium",
+      "name": "May-lily",
       "latin": "Maianthemum bifolium",
       "type": "vegetable",
       "bloomMonths": [
@@ -1011,7 +1011,7 @@
     },
     {
       "id": "maianthemum-racemosum",
-      "name": "Maianthemum racemosum",
+      "name": "Solomon's-plume",
       "latin": "Maianthemum racemosum",
       "type": "vegetable",
       "bloomMonths": [
@@ -1162,7 +1162,7 @@
     },
     {
       "id": "dracaena-angustifolia",
-      "name": "Dracaena angustifolia",
+      "name": "Don kayu sugih",
       "latin": "Dracaena angustifolia",
       "type": "vegetable",
       "bloomMonths": [
@@ -1313,7 +1313,7 @@
     },
     {
       "id": "dracaena-reflexa",
-      "name": "Dracaena reflexa",
+      "name": "Song-of-india",
       "latin": "Dracaena reflexa",
       "type": "shrub",
       "bloomMonths": [
@@ -1411,7 +1411,7 @@
     },
     {
       "id": "dracaena-fragrans",
-      "name": "Dracaena fragrans",
+      "name": "Fragrant dracaena",
       "latin": "Dracaena fragrans",
       "type": "vegetable",
       "bloomMonths": [
@@ -1561,7 +1561,7 @@
     },
     {
       "id": "dracaena-arborea",
-      "name": "Dracaena arborea",
+      "name": "Tree dracaena",
       "latin": "Dracaena arborea",
       "type": "shrub",
       "bloomMonths": [
@@ -1759,7 +1759,7 @@
     },
     {
       "id": "dracaena-mannii",
-      "name": "Dracaena mannii",
+      "name": "Small-leaved dragon tree",
       "latin": "Dracaena mannii",
       "type": "shrub",
       "bloomMonths": [
@@ -2399,7 +2399,7 @@
     },
     {
       "id": "maianthemum-trifolium",
-      "name": "Maianthemum trifolium",
+      "name": "Threeleaf false lily of the valley",
       "latin": "Maianthemum trifolium",
       "type": "vegetable",
       "bloomMonths": [
@@ -2601,7 +2601,7 @@
     },
     {
       "id": "dracaena-steudneri",
-      "name": "Dracaena steudneri",
+      "name": "Bush nightfighter",
       "latin": "Dracaena steudneri",
       "type": "shrub",
       "bloomMonths": [
@@ -2701,7 +2701,7 @@
     },
     {
       "id": "polygonatum-odoratum",
-      "name": "Polygonatum odoratum",
+      "name": "Solomon's-seal",
       "latin": "Polygonatum odoratum",
       "type": "vegetable",
       "bloomMonths": [
@@ -2752,7 +2752,7 @@
     },
     {
       "id": "hyoscyamus-muticus",
-      "name": "Hyoscyamus muticus",
+      "name": "Henbane",
       "latin": "Hyoscyamus muticus",
       "type": "shrub",
       "bloomMonths": [
@@ -2801,7 +2801,7 @@
     },
     {
       "id": "petunia-axillaris",
-      "name": "Petunia axillaris",
+      "name": "Large white petunia",
       "latin": "Petunia axillaris",
       "type": "annual",
       "bloomMonths": [
@@ -2903,7 +2903,7 @@
     },
     {
       "id": "nicotiana-acuminata",
-      "name": "Nicotiana acuminata",
+      "name": "Manyflower tobacco",
       "latin": "Nicotiana acuminata",
       "type": "vegetable",
       "bloomMonths": [
@@ -3104,7 +3104,7 @@
     },
     {
       "id": "solanum-chenopodioides",
-      "name": "Solanum chenopodioides",
+      "name": "Tall nightshade",
       "latin": "Solanum chenopodioides",
       "type": "shrub",
       "bloomMonths": [
@@ -3356,7 +3356,7 @@
     },
     {
       "id": "physalis-pumila",
-      "name": "Physalis pumila",
+      "name": "Dwarf groundcherry",
       "latin": "Physalis pumila",
       "type": "perennial",
       "bloomMonths": [
@@ -3456,7 +3456,7 @@
     },
     {
       "id": "nolana-paradoxa",
-      "name": "Nolana paradoxa",
+      "name": "Chilean-bellflower",
       "latin": "Nolana paradoxa",
       "type": "annual",
       "bloomMonths": [
@@ -3558,7 +3558,7 @@
     },
     {
       "id": "beaucarnea-hiriartiae",
-      "name": "Beaucarnea hiriartiae",
+      "name": "Ponytail palm",
       "latin": "Beaucarnea hiriartiae",
       "type": "vegetable",
       "bloomMonths": [
@@ -3607,7 +3607,7 @@
     },
     {
       "id": "beaucarnea-stricta",
-      "name": "Beaucarnea stricta",
+      "name": "Bottle palm",
       "latin": "Beaucarnea stricta",
       "type": "shrub",
       "bloomMonths": [
@@ -3707,7 +3707,7 @@
     },
     {
       "id": "dasylirion-longissimum",
-      "name": "Dasylirion longissimum",
+      "name": "Beargrass",
       "latin": "Dasylirion longissimum",
       "type": "shrub",
       "bloomMonths": [
@@ -3758,7 +3758,7 @@
     },
     {
       "id": "salpichroa-origanifolia",
-      "name": "Salpichroa origanifolia",
+      "name": "Lily of the valley vine",
       "latin": "Salpichroa origanifolia",
       "type": "vegetable",
       "bloomMonths": [
@@ -3809,7 +3809,7 @@
     },
     {
       "id": "dasylirion-texanum",
-      "name": "Dasylirion texanum",
+      "name": "Texas sotol",
       "latin": "Dasylirion texanum",
       "type": "vegetable",
       "bloomMonths": [
@@ -4062,7 +4062,7 @@
     },
     {
       "id": "beaucarnea-recurvata",
-      "name": "Beaucarnea recurvata",
+      "name": "Bottle-palm",
       "latin": "Beaucarnea recurvata",
       "type": "vegetable",
       "bloomMonths": [
@@ -4111,7 +4111,7 @@
     },
     {
       "id": "physalis-angustifolia",
-      "name": "Physalis angustifolia",
+      "name": "Coastal groundcherry",
       "latin": "Physalis angustifolia",
       "type": "vegetable",
       "bloomMonths": [
@@ -4212,7 +4212,7 @@
     },
     {
       "id": "hyoscyamus-albus",
-      "name": "Hyoscyamus albus",
+      "name": "White henbane",
       "latin": "Hyoscyamus albus",
       "type": "vegetable",
       "bloomMonths": [
@@ -4363,7 +4363,7 @@
     },
     {
       "id": "beaucarnea-gracilis",
-      "name": "Beaucarnea gracilis",
+      "name": "Mexican pony tail palm",
       "latin": "Beaucarnea gracilis",
       "type": "vegetable",
       "bloomMonths": [
@@ -4515,7 +4515,7 @@
     },
     {
       "id": "polygonatum-verticillatum",
-      "name": "Polygonatum verticillatum",
+      "name": "Whorled solomon's-seal",
       "latin": "Polygonatum verticillatum",
       "type": "vegetable",
       "bloomMonths": [
@@ -4617,7 +4617,7 @@
     },
     {
       "id": "datura-discolor",
-      "name": "Datura discolor",
+      "name": "Desert thorn-apple",
       "latin": "Datura discolor",
       "type": "annual",
       "bloomMonths": [
@@ -5266,7 +5266,7 @@
     },
     {
       "id": "hyoscyamus-aureus",
-      "name": "Hyoscyamus aureus",
+      "name": "Golden henbane",
       "latin": "Hyoscyamus aureus",
       "type": "vegetable",
       "bloomMonths": [
@@ -5416,7 +5416,7 @@
     },
     {
       "id": "datura-ceratocaula",
-      "name": "Datura ceratocaula",
+      "name": "Latin thorn-apple",
       "latin": "Datura ceratocaula",
       "type": "annual",
       "bloomMonths": [
@@ -5514,7 +5514,7 @@
     },
     {
       "id": "datura-wrightii",
-      "name": "Datura wrightii",
+      "name": "Hairy thorn-apple",
       "latin": "Datura wrightii",
       "type": "perennial",
       "bloomMonths": [
@@ -5563,7 +5563,7 @@
     },
     {
       "id": "dasylirion-leiophyllum",
-      "name": "Dasylirion leiophyllum",
+      "name": "Green sotol",
       "latin": "Dasylirion leiophyllum",
       "type": "vegetable",
       "bloomMonths": [
@@ -5614,7 +5614,7 @@
     },
     {
       "id": "iochroma-fuchsioides",
-      "name": "Iochroma fuchsioides",
+      "name": "Red iochroma",
       "latin": "Iochroma fuchsioides",
       "type": "vegetable",
       "bloomMonths": [
@@ -6068,7 +6068,7 @@
     },
     {
       "id": "physalis-viscosa",
-      "name": "Physalis viscosa",
+      "name": "Grape ground-cherry",
       "latin": "Physalis viscosa",
       "type": "vegetable",
       "bloomMonths": [
@@ -6166,7 +6166,7 @@
     },
     {
       "id": "physalis-angulata",
-      "name": "Physalis angulata",
+      "name": "Balloon-cherry",
       "latin": "Physalis angulata",
       "type": "annual",
       "bloomMonths": [
@@ -6563,7 +6563,7 @@
     },
     {
       "id": "physalis-minima",
-      "name": "Physalis minima",
+      "name": "Wild gooseberry",
       "latin": "Physalis minima",
       "type": "annual",
       "bloomMonths": [
@@ -6612,7 +6612,7 @@
     },
     {
       "id": "fabiana-imbricata",
-      "name": "Fabiana imbricata",
+      "name": "Pichi",
       "latin": "Fabiana imbricata",
       "type": "shrub",
       "bloomMonths": [
@@ -6662,7 +6662,7 @@
     },
     {
       "id": "physalis-pubescens",
-      "name": "Physalis pubescens",
+      "name": "Ground-cherry",
       "latin": "Physalis pubescens",
       "type": "annual",
       "bloomMonths": [
@@ -6760,7 +6760,7 @@
     },
     {
       "id": "polygonatum-humile",
-      "name": "Polygonatum humile",
+      "name": "Dwarf solomon's seal",
       "latin": "Polygonatum humile",
       "type": "perennial",
       "bloomMonths": [
@@ -6811,7 +6811,7 @@
     },
     {
       "id": "withania-somnifera",
-      "name": "Withania somnifera",
+      "name": "Winter-cherry",
       "latin": "Withania somnifera",
       "type": "shrub",
       "bloomMonths": [
@@ -7111,7 +7111,7 @@
     },
     {
       "id": "physalis-peruviana",
-      "name": "Physalis peruviana",
+      "name": "Peruvian ground-cherry",
       "latin": "Physalis peruviana",
       "type": "vegetable",
       "bloomMonths": [
@@ -7160,7 +7160,7 @@
     },
     {
       "id": "physalis-walteri",
-      "name": "Physalis walteri",
+      "name": "Walter's groundcherry",
       "latin": "Physalis walteri",
       "type": "vegetable",
       "bloomMonths": [
@@ -7261,7 +7261,7 @@
     },
     {
       "id": "physalis-crassifolia",
-      "name": "Physalis crassifolia",
+      "name": "Yellow nightshade groundcherry",
       "latin": "Physalis crassifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -7660,7 +7660,7 @@
     },
     {
       "id": "physalis-heterophylla",
-      "name": "Physalis heterophylla",
+      "name": "Clammy ground-cherry",
       "latin": "Physalis heterophylla",
       "type": "vegetable",
       "bloomMonths": [
@@ -8260,7 +8260,7 @@
     },
     {
       "id": "polygonatum-biflorum",
-      "name": "Polygonatum biflorum",
+      "name": "American solomon's-seal",
       "latin": "Polygonatum biflorum",
       "type": "bulb",
       "bloomMonths": [
@@ -8562,7 +8562,7 @@
     },
     {
       "id": "physalis-longifolia",
-      "name": "Physalis longifolia",
+      "name": "Common ground-cherry",
       "latin": "Physalis longifolia",
       "type": "vegetable",
       "bloomMonths": [
@@ -8858,7 +8858,7 @@
     },
     {
       "id": "solanum-wendlandii",
-      "name": "Solanum wendlandii",
+      "name": "Costa rican nightshade",
       "latin": "Solanum wendlandii",
       "type": "vegetable",
       "bloomMonths": [
@@ -8958,7 +8958,7 @@
     },
     {
       "id": "solanum-laxum",
-      "name": "Solanum laxum",
+      "name": "Potato-vine",
       "latin": "Solanum laxum",
       "type": "vegetable",
       "bloomMonths": [
@@ -9109,7 +9109,7 @@
     },
     {
       "id": "solanum-pseudocapsicum",
-      "name": "Solanum pseudocapsicum",
+      "name": "Jerusalem-cherry",
       "latin": "Solanum pseudocapsicum",
       "type": "vegetable",
       "bloomMonths": [
@@ -9363,7 +9363,7 @@
     },
     {
       "id": "scopolia-carniolica",
-      "name": "Scopolia carniolica",
+      "name": "Scopolia",
       "latin": "Scopolia carniolica",
       "type": "vegetable",
       "bloomMonths": [
@@ -9463,7 +9463,7 @@
     },
     {
       "id": "jaltomata-procumbens",
-      "name": "Jaltomata procumbens",
+      "name": "Creeping false holly",
       "latin": "Jaltomata procumbens",
       "type": "vegetable",
       "bloomMonths": [
@@ -9916,7 +9916,7 @@
     },
     {
       "id": "rapistrum-rugosum",
-      "name": "Rapistrum rugosum",
+      "name": "Ball-turnip",
       "latin": "Rapistrum rugosum",
       "type": "annual",
       "bloomMonths": [
@@ -10082,7 +10082,7 @@
     },
     {
       "id": "aethionema-saxatile",
-      "name": "Aethionema saxatile",
+      "name": "Burnt candytuft",
       "latin": "Aethionema saxatile",
       "type": "vegetable",
       "bloomMonths": [
@@ -10191,7 +10191,7 @@
     },
     {
       "id": "cardamine-trifolia",
-      "name": "Cardamine trifolia",
+      "name": "Three-leaved bittercress",
       "latin": "Cardamine trifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -10456,7 +10456,7 @@
     },
     {
       "id": "alyssum-desertorum",
-      "name": "Alyssum desertorum",
+      "name": "Desert madwort",
       "latin": "Alyssum desertorum",
       "type": "annual",
       "bloomMonths": [
@@ -10722,7 +10722,7 @@
     },
     {
       "id": "hornungia-procumbens",
-      "name": "Hornungia procumbens",
+      "name": "Prostrate hutchinsia",
       "latin": "Hornungia procumbens",
       "type": "herb",
       "bloomMonths": [
@@ -10779,7 +10779,7 @@
     },
     {
       "id": "aethionema-grandiflorum",
-      "name": "Aethionema grandiflorum",
+      "name": "Persian stonecress",
       "latin": "Aethionema grandiflorum",
       "type": "vegetable",
       "bloomMonths": [
@@ -11058,7 +11058,7 @@
     },
     {
       "id": "crambe-cordifolia",
-      "name": "Crambe cordifolia",
+      "name": "Colewort",
       "latin": "Crambe cordifolia",
       "type": "vegetable",
       "bloomMonths": [
@@ -11168,7 +11168,7 @@
     },
     {
       "id": "tropidocarpum-gracile",
-      "name": "Tropidocarpum gracile",
+      "name": "Dobie pod",
       "latin": "Tropidocarpum gracile",
       "type": "annual",
       "bloomMonths": [
@@ -11338,7 +11338,7 @@
     },
     {
       "id": "cardamine-amara",
-      "name": "Cardamine amara",
+      "name": "Large bittercress",
       "latin": "Cardamine amara",
       "type": "perennial",
       "bloomMonths": [
@@ -11390,7 +11390,7 @@
     },
     {
       "id": "hornungia-petraea",
-      "name": "Hornungia petraea",
+      "name": "Hutchinsia",
       "latin": "Hornungia petraea",
       "type": "vegetable",
       "bloomMonths": [
@@ -11837,7 +11837,7 @@
     },
     {
       "id": "cardamine-flexuosa",
-      "name": "Cardamine flexuosa",
+      "name": "Greater bittercress",
       "latin": "Cardamine flexuosa",
       "type": "perennial",
       "bloomMonths": [
@@ -12113,7 +12113,7 @@
     },
     {
       "id": "cardamine-impatiens",
-      "name": "Cardamine impatiens",
+      "name": "Narrow-leaf bittercress",
       "latin": "Cardamine impatiens",
       "type": "biennial",
       "bloomMonths": [
@@ -12280,7 +12280,7 @@
     },
     {
       "id": "aurinia-saxatilis",
-      "name": "Aurinia saxatilis",
+      "name": "Basket-of-gold",
       "latin": "Aurinia saxatilis",
       "type": "vegetable",
       "bloomMonths": [
@@ -12451,7 +12451,7 @@
     },
     {
       "id": "brassica-juncea",
-      "name": "Brassica juncea",
+      "name": "India mustard",
       "latin": "Brassica juncea",
       "type": "vegetable",
       "bloomMonths": [
@@ -12669,7 +12669,7 @@
     },
     {
       "id": "cardamine-concatenata",
-      "name": "Cardamine concatenata",
+      "name": "Cut-leaf toothcup",
       "latin": "Cardamine concatenata",
       "type": "perennial",
       "bloomMonths": [
@@ -12934,7 +12934,7 @@
     },
     {
       "id": "cardamine-angulata",
-      "name": "Cardamine angulata",
+      "name": "Seaside bittercress",
       "latin": "Cardamine angulata",
       "type": "perennial",
       "bloomMonths": [
@@ -12986,7 +12986,7 @@
     },
     {
       "id": "hirschfeldia-incana",
-      "name": "Hirschfeldia incana",
+      "name": "Hoary mustard",
       "latin": "Hirschfeldia incana",
       "type": "perennial",
       "bloomMonths": [
@@ -13043,7 +13043,7 @@
     },
     {
       "id": "brassica-fruticulosa",
-      "name": "Brassica fruticulosa",
+      "name": "Wild turnip",
       "latin": "Brassica fruticulosa",
       "type": "vegetable",
       "bloomMonths": [
@@ -13149,7 +13149,7 @@
     },
     {
       "id": "brassica-cretica",
-      "name": "Brassica cretica",
+      "name": "Mustard",
       "latin": "Brassica cretica",
       "type": "vegetable",
       "bloomMonths": [
@@ -13202,7 +13202,7 @@
     },
     {
       "id": "cardamine-heptaphylla",
-      "name": "Cardamine heptaphylla",
+      "name": "Pinnate coralroot",
       "latin": "Cardamine heptaphylla",
       "type": "vegetable",
       "bloomMonths": [
@@ -13307,7 +13307,7 @@
     },
     {
       "id": "alliaria-petiolata",
-      "name": "Alliaria petiolata",
+      "name": "Garlic mustard",
       "latin": "Alliaria petiolata",
       "type": "biennial",
       "bloomMonths": [
@@ -13364,7 +13364,7 @@
     },
     {
       "id": "brassica-rupestris",
-      "name": "Brassica rupestris",
+      "name": "Mustard",
       "latin": "Brassica rupestris",
       "type": "vegetable",
       "bloomMonths": [
@@ -13471,7 +13471,7 @@
     },
     {
       "id": "cardamine-nuttallii",
-      "name": "Cardamine nuttallii",
+      "name": "Palmate toothwort",
       "latin": "Cardamine nuttallii",
       "type": "vegetable",
       "bloomMonths": [
@@ -13627,7 +13627,7 @@
     },
     {
       "id": "cardamine-angustata",
-      "name": "Cardamine angustata",
+      "name": "Slender toothwort",
       "latin": "Cardamine angustata",
       "type": "perennial",
       "bloomMonths": [
@@ -13944,7 +13944,7 @@
     },
     {
       "id": "cardamine-bellidifolia",
-      "name": "Cardamine bellidifolia",
+      "name": "Alpine bittercress",
       "latin": "Cardamine bellidifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -14110,7 +14110,7 @@
     },
     {
       "id": "berteroa-incana",
-      "name": "Berteroa incana",
+      "name": "Hoary alison",
       "latin": "Berteroa incana",
       "type": "biennial",
       "bloomMonths": [
@@ -14329,7 +14329,7 @@
     },
     {
       "id": "selenia-aurea",
-      "name": "Selenia aurea",
+      "name": "Golden selenia",
       "latin": "Selenia aurea",
       "type": "vegetable",
       "bloomMonths": [
@@ -14604,7 +14604,7 @@
     },
     {
       "id": "descurainia-pinnata",
-      "name": "Descurainia pinnata",
+      "name": "Tansy mustard",
       "latin": "Descurainia pinnata",
       "type": "vegetable",
       "bloomMonths": [
@@ -14934,7 +14934,7 @@
     },
     {
       "id": "moricandia-arvensis",
-      "name": "Moricandia arvensis",
+      "name": "Violet-cabbage",
       "latin": "Moricandia arvensis",
       "type": "vegetable",
       "bloomMonths": [
@@ -15259,7 +15259,7 @@
     },
     {
       "id": "descurainia-sophia",
-      "name": "Descurainia sophia",
+      "name": "Tansy mustard",
       "latin": "Descurainia sophia",
       "type": "annual",
       "bloomMonths": [
@@ -15531,7 +15531,7 @@
     },
     {
       "id": "cardamine-pensylvanica",
-      "name": "Cardamine pensylvanica",
+      "name": "Pennsylvania bittercress",
       "latin": "Cardamine pensylvanica",
       "type": "vegetable",
       "bloomMonths": [
@@ -15685,7 +15685,7 @@
     },
     {
       "id": "alyssum-montanum",
-      "name": "Alyssum montanum",
+      "name": "Mountain alison",
       "latin": "Alyssum montanum",
       "type": "perennial",
       "bloomMonths": [
@@ -15738,7 +15738,7 @@
     },
     {
       "id": "cardamine-pentaphyllos",
-      "name": "Cardamine pentaphyllos",
+      "name": "Five-leaflet bitter-cress",
       "latin": "Cardamine pentaphyllos",
       "type": "perennial",
       "bloomMonths": [
@@ -16913,7 +16913,7 @@
     },
     {
       "id": "rorippa-sylvestris",
-      "name": "Rorippa sylvestris",
+      "name": "Creeping yellow cress",
       "latin": "Rorippa sylvestris",
       "type": "vegetable",
       "bloomMonths": [
@@ -19096,7 +19096,7 @@
     },
     {
       "id": "rorippa-curvipes",
-      "name": "Rorippa curvipes",
+      "name": "Blunt-leaf yellowcress",
       "latin": "Rorippa curvipes",
       "type": "vegetable",
       "bloomMonths": [
@@ -19151,7 +19151,7 @@
     },
     {
       "id": "rorippa-curvisiliqua",
-      "name": "Rorippa curvisiliqua",
+      "name": "Curve-pod yellow cress",
       "latin": "Rorippa curvisiliqua",
       "type": "vegetable",
       "bloomMonths": [
@@ -19206,7 +19206,7 @@
     },
     {
       "id": "rorippa-subumbellata",
-      "name": "Rorippa subumbellata",
+      "name": "Lake tahoe yellowcress",
       "latin": "Rorippa subumbellata",
       "type": "vegetable",
       "bloomMonths": [
@@ -19425,7 +19425,7 @@
     },
     {
       "id": "lunaria-annua",
-      "name": "Lunaria annua",
+      "name": "Damask-violet",
       "latin": "Lunaria annua",
       "type": "vegetable",
       "bloomMonths": [
@@ -20545,7 +20545,7 @@
     },
     {
       "id": "lobularia-maritima",
-      "name": "Lobularia maritima",
+      "name": "Sweet alison",
       "latin": "Lobularia maritima",
       "type": "vegetable",
       "bloomMonths": [
@@ -20875,7 +20875,7 @@
     },
     {
       "id": "gynostemma-pentaphyllum",
-      "name": "Gynostemma pentaphyllum",
+      "name": "Gynostemma",
       "latin": "Gynostemma pentaphyllum",
       "type": "vegetable",
       "bloomMonths": [
@@ -21261,7 +21261,7 @@
     },
     {
       "id": "thladiantha-dubia",
-      "name": "Thladiantha dubia",
+      "name": "Red-hailstone",
       "latin": "Thladiantha dubia",
       "type": "vegetable",
       "bloomMonths": [
@@ -21359,7 +21359,7 @@
     },
     {
       "id": "trichosanthes-kirilowii",
-      "name": "Trichosanthes kirilowii",
+      "name": "Chinese-cucumber",
       "latin": "Trichosanthes kirilowii",
       "type": "vegetable",
       "bloomMonths": [
@@ -22089,7 +22089,7 @@
     },
     {
       "id": "melothria-pendula",
-      "name": "Melothria pendula",
+      "name": "Creeping-cucumber",
       "latin": "Melothria pendula",
       "type": "vegetable",
       "bloomMonths": [
@@ -22624,7 +22624,7 @@
     },
     {
       "id": "sicana-odorifera",
-      "name": "Sicana odorifera",
+      "name": "Casabanana",
       "latin": "Sicana odorifera",
       "type": "vegetable",
       "bloomMonths": [
@@ -22770,7 +22770,7 @@
     },
     {
       "id": "fevillea-cordifolia",
-      "name": "Fevillea cordifolia",
+      "name": "Antidote-vine",
       "latin": "Fevillea cordifolia",
       "type": "vegetable",
       "bloomMonths": [
@@ -22917,7 +22917,7 @@
     },
     {
       "id": "trichosanthes-dioica",
-      "name": "Trichosanthes dioica",
+      "name": "Pointed gourd",
       "latin": "Trichosanthes dioica",
       "type": "vegetable",
       "bloomMonths": [
@@ -23013,7 +23013,7 @@
     },
     {
       "id": "momordica-dioica",
-      "name": "Momordica dioica",
+      "name": "Spine gourd",
       "latin": "Momordica dioica",
       "type": "vegetable",
       "bloomMonths": [
@@ -23111,7 +23111,7 @@
     },
     {
       "id": "alsomitra-macrocarpa",
-      "name": "Alsomitra macrocarpa",
+      "name": "Javan cucumber",
       "latin": "Alsomitra macrocarpa",
       "type": "vegetable",
       "bloomMonths": [
@@ -23446,7 +23446,7 @@
     },
     {
       "id": "trichosanthes-cucumerina",
-      "name": "Trichosanthes cucumerina",
+      "name": "Annual gourd",
       "latin": "Trichosanthes cucumerina",
       "type": "vegetable",
       "bloomMonths": [
@@ -23886,7 +23886,7 @@
     },
     {
       "id": "cucumis-myriocarpus",
-      "name": "Cucumis myriocarpus",
+      "name": "Gooseberry cucumber",
       "latin": "Cucumis myriocarpus",
       "type": "vegetable",
       "bloomMonths": [
@@ -24272,7 +24272,7 @@
     },
     {
       "id": "cyclanthera-pedata",
-      "name": "Cyclanthera pedata",
+      "name": "Slipper goard",
       "latin": "Cyclanthera pedata",
       "type": "vegetable",
       "bloomMonths": [
@@ -24322,7 +24322,7 @@
     },
     {
       "id": "bryonia-cretica",
-      "name": "Bryonia cretica",
+      "name": "Cretan bryony",
       "latin": "Bryonia cretica",
       "type": "perennial",
       "bloomMonths": [
@@ -24716,7 +24716,7 @@
     },
     {
       "id": "cucumis-prophetarum",
-      "name": "Cucumis prophetarum",
+      "name": "Wild cucumber",
       "latin": "Cucumis prophetarum",
       "type": "perennial",
       "bloomMonths": [
@@ -25606,7 +25606,7 @@
     },
     {
       "id": "marah-fabacea",
-      "name": "Marah fabacea",
+      "name": "California manroot",
       "latin": "Marah fabacea",
       "type": "vegetable",
       "bloomMonths": [
@@ -25657,7 +25657,7 @@
     },
     {
       "id": "marah-macrocarpa",
-      "name": "Marah macrocarpa",
+      "name": "Cucamonga manroot",
       "latin": "Marah macrocarpa",
       "type": "perennial",
       "bloomMonths": [
@@ -26456,7 +26456,7 @@
     },
     {
       "id": "cucumis-anguria",
-      "name": "Cucumis anguria",
+      "name": "West indian gherkin",
       "latin": "Cucumis anguria",
       "type": "vegetable",
       "bloomMonths": [
@@ -26554,7 +26554,7 @@
     },
     {
       "id": "cucurbita-pepo",
-      "name": "Cucurbita pepo",
+      "name": "Bitter bottle gourd",
       "latin": "Cucurbita pepo",
       "type": "vegetable",
       "bloomMonths": [
@@ -26703,7 +26703,7 @@
     },
     {
       "id": "bryonia-alba",
-      "name": "Bryonia alba",
+      "name": "White bryony",
       "latin": "Bryonia alba",
       "type": "vegetable",
       "bloomMonths": [
@@ -26803,7 +26803,7 @@
     },
     {
       "id": "acanthosicyos-horridus",
-      "name": "Acanthosicyos horridus",
+      "name": "Butterpips",
       "latin": "Acanthosicyos horridus",
       "type": "vegetable",
       "bloomMonths": [
@@ -27350,7 +27350,7 @@
     },
     {
       "id": "coccinia-grandis",
-      "name": "Coccinia grandis",
+      "name": "Ivy gourd",
       "latin": "Coccinia grandis",
       "type": "vegetable",
       "bloomMonths": [
@@ -27948,7 +27948,7 @@
     },
     {
       "id": "telfairia-occidentalis",
-      "name": "Telfairia occidentalis",
+      "name": "Fluted gourd",
       "latin": "Telfairia occidentalis",
       "type": "perennial",
       "bloomMonths": [
@@ -28243,7 +28243,7 @@
     },
     {
       "id": "cucurbita-argyrosperma",
-      "name": "Cucurbita argyrosperma",
+      "name": "Cushaw",
       "latin": "Cucurbita argyrosperma",
       "type": "annual",
       "bloomMonths": [
@@ -28341,7 +28341,7 @@
     },
     {
       "id": "luffa-operculata",
-      "name": "Luffa operculata",
+      "name": "Luffa",
       "latin": "Luffa operculata",
       "type": "vegetable",
       "bloomMonths": [
@@ -28391,7 +28391,7 @@
     },
     {
       "id": "cucurbita-palmata",
-      "name": "Cucurbita palmata",
+      "name": "Coyote gourd",
       "latin": "Cucurbita palmata",
       "type": "vegetable",
       "bloomMonths": [
@@ -28790,7 +28790,7 @@
     },
     {
       "id": "cucurbita-moschata",
-      "name": "Cucurbita moschata",
+      "name": "Spanish gourd",
       "latin": "Cucurbita moschata",
       "type": "vegetable",
       "bloomMonths": [
@@ -28889,7 +28889,7 @@
     },
     {
       "id": "lagenaria-sphaerica",
-      "name": "Lagenaria sphaerica",
+      "name": "Wild melon",
       "latin": "Lagenaria sphaerica",
       "type": "vegetable",
       "bloomMonths": [
@@ -29039,7 +29039,7 @@
     },
     {
       "id": "cucurbita-maxima",
-      "name": "Cucurbita maxima",
+      "name": "Great pumpkin",
       "latin": "Cucurbita maxima",
       "type": "vegetable",
       "bloomMonths": [
@@ -29395,7 +29395,7 @@
     },
     {
       "id": "kundmannia-sicula",
-      "name": "Kundmannia sicula",
+      "name": "Kundmannia",
       "latin": "Kundmannia sicula",
       "type": "perennial",
       "bloomMonths": [
@@ -29558,7 +29558,7 @@
     },
     {
       "id": "pimpinella-peregrina",
-      "name": "Pimpinella peregrina",
+      "name": "Southern burnet saxifrage",
       "latin": "Pimpinella peregrina",
       "type": "biennial",
       "bloomMonths": [
@@ -29826,7 +29826,7 @@
     },
     {
       "id": "bupleurum-baldense",
-      "name": "Bupleurum baldense",
+      "name": "Small hare's-ear",
       "latin": "Bupleurum baldense",
       "type": "herb",
       "bloomMonths": [
@@ -29936,7 +29936,7 @@
     },
     {
       "id": "peucedanum-officinale",
-      "name": "Peucedanum officinale",
+      "name": "Sulphurweed",
       "latin": "Peucedanum officinale",
       "type": "herb",
       "bloomMonths": [
@@ -30412,7 +30412,7 @@
     },
     {
       "id": "pimpinella-major",
-      "name": "Pimpinella major",
+      "name": "Greater burnet-saxifrage",
       "latin": "Pimpinella major",
       "type": "perennial",
       "bloomMonths": [
@@ -30843,7 +30843,7 @@
     },
     {
       "id": "taenidia-integerrima",
-      "name": "Taenidia integerrima",
+      "name": "Golden alexander",
       "latin": "Taenidia integerrima",
       "type": "perennial",
       "bloomMonths": [
@@ -31169,7 +31169,7 @@
     },
     {
       "id": "bupleurum-lancifolium",
-      "name": "Bupleurum lancifolium",
+      "name": "False thorow-wax",
       "latin": "Bupleurum lancifolium",
       "type": "herb",
       "bloomMonths": [
@@ -31549,7 +31549,7 @@
     },
     {
       "id": "tordylium-apulum",
-      "name": "Tordylium apulum",
+      "name": "Mediterranean hartwort",
       "latin": "Tordylium apulum",
       "type": "annual",
       "bloomMonths": [
@@ -31712,7 +31712,7 @@
     },
     {
       "id": "oenanthe-fistulosa",
-      "name": "Oenanthe fistulosa",
+      "name": "Tubular water-dropwort",
       "latin": "Oenanthe fistulosa",
       "type": "herb",
       "bloomMonths": [
@@ -32301,7 +32301,7 @@
     },
     {
       "id": "oenanthe-silaifolia",
-      "name": "Oenanthe silaifolia",
+      "name": "Narrow-leaf water-dropwort",
       "latin": "Oenanthe silaifolia",
       "type": "herb",
       "bloomMonths": [
@@ -32352,7 +32352,7 @@
     },
     {
       "id": "oenanthe-fluviatilis",
-      "name": "Oenanthe fluviatilis",
+      "name": "River water-dropwort",
       "latin": "Oenanthe fluviatilis",
       "type": "herb",
       "bloomMonths": [
@@ -32620,7 +32620,7 @@
     },
     {
       "id": "oenanthe-lachenalii",
-      "name": "Oenanthe lachenalii",
+      "name": "Parsley water-dropwort",
       "latin": "Oenanthe lachenalii",
       "type": "herb",
       "bloomMonths": [
@@ -32774,7 +32774,7 @@
     },
     {
       "id": "torilis-leptophylla",
-      "name": "Torilis leptophylla",
+      "name": "Bristlefruit hedgeparsley",
       "latin": "Torilis leptophylla",
       "type": "herb",
       "bloomMonths": [
@@ -32933,7 +32933,7 @@
     },
     {
       "id": "pastinaca-sativa",
-      "name": "Pastinaca sativa",
+      "name": "Wild parsnip",
       "latin": "Pastinaca sativa",
       "type": "biennial",
       "bloomMonths": [
@@ -33257,7 +33257,7 @@
     },
     {
       "id": "tordylium-maximum",
-      "name": "Tordylium maximum",
+      "name": "Hartwort",
       "latin": "Tordylium maximum",
       "type": "biennial",
       "bloomMonths": [
@@ -33474,7 +33474,7 @@
     },
     {
       "id": "oenanthe-crocata",
-      "name": "Oenanthe crocata",
+      "name": "Water-dropwort",
       "latin": "Oenanthe crocata",
       "type": "herb",
       "bloomMonths": [
@@ -33579,7 +33579,7 @@
     },
     {
       "id": "oenanthe-javanica",
-      "name": "Oenanthe javanica",
+      "name": "Chinese-celery",
       "latin": "Oenanthe javanica",
       "type": "herb",
       "bloomMonths": [
@@ -34168,7 +34168,7 @@
     },
     {
       "id": "oenanthe-sarmentosa",
-      "name": "Oenanthe sarmentosa",
+      "name": "Water parsely",
       "latin": "Oenanthe sarmentosa",
       "type": "perennial",
       "bloomMonths": [
@@ -34220,7 +34220,7 @@
     },
     {
       "id": "torilis-japonica",
-      "name": "Torilis japonica",
+      "name": "Upright hedge-parsley",
       "latin": "Torilis japonica",
       "type": "biennial",
       "bloomMonths": [
@@ -34275,7 +34275,7 @@
     },
     {
       "id": "thapsia-villosa",
-      "name": "Thapsia villosa",
+      "name": "Thapsia",
       "latin": "Thapsia villosa",
       "type": "herb",
       "bloomMonths": [
@@ -34489,7 +34489,7 @@
     },
     {
       "id": "oenanthe-globulosa",
-      "name": "Oenanthe globulosa",
+      "name": "Round-headed water-dropwort",
       "latin": "Oenanthe globulosa",
       "type": "perennial",
       "bloomMonths": [
@@ -34595,7 +34595,7 @@
     },
     {
       "id": "torilis-arvensis",
-      "name": "Torilis arvensis",
+      "name": "Spreading hedge-parsley",
       "latin": "Torilis arvensis",
       "type": "annual",
       "bloomMonths": [
@@ -34919,7 +34919,7 @@
     },
     {
       "id": "lilaeopsis-occidentalis",
-      "name": "Lilaeopsis occidentalis",
+      "name": "Western grasswort",
       "latin": "Lilaeopsis occidentalis",
       "type": "herb",
       "bloomMonths": [
@@ -36086,7 +36086,7 @@
     },
     {
       "id": "osmorhiza-brachypoda",
-      "name": "Osmorhiza brachypoda",
+      "name": "California sweetcicely",
       "latin": "Osmorhiza brachypoda",
       "type": "herb",
       "bloomMonths": [
@@ -36192,7 +36192,7 @@
     },
     {
       "id": "osmorhiza-depauperata",
-      "name": "Osmorhiza depauperata",
+      "name": "Lesser sweet-cicely",
       "latin": "Osmorhiza depauperata",
       "type": "herb",
       "bloomMonths": [
@@ -36245,7 +36245,7 @@
     },
     {
       "id": "osmorhiza-longistylis",
-      "name": "Osmorhiza longistylis",
+      "name": "Smooth sweet cicely",
       "latin": "Osmorhiza longistylis",
       "type": "herb",
       "bloomMonths": [
@@ -36616,7 +36616,7 @@
     },
     {
       "id": "arracacia-xanthorrhiza",
-      "name": "Arracacia xanthorrhiza",
+      "name": "Peruvian-carrot",
       "latin": "Arracacia xanthorrhiza",
       "type": "herb",
       "bloomMonths": [
@@ -38418,7 +38418,7 @@
     },
     {
       "id": "ammoides-pusilla",
-      "name": "Ammoides pusilla",
+      "name": "Cerfolium",
       "latin": "Ammoides pusilla",
       "type": "herb",
       "bloomMonths": [
@@ -38789,7 +38789,7 @@
     },
     {
       "id": "bowlesia-incana",
-      "name": "Bowlesia incana",
+      "name": "Hoary bowlesia",
       "latin": "Bowlesia incana",
       "type": "herb",
       "bloomMonths": [
@@ -38842,7 +38842,7 @@
     },
     {
       "id": "lomatium-canbyi",
-      "name": "Lomatium canbyi",
+      "name": "Canby's biscuitroot",
       "latin": "Lomatium canbyi",
       "type": "herb",
       "bloomMonths": [
@@ -38892,7 +38892,7 @@
     },
     {
       "id": "lomatium-columbianum",
-      "name": "Lomatium columbianum",
+      "name": "Purple leptotaenia",
       "latin": "Lomatium columbianum",
       "type": "herb",
       "bloomMonths": [
@@ -38942,7 +38942,7 @@
     },
     {
       "id": "rumex-scutatus",
-      "name": "Rumex scutatus",
+      "name": "French sorrel",
       "latin": "Rumex scutatus",
       "type": "perennial",
       "bloomMonths": [
@@ -39042,7 +39042,7 @@
     },
     {
       "id": "rumex-confertus",
-      "name": "Rumex confertus",
+      "name": "Russian dock",
       "latin": "Rumex confertus",
       "type": "perennial",
       "bloomMonths": [
@@ -39143,7 +39143,7 @@
     },
     {
       "id": "rumex-bucephalophorus",
-      "name": "Rumex bucephalophorus",
+      "name": "Ruby dock",
       "latin": "Rumex bucephalophorus",
       "type": "perennial",
       "bloomMonths": [
@@ -39445,7 +39445,7 @@
     },
     {
       "id": "triplaris-americana",
-      "name": "Triplaris americana",
+      "name": "Ant-tree",
       "latin": "Triplaris americana",
       "type": "shrub",
       "bloomMonths": [
@@ -39497,7 +39497,7 @@
     },
     {
       "id": "persicaria-glabra",
-      "name": "Persicaria glabra",
+      "name": "Denseflower knotweed",
       "latin": "Persicaria glabra",
       "type": "perennial",
       "bloomMonths": [
@@ -39548,7 +39548,7 @@
     },
     {
       "id": "rumex-lunaria",
-      "name": "Rumex lunaria",
+      "name": "Canary island sorrel",
       "latin": "Rumex lunaria",
       "type": "perennial",
       "bloomMonths": [
@@ -39852,7 +39852,7 @@
     },
     {
       "id": "rumex-hymenosepalus",
-      "name": "Rumex hymenosepalus",
+      "name": "Ganagra",
       "latin": "Rumex hymenosepalus",
       "type": "perennial",
       "bloomMonths": [
@@ -40002,7 +40002,7 @@
     },
     {
       "id": "antigonon-leptopus",
-      "name": "Antigonon leptopus",
+      "name": "Chain-of-love",
       "latin": "Antigonon leptopus",
       "type": "perennial",
       "bloomMonths": [
@@ -40054,7 +40054,7 @@
     },
     {
       "id": "reynoutria-sachalinensis",
-      "name": "Reynoutria sachalinensis",
+      "name": "Giant knotweed",
       "latin": "Reynoutria sachalinensis",
       "type": "perennial",
       "bloomMonths": [
@@ -40106,7 +40106,7 @@
     },
     {
       "id": "rumex-obtusifolius",
-      "name": "Rumex obtusifolius",
+      "name": "Bitter dock",
       "latin": "Rumex obtusifolius",
       "type": "perennial",
       "bloomMonths": [
@@ -40156,7 +40156,7 @@
     },
     {
       "id": "rumex-vesicarius",
-      "name": "Rumex vesicarius",
+      "name": "Bladder dock",
       "latin": "Rumex vesicarius",
       "type": "perennial",
       "bloomMonths": [
@@ -40206,7 +40206,7 @@
     },
     {
       "id": "rumex-acetosella",
-      "name": "Rumex acetosella",
+      "name": "Field sorrel",
       "latin": "Rumex acetosella",
       "type": "perennial",
       "bloomMonths": [
@@ -40308,7 +40308,7 @@
     },
     {
       "id": "reynoutria-japonica",
-      "name": "Reynoutria japonica",
+      "name": "Japanese knotweed",
       "latin": "Reynoutria japonica",
       "type": "perennial",
       "bloomMonths": [
@@ -40361,7 +40361,7 @@
     },
     {
       "id": "rumex-venosus",
-      "name": "Rumex venosus",
+      "name": "Wild begonia",
       "latin": "Rumex venosus",
       "type": "perennial",
       "bloomMonths": [
@@ -40463,7 +40463,7 @@
     },
     {
       "id": "rumex-aquaticus",
-      "name": "Rumex aquaticus",
+      "name": "Water dock",
       "latin": "Rumex aquaticus",
       "type": "perennial",
       "bloomMonths": [
@@ -40514,7 +40514,7 @@
     },
     {
       "id": "rumex-alpinus",
-      "name": "Rumex alpinus",
+      "name": "Alpine dock",
       "latin": "Rumex alpinus",
       "type": "perennial",
       "bloomMonths": [
@@ -40564,7 +40564,7 @@
     },
     {
       "id": "rumex-altissimus",
-      "name": "Rumex altissimus",
+      "name": "Smooth dock",
       "latin": "Rumex altissimus",
       "type": "perennial",
       "bloomMonths": [
@@ -40614,7 +40614,7 @@
     },
     {
       "id": "rumex-salicifolius",
-      "name": "Rumex salicifolius",
+      "name": "Willow dock",
       "latin": "Rumex salicifolius",
       "type": "perennial",
       "bloomMonths": [
@@ -40664,7 +40664,7 @@
     },
     {
       "id": "polygonum-aviculare",
-      "name": "Polygonum aviculare",
+      "name": "Prostrate knotweed",
       "latin": "Polygonum aviculare",
       "type": "annual",
       "bloomMonths": [
@@ -40713,7 +40713,7 @@
     },
     {
       "id": "rumex-verticillatus",
-      "name": "Rumex verticillatus",
+      "name": "Swamp dock",
       "latin": "Rumex verticillatus",
       "type": "perennial",
       "bloomMonths": [
@@ -40864,7 +40864,7 @@
     },
     {
       "id": "persicaria-sagittata",
-      "name": "Persicaria sagittata",
+      "name": "American tearthumb",
       "latin": "Persicaria sagittata",
       "type": "perennial",
       "bloomMonths": [
@@ -41016,7 +41016,7 @@
     },
     {
       "id": "persicaria-hydropiperoides",
-      "name": "Persicaria hydropiperoides",
+      "name": "False water-pepper",
       "latin": "Persicaria hydropiperoides",
       "type": "perennial",
       "bloomMonths": [
@@ -41067,7 +41067,7 @@
     },
     {
       "id": "persicaria-decipiens",
-      "name": "Persicaria decipiens",
+      "name": "Slender knotweed",
       "latin": "Persicaria decipiens",
       "type": "perennial",
       "bloomMonths": [
@@ -41119,7 +41119,7 @@
     },
     {
       "id": "rumex-acetosa",
-      "name": "Rumex acetosa",
+      "name": "Garden sorrel",
       "latin": "Rumex acetosa",
       "type": "perennial",
       "bloomMonths": [
@@ -41223,7 +41223,7 @@
     },
     {
       "id": "rumex-sanguineus",
-      "name": "Rumex sanguineus",
+      "name": "Redvein dock",
       "latin": "Rumex sanguineus",
       "type": "perennial",
       "bloomMonths": [
@@ -41274,7 +41274,7 @@
     },
     {
       "id": "reynoutria-multiflora",
-      "name": "Reynoutria multiflora",
+      "name": "Chinese fleeceflower",
       "latin": "Reynoutria multiflora",
       "type": "bulb",
       "bloomMonths": [
@@ -41379,7 +41379,7 @@
     },
     {
       "id": "rumex-thyrsiflorus",
-      "name": "Rumex thyrsiflorus",
+      "name": "Narrow-leaf sorrel",
       "latin": "Rumex thyrsiflorus",
       "type": "perennial",
       "bloomMonths": [
@@ -41532,7 +41532,7 @@
     },
     {
       "id": "rumex-hydrolapathum",
-      "name": "Rumex hydrolapathum",
+      "name": "Great water dock",
       "latin": "Rumex hydrolapathum",
       "type": "perennial",
       "bloomMonths": [
@@ -41583,7 +41583,7 @@
     },
     {
       "id": "rumex-sagittatus",
-      "name": "Rumex sagittatus",
+      "name": "Climbing dock",
       "latin": "Rumex sagittatus",
       "type": "perennial",
       "bloomMonths": [
@@ -41685,7 +41685,7 @@
     },
     {
       "id": "rumex-rupestris",
-      "name": "Rumex rupestris",
+      "name": "Shore dock",
       "latin": "Rumex rupestris",
       "type": "perennial",
       "bloomMonths": [
@@ -41736,7 +41736,7 @@
     },
     {
       "id": "rumex-paucifolius",
-      "name": "Rumex paucifolius",
+      "name": "Alpine sheep sorrel",
       "latin": "Rumex paucifolius",
       "type": "perennial",
       "bloomMonths": [
@@ -41838,7 +41838,7 @@
     },
     {
       "id": "rumex-palustris",
-      "name": "Rumex palustris",
+      "name": "Marsh dock",
       "latin": "Rumex palustris",
       "type": "perennial",
       "bloomMonths": [
@@ -41889,7 +41889,7 @@
     },
     {
       "id": "rumex-patientia",
-      "name": "Rumex patientia",
+      "name": "Patience dock",
       "latin": "Rumex patientia",
       "type": "perennial",
       "bloomMonths": [
@@ -42095,7 +42095,7 @@
     },
     {
       "id": "polygonum-shastense",
-      "name": "Polygonum shastense",
+      "name": "Shasta knotweed",
       "latin": "Polygonum shastense",
       "type": "annual",
       "bloomMonths": [
@@ -42145,7 +42145,7 @@
     },
     {
       "id": "persicaria-maculosa",
-      "name": "Persicaria maculosa",
+      "name": "Jesusplant",
       "latin": "Persicaria maculosa",
       "type": "annual",
       "bloomMonths": [
@@ -42197,7 +42197,7 @@
     },
     {
       "id": "persicaria-amphibia",
-      "name": "Persicaria amphibia",
+      "name": "Amphibious bistort",
       "latin": "Persicaria amphibia",
       "type": "perennial",
       "bloomMonths": [
@@ -42249,7 +42249,7 @@
     },
     {
       "id": "persicaria-hydropiper",
-      "name": "Persicaria hydropiper",
+      "name": "Marsh-pepper smartweed",
       "latin": "Persicaria hydropiper",
       "type": "perennial",
       "bloomMonths": [
@@ -42351,7 +42351,7 @@
     },
     {
       "id": "hollisteria-lanata",
-      "name": "Hollisteria lanata",
+      "name": "False spike-flower",
       "latin": "Hollisteria lanata",
       "type": "perennial",
       "bloomMonths": [
@@ -42454,7 +42454,7 @@
     },
     {
       "id": "polygonum-cognatum",
-      "name": "Polygonum cognatum",
+      "name": "Indian knotgrass",
       "latin": "Polygonum cognatum",
       "type": "perennial",
       "bloomMonths": [
@@ -42554,7 +42554,7 @@
     },
     {
       "id": "chorizanthe-brevicornu",
-      "name": "Chorizanthe brevicornu",
+      "name": "Brittle spineflower",
       "latin": "Chorizanthe brevicornu",
       "type": "annual",
       "bloomMonths": [
@@ -42596,7 +42596,7 @@
     },
     {
       "id": "chorizanthe-douglasii",
-      "name": "Chorizanthe douglasii",
+      "name": "Douglas's spineflower",
       "latin": "Chorizanthe douglasii",
       "type": "annual",
       "bloomMonths": [
@@ -42725,7 +42725,7 @@
     },
     {
       "id": "chorizanthe-membranacea",
-      "name": "Chorizanthe membranacea",
+      "name": "Pink spineflower",
       "latin": "Chorizanthe membranacea",
       "type": "annual",
       "bloomMonths": [
@@ -42768,7 +42768,7 @@
     },
     {
       "id": "chorizanthe-fimbriata",
-      "name": "Chorizanthe fimbriata",
+      "name": "Fringed spineflower",
       "latin": "Chorizanthe fimbriata",
       "type": "annual",
       "bloomMonths": [
@@ -42854,7 +42854,7 @@
     },
     {
       "id": "chorizanthe-orcuttiana",
-      "name": "Chorizanthe orcuttiana",
+      "name": "Orcutt's spineflower",
       "latin": "Chorizanthe orcuttiana",
       "type": "annual",
       "bloomMonths": [
@@ -42897,7 +42897,7 @@
     },
     {
       "id": "chorizanthe-pungens",
-      "name": "Chorizanthe pungens",
+      "name": "Monterey spineflower",
       "latin": "Chorizanthe pungens",
       "type": "annual",
       "bloomMonths": [
@@ -42940,7 +42940,7 @@
     },
     {
       "id": "chorizanthe-staticoides",
-      "name": "Chorizanthe staticoides",
+      "name": "Turkish rugging",
       "latin": "Chorizanthe staticoides",
       "type": "annual",
       "bloomMonths": [
@@ -42983,7 +42983,7 @@
     },
     {
       "id": "chorizanthe-robusta",
-      "name": "Chorizanthe robusta",
+      "name": "Robust spineflower",
       "latin": "Chorizanthe robusta",
       "type": "annual",
       "bloomMonths": [
@@ -43291,7 +43291,7 @@
     },
     {
       "id": "polygonum-oxyspermum",
-      "name": "Polygonum oxyspermum",
+      "name": "Strand-vogelknöterich",
       "latin": "Polygonum oxyspermum",
       "type": "annual",
       "bloomMonths": [
@@ -43495,7 +43495,7 @@
     },
     {
       "id": "acanthoscyphus-parishii",
-      "name": "Acanthoscyphus parishii",
+      "name": "Parish's oxytheca",
       "latin": "Acanthoscyphus parishii",
       "type": "perennial",
       "bloomMonths": [
@@ -43809,7 +43809,7 @@
     },
     {
       "id": "polygonum-douglasii",
-      "name": "Polygonum douglasii",
+      "name": "Douglas's knotweed",
       "latin": "Polygonum douglasii",
       "type": "annual",
       "bloomMonths": [
@@ -43859,7 +43859,7 @@
     },
     {
       "id": "rheum-australe",
-      "name": "Rheum australe",
+      "name": "Himalayan rhubarb",
       "latin": "Rheum australe",
       "type": "herb",
       "bloomMonths": [
@@ -43964,7 +43964,7 @@
     },
     {
       "id": "persicaria-punctata",
-      "name": "Persicaria punctata",
+      "name": "Dotted smartweed",
       "latin": "Persicaria punctata",
       "type": "perennial",
       "bloomMonths": [
@@ -44016,7 +44016,7 @@
     },
     {
       "id": "persicaria-nepalensis",
-      "name": "Persicaria nepalensis",
+      "name": "Nepalese smartweed",
       "latin": "Persicaria nepalensis",
       "type": "perennial",
       "bloomMonths": [
@@ -44068,7 +44068,7 @@
     },
     {
       "id": "rumex-cristatus",
-      "name": "Rumex cristatus",
+      "name": "Greek dock",
       "latin": "Rumex cristatus",
       "type": "perennial",
       "bloomMonths": [
@@ -44370,7 +44370,7 @@
     },
     {
       "id": "persicaria-orientalis",
-      "name": "Persicaria orientalis",
+      "name": "Prince's-feather",
       "latin": "Persicaria orientalis",
       "type": "perennial",
       "bloomMonths": [
@@ -44472,7 +44472,7 @@
     },
     {
       "id": "rumex-pseudonatronatus",
-      "name": "Rumex pseudonatronatus",
+      "name": "Field dock",
       "latin": "Rumex pseudonatronatus",
       "type": "perennial",
       "bloomMonths": [
@@ -44523,7 +44523,7 @@
     },
     {
       "id": "polygonum-minimum",
-      "name": "Polygonum minimum",
+      "name": "Broadleaf knotweed",
       "latin": "Polygonum minimum",
       "type": "annual",
       "bloomMonths": [
@@ -44623,7 +44623,7 @@
     },
     {
       "id": "polygonum-polygaloides",
-      "name": "Polygonum polygaloides",
+      "name": "Polygala knotweed",
       "latin": "Polygonum polygaloides",
       "type": "annual",
       "bloomMonths": [
@@ -44723,7 +44723,7 @@
     },
     {
       "id": "persicaria-tinctoria",
-      "name": "Persicaria tinctoria",
+      "name": "Chinese indigo",
       "latin": "Persicaria tinctoria",
       "type": "perennial",
       "bloomMonths": [
@@ -44775,7 +44775,7 @@
     },
     {
       "id": "coccoloba-diversifolia",
-      "name": "Coccoloba diversifolia",
+      "name": "Pigeon-plum",
       "latin": "Coccoloba diversifolia",
       "type": "shrub",
       "bloomMonths": [
@@ -44983,7 +44983,7 @@
     },
     {
       "id": "persicaria-virginiana",
-      "name": "Persicaria virginiana",
+      "name": "Jumpseed",
       "latin": "Persicaria virginiana",
       "type": "perennial",
       "bloomMonths": [
@@ -45035,7 +45035,7 @@
     },
     {
       "id": "persicaria-bistorta",
-      "name": "Persicaria bistorta",
+      "name": "Adder-wort",
       "latin": "Persicaria bistorta",
       "type": "perennial",
       "bloomMonths": [
@@ -45190,7 +45190,7 @@
     },
     {
       "id": "eriogonum-caespitosum",
-      "name": "Eriogonum caespitosum",
+      "name": "Matted wild buckwheat",
       "latin": "Eriogonum caespitosum",
       "type": "perennial",
       "bloomMonths": [
@@ -45289,7 +45289,7 @@
     },
     {
       "id": "fallopia-dumetorum",
-      "name": "Fallopia dumetorum",
+      "name": "Copse-bindweed",
       "latin": "Fallopia dumetorum",
       "type": "annual",
       "bloomMonths": [
@@ -45499,7 +45499,7 @@
     },
     {
       "id": "persicaria-minor",
-      "name": "Persicaria minor",
+      "name": "Small water-pepper",
       "latin": "Persicaria minor",
       "type": "herb",
       "bloomMonths": [
@@ -45551,7 +45551,7 @@
     },
     {
       "id": "persicaria-longiseta",
-      "name": "Persicaria longiseta",
+      "name": "Bristly lady's-thumb",
       "latin": "Persicaria longiseta",
       "type": "perennial",
       "bloomMonths": [
@@ -45756,7 +45756,7 @@
     },
     {
       "id": "muehlenbeckia-complexa",
-      "name": "Muehlenbeckia complexa",
+      "name": "Maidenhair vine",
       "latin": "Muehlenbeckia complexa",
       "type": "shrub",
       "bloomMonths": [
@@ -45915,7 +45915,7 @@
     },
     {
       "id": "eriogonum-angulosum",
-      "name": "Eriogonum angulosum",
+      "name": "Anglestem buckwheat",
       "latin": "Eriogonum angulosum",
       "type": "perennial",
       "bloomMonths": [
@@ -45965,7 +45965,7 @@
     },
     {
       "id": "eriogonum-alpinum",
-      "name": "Eriogonum alpinum",
+      "name": "Trinity buckwheat",
       "latin": "Eriogonum alpinum",
       "type": "perennial",
       "bloomMonths": [
@@ -46115,7 +46115,7 @@
     },
     {
       "id": "eriogonum-arborescens",
-      "name": "Eriogonum arborescens",
+      "name": "Island buckwheat",
       "latin": "Eriogonum arborescens",
       "type": "perennial",
       "bloomMonths": [
@@ -46165,7 +46165,7 @@
     },
     {
       "id": "bistorta-amplexicaulis",
-      "name": "Bistorta amplexicaulis",
+      "name": "Red bistort",
       "latin": "Bistorta amplexicaulis",
       "type": "perennial",
       "bloomMonths": [
@@ -46422,7 +46422,7 @@
     },
     {
       "id": "eriogonum-inflatum",
-      "name": "Eriogonum inflatum",
+      "name": "Desert trumpet",
       "latin": "Eriogonum inflatum",
       "type": "perennial",
       "bloomMonths": [
@@ -46471,7 +46471,7 @@
     },
     {
       "id": "eriogonum-pyrolifolium",
-      "name": "Eriogonum pyrolifolium",
+      "name": "Shasta buckwheat",
       "latin": "Eriogonum pyrolifolium",
       "type": "perennial",
       "bloomMonths": [
@@ -46676,7 +46676,7 @@
     },
     {
       "id": "fallopia-convolvulus",
-      "name": "Fallopia convolvulus",
+      "name": "Black bindweed",
       "latin": "Fallopia convolvulus",
       "type": "annual",
       "bloomMonths": [
@@ -46729,7 +46729,7 @@
     },
     {
       "id": "eriogonum-umbellatum",
-      "name": "Eriogonum umbellatum",
+      "name": "Sulfur-buckwheat",
       "latin": "Eriogonum umbellatum",
       "type": "perennial",
       "bloomMonths": [
@@ -46983,7 +46983,7 @@
     },
     {
       "id": "polygonum-bellardii",
-      "name": "Polygonum bellardii",
+      "name": "Narrowleaf knotweed",
       "latin": "Polygonum bellardii",
       "type": "annual",
       "bloomMonths": [
@@ -47083,7 +47083,7 @@
     },
     {
       "id": "polygonum-tenue",
-      "name": "Polygonum tenue",
+      "name": "Pleatleaf knotweed",
       "latin": "Polygonum tenue",
       "type": "annual",
       "bloomMonths": [
@@ -47133,7 +47133,7 @@
     },
     {
       "id": "eriogonum-fasciculatum",
-      "name": "Eriogonum fasciculatum",
+      "name": "California wild buckwheat",
       "latin": "Eriogonum fasciculatum",
       "type": "shrub",
       "bloomMonths": [
@@ -47183,7 +47183,7 @@
     },
     {
       "id": "polygonum-majus",
-      "name": "Polygonum majus",
+      "name": "Wiry knotweed",
       "latin": "Polygonum majus",
       "type": "annual",
       "bloomMonths": [
@@ -47335,7 +47335,7 @@
     },
     {
       "id": "coccoloba-pubescens",
-      "name": "Coccoloba pubescens",
+      "name": "Mountain-grape",
       "latin": "Coccoloba pubescens",
       "type": "shrub",
       "bloomMonths": [
@@ -47388,7 +47388,7 @@
     },
     {
       "id": "bistorta-vivipara",
-      "name": "Bistorta vivipara",
+      "name": "Alpine bistort",
       "latin": "Bistorta vivipara",
       "type": "perennial",
       "bloomMonths": [
@@ -47438,7 +47438,7 @@
     },
     {
       "id": "coccoloba-uvifera",
-      "name": "Coccoloba uvifera",
+      "name": "Platterleaf",
       "latin": "Coccoloba uvifera",
       "type": "shrub",
       "bloomMonths": [
@@ -47649,7 +47649,7 @@
     },
     {
       "id": "rheum-ribes",
-      "name": "Rheum ribes",
+      "name": "Syrian rhubarb",
       "latin": "Rheum ribes",
       "type": "vegetable",
       "bloomMonths": [
@@ -47746,7 +47746,7 @@
     },
     {
       "id": "fagopyrum-esculentum",
-      "name": "Fagopyrum esculentum",
+      "name": "Silverhull buckwheat",
       "latin": "Fagopyrum esculentum",
       "type": "perennial",
       "bloomMonths": [
@@ -47852,7 +47852,7 @@
     },
     {
       "id": "eriogonum-jamesii",
-      "name": "Eriogonum jamesii",
+      "name": "Antelope-sage",
       "latin": "Eriogonum jamesii",
       "type": "perennial",
       "bloomMonths": [
@@ -48005,7 +48005,7 @@
     },
     {
       "id": "eriogonum-brachypodum",
-      "name": "Eriogonum brachypodum",
+      "name": "Parry's buckwheat",
       "latin": "Eriogonum brachypodum",
       "type": "annual",
       "bloomMonths": [
@@ -48103,7 +48103,7 @@
     },
     {
       "id": "eriogonum-brachyanthum",
-      "name": "Eriogonum brachyanthum",
+      "name": "Short-flower wild buckwheat",
       "latin": "Eriogonum brachyanthum",
       "type": "annual",
       "bloomMonths": [
@@ -48297,7 +48297,7 @@
     },
     {
       "id": "eriogonum-cernuum",
-      "name": "Eriogonum cernuum",
+      "name": "Nodding wild buckwheat",
       "latin": "Eriogonum cernuum",
       "type": "annual",
       "bloomMonths": [
@@ -48347,7 +48347,7 @@
     },
     {
       "id": "eriogonum-cinereum",
-      "name": "Eriogonum cinereum",
+      "name": "Coastal buckwheat",
       "latin": "Eriogonum cinereum",
       "type": "perennial",
       "bloomMonths": [
@@ -48491,7 +48491,7 @@
     },
     {
       "id": "eriogonum-crocatum",
-      "name": "Eriogonum crocatum",
+      "name": "Saffron wild buckwheat",
       "latin": "Eriogonum crocatum",
       "type": "perennial",
       "bloomMonths": [
@@ -48540,7 +48540,7 @@
     },
     {
       "id": "eriogonum-deflexum",
-      "name": "Eriogonum deflexum",
+      "name": "Skeleton-weed",
       "latin": "Eriogonum deflexum",
       "type": "annual",
       "bloomMonths": [
@@ -48589,7 +48589,7 @@
     },
     {
       "id": "eriogonum-davidsonii",
-      "name": "Eriogonum davidsonii",
+      "name": "Davidson's buckwheat",
       "latin": "Eriogonum davidsonii",
       "type": "annual",
       "bloomMonths": [
@@ -48632,7 +48632,7 @@
     },
     {
       "id": "eriogonum-douglasii",
-      "name": "Eriogonum douglasii",
+      "name": "Douglas' buckwheat",
       "latin": "Eriogonum douglasii",
       "type": "perennial",
       "bloomMonths": [
@@ -48682,7 +48682,7 @@
     },
     {
       "id": "eriogonum-elatum",
-      "name": "Eriogonum elatum",
+      "name": "Tall woolly buckwheat",
       "latin": "Eriogonum elatum",
       "type": "perennial",
       "bloomMonths": [
@@ -48733,7 +48733,7 @@
     },
     {
       "id": "eriogonum-diclinum",
-      "name": "Eriogonum diclinum",
+      "name": "Jaynes canyon buckwheat",
       "latin": "Eriogonum diclinum",
       "type": "shrub",
       "bloomMonths": [
@@ -48834,7 +48834,7 @@
     },
     {
       "id": "eriogonum-flavum",
-      "name": "Eriogonum flavum",
+      "name": "Alpine golden buckwheat",
       "latin": "Eriogonum flavum",
       "type": "perennial",
       "bloomMonths": [
@@ -48884,7 +48884,7 @@
     },
     {
       "id": "salicornia-europaea",
-      "name": "Salicornia europaea",
+      "name": "Common glasswort",
       "latin": "Salicornia europaea",
       "type": "annual",
       "bloomMonths": [
@@ -49060,7 +49060,7 @@
     },
     {
       "id": "salicornia-bigelovii",
-      "name": "Salicornia bigelovii",
+      "name": "Dwarf glasswort",
       "latin": "Salicornia bigelovii",
       "type": "annual",
       "bloomMonths": [
@@ -49149,7 +49149,7 @@
     },
     {
       "id": "bassia-prostrata",
-      "name": "Bassia prostrata",
+      "name": "Forage kochia",
       "latin": "Bassia prostrata",
       "type": "annual",
       "bloomMonths": [
@@ -49242,7 +49242,7 @@
     },
     {
       "id": "salicornia-virginica",
-      "name": "Salicornia virginica",
+      "name": "Virginia glasswort",
       "latin": "Salicornia virginica",
       "type": "perennial",
       "bloomMonths": [
@@ -50762,7 +50762,7 @@
     },
     {
       "id": "maireana-pyramidata",
-      "name": "Maireana pyramidata",
+      "name": "Sagobush",
       "latin": "Maireana pyramidata",
       "type": "shrub",
       "bloomMonths": [
@@ -53547,7 +53547,7 @@
     },
     {
       "id": "aegiphila-integrifolia",
-      "name": "Aegiphila integrifolia",
+      "name": "Entireleaf spiritweed",
       "latin": "Aegiphila integrifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -53730,7 +53730,7 @@
     },
     {
       "id": "aeonium-arboreum",
-      "name": "Aeonium arboreum",
+      "name": "Tree aenium",
       "latin": "Aeonium arboreum",
       "type": "annual",
       "bloomMonths": [
@@ -53910,7 +53910,7 @@
     },
     {
       "id": "aeonium-cuneatum",
-      "name": "Aeonium cuneatum",
+      "name": "Aeonium",
       "latin": "Aeonium cuneatum",
       "type": "annual",
       "bloomMonths": [
@@ -54046,7 +54046,7 @@
     },
     {
       "id": "aeonium-haworthii",
-      "name": "Aeonium haworthii",
+      "name": "Haworth's aeonium",
       "latin": "Aeonium haworthii",
       "type": "annual",
       "bloomMonths": [
@@ -54496,7 +54496,7 @@
     },
     {
       "id": "aeonium-undulatum",
-      "name": "Aeonium undulatum",
+      "name": "Saucer plant",
       "latin": "Aeonium undulatum",
       "type": "annual",
       "bloomMonths": [
@@ -54681,7 +54681,7 @@
     },
     {
       "id": "afzelia-africana",
-      "name": "Afzelia africana",
+      "name": "African mahogany",
       "latin": "Afzelia africana",
       "type": "annual",
       "bloomMonths": [
@@ -54724,7 +54724,7 @@
     },
     {
       "id": "afzelia-bipindensis",
-      "name": "Afzelia bipindensis",
+      "name": "Doussie rouge",
       "latin": "Afzelia bipindensis",
       "type": "annual",
       "bloomMonths": [
@@ -54767,7 +54767,7 @@
     },
     {
       "id": "afzelia-quanzensis",
-      "name": "Afzelia quanzensis",
+      "name": "Pod-mahogany",
       "latin": "Afzelia quanzensis",
       "type": "annual",
       "bloomMonths": [
@@ -54896,7 +54896,7 @@
     },
     {
       "id": "agarista-populifolia",
-      "name": "Agarista populifolia",
+      "name": "Pipeplant",
       "latin": "Agarista populifolia",
       "type": "shrub",
       "bloomMonths": [
@@ -54987,7 +54987,7 @@
     },
     {
       "id": "agrostemma-githago",
-      "name": "Agrostemma githago",
+      "name": "Cockle",
       "latin": "Agrostemma githago",
       "type": "annual",
       "bloomMonths": [
@@ -55304,7 +55304,7 @@
     },
     {
       "id": "ajuga-chamaepitys",
-      "name": "Ajuga chamaepitys",
+      "name": "Ground-pine",
       "latin": "Ajuga chamaepitys",
       "type": "perennial",
       "bloomMonths": [
@@ -55396,7 +55396,7 @@
     },
     {
       "id": "ajuga-genevensis",
-      "name": "Ajuga genevensis",
+      "name": "Blue bugle",
       "latin": "Ajuga genevensis",
       "type": "perennial",
       "bloomMonths": [
@@ -55535,7 +55535,7 @@
     },
     {
       "id": "ajuga-pyramidalis",
-      "name": "Ajuga pyramidalis",
+      "name": "Pyramid bugle",
       "latin": "Ajuga pyramidalis",
       "type": "perennial",
       "bloomMonths": [
@@ -55581,7 +55581,7 @@
     },
     {
       "id": "ajuga-reptans",
-      "name": "Ajuga reptans",
+      "name": "Ajuga",
       "latin": "Ajuga reptans",
       "type": "perennial",
       "bloomMonths": [
@@ -55628,7 +55628,7 @@
     },
     {
       "id": "alchemilla-alpina",
-      "name": "Alchemilla alpina",
+      "name": "Alpine lady's-mantle",
       "latin": "Alchemilla alpina",
       "type": "shrub",
       "bloomMonths": [
@@ -55676,7 +55676,7 @@
     },
     {
       "id": "alchemilla-filicaulis",
-      "name": "Alchemilla filicaulis",
+      "name": "Hairy lady's-mantle",
       "latin": "Alchemilla filicaulis",
       "type": "shrub",
       "bloomMonths": [
@@ -55724,7 +55724,7 @@
     },
     {
       "id": "alchemilla-glabra",
-      "name": "Alchemilla glabra",
+      "name": "Smooth lady's-mantle",
       "latin": "Alchemilla glabra",
       "type": "shrub",
       "bloomMonths": [
@@ -55772,7 +55772,7 @@
     },
     {
       "id": "alchemilla-glaucescens",
-      "name": "Alchemilla glaucescens",
+      "name": "Silky lady's mantle",
       "latin": "Alchemilla glaucescens",
       "type": "shrub",
       "bloomMonths": [
@@ -55820,7 +55820,7 @@
     },
     {
       "id": "alchemilla-mollis",
-      "name": "Alchemilla mollis",
+      "name": "Garden lady's-mantle",
       "latin": "Alchemilla mollis",
       "type": "perennial",
       "bloomMonths": [
@@ -55869,7 +55869,7 @@
     },
     {
       "id": "alchemilla-xanthochlora",
-      "name": "Alchemilla xanthochlora",
+      "name": "Intermediate lady's-mantle",
       "latin": "Alchemilla xanthochlora",
       "type": "shrub",
       "bloomMonths": [
@@ -56558,7 +56558,7 @@
     },
     {
       "id": "amsinckia-calycina",
-      "name": "Amsinckia calycina",
+      "name": "Hairy fiddleneck",
       "latin": "Amsinckia calycina",
       "type": "perennial",
       "bloomMonths": [
@@ -56783,7 +56783,7 @@
     },
     {
       "id": "amsinckia-menziesii",
-      "name": "Amsinckia menziesii",
+      "name": "Common fiddleneck",
       "latin": "Amsinckia menziesii",
       "type": "perennial",
       "bloomMonths": [
@@ -57849,7 +57849,7 @@
     },
     {
       "id": "anemone-narcissiflora",
-      "name": "Anemone narcissiflora",
+      "name": "Narcissus anemone",
       "latin": "Anemone narcissiflora",
       "type": "perennial",
       "bloomMonths": [
@@ -58179,7 +58179,7 @@
     },
     {
       "id": "angelonia-angustifolia",
-      "name": "Angelonia angustifolia",
+      "name": "Narrowleaf angelon",
       "latin": "Angelonia angustifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -58273,7 +58273,7 @@
     },
     {
       "id": "angelonia-salicariifolia",
-      "name": "Angelonia salicariifolia",
+      "name": "Willowleaf angelon",
       "latin": "Angelonia salicariifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -58364,7 +58364,7 @@
     },
     {
       "id": "anisocarpus-madioides",
-      "name": "Anisocarpus madioides",
+      "name": "Woodland madia",
       "latin": "Anisocarpus madioides",
       "type": "annual",
       "bloomMonths": [
@@ -58570,7 +58570,7 @@
     },
     {
       "id": "anthericum-liliago",
-      "name": "Anthericum liliago",
+      "name": "St. bernard’s lily",
       "latin": "Anthericum liliago",
       "type": "perennial",
       "bloomMonths": [
@@ -58615,7 +58615,7 @@
     },
     {
       "id": "anthericum-ramosum",
-      "name": "Anthericum ramosum",
+      "name": "Branched st. bernard's-lily",
       "latin": "Anthericum ramosum",
       "type": "perennial",
       "bloomMonths": [
@@ -58897,7 +58897,7 @@
     },
     {
       "id": "antirrhinum-majus",
-      "name": "Antirrhinum majus",
+      "name": "Snapdragon",
       "latin": "Antirrhinum majus",
       "type": "perennial",
       "bloomMonths": [
@@ -59090,7 +59090,7 @@
     },
     {
       "id": "antirrhinum-siculum",
-      "name": "Antirrhinum siculum",
+      "name": "Sicilian snapdragon",
       "latin": "Antirrhinum siculum",
       "type": "herb",
       "bloomMonths": [
@@ -59281,7 +59281,7 @@
     },
     {
       "id": "aphyllanthes-monspeliensis",
-      "name": "Aphyllanthes monspeliensis",
+      "name": "Blue aphyllanthes",
       "latin": "Aphyllanthes monspeliensis",
       "type": "perennial",
       "bloomMonths": [
@@ -59747,7 +59747,7 @@
     },
     {
       "id": "aquilegia-alpina",
-      "name": "Aquilegia alpina",
+      "name": "Alpine columbine",
       "latin": "Aquilegia alpina",
       "type": "perennial",
       "bloomMonths": [
@@ -60420,7 +60420,7 @@
     },
     {
       "id": "aquilegia-flavescens",
-      "name": "Aquilegia flavescens",
+      "name": "Yellow columbine",
       "latin": "Aquilegia flavescens",
       "type": "perennial",
       "bloomMonths": [
@@ -61005,7 +61005,7 @@
     },
     {
       "id": "aquilegia-pyrenaica",
-      "name": "Aquilegia pyrenaica",
+      "name": "Pyrenean columbine",
       "latin": "Aquilegia pyrenaica",
       "type": "perennial",
       "bloomMonths": [
@@ -61050,7 +61050,7 @@
     },
     {
       "id": "aquilegia-saximontana",
-      "name": "Aquilegia saximontana",
+      "name": "Rocky mountain blue columbine",
       "latin": "Aquilegia saximontana",
       "type": "perennial",
       "bloomMonths": [
@@ -61095,7 +61095,7 @@
     },
     {
       "id": "aquilegia-scopulorum",
-      "name": "Aquilegia scopulorum",
+      "name": "Rock columbine",
       "latin": "Aquilegia scopulorum",
       "type": "perennial",
       "bloomMonths": [
@@ -61140,7 +61140,7 @@
     },
     {
       "id": "aquilegia-shockleyi",
-      "name": "Aquilegia shockleyi",
+      "name": "Western columbine",
       "latin": "Aquilegia shockleyi",
       "type": "perennial",
       "bloomMonths": [
@@ -61278,7 +61278,7 @@
     },
     {
       "id": "arbutus-andrachne",
-      "name": "Arbutus andrachne",
+      "name": "Greek strawberry-tree",
       "latin": "Arbutus andrachne",
       "type": "shrub",
       "bloomMonths": [
@@ -61376,7 +61376,7 @@
     },
     {
       "id": "arbutus-canariensis",
-      "name": "Arbutus canariensis",
+      "name": "Canary islands strawberry-tree",
       "latin": "Arbutus canariensis",
       "type": "shrub",
       "bloomMonths": [
@@ -61474,7 +61474,7 @@
     },
     {
       "id": "arbutus-menziesii",
-      "name": "Arbutus menziesii",
+      "name": "Pacific madrone",
       "latin": "Arbutus menziesii",
       "type": "shrub",
       "bloomMonths": [
@@ -61523,7 +61523,7 @@
     },
     {
       "id": "arbutus-unedo",
-      "name": "Arbutus unedo",
+      "name": "Irish strawberry-tree",
       "latin": "Arbutus unedo",
       "type": "shrub",
       "bloomMonths": [
@@ -61572,7 +61572,7 @@
     },
     {
       "id": "arbutus-xalapensis",
-      "name": "Arbutus xalapensis",
+      "name": "Texas madrone",
       "latin": "Arbutus xalapensis",
       "type": "shrub",
       "bloomMonths": [
@@ -61900,7 +61900,7 @@
     },
     {
       "id": "arctomecon-merriamii",
-      "name": "Arctomecon merriamii",
+      "name": "White bear-poppy",
       "latin": "Arctomecon merriamii",
       "type": "perennial",
       "bloomMonths": [
@@ -62039,7 +62039,7 @@
     },
     {
       "id": "arctostaphylos-auriculata",
-      "name": "Arctostaphylos auriculata",
+      "name": "Mt. diablo manzanita",
       "latin": "Arctostaphylos auriculata",
       "type": "shrub",
       "bloomMonths": [
@@ -62086,7 +62086,7 @@
     },
     {
       "id": "arctostaphylos-bakeri",
-      "name": "Arctostaphylos bakeri",
+      "name": "Baker's manzanita",
       "latin": "Arctostaphylos bakeri",
       "type": "shrub",
       "bloomMonths": [
@@ -62133,7 +62133,7 @@
     },
     {
       "id": "arctostaphylos-canescens",
-      "name": "Arctostaphylos canescens",
+      "name": "Hoary manzanita",
       "latin": "Arctostaphylos canescens",
       "type": "shrub",
       "bloomMonths": [
@@ -62227,7 +62227,7 @@
     },
     {
       "id": "arctostaphylos-columbiana",
-      "name": "Arctostaphylos columbiana",
+      "name": "Hairy manzanita",
       "latin": "Arctostaphylos columbiana",
       "type": "shrub",
       "bloomMonths": [
@@ -62275,7 +62275,7 @@
     },
     {
       "id": "arctostaphylos-confertiflora",
-      "name": "Arctostaphylos confertiflora",
+      "name": "Santa rosa island manzanita",
       "latin": "Arctostaphylos confertiflora",
       "type": "shrub",
       "bloomMonths": [
@@ -62508,7 +62508,7 @@
     },
     {
       "id": "arctostaphylos-glandulosa",
-      "name": "Arctostaphylos glandulosa",
+      "name": "Eastwood's manzanita",
       "latin": "Arctostaphylos glandulosa",
       "type": "shrub",
       "bloomMonths": [
@@ -62602,7 +62602,7 @@
     },
     {
       "id": "arctostaphylos-glauca",
-      "name": "Arctostaphylos glauca",
+      "name": "Bigberry manzanita",
       "latin": "Arctostaphylos glauca",
       "type": "shrub",
       "bloomMonths": [
@@ -62788,7 +62788,7 @@
     },
     {
       "id": "arctostaphylos-imbricata",
-      "name": "Arctostaphylos imbricata",
+      "name": "San bruno mountain manzanita",
       "latin": "Arctostaphylos imbricata",
       "type": "shrub",
       "bloomMonths": [
@@ -62976,7 +62976,7 @@
     },
     {
       "id": "arctostaphylos-manzanita",
-      "name": "Arctostaphylos manzanita",
+      "name": "Whiteleaf manzanita",
       "latin": "Arctostaphylos manzanita",
       "type": "shrub",
       "bloomMonths": [
@@ -63117,7 +63117,7 @@
     },
     {
       "id": "arctostaphylos-mewukka",
-      "name": "Arctostaphylos mewukka",
+      "name": "Indian manzanita",
       "latin": "Arctostaphylos mewukka",
       "type": "shrub",
       "bloomMonths": [
@@ -63211,7 +63211,7 @@
     },
     {
       "id": "arctostaphylos-montereyensis",
-      "name": "Arctostaphylos montereyensis",
+      "name": "Monterey manzanita",
       "latin": "Arctostaphylos montereyensis",
       "type": "shrub",
       "bloomMonths": [
@@ -63303,7 +63303,7 @@
     },
     {
       "id": "arctostaphylos-myrtifolia",
-      "name": "Arctostaphylos myrtifolia",
+      "name": "Ione manzanita",
       "latin": "Arctostaphylos myrtifolia",
       "type": "shrub",
       "bloomMonths": [
@@ -63395,7 +63395,7 @@
     },
     {
       "id": "arctostaphylos-nissenana",
-      "name": "Arctostaphylos nissenana",
+      "name": "Nissenan manzanita",
       "latin": "Arctostaphylos nissenana",
       "type": "shrub",
       "bloomMonths": [
@@ -63489,7 +63489,7 @@
     },
     {
       "id": "arctostaphylos-obispoensis",
-      "name": "Arctostaphylos obispoensis",
+      "name": "Serpentine manzanita",
       "latin": "Arctostaphylos obispoensis",
       "type": "shrub",
       "bloomMonths": [
@@ -63677,7 +63677,7 @@
     },
     {
       "id": "arctostaphylos-pajaroensis",
-      "name": "Arctostaphylos pajaroensis",
+      "name": "Pajaro manzanita",
       "latin": "Arctostaphylos pajaroensis",
       "type": "shrub",
       "bloomMonths": [
@@ -63724,7 +63724,7 @@
     },
     {
       "id": "arctostaphylos-pallida",
-      "name": "Arctostaphylos pallida",
+      "name": "Pallid manzanita",
       "latin": "Arctostaphylos pallida",
       "type": "shrub",
       "bloomMonths": [
@@ -63771,7 +63771,7 @@
     },
     {
       "id": "arctostaphylos-parryana",
-      "name": "Arctostaphylos parryana",
+      "name": "Parry manzanita",
       "latin": "Arctostaphylos parryana",
       "type": "shrub",
       "bloomMonths": [
@@ -63818,7 +63818,7 @@
     },
     {
       "id": "arctostaphylos-patula",
-      "name": "Arctostaphylos patula",
+      "name": "Green-leaf manzanita",
       "latin": "Arctostaphylos patula",
       "type": "shrub",
       "bloomMonths": [
@@ -63912,7 +63912,7 @@
     },
     {
       "id": "arctostaphylos-pungens",
-      "name": "Arctostaphylos pungens",
+      "name": "Mexican manzanita",
       "latin": "Arctostaphylos pungens",
       "type": "shrub",
       "bloomMonths": [
@@ -64053,7 +64053,7 @@
     },
     {
       "id": "arctostaphylos-refugioensis",
-      "name": "Arctostaphylos refugioensis",
+      "name": "Refugio manzanita",
       "latin": "Arctostaphylos refugioensis",
       "type": "shrub",
       "bloomMonths": [
@@ -64100,7 +64100,7 @@
     },
     {
       "id": "arctostaphylos-regismontana",
-      "name": "Arctostaphylos regismontana",
+      "name": "Kings mountain manzanita",
       "latin": "Arctostaphylos regismontana",
       "type": "shrub",
       "bloomMonths": [
@@ -64241,7 +64241,7 @@
     },
     {
       "id": "arctostaphylos-stanfordiana",
-      "name": "Arctostaphylos stanfordiana",
+      "name": "Stanford's manzanita",
       "latin": "Arctostaphylos stanfordiana",
       "type": "shrub",
       "bloomMonths": [
@@ -64288,7 +64288,7 @@
     },
     {
       "id": "arctostaphylos-tomentosa",
-      "name": "Arctostaphylos tomentosa",
+      "name": "Woollyleaf manzanita",
       "latin": "Arctostaphylos tomentosa",
       "type": "shrub",
       "bloomMonths": [
@@ -64383,7 +64383,7 @@
     },
     {
       "id": "arctostaphylos-virgata",
-      "name": "Arctostaphylos virgata",
+      "name": "Bolinas manzanita",
       "latin": "Arctostaphylos virgata",
       "type": "shrub",
       "bloomMonths": [
@@ -64430,7 +64430,7 @@
     },
     {
       "id": "arctostaphylos-viridissima",
-      "name": "Arctostaphylos viridissima",
+      "name": "Whitehair manzanita",
       "latin": "Arctostaphylos viridissima",
       "type": "shrub",
       "bloomMonths": [
@@ -64477,7 +64477,7 @@
     },
     {
       "id": "arctostaphylos-viscida",
-      "name": "Arctostaphylos viscida",
+      "name": "White-leaf manzanita",
       "latin": "Arctostaphylos viscida",
       "type": "shrub",
       "bloomMonths": [
@@ -64524,7 +64524,7 @@
     },
     {
       "id": "arctous-alpina",
-      "name": "Arctous alpina",
+      "name": "Alpine bearberry",
       "latin": "Arctous alpina",
       "type": "shrub",
       "bloomMonths": [
@@ -64664,7 +64664,7 @@
     },
     {
       "id": "arenaria-balearica",
-      "name": "Arenaria balearica",
+      "name": "Mossy sandwort",
       "latin": "Arenaria balearica",
       "type": "annual",
       "bloomMonths": [
@@ -64709,7 +64709,7 @@
     },
     {
       "id": "arenaria-grandiflora",
-      "name": "Arenaria grandiflora",
+      "name": "Large-flowered sandwort",
       "latin": "Arenaria grandiflora",
       "type": "annual",
       "bloomMonths": [
@@ -64936,7 +64936,7 @@
     },
     {
       "id": "argemone-albiflora",
-      "name": "Argemone albiflora",
+      "name": "Bluestem pricklypoppy",
       "latin": "Argemone albiflora",
       "type": "perennial",
       "bloomMonths": [
@@ -64979,7 +64979,7 @@
     },
     {
       "id": "argemone-corymbosa",
-      "name": "Argemone corymbosa",
+      "name": "Mojave pricklypoppy",
       "latin": "Argemone corymbosa",
       "type": "perennial",
       "bloomMonths": [
@@ -65154,7 +65154,7 @@
     },
     {
       "id": "argemone-ochroleuca",
-      "name": "Argemone ochroleuca",
+      "name": "White-flower mexican-poppy",
       "latin": "Argemone ochroleuca",
       "type": "perennial",
       "bloomMonths": [
@@ -65198,7 +65198,7 @@
     },
     {
       "id": "argemone-platyceras",
-      "name": "Argemone platyceras",
+      "name": "Crested-poppy",
       "latin": "Argemone platyceras",
       "type": "perennial",
       "bloomMonths": [
@@ -65241,7 +65241,7 @@
     },
     {
       "id": "argemone-pleiacantha",
-      "name": "Argemone pleiacantha",
+      "name": "Southwestern pricklypoppy",
       "latin": "Argemone pleiacantha",
       "type": "perennial",
       "bloomMonths": [
@@ -65711,7 +65711,7 @@
     },
     {
       "id": "asparagus-acutifolius",
-      "name": "Asparagus acutifolius",
+      "name": "Lesser asparagus",
       "latin": "Asparagus acutifolius",
       "type": "perennial",
       "bloomMonths": [
@@ -65849,7 +65849,7 @@
     },
     {
       "id": "asparagus-albus",
-      "name": "Asparagus albus",
+      "name": "White asparagus",
       "latin": "Asparagus albus",
       "type": "perennial",
       "bloomMonths": [
@@ -65895,7 +65895,7 @@
     },
     {
       "id": "asparagus-aphyllus",
-      "name": "Asparagus aphyllus",
+      "name": "Mediterranean asparagus",
       "latin": "Asparagus aphyllus",
       "type": "perennial",
       "bloomMonths": [
@@ -65941,7 +65941,7 @@
     },
     {
       "id": "asparagus-asparagoides",
-      "name": "Asparagus asparagoides",
+      "name": "Bridal-creeper",
       "latin": "Asparagus asparagoides",
       "type": "perennial",
       "bloomMonths": [
@@ -66033,7 +66033,7 @@
     },
     {
       "id": "asparagus-cochinchinensis",
-      "name": "Asparagus cochinchinensis",
+      "name": "Chinese asparagus",
       "latin": "Asparagus cochinchinensis",
       "type": "perennial",
       "bloomMonths": [
@@ -66217,7 +66217,7 @@
     },
     {
       "id": "asparagus-falcatus",
-      "name": "Asparagus falcatus",
+      "name": "\"sicklethorn asparagus",
       "latin": "Asparagus falcatus",
       "type": "perennial",
       "bloomMonths": [
@@ -66674,7 +66674,7 @@
     },
     {
       "id": "asparagus-racemosus",
-      "name": "Asparagus racemosus",
+      "name": "Asparagus-fern",
       "latin": "Asparagus racemosus",
       "type": "perennial",
       "bloomMonths": [
@@ -66719,7 +66719,7 @@
     },
     {
       "id": "asparagus-retrofractus",
-      "name": "Asparagus retrofractus",
+      "name": "Ming fern",
       "latin": "Asparagus retrofractus",
       "type": "perennial",
       "bloomMonths": [
@@ -66855,7 +66855,7 @@
     },
     {
       "id": "asparagus-setaceus",
-      "name": "Asparagus setaceus",
+      "name": "Common asparagus fern",
       "latin": "Asparagus setaceus",
       "type": "perennial",
       "bloomMonths": [
@@ -67432,7 +67432,7 @@
     },
     {
       "id": "astilbe-thunbergii",
-      "name": "Astilbe thunbergii",
+      "name": "Thunberg's astilbe",
       "latin": "Astilbe thunbergii",
       "type": "perennial",
       "bloomMonths": [
@@ -70165,7 +70165,7 @@
     },
     {
       "id": "bellis-perennis",
-      "name": "Bellis perennis",
+      "name": "Daisy",
       "latin": "Bellis perennis",
       "type": "annual",
       "bloomMonths": [
@@ -70347,7 +70347,7 @@
     },
     {
       "id": "bergenia-ciliata",
-      "name": "Bergenia ciliata",
+      "name": "Hairy bergenia",
       "latin": "Bergenia ciliata",
       "type": "perennial",
       "bloomMonths": [
@@ -70390,7 +70390,7 @@
     },
     {
       "id": "bergenia-crassifolia",
-      "name": "Bergenia crassifolia",
+      "name": "Siberian-tea",
       "latin": "Bergenia crassifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -70877,7 +70877,7 @@
     },
     {
       "id": "bocconia-frutescens",
-      "name": "Bocconia frutescens",
+      "name": "Plume-poppy",
       "latin": "Bocconia frutescens",
       "type": "perennial",
       "bloomMonths": [
@@ -71097,7 +71097,7 @@
     },
     {
       "id": "boykinia-aconitifolia",
-      "name": "Boykinia aconitifolia",
+      "name": "Allegheny brookfoam",
       "latin": "Boykinia aconitifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -71621,7 +71621,7 @@
     },
     {
       "id": "brachystegia-spiciformis",
-      "name": "Brachystegia spiciformis",
+      "name": "Zebrawood",
       "latin": "Brachystegia spiciformis",
       "type": "shrub",
       "bloomMonths": [
@@ -71856,7 +71856,7 @@
     },
     {
       "id": "brownea-grandiceps",
-      "name": "Brownea grandiceps",
+      "name": "Rose-of-venezuela",
       "latin": "Brownea grandiceps",
       "type": "shrub",
       "bloomMonths": [
@@ -72081,7 +72081,7 @@
     },
     {
       "id": "brunnera-macrophylla",
-      "name": "Brunnera macrophylla",
+      "name": "Great forget-me-not",
       "latin": "Brunnera macrophylla",
       "type": "perennial",
       "bloomMonths": [
@@ -72352,7 +72352,7 @@
     },
     {
       "id": "caesalpinia-mexicana",
-      "name": "Caesalpinia mexicana",
+      "name": "Mexican holdback",
       "latin": "Caesalpinia mexicana",
       "type": "annual",
       "bloomMonths": [
@@ -72583,7 +72583,7 @@
     },
     {
       "id": "callicarpa-americana",
-      "name": "Callicarpa americana",
+      "name": "American beauty-berry",
       "latin": "Callicarpa americana",
       "type": "shrub",
       "bloomMonths": [
@@ -72775,7 +72775,7 @@
     },
     {
       "id": "callicarpa-dichotoma",
-      "name": "Callicarpa dichotoma",
+      "name": "Purple beautyberry",
       "latin": "Callicarpa dichotoma",
       "type": "perennial",
       "bloomMonths": [
@@ -72967,7 +72967,7 @@
     },
     {
       "id": "callicarpa-macrophylla",
-      "name": "Callicarpa macrophylla",
+      "name": "Urn-fruit beauty-berry",
       "latin": "Callicarpa macrophylla",
       "type": "perennial",
       "bloomMonths": [
@@ -73303,7 +73303,7 @@
     },
     {
       "id": "callicarpa-tomentosa",
-      "name": "Callicarpa tomentosa",
+      "name": "Great woolly malayan-lilac",
       "latin": "Callicarpa tomentosa",
       "type": "shrub",
       "bloomMonths": [
@@ -73398,7 +73398,7 @@
     },
     {
       "id": "callitriche-hamulata",
-      "name": "Callitriche hamulata",
+      "name": "Narrowleaf water-starwort",
       "latin": "Callitriche hamulata",
       "type": "perennial",
       "bloomMonths": [
@@ -73445,7 +73445,7 @@
     },
     {
       "id": "callitriche-hermaphroditica",
-      "name": "Callitriche hermaphroditica",
+      "name": "Northern water-starwort",
       "latin": "Callitriche hermaphroditica",
       "type": "perennial",
       "bloomMonths": [
@@ -73539,7 +73539,7 @@
     },
     {
       "id": "calluna-vulgaris",
-      "name": "Calluna vulgaris",
+      "name": "Heather",
       "latin": "Calluna vulgaris",
       "type": "shrub",
       "bloomMonths": [
@@ -73635,7 +73635,7 @@
     },
     {
       "id": "calochortus-albus",
-      "name": "Calochortus albus",
+      "name": "Fairy-lantern",
       "latin": "Calochortus albus",
       "type": "bulb",
       "bloomMonths": [
@@ -73685,7 +73685,7 @@
     },
     {
       "id": "calochortus-amabilis",
-      "name": "Calochortus amabilis",
+      "name": "Diogenes' lantern",
       "latin": "Calochortus amabilis",
       "type": "bulb",
       "bloomMonths": [
@@ -73783,7 +73783,7 @@
     },
     {
       "id": "calochortus-amoenus",
-      "name": "Calochortus amoenus",
+      "name": "Purple fairy-lantern",
       "latin": "Calochortus amoenus",
       "type": "bulb",
       "bloomMonths": [
@@ -73833,7 +73833,7 @@
     },
     {
       "id": "calochortus-apiculatus",
-      "name": "Calochortus apiculatus",
+      "name": "Pointedtip mariposa lily",
       "latin": "Calochortus apiculatus",
       "type": "bulb",
       "bloomMonths": [
@@ -74334,7 +74334,7 @@
     },
     {
       "id": "calochortus-elegans",
-      "name": "Calochortus elegans",
+      "name": "Elegant mariposa lily",
       "latin": "Calochortus elegans",
       "type": "bulb",
       "bloomMonths": [
@@ -74434,7 +74434,7 @@
     },
     {
       "id": "calochortus-excavatus",
-      "name": "Calochortus excavatus",
+      "name": "Inyo county star-tulip",
       "latin": "Calochortus excavatus",
       "type": "bulb",
       "bloomMonths": [
@@ -74735,7 +74735,7 @@
     },
     {
       "id": "calochortus-invenustus",
-      "name": "Calochortus invenustus",
+      "name": "Plain mariposa lily",
       "latin": "Calochortus invenustus",
       "type": "bulb",
       "bloomMonths": [
@@ -74785,7 +74785,7 @@
     },
     {
       "id": "calochortus-kennedyi",
-      "name": "Calochortus kennedyi",
+      "name": "Desert mariposa lily",
       "latin": "Calochortus kennedyi",
       "type": "bulb",
       "bloomMonths": [
@@ -74983,7 +74983,7 @@
     },
     {
       "id": "calochortus-lyallii",
-      "name": "Calochortus lyallii",
+      "name": "Lyall's mariposa lily",
       "latin": "Calochortus lyallii",
       "type": "bulb",
       "bloomMonths": [
@@ -75031,7 +75031,7 @@
     },
     {
       "id": "calochortus-macrocarpus",
-      "name": "Calochortus macrocarpus",
+      "name": "Sagebrush mariposa lily",
       "latin": "Calochortus macrocarpus",
       "type": "bulb",
       "bloomMonths": [
@@ -75081,7 +75081,7 @@
     },
     {
       "id": "calochortus-minimus",
-      "name": "Calochortus minimus",
+      "name": "Sierra mariposa lily",
       "latin": "Calochortus minimus",
       "type": "bulb",
       "bloomMonths": [
@@ -75331,7 +75331,7 @@
     },
     {
       "id": "calochortus-obispoensis",
-      "name": "Calochortus obispoensis",
+      "name": "San luis mariposa lily",
       "latin": "Calochortus obispoensis",
       "type": "bulb",
       "bloomMonths": [
@@ -75431,7 +75431,7 @@
     },
     {
       "id": "calochortus-panamintensis",
-      "name": "Calochortus panamintensis",
+      "name": "Panamint mountain mariposa lily",
       "latin": "Calochortus panamintensis",
       "type": "bulb",
       "bloomMonths": [
@@ -75481,7 +75481,7 @@
     },
     {
       "id": "calochortus-persistens",
-      "name": "Calochortus persistens",
+      "name": "Siskiyou mariposa lily",
       "latin": "Calochortus persistens",
       "type": "bulb",
       "bloomMonths": [
@@ -75531,7 +75531,7 @@
     },
     {
       "id": "calochortus-plummerae",
-      "name": "Calochortus plummerae",
+      "name": "Plummer's mariposa-lily",
       "latin": "Calochortus plummerae",
       "type": "bulb",
       "bloomMonths": [
@@ -75731,7 +75731,7 @@
     },
     {
       "id": "calochortus-simulans",
-      "name": "Calochortus simulans",
+      "name": "San luis obispo mariposa lily",
       "latin": "Calochortus simulans",
       "type": "bulb",
       "bloomMonths": [
@@ -75781,7 +75781,7 @@
     },
     {
       "id": "calochortus-splendens",
-      "name": "Calochortus splendens",
+      "name": "Splendid mariposa lily",
       "latin": "Calochortus splendens",
       "type": "bulb",
       "bloomMonths": [
@@ -75831,7 +75831,7 @@
     },
     {
       "id": "calochortus-striatus",
-      "name": "Calochortus striatus",
+      "name": "Alkali mariposa-lily",
       "latin": "Calochortus striatus",
       "type": "bulb",
       "bloomMonths": [
@@ -75881,7 +75881,7 @@
     },
     {
       "id": "calochortus-subalpinus",
-      "name": "Calochortus subalpinus",
+      "name": "Subalpine mariposa lily",
       "latin": "Calochortus subalpinus",
       "type": "bulb",
       "bloomMonths": [
@@ -75931,7 +75931,7 @@
     },
     {
       "id": "calochortus-superbus",
-      "name": "Calochortus superbus",
+      "name": "Yellow mariposa",
       "latin": "Calochortus superbus",
       "type": "bulb",
       "bloomMonths": [
@@ -75981,7 +75981,7 @@
     },
     {
       "id": "calochortus-syntrophus",
-      "name": "Calochortus syntrophus",
+      "name": "Callahan's mariposa lily",
       "latin": "Calochortus syntrophus",
       "type": "bulb",
       "bloomMonths": [
@@ -76079,7 +76079,7 @@
     },
     {
       "id": "calochortus-tolmiei",
-      "name": "Calochortus tolmiei",
+      "name": "Pussy-ears",
       "latin": "Calochortus tolmiei",
       "type": "bulb",
       "bloomMonths": [
@@ -76179,7 +76179,7 @@
     },
     {
       "id": "calochortus-umpquaensis",
-      "name": "Calochortus umpquaensis",
+      "name": "Umpqua mariposa lily",
       "latin": "Calochortus umpquaensis",
       "type": "bulb",
       "bloomMonths": [
@@ -76229,7 +76229,7 @@
     },
     {
       "id": "calochortus-uniflorus",
-      "name": "Calochortus uniflorus",
+      "name": "Monterey mariposa lily",
       "latin": "Calochortus uniflorus",
       "type": "bulb",
       "bloomMonths": [
@@ -76277,7 +76277,7 @@
     },
     {
       "id": "calochortus-venustus",
-      "name": "Calochortus venustus",
+      "name": "Butterfly mariposa lily",
       "latin": "Calochortus venustus",
       "type": "perennial",
       "bloomMonths": [
@@ -76327,7 +76327,7 @@
     },
     {
       "id": "calochortus-vestae",
-      "name": "Calochortus vestae",
+      "name": "Coast range mariposa lily",
       "latin": "Calochortus vestae",
       "type": "bulb",
       "bloomMonths": [
@@ -76522,7 +76522,7 @@
     },
     {
       "id": "caltha-palustris",
-      "name": "Caltha palustris",
+      "name": "Cowflock",
       "latin": "Caltha palustris",
       "type": "perennial",
       "bloomMonths": [
@@ -76708,7 +76708,7 @@
     },
     {
       "id": "camassia-cusickii",
-      "name": "Camassia cusickii",
+      "name": "Cusick camas",
       "latin": "Camassia cusickii",
       "type": "perennial",
       "bloomMonths": [
@@ -76804,7 +76804,7 @@
     },
     {
       "id": "camassia-leichtlinii",
-      "name": "Camassia leichtlinii",
+      "name": "Large camas",
       "latin": "Camassia leichtlinii",
       "type": "perennial",
       "bloomMonths": [
@@ -76852,7 +76852,7 @@
     },
     {
       "id": "camassia-quamash",
-      "name": "Camassia quamash",
+      "name": "Camash",
       "latin": "Camassia quamash",
       "type": "perennial",
       "bloomMonths": [
@@ -76900,7 +76900,7 @@
     },
     {
       "id": "camassia-scilloides",
-      "name": "Camassia scilloides",
+      "name": "Wild hyacinth",
       "latin": "Camassia scilloides",
       "type": "perennial",
       "bloomMonths": [
@@ -77086,7 +77086,7 @@
     },
     {
       "id": "camissonia-contorta",
-      "name": "Camissonia contorta",
+      "name": "Plains evening primrose",
       "latin": "Camissonia contorta",
       "type": "annual",
       "bloomMonths": [
@@ -77458,7 +77458,7 @@
     },
     {
       "id": "camissoniopsis-hirtella",
-      "name": "Camissoniopsis hirtella",
+      "name": "Santa cruz island suncup",
       "latin": "Camissoniopsis hirtella",
       "type": "annual",
       "bloomMonths": [
@@ -78012,7 +78012,7 @@
     },
     {
       "id": "cardiocrinum-cordatum",
-      "name": "Cardiocrinum cordatum",
+      "name": "Lily",
       "latin": "Cardiocrinum cordatum",
       "type": "bulb",
       "bloomMonths": [
@@ -78159,7 +78159,7 @@
     },
     {
       "id": "cardionema-ramosissimum",
-      "name": "Cardionema ramosissimum",
+      "name": "Sandcarpet",
       "latin": "Cardionema ramosissimum",
       "type": "perennial",
       "bloomMonths": [
@@ -78543,7 +78543,7 @@
     },
     {
       "id": "cassiope-tetragona",
-      "name": "Cassiope tetragona",
+      "name": "White arctic mountain heather",
       "latin": "Cassiope tetragona",
       "type": "shrub",
       "bloomMonths": [
@@ -78790,7 +78790,7 @@
     },
     {
       "id": "centromadia-pungens",
-      "name": "Centromadia pungens",
+      "name": "Common spikeweed",
       "latin": "Centromadia pungens",
       "type": "annual",
       "bloomMonths": [
@@ -79073,7 +79073,7 @@
     },
     {
       "id": "cerastium-biebersteinii",
-      "name": "Cerastium biebersteinii",
+      "name": "Snow-in-summer",
       "latin": "Cerastium biebersteinii",
       "type": "perennial",
       "bloomMonths": [
@@ -79165,7 +79165,7 @@
     },
     {
       "id": "cerastium-diffusum",
-      "name": "Cerastium diffusum",
+      "name": "Fourstamen chickweed",
       "latin": "Cerastium diffusum",
       "type": "annual",
       "bloomMonths": [
@@ -79396,7 +79396,7 @@
     },
     {
       "id": "cerastium-pumilum",
-      "name": "Cerastium pumilum",
+      "name": "European chickweed",
       "latin": "Cerastium pumilum",
       "type": "annual",
       "bloomMonths": [
@@ -79443,7 +79443,7 @@
     },
     {
       "id": "cerastium-regelii",
-      "name": "Cerastium regelii",
+      "name": "Regel's chickweed",
       "latin": "Cerastium regelii",
       "type": "perennial",
       "bloomMonths": [
@@ -79627,7 +79627,7 @@
     },
     {
       "id": "cerastium-tomentosum",
-      "name": "Cerastium tomentosum",
+      "name": "Dusty-miller",
       "latin": "Cerastium tomentosum",
       "type": "perennial",
       "bloomMonths": [
@@ -79814,7 +79814,7 @@
     },
     {
       "id": "ceratocapnos-claviculata",
-      "name": "Ceratocapnos claviculata",
+      "name": "Climbing corydalis",
       "latin": "Ceratocapnos claviculata",
       "type": "perennial",
       "bloomMonths": [
@@ -80417,7 +80417,7 @@
     },
     {
       "id": "chelidonium-majus",
-      "name": "Chelidonium majus",
+      "name": "Celandine",
       "latin": "Chelidonium majus",
       "type": "perennial",
       "bloomMonths": [
@@ -80697,7 +80697,7 @@
     },
     {
       "id": "chlorogalum-angustifolium",
-      "name": "Chlorogalum angustifolium",
+      "name": "Narrowleaf soap plant",
       "latin": "Chlorogalum angustifolium",
       "type": "perennial",
       "bloomMonths": [
@@ -80793,7 +80793,7 @@
     },
     {
       "id": "chlorogalum-pomeridianum",
-      "name": "Chlorogalum pomeridianum",
+      "name": "Amole",
       "latin": "Chlorogalum pomeridianum",
       "type": "perennial",
       "bloomMonths": [
@@ -80890,7 +80890,7 @@
     },
     {
       "id": "chlorophytum-comosum",
-      "name": "Chlorophytum comosum",
+      "name": "Ribbonplant",
       "latin": "Chlorophytum comosum",
       "type": "perennial",
       "bloomMonths": [
@@ -81279,7 +81279,7 @@
     },
     {
       "id": "chrysopsis-floridana",
-      "name": "Chrysopsis floridana",
+      "name": "Florida golden-aster",
       "latin": "Chrysopsis floridana",
       "type": "annual",
       "bloomMonths": [
@@ -81544,7 +81544,7 @@
     },
     {
       "id": "chrysopsis-mariana",
-      "name": "Chrysopsis mariana",
+      "name": "Maryland golden-aster",
       "latin": "Chrysopsis mariana",
       "type": "annual",
       "bloomMonths": [
@@ -81735,7 +81735,7 @@
     },
     {
       "id": "chrysosplenium-americanum",
-      "name": "Chrysosplenium americanum",
+      "name": "American golden saxifrage",
       "latin": "Chrysosplenium americanum",
       "type": "perennial",
       "bloomMonths": [
@@ -81821,7 +81821,7 @@
     },
     {
       "id": "chrysosplenium-glechomifolium",
-      "name": "Chrysosplenium glechomifolium",
+      "name": "Pacific golden saxifrage",
       "latin": "Chrysosplenium glechomifolium",
       "type": "perennial",
       "bloomMonths": [
@@ -82221,7 +82221,7 @@
     },
     {
       "id": "chylismia-brevipes",
-      "name": "Chylismia brevipes",
+      "name": "Yellow cups",
       "latin": "Chylismia brevipes",
       "type": "perennial",
       "bloomMonths": [
@@ -82268,7 +82268,7 @@
     },
     {
       "id": "chylismia-cardiophylla",
-      "name": "Chylismia cardiophylla",
+      "name": "Heartleaf suncup",
       "latin": "Chylismia cardiophylla",
       "type": "perennial",
       "bloomMonths": [
@@ -82920,7 +82920,7 @@
     },
     {
       "id": "clarkia-amoena",
-      "name": "Clarkia amoena",
+      "name": "Godetia",
       "latin": "Clarkia amoena",
       "type": "perennial",
       "bloomMonths": [
@@ -83202,7 +83202,7 @@
     },
     {
       "id": "clarkia-concinna",
-      "name": "Clarkia concinna",
+      "name": "Red ribbons",
       "latin": "Clarkia concinna",
       "type": "perennial",
       "bloomMonths": [
@@ -83813,7 +83813,7 @@
     },
     {
       "id": "clarkia-modesta",
-      "name": "Clarkia modesta",
+      "name": "Waltham creek clarkia",
       "latin": "Clarkia modesta",
       "type": "perennial",
       "bloomMonths": [
@@ -83907,7 +83907,7 @@
     },
     {
       "id": "clarkia-pulchella",
-      "name": "Clarkia pulchella",
+      "name": "Pinkfairies",
       "latin": "Clarkia pulchella",
       "type": "perennial",
       "bloomMonths": [
@@ -83954,7 +83954,7 @@
     },
     {
       "id": "clarkia-purpurea",
-      "name": "Clarkia purpurea",
+      "name": "Winecup clarkia",
       "latin": "Clarkia purpurea",
       "type": "perennial",
       "bloomMonths": [
@@ -84001,7 +84001,7 @@
     },
     {
       "id": "clarkia-rhomboidea",
-      "name": "Clarkia rhomboidea",
+      "name": "Diamond clarkia",
       "latin": "Clarkia rhomboidea",
       "type": "perennial",
       "bloomMonths": [
@@ -84142,7 +84142,7 @@
     },
     {
       "id": "clarkia-springvillensis",
-      "name": "Clarkia springvillensis",
+      "name": "Springville clarkia",
       "latin": "Clarkia springvillensis",
       "type": "perennial",
       "bloomMonths": [
@@ -84189,7 +84189,7 @@
     },
     {
       "id": "clarkia-tembloriensis",
-      "name": "Clarkia tembloriensis",
+      "name": "Temblor range clarkia",
       "latin": "Clarkia tembloriensis",
       "type": "perennial",
       "bloomMonths": [
@@ -84236,7 +84236,7 @@
     },
     {
       "id": "clarkia-unguiculata",
-      "name": "Clarkia unguiculata",
+      "name": "Clarkia",
       "latin": "Clarkia unguiculata",
       "type": "perennial",
       "bloomMonths": [
@@ -84283,7 +84283,7 @@
     },
     {
       "id": "clarkia-virgata",
-      "name": "Clarkia virgata",
+      "name": "Sierra clarkia",
       "latin": "Clarkia virgata",
       "type": "perennial",
       "bloomMonths": [
@@ -84604,7 +84604,7 @@
     },
     {
       "id": "clematis-alpina",
-      "name": "Clematis alpina",
+      "name": "Alpine clematis",
       "latin": "Clematis alpina",
       "type": "perennial",
       "bloomMonths": [
@@ -84650,7 +84650,7 @@
     },
     {
       "id": "clematis-aristata",
-      "name": "Clematis aristata",
+      "name": "Goat's-beard",
       "latin": "Clematis aristata",
       "type": "perennial",
       "bloomMonths": [
@@ -84875,7 +84875,7 @@
     },
     {
       "id": "clematis-brachiata",
-      "name": "Clematis brachiata",
+      "name": "Traveler's-joy",
       "latin": "Clematis brachiata",
       "type": "perennial",
       "bloomMonths": [
@@ -84965,7 +84965,7 @@
     },
     {
       "id": "clematis-cirrhosa",
-      "name": "Clematis cirrhosa",
+      "name": "Early virgin's-bower",
       "latin": "Clematis cirrhosa",
       "type": "perennial",
       "bloomMonths": [
@@ -85055,7 +85055,7 @@
     },
     {
       "id": "clematis-crispa",
-      "name": "Clematis crispa",
+      "name": "Curly clematis",
       "latin": "Clematis crispa",
       "type": "perennial",
       "bloomMonths": [
@@ -85190,7 +85190,7 @@
     },
     {
       "id": "clematis-flammula",
-      "name": "Clematis flammula",
+      "name": "Fragrant clematis",
       "latin": "Clematis flammula",
       "type": "perennial",
       "bloomMonths": [
@@ -85235,7 +85235,7 @@
     },
     {
       "id": "clematis-florida",
-      "name": "Clematis florida",
+      "name": "Asian virginsbower",
       "latin": "Clematis florida",
       "type": "perennial",
       "bloomMonths": [
@@ -85415,7 +85415,7 @@
     },
     {
       "id": "clematis-glycinoides",
-      "name": "Clematis glycinoides",
+      "name": "Forest clematis",
       "latin": "Clematis glycinoides",
       "type": "perennial",
       "bloomMonths": [
@@ -85550,7 +85550,7 @@
     },
     {
       "id": "clematis-heracleifolia",
-      "name": "Clematis heracleifolia",
+      "name": "Hyacinth-flower clematis",
       "latin": "Clematis heracleifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -85596,7 +85596,7 @@
     },
     {
       "id": "clematis-hirsutissima",
-      "name": "Clematis hirsutissima",
+      "name": "Hairy clematis",
       "latin": "Clematis hirsutissima",
       "type": "perennial",
       "bloomMonths": [
@@ -85641,7 +85641,7 @@
     },
     {
       "id": "clematis-integrifolia",
-      "name": "Clematis integrifolia",
+      "name": "Solitary clematis",
       "latin": "Clematis integrifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -85776,7 +85776,7 @@
     },
     {
       "id": "clematis-lasiantha",
-      "name": "Clematis lasiantha",
+      "name": "Pipestem",
       "latin": "Clematis lasiantha",
       "type": "perennial",
       "bloomMonths": [
@@ -85821,7 +85821,7 @@
     },
     {
       "id": "clematis-ligusticifolia",
-      "name": "Clematis ligusticifolia",
+      "name": "Old-man's-beard",
       "latin": "Clematis ligusticifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -86001,7 +86001,7 @@
     },
     {
       "id": "clematis-microphylla",
-      "name": "Clematis microphylla",
+      "name": "Headachevine",
       "latin": "Clematis microphylla",
       "type": "perennial",
       "bloomMonths": [
@@ -86182,7 +86182,7 @@
     },
     {
       "id": "clematis-occidentalis",
-      "name": "Clematis occidentalis",
+      "name": "Purple clematis",
       "latin": "Clematis occidentalis",
       "type": "perennial",
       "bloomMonths": [
@@ -86227,7 +86227,7 @@
     },
     {
       "id": "clematis-ochroleuca",
-      "name": "Clematis ochroleuca",
+      "name": "Curlyheads",
       "latin": "Clematis ochroleuca",
       "type": "perennial",
       "bloomMonths": [
@@ -86272,7 +86272,7 @@
     },
     {
       "id": "clematis-orientalis",
-      "name": "Clematis orientalis",
+      "name": "Oriental virgin's-bower",
       "latin": "Clematis orientalis",
       "type": "perennial",
       "bloomMonths": [
@@ -86407,7 +86407,7 @@
     },
     {
       "id": "clematis-pauciflora",
-      "name": "Clematis pauciflora",
+      "name": "Ropevine clematis",
       "latin": "Clematis pauciflora",
       "type": "perennial",
       "bloomMonths": [
@@ -86452,7 +86452,7 @@
     },
     {
       "id": "clematis-pitcheri",
-      "name": "Clematis pitcheri",
+      "name": "Pitcher's clematis",
       "latin": "Clematis pitcheri",
       "type": "perennial",
       "bloomMonths": [
@@ -86858,7 +86858,7 @@
     },
     {
       "id": "clematis-tangutica",
-      "name": "Clematis tangutica",
+      "name": "Orange-peel clematis",
       "latin": "Clematis tangutica",
       "type": "perennial",
       "bloomMonths": [
@@ -86904,7 +86904,7 @@
     },
     {
       "id": "clematis-terniflora",
-      "name": "Clematis terniflora",
+      "name": "Sweet autumn clematis",
       "latin": "Clematis terniflora",
       "type": "perennial",
       "bloomMonths": [
@@ -86994,7 +86994,7 @@
     },
     {
       "id": "clematis-texensis",
-      "name": "Clematis texensis",
+      "name": "Crimson clematis",
       "latin": "Clematis texensis",
       "type": "perennial",
       "bloomMonths": [
@@ -87129,7 +87129,7 @@
     },
     {
       "id": "clematis-viorna",
-      "name": "Clematis viorna",
+      "name": "Leather-flower",
       "latin": "Clematis viorna",
       "type": "perennial",
       "bloomMonths": [
@@ -87174,7 +87174,7 @@
     },
     {
       "id": "clematis-virginiana",
-      "name": "Clematis virginiana",
+      "name": "Virgin's-bower",
       "latin": "Clematis virginiana",
       "type": "perennial",
       "bloomMonths": [
@@ -87219,7 +87219,7 @@
     },
     {
       "id": "clematis-vitalba",
-      "name": "Clematis vitalba",
+      "name": "Old-man's-beard",
       "latin": "Clematis vitalba",
       "type": "perennial",
       "bloomMonths": [
@@ -87309,7 +87309,7 @@
     },
     {
       "id": "clematis-viticella",
-      "name": "Clematis viticella",
+      "name": "Purple clematis",
       "latin": "Clematis viticella",
       "type": "perennial",
       "bloomMonths": [
@@ -87401,7 +87401,7 @@
     },
     {
       "id": "clerodendrum-bungei",
-      "name": "Clerodendrum bungei",
+      "name": "Glory-flower",
       "latin": "Clerodendrum bungei",
       "type": "perennial",
       "bloomMonths": [
@@ -87447,7 +87447,7 @@
     },
     {
       "id": "clerodendrum-chinense",
-      "name": "Clerodendrum chinense",
+      "name": "Glory-bower",
       "latin": "Clerodendrum chinense",
       "type": "perennial",
       "bloomMonths": [
@@ -87723,7 +87723,7 @@
     },
     {
       "id": "clerodendrum-indicum",
-      "name": "Clerodendrum indicum",
+      "name": "Turk's-turban",
       "latin": "Clerodendrum indicum",
       "type": "perennial",
       "bloomMonths": [
@@ -88045,7 +88045,7 @@
     },
     {
       "id": "clerodendrum-speciosissimum",
-      "name": "Clerodendrum speciosissimum",
+      "name": "Javanese glorybower",
       "latin": "Clerodendrum speciosissimum",
       "type": "perennial",
       "bloomMonths": [
@@ -88137,7 +88137,7 @@
     },
     {
       "id": "clerodendrum-thomsoniae",
-      "name": "Clerodendrum thomsoniae",
+      "name": "Bleeding heart glorybower",
       "latin": "Clerodendrum thomsoniae",
       "type": "perennial",
       "bloomMonths": [
@@ -88275,7 +88275,7 @@
     },
     {
       "id": "clerodendrum-umbellatum",
-      "name": "Clerodendrum umbellatum",
+      "name": "Umbel clerodendrum",
       "latin": "Clerodendrum umbellatum",
       "type": "perennial",
       "bloomMonths": [
@@ -88371,7 +88371,7 @@
     },
     {
       "id": "clintonia-andrewsiana",
-      "name": "Clintonia andrewsiana",
+      "name": "Red clintonia",
       "latin": "Clintonia andrewsiana",
       "type": "bulb",
       "bloomMonths": [
@@ -88852,7 +88852,7 @@
     },
     {
       "id": "collinsia-bartsiifolia",
-      "name": "Collinsia bartsiifolia",
+      "name": "White blue eyed mary",
       "latin": "Collinsia bartsiifolia",
       "type": "annual",
       "bloomMonths": [
@@ -88988,7 +88988,7 @@
     },
     {
       "id": "collinsia-concolor",
-      "name": "Collinsia concolor",
+      "name": "Chinese houses",
       "latin": "Collinsia concolor",
       "type": "annual",
       "bloomMonths": [
@@ -89218,7 +89218,7 @@
     },
     {
       "id": "collinsia-parviflora",
-      "name": "Collinsia parviflora",
+      "name": "Maiden blue eyed mary",
       "latin": "Collinsia parviflora",
       "type": "annual",
       "bloomMonths": [
@@ -89310,7 +89310,7 @@
     },
     {
       "id": "collinsia-tinctoria",
-      "name": "Collinsia tinctoria",
+      "name": "Sticky chinese houses",
       "latin": "Collinsia tinctoria",
       "type": "annual",
       "bloomMonths": [
@@ -89402,7 +89402,7 @@
     },
     {
       "id": "collinsia-verna",
-      "name": "Collinsia verna",
+      "name": "Spring blue eyed mary",
       "latin": "Collinsia verna",
       "type": "annual",
       "bloomMonths": [
@@ -89448,7 +89448,7 @@
     },
     {
       "id": "colophospermum-mopane",
-      "name": "Colophospermum mopane",
+      "name": "Balsam tree",
       "latin": "Colophospermum mopane",
       "type": "shrub",
       "bloomMonths": [
@@ -89633,7 +89633,7 @@
     },
     {
       "id": "comarostaphylis-diversifolia",
-      "name": "Comarostaphylis diversifolia",
+      "name": "Summer-holly",
       "latin": "Comarostaphylis diversifolia",
       "type": "shrub",
       "bloomMonths": [
@@ -89682,7 +89682,7 @@
     },
     {
       "id": "congea-tomentosa",
-      "name": "Congea tomentosa",
+      "name": "Lluvia de orquideas",
       "latin": "Congea tomentosa",
       "type": "perennial",
       "bloomMonths": [
@@ -89922,7 +89922,7 @@
     },
     {
       "id": "convallaria-majalis",
-      "name": "Convallaria majalis",
+      "name": "Lily-of-the-valley",
       "latin": "Convallaria majalis",
       "type": "perennial",
       "bloomMonths": [
@@ -90014,7 +90014,7 @@
     },
     {
       "id": "copaifera-langsdorffii",
-      "name": "Copaifera langsdorffii",
+      "name": "Copaiba",
       "latin": "Copaifera langsdorffii",
       "type": "shrub",
       "bloomMonths": [
@@ -90289,7 +90289,7 @@
     },
     {
       "id": "coptis-trifolia",
-      "name": "Coptis trifolia",
+      "name": "American goldthread",
       "latin": "Coptis trifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -90335,7 +90335,7 @@
     },
     {
       "id": "cordia-africana",
-      "name": "Cordia africana",
+      "name": "East african cordia",
       "latin": "Cordia africana",
       "type": "shrub",
       "bloomMonths": [
@@ -90381,7 +90381,7 @@
     },
     {
       "id": "cordia-alliodora",
-      "name": "Cordia alliodora",
+      "name": "Salmwood",
       "latin": "Cordia alliodora",
       "type": "shrub",
       "bloomMonths": [
@@ -90427,7 +90427,7 @@
     },
     {
       "id": "cordia-boissieri",
-      "name": "Cordia boissieri",
+      "name": "Mexican-olive",
       "latin": "Cordia boissieri",
       "type": "shrub",
       "bloomMonths": [
@@ -90565,7 +90565,7 @@
     },
     {
       "id": "cordia-dichotoma",
-      "name": "Cordia dichotoma",
+      "name": "Fragrant manjack",
       "latin": "Cordia dichotoma",
       "type": "shrub",
       "bloomMonths": [
@@ -90657,7 +90657,7 @@
     },
     {
       "id": "cordia-gerascanthus",
-      "name": "Cordia gerascanthus",
+      "name": "Baria",
       "latin": "Cordia gerascanthus",
       "type": "shrub",
       "bloomMonths": [
@@ -90703,7 +90703,7 @@
     },
     {
       "id": "cordia-myxa",
-      "name": "Cordia myxa",
+      "name": "Indian-cherry",
       "latin": "Cordia myxa",
       "type": "shrub",
       "bloomMonths": [
@@ -90795,7 +90795,7 @@
     },
     {
       "id": "cordia-sebestena",
-      "name": "Cordia sebestena",
+      "name": "Geranium-tree",
       "latin": "Cordia sebestena",
       "type": "shrub",
       "bloomMonths": [
@@ -90841,7 +90841,7 @@
     },
     {
       "id": "cordia-sinensis",
-      "name": "Cordia sinensis",
+      "name": "Grey-leaved saucer-berry",
       "latin": "Cordia sinensis",
       "type": "shrub",
       "bloomMonths": [
@@ -90933,7 +90933,7 @@
     },
     {
       "id": "cordia-sulcata",
-      "name": "Cordia sulcata",
+      "name": "Mucilage manjack",
       "latin": "Cordia sulcata",
       "type": "shrub",
       "bloomMonths": [
@@ -91564,7 +91564,7 @@
     },
     {
       "id": "cordyline-stricta",
-      "name": "Cordyline stricta",
+      "name": "Narrow-leaf palm-lily",
       "latin": "Cordyline stricta",
       "type": "shrub",
       "bloomMonths": [
@@ -91796,7 +91796,7 @@
     },
     {
       "id": "corydalis-aurea",
-      "name": "Corydalis aurea",
+      "name": "Golden corydalis",
       "latin": "Corydalis aurea",
       "type": "perennial",
       "bloomMonths": [
@@ -91842,7 +91842,7 @@
     },
     {
       "id": "corydalis-caseana",
-      "name": "Corydalis caseana",
+      "name": "Sierra fumewort",
       "latin": "Corydalis caseana",
       "type": "perennial",
       "bloomMonths": [
@@ -91934,7 +91934,7 @@
     },
     {
       "id": "corydalis-cava",
-      "name": "Corydalis cava",
+      "name": "Hollowroot",
       "latin": "Corydalis cava",
       "type": "perennial",
       "bloomMonths": [
@@ -91980,7 +91980,7 @@
     },
     {
       "id": "corydalis-cheilanthifolia",
-      "name": "Corydalis cheilanthifolia",
+      "name": "Fern-leaf corydalis",
       "latin": "Corydalis cheilanthifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -92072,7 +92072,7 @@
     },
     {
       "id": "corydalis-flavula",
-      "name": "Corydalis flavula",
+      "name": "Yellow harlequin",
       "latin": "Corydalis flavula",
       "type": "perennial",
       "bloomMonths": [
@@ -92118,7 +92118,7 @@
     },
     {
       "id": "corydalis-flexuosa",
-      "name": "Corydalis flexuosa",
+      "name": "Blue corydalis",
       "latin": "Corydalis flexuosa",
       "type": "perennial",
       "bloomMonths": [
@@ -92165,7 +92165,7 @@
     },
     {
       "id": "corydalis-incisa",
-      "name": "Corydalis incisa",
+      "name": "Incised fumewort",
       "latin": "Corydalis incisa",
       "type": "biennial",
       "bloomMonths": [
@@ -92395,7 +92395,7 @@
     },
     {
       "id": "corydalis-nobilis",
-      "name": "Corydalis nobilis",
+      "name": "Siberian corydalis",
       "latin": "Corydalis nobilis",
       "type": "perennial",
       "bloomMonths": [
@@ -92678,7 +92678,7 @@
     },
     {
       "id": "cotoneaster-acutifolius",
-      "name": "Cotoneaster acutifolius",
+      "name": "Peking cotoneaster",
       "latin": "Cotoneaster acutifolius",
       "type": "shrub",
       "bloomMonths": [
@@ -92727,7 +92727,7 @@
     },
     {
       "id": "cotoneaster-adpressus",
-      "name": "Cotoneaster adpressus",
+      "name": "Creeping cotoneaster",
       "latin": "Cotoneaster adpressus",
       "type": "shrub",
       "bloomMonths": [
@@ -92874,7 +92874,7 @@
     },
     {
       "id": "cotoneaster-bullatus",
-      "name": "Cotoneaster bullatus",
+      "name": "Hollyberry cotoneaster",
       "latin": "Cotoneaster bullatus",
       "type": "shrub",
       "bloomMonths": [
@@ -93217,7 +93217,7 @@
     },
     {
       "id": "cotoneaster-divaricatus",
-      "name": "Cotoneaster divaricatus",
+      "name": "Divaricate cotoneaster",
       "latin": "Cotoneaster divaricatus",
       "type": "shrub",
       "bloomMonths": [
@@ -93266,7 +93266,7 @@
     },
     {
       "id": "cotoneaster-franchetii",
-      "name": "Cotoneaster franchetii",
+      "name": "Franchet's cotoneaster",
       "latin": "Cotoneaster franchetii",
       "type": "shrub",
       "bloomMonths": [
@@ -93364,7 +93364,7 @@
     },
     {
       "id": "cotoneaster-glaucophyllus",
-      "name": "Cotoneaster glaucophyllus",
+      "name": "Glaucous cotoneaster",
       "latin": "Cotoneaster glaucophyllus",
       "type": "shrub",
       "bloomMonths": [
@@ -93413,7 +93413,7 @@
     },
     {
       "id": "cotoneaster-horizontalis",
-      "name": "Cotoneaster horizontalis",
+      "name": "Rock cotoneaster",
       "latin": "Cotoneaster horizontalis",
       "type": "shrub",
       "bloomMonths": [
@@ -93462,7 +93462,7 @@
     },
     {
       "id": "cotoneaster-integerrimus",
-      "name": "Cotoneaster integerrimus",
+      "name": "Cotoneaster",
       "latin": "Cotoneaster integerrimus",
       "type": "shrub",
       "bloomMonths": [
@@ -93511,7 +93511,7 @@
     },
     {
       "id": "cotoneaster-integrifolius",
-      "name": "Cotoneaster integrifolius",
+      "name": "Entire-leaved cotoneaster",
       "latin": "Cotoneaster integrifolius",
       "type": "shrub",
       "bloomMonths": [
@@ -93609,7 +93609,7 @@
     },
     {
       "id": "cotoneaster-lucidus",
-      "name": "Cotoneaster lucidus",
+      "name": "Shiny cotoneaster",
       "latin": "Cotoneaster lucidus",
       "type": "shrub",
       "bloomMonths": [
@@ -93658,7 +93658,7 @@
     },
     {
       "id": "cotoneaster-microphyllus",
-      "name": "Cotoneaster microphyllus",
+      "name": "Small-leaf cotoneaster",
       "latin": "Cotoneaster microphyllus",
       "type": "shrub",
       "bloomMonths": [
@@ -93707,7 +93707,7 @@
     },
     {
       "id": "cotoneaster-nitidus",
-      "name": "Cotoneaster nitidus",
+      "name": "Distichous cotoneaster",
       "latin": "Cotoneaster nitidus",
       "type": "shrub",
       "bloomMonths": [
@@ -93804,7 +93804,7 @@
     },
     {
       "id": "cotoneaster-pannosus",
-      "name": "Cotoneaster pannosus",
+      "name": "Silverleaf cotoneaster",
       "latin": "Cotoneaster pannosus",
       "type": "shrub",
       "bloomMonths": [
@@ -93902,7 +93902,7 @@
     },
     {
       "id": "cotoneaster-salicifolius",
-      "name": "Cotoneaster salicifolius",
+      "name": "Willow-leaf cotoneaster",
       "latin": "Cotoneaster salicifolius",
       "type": "shrub",
       "bloomMonths": [
@@ -94329,7 +94329,7 @@
     },
     {
       "id": "crassula-aquatica",
-      "name": "Crassula aquatica",
+      "name": "Water pygmyweed",
       "latin": "Crassula aquatica",
       "type": "annual",
       "bloomMonths": [
@@ -95517,7 +95517,7 @@
     },
     {
       "id": "crassula-helmsii",
-      "name": "Crassula helmsii",
+      "name": "New zealand pigmyweed",
       "latin": "Crassula helmsii",
       "type": "annual",
       "bloomMonths": [
@@ -95699,7 +95699,7 @@
     },
     {
       "id": "crassula-multicava",
-      "name": "Crassula multicava",
+      "name": "Cape province pygmyweed",
       "latin": "Crassula multicava",
       "type": "perennial",
       "bloomMonths": [
@@ -95744,7 +95744,7 @@
     },
     {
       "id": "crassula-muscosa",
-      "name": "Crassula muscosa",
+      "name": "Toy-cypress",
       "latin": "Crassula muscosa",
       "type": "annual",
       "bloomMonths": [
@@ -95834,7 +95834,7 @@
     },
     {
       "id": "crassula-nudicaulis",
-      "name": "Crassula nudicaulis",
+      "name": "Redleaf crassula",
       "latin": "Crassula nudicaulis",
       "type": "annual",
       "bloomMonths": [
@@ -95879,7 +95879,7 @@
     },
     {
       "id": "crassula-ovata",
-      "name": "Crassula ovata",
+      "name": "Japanese rubberplant",
       "latin": "Crassula ovata",
       "type": "shrub",
       "bloomMonths": [
@@ -96016,7 +96016,7 @@
     },
     {
       "id": "crassula-perfoliata",
-      "name": "Crassula perfoliata",
+      "name": "Red treasure",
       "latin": "Crassula perfoliata",
       "type": "annual",
       "bloomMonths": [
@@ -96154,7 +96154,7 @@
     },
     {
       "id": "crassula-pubescens",
-      "name": "Crassula pubescens",
+      "name": "Jersey pigmyweed",
       "latin": "Crassula pubescens",
       "type": "annual",
       "bloomMonths": [
@@ -96244,7 +96244,7 @@
     },
     {
       "id": "crassula-rupestris",
-      "name": "Crassula rupestris",
+      "name": "Inrygertjie",
       "latin": "Crassula rupestris",
       "type": "annual",
       "bloomMonths": [
@@ -96291,7 +96291,7 @@
     },
     {
       "id": "crassula-sarcocaulis",
-      "name": "Crassula sarcocaulis",
+      "name": "Bonsai crassula",
       "latin": "Crassula sarcocaulis",
       "type": "perennial",
       "bloomMonths": [
@@ -96336,7 +96336,7 @@
     },
     {
       "id": "crassula-sarmentosa",
-      "name": "Crassula sarmentosa",
+      "name": "Jade-tree",
       "latin": "Crassula sarmentosa",
       "type": "perennial",
       "bloomMonths": [
@@ -96428,7 +96428,7 @@
     },
     {
       "id": "crassula-sieberiana",
-      "name": "Crassula sieberiana",
+      "name": "Siberian pygmyweed",
       "latin": "Crassula sieberiana",
       "type": "annual",
       "bloomMonths": [
@@ -96608,7 +96608,7 @@
     },
     {
       "id": "crassula-tetragona",
-      "name": "Crassula tetragona",
+      "name": "Karkai",
       "latin": "Crassula tetragona",
       "type": "shrub",
       "bloomMonths": [
@@ -96653,7 +96653,7 @@
     },
     {
       "id": "crassula-tillaea",
-      "name": "Crassula tillaea",
+      "name": "Mossy-stonecrop",
       "latin": "Crassula tillaea",
       "type": "annual",
       "bloomMonths": [
@@ -96743,7 +96743,7 @@
     },
     {
       "id": "crassula-vaillantii",
-      "name": "Crassula vaillantii",
+      "name": "Southern water-stonecrop",
       "latin": "Crassula vaillantii",
       "type": "herb",
       "bloomMonths": [
@@ -97026,7 +97026,7 @@
     },
     {
       "id": "crocus-ancyrensis",
-      "name": "Crocus ancyrensis",
+      "name": "Ankara crocus",
       "latin": "Crocus ancyrensis",
       "type": "bulb",
       "bloomMonths": [
@@ -97073,7 +97073,7 @@
     },
     {
       "id": "crocus-angustifolius",
-      "name": "Crocus angustifolius",
+      "name": "Cloth of gold",
       "latin": "Crocus angustifolius",
       "type": "perennial",
       "bloomMonths": [
@@ -97262,7 +97262,7 @@
     },
     {
       "id": "crocus-biflorus",
-      "name": "Crocus biflorus",
+      "name": "Silvery crocus",
       "latin": "Crocus biflorus",
       "type": "perennial",
       "bloomMonths": [
@@ -97591,7 +97591,7 @@
     },
     {
       "id": "crocus-chrysanthus",
-      "name": "Crocus chrysanthus",
+      "name": "Golden crocus",
       "latin": "Crocus chrysanthus",
       "type": "bulb",
       "bloomMonths": [
@@ -97638,7 +97638,7 @@
     },
     {
       "id": "crocus-corsicus",
-      "name": "Crocus corsicus",
+      "name": "Corsican crocus",
       "latin": "Crocus corsicus",
       "type": "bulb",
       "bloomMonths": [
@@ -97826,7 +97826,7 @@
     },
     {
       "id": "crocus-etruscus",
-      "name": "Crocus etruscus",
+      "name": "Etruscan crocus",
       "latin": "Crocus etruscus",
       "type": "perennial",
       "bloomMonths": [
@@ -97873,7 +97873,7 @@
     },
     {
       "id": "crocus-flavus",
-      "name": "Crocus flavus",
+      "name": "Yellow crocus",
       "latin": "Crocus flavus",
       "type": "bulb",
       "bloomMonths": [
@@ -98203,7 +98203,7 @@
     },
     {
       "id": "crocus-hyemalis",
-      "name": "Crocus hyemalis",
+      "name": "Winter crocus",
       "latin": "Crocus hyemalis",
       "type": "bulb",
       "bloomMonths": [
@@ -98250,7 +98250,7 @@
     },
     {
       "id": "crocus-imperati",
-      "name": "Crocus imperati",
+      "name": "Early crocus",
       "latin": "Crocus imperati",
       "type": "bulb",
       "bloomMonths": [
@@ -98438,7 +98438,7 @@
     },
     {
       "id": "crocus-laevigatus",
-      "name": "Crocus laevigatus",
+      "name": "Smooth crocus",
       "latin": "Crocus laevigatus",
       "type": "bulb",
       "bloomMonths": [
@@ -98760,7 +98760,7 @@
     },
     {
       "id": "crocus-minimus",
-      "name": "Crocus minimus",
+      "name": "Least purple crocus",
       "latin": "Crocus minimus",
       "type": "bulb",
       "bloomMonths": [
@@ -98898,7 +98898,7 @@
     },
     {
       "id": "crocus-nudiflorus",
-      "name": "Crocus nudiflorus",
+      "name": "Knights of st john crocus",
       "latin": "Crocus nudiflorus",
       "type": "bulb",
       "bloomMonths": [
@@ -99174,7 +99174,7 @@
     },
     {
       "id": "crocus-pulchellus",
-      "name": "Crocus pulchellus",
+      "name": "Hairy crocus",
       "latin": "Crocus pulchellus",
       "type": "bulb",
       "bloomMonths": [
@@ -99220,7 +99220,7 @@
     },
     {
       "id": "crocus-reticulatus",
-      "name": "Crocus reticulatus",
+      "name": "Cloth-of-gold crocus",
       "latin": "Crocus reticulatus",
       "type": "bulb",
       "bloomMonths": [
@@ -99451,7 +99451,7 @@
     },
     {
       "id": "crocus-sieberi",
-      "name": "Crocus sieberi",
+      "name": "Sieber's crocus",
       "latin": "Crocus sieberi",
       "type": "bulb",
       "bloomMonths": [
@@ -99543,7 +99543,7 @@
     },
     {
       "id": "crocus-speciosus",
-      "name": "Crocus speciosus",
+      "name": "Bieberstein's crocus",
       "latin": "Crocus speciosus",
       "type": "bulb",
       "bloomMonths": [
@@ -99822,7 +99822,7 @@
     },
     {
       "id": "crocus-versicolor",
-      "name": "Crocus versicolor",
+      "name": "Various-coloured crocus",
       "latin": "Crocus versicolor",
       "type": "bulb",
       "bloomMonths": [
@@ -100180,7 +100180,7 @@
     },
     {
       "id": "cryptantha-clevelandii",
-      "name": "Cryptantha clevelandii",
+      "name": "Cleveland's cryptantha",
       "latin": "Cryptantha clevelandii",
       "type": "perennial",
       "bloomMonths": [
@@ -100585,7 +100585,7 @@
     },
     {
       "id": "cryptantha-pterocarya",
-      "name": "Cryptantha pterocarya",
+      "name": "Wingnut catseye",
       "latin": "Cryptantha pterocarya",
       "type": "perennial",
       "bloomMonths": [
@@ -101212,7 +101212,7 @@
     },
     {
       "id": "cynometra-cauliflora",
-      "name": "Cynometra cauliflora",
+      "name": "Nam nam",
       "latin": "Cynometra cauliflora",
       "type": "annual",
       "bloomMonths": [
@@ -101619,7 +101619,7 @@
     },
     {
       "id": "cypripedium-californicum",
-      "name": "Cypripedium californicum",
+      "name": "California lady's slipper",
       "latin": "Cypripedium californicum",
       "type": "perennial",
       "bloomMonths": [
@@ -101666,7 +101666,7 @@
     },
     {
       "id": "cypripedium-candidum",
-      "name": "Cypripedium candidum",
+      "name": "White lady's-slipper",
       "latin": "Cypripedium candidum",
       "type": "perennial",
       "bloomMonths": [
@@ -101901,7 +101901,7 @@
     },
     {
       "id": "cypripedium-formosanum",
-      "name": "Cypripedium formosanum",
+      "name": "Slipper orchid",
       "latin": "Cypripedium formosanum",
       "type": "perennial",
       "bloomMonths": [
@@ -102089,7 +102089,7 @@
     },
     {
       "id": "cypripedium-irapeanum",
-      "name": "Cypripedium irapeanum",
+      "name": "Irapean ladys slipper",
       "latin": "Cypripedium irapeanum",
       "type": "perennial",
       "bloomMonths": [
@@ -102136,7 +102136,7 @@
     },
     {
       "id": "cypripedium-japonicum",
-      "name": "Cypripedium japonicum",
+      "name": "Japanese lady's-slipper",
       "latin": "Cypripedium japonicum",
       "type": "perennial",
       "bloomMonths": [
@@ -102183,7 +102183,7 @@
     },
     {
       "id": "cypripedium-kentuckiense",
-      "name": "Cypripedium kentuckiense",
+      "name": "Kentucky lady's slipper",
       "latin": "Cypripedium kentuckiense",
       "type": "perennial",
       "bloomMonths": [
@@ -102371,7 +102371,7 @@
     },
     {
       "id": "cypripedium-passerinum",
-      "name": "Cypripedium passerinum",
+      "name": "Sparrowegg lady's slipper",
       "latin": "Cypripedium passerinum",
       "type": "perennial",
       "bloomMonths": [
@@ -102418,7 +102418,7 @@
     },
     {
       "id": "cypripedium-reginae",
-      "name": "Cypripedium reginae",
+      "name": "Queen lady's-slipper",
       "latin": "Cypripedium reginae",
       "type": "perennial",
       "bloomMonths": [
@@ -102465,7 +102465,7 @@
     },
     {
       "id": "cypripedium-tibeticum",
-      "name": "Cypripedium tibeticum",
+      "name": "Tibetian cypripedium",
       "latin": "Cypripedium tibeticum",
       "type": "perennial",
       "bloomMonths": [
@@ -102823,7 +102823,7 @@
     },
     {
       "id": "daniellia-oliveri",
-      "name": "Daniellia oliveri",
+      "name": "African copaiba balsamtree",
       "latin": "Daniellia oliveri",
       "type": "annual",
       "bloomMonths": [
@@ -102909,7 +102909,7 @@
     },
     {
       "id": "darmera-peltata",
-      "name": "Darmera peltata",
+      "name": "Indian-rhubarb",
       "latin": "Darmera peltata",
       "type": "perennial",
       "bloomMonths": [
@@ -103322,7 +103322,7 @@
     },
     {
       "id": "dendromecon-harfordii",
-      "name": "Dendromecon harfordii",
+      "name": "Island tree-poppy",
       "latin": "Dendromecon harfordii",
       "type": "perennial",
       "bloomMonths": [
@@ -103368,7 +103368,7 @@
     },
     {
       "id": "dendromecon-rigida",
-      "name": "Dendromecon rigida",
+      "name": "Tree-poppy",
       "latin": "Dendromecon rigida",
       "type": "perennial",
       "bloomMonths": [
@@ -103457,7 +103457,7 @@
     },
     {
       "id": "detarium-microcarpum",
-      "name": "Detarium microcarpum",
+      "name": "Sweet dattock",
       "latin": "Detarium microcarpum",
       "type": "annual",
       "bloomMonths": [
@@ -103590,7 +103590,7 @@
     },
     {
       "id": "deutzia-crenata",
-      "name": "Deutzia crenata",
+      "name": "Fuzzy pride-of-rochester",
       "latin": "Deutzia crenata",
       "type": "shrub",
       "bloomMonths": [
@@ -103637,7 +103637,7 @@
     },
     {
       "id": "deutzia-gracilis",
-      "name": "Deutzia gracilis",
+      "name": "Japanese snowflower",
       "latin": "Deutzia gracilis",
       "type": "shrub",
       "bloomMonths": [
@@ -103825,7 +103825,7 @@
     },
     {
       "id": "deutzia-scabra",
-      "name": "Deutzia scabra",
+      "name": "Deutzia",
       "latin": "Deutzia scabra",
       "type": "shrub",
       "bloomMonths": [
@@ -104095,7 +104095,7 @@
     },
     {
       "id": "dialium-guianense",
-      "name": "Dialium guianense",
+      "name": "Ironwood",
       "latin": "Dialium guianense",
       "type": "annual",
       "bloomMonths": [
@@ -104138,7 +104138,7 @@
     },
     {
       "id": "dialium-guineense",
-      "name": "Dialium guineense",
+      "name": "Sierra leone-tamarind",
       "latin": "Dialium guineense",
       "type": "annual",
       "bloomMonths": [
@@ -104312,7 +104312,7 @@
     },
     {
       "id": "dianthus-alpinus",
-      "name": "Dianthus alpinus",
+      "name": "Alpine pink",
       "latin": "Dianthus alpinus",
       "type": "perennial",
       "bloomMonths": [
@@ -104357,7 +104357,7 @@
     },
     {
       "id": "dianthus-arenarius",
-      "name": "Dianthus arenarius",
+      "name": "Finland pink",
       "latin": "Dianthus arenarius",
       "type": "perennial",
       "bloomMonths": [
@@ -104402,7 +104402,7 @@
     },
     {
       "id": "dianthus-armeria",
-      "name": "Dianthus armeria",
+      "name": "Grass pink",
       "latin": "Dianthus armeria",
       "type": "perennial",
       "bloomMonths": [
@@ -104492,7 +104492,7 @@
     },
     {
       "id": "dianthus-barbatus",
-      "name": "Dianthus barbatus",
+      "name": "Sweet-william",
       "latin": "Dianthus barbatus",
       "type": "perennial",
       "bloomMonths": [
@@ -104583,7 +104583,7 @@
     },
     {
       "id": "dianthus-carthusianorum",
-      "name": "Dianthus carthusianorum",
+      "name": "Carthusian pink",
       "latin": "Dianthus carthusianorum",
       "type": "perennial",
       "bloomMonths": [
@@ -104628,7 +104628,7 @@
     },
     {
       "id": "dianthus-caryophyllus",
-      "name": "Dianthus caryophyllus",
+      "name": "Clove pink",
       "latin": "Dianthus caryophyllus",
       "type": "perennial",
       "bloomMonths": [
@@ -104674,7 +104674,7 @@
     },
     {
       "id": "dianthus-chinensis",
-      "name": "Dianthus chinensis",
+      "name": "Japanese pink",
       "latin": "Dianthus chinensis",
       "type": "perennial",
       "bloomMonths": [
@@ -105259,7 +105259,7 @@
     },
     {
       "id": "dianthus-sylvestris",
-      "name": "Dianthus sylvestris",
+      "name": "Wood pink",
       "latin": "Dianthus sylvestris",
       "type": "perennial",
       "bloomMonths": [
@@ -105396,7 +105396,7 @@
     },
     {
       "id": "dicentra-cucullaria",
-      "name": "Dicentra cucullaria",
+      "name": "Dutchman's-breeches",
       "latin": "Dicentra cucullaria",
       "type": "perennial",
       "bloomMonths": [
@@ -105535,7 +105535,7 @@
     },
     {
       "id": "dicentra-nevadensis",
-      "name": "Dicentra nevadensis",
+      "name": "Sierra bleeding heart",
       "latin": "Dicentra nevadensis",
       "type": "perennial",
       "bloomMonths": [
@@ -105677,7 +105677,7 @@
     },
     {
       "id": "dicentra-uniflora",
-      "name": "Dicentra uniflora",
+      "name": "Steer's-head",
       "latin": "Dicentra uniflora",
       "type": "perennial",
       "bloomMonths": [
@@ -107108,7 +107108,7 @@
     },
     {
       "id": "digitalis-laevigata",
-      "name": "Digitalis laevigata",
+      "name": "Smooth-leaved foxglove",
       "latin": "Digitalis laevigata",
       "type": "shrub",
       "bloomMonths": [
@@ -107243,7 +107243,7 @@
     },
     {
       "id": "digitalis-lutea",
-      "name": "Digitalis lutea",
+      "name": "Straw foxglove",
       "latin": "Digitalis lutea",
       "type": "shrub",
       "bloomMonths": [
@@ -107423,7 +107423,7 @@
     },
     {
       "id": "digitalis-obscura",
-      "name": "Digitalis obscura",
+      "name": "Willow-leaf foxglove",
       "latin": "Digitalis obscura",
       "type": "perennial",
       "bloomMonths": [
@@ -107513,7 +107513,7 @@
     },
     {
       "id": "digitalis-purpurea",
-      "name": "Digitalis purpurea",
+      "name": "Foxglove",
       "latin": "Digitalis purpurea",
       "type": "biennial",
       "bloomMonths": [
@@ -107648,7 +107648,7 @@
     },
     {
       "id": "digitalis-thapsi",
-      "name": "Digitalis thapsi",
+      "name": "Spanish digitalis",
       "latin": "Digitalis thapsi",
       "type": "shrub",
       "bloomMonths": [
@@ -108388,7 +108388,7 @@
     },
     {
       "id": "drymaria-cordata",
-      "name": "Drymaria cordata",
+      "name": "Drymaria",
       "latin": "Drymaria cordata",
       "type": "annual",
       "bloomMonths": [
@@ -108476,7 +108476,7 @@
     },
     {
       "id": "dudleya-abramsii",
-      "name": "Dudleya abramsii",
+      "name": "Abrams' liveforever",
       "latin": "Dudleya abramsii",
       "type": "perennial",
       "bloomMonths": [
@@ -108825,7 +108825,7 @@
     },
     {
       "id": "dudleya-candelabrum",
-      "name": "Dudleya candelabrum",
+      "name": "Candleholder liveforever",
       "latin": "Dudleya candelabrum",
       "type": "perennial",
       "bloomMonths": [
@@ -109044,7 +109044,7 @@
     },
     {
       "id": "dudleya-densiflora",
-      "name": "Dudleya densiflora",
+      "name": "San gabriel mountains dudleya",
       "latin": "Dudleya densiflora",
       "type": "perennial",
       "bloomMonths": [
@@ -109177,7 +109177,7 @@
     },
     {
       "id": "dudleya-gnoma",
-      "name": "Dudleya gnoma",
+      "name": "Munchkin liveforever",
       "latin": "Dudleya gnoma",
       "type": "perennial",
       "bloomMonths": [
@@ -109353,7 +109353,7 @@
     },
     {
       "id": "dudleya-lanceolata",
-      "name": "Dudleya lanceolata",
+      "name": "Lanceleaf liveforever",
       "latin": "Dudleya lanceolata",
       "type": "perennial",
       "bloomMonths": [
@@ -109440,7 +109440,7 @@
     },
     {
       "id": "dudleya-nesiotica",
-      "name": "Dudleya nesiotica",
+      "name": "Santa cruz island dudleya",
       "latin": "Dudleya nesiotica",
       "type": "perennial",
       "bloomMonths": [
@@ -109659,7 +109659,7 @@
     },
     {
       "id": "dudleya-pulverulenta",
-      "name": "Dudleya pulverulenta",
+      "name": "Chalk dudleya",
       "latin": "Dudleya pulverulenta",
       "type": "perennial",
       "bloomMonths": [
@@ -110055,7 +110055,7 @@
     },
     {
       "id": "dudleya-virens",
-      "name": "Dudleya virens",
+      "name": "Bright green dudleya",
       "latin": "Dudleya virens",
       "type": "perennial",
       "bloomMonths": [
@@ -110512,7 +110512,7 @@
     },
     {
       "id": "ehretia-acuminata",
-      "name": "Ehretia acuminata",
+      "name": "Brown-cedar",
       "latin": "Ehretia acuminata",
       "type": "shrub",
       "bloomMonths": [
@@ -110602,7 +110602,7 @@
     },
     {
       "id": "ehretia-anacua",
-      "name": "Ehretia anacua",
+      "name": "Anacua",
       "latin": "Ehretia anacua",
       "type": "shrub",
       "bloomMonths": [
@@ -110782,7 +110782,7 @@
     },
     {
       "id": "ehretia-microphylla",
-      "name": "Ehretia microphylla",
+      "name": "Fukien-tea",
       "latin": "Ehretia microphylla",
       "type": "shrub",
       "bloomMonths": [
@@ -110827,7 +110827,7 @@
     },
     {
       "id": "ehretia-rigida",
-      "name": "Ehretia rigida",
+      "name": "Puzzle bush",
       "latin": "Ehretia rigida",
       "type": "shrub",
       "bloomMonths": [
@@ -111724,7 +111724,7 @@
     },
     {
       "id": "epilobium-alpestre",
-      "name": "Epilobium alpestre",
+      "name": "Alpine willowherb",
       "latin": "Epilobium alpestre",
       "type": "perennial",
       "bloomMonths": [
@@ -111823,7 +111823,7 @@
     },
     {
       "id": "epilobium-anagallidifolium",
-      "name": "Epilobium anagallidifolium",
+      "name": "Pimpernel willowherb",
       "latin": "Epilobium anagallidifolium",
       "type": "perennial",
       "bloomMonths": [
@@ -111873,7 +111873,7 @@
     },
     {
       "id": "epilobium-brachycarpum",
-      "name": "Epilobium brachycarpum",
+      "name": "Tall annual willowherb",
       "latin": "Epilobium brachycarpum",
       "type": "annual",
       "bloomMonths": [
@@ -112017,7 +112017,7 @@
     },
     {
       "id": "epilobium-clavatum",
-      "name": "Epilobium clavatum",
+      "name": "Talus willowherb",
       "latin": "Epilobium clavatum",
       "type": "perennial",
       "bloomMonths": [
@@ -112067,7 +112067,7 @@
     },
     {
       "id": "epilobium-collinum",
-      "name": "Epilobium collinum",
+      "name": "Cliff willowherb",
       "latin": "Epilobium collinum",
       "type": "perennial",
       "bloomMonths": [
@@ -112116,7 +112116,7 @@
     },
     {
       "id": "epilobium-coloratum",
-      "name": "Epilobium coloratum",
+      "name": "Purpleleaf willowherb",
       "latin": "Epilobium coloratum",
       "type": "herb",
       "bloomMonths": [
@@ -112263,7 +112263,7 @@
     },
     {
       "id": "epilobium-glaberrimum",
-      "name": "Epilobium glaberrimum",
+      "name": "Glaucus willowherb",
       "latin": "Epilobium glaberrimum",
       "type": "perennial",
       "bloomMonths": [
@@ -112358,7 +112358,7 @@
     },
     {
       "id": "epilobium-howellii",
-      "name": "Epilobium howellii",
+      "name": "Yuba pass willowherb",
       "latin": "Epilobium howellii",
       "type": "perennial",
       "bloomMonths": [
@@ -112407,7 +112407,7 @@
     },
     {
       "id": "epilobium-lactiflorum",
-      "name": "Epilobium lactiflorum",
+      "name": "Milkflower willowherb",
       "latin": "Epilobium lactiflorum",
       "type": "perennial",
       "bloomMonths": [
@@ -112453,7 +112453,7 @@
     },
     {
       "id": "epilobium-leptophyllum",
-      "name": "Epilobium leptophyllum",
+      "name": "Bog willowherb",
       "latin": "Epilobium leptophyllum",
       "type": "perennial",
       "bloomMonths": [
@@ -112499,7 +112499,7 @@
     },
     {
       "id": "epilobium-minutum",
-      "name": "Epilobium minutum",
+      "name": "Chaparral willowherb",
       "latin": "Epilobium minutum",
       "type": "perennial",
       "bloomMonths": [
@@ -112643,7 +112643,7 @@
     },
     {
       "id": "epilobium-obscurum",
-      "name": "Epilobium obscurum",
+      "name": "Dwarf willowherb",
       "latin": "Epilobium obscurum",
       "type": "perennial",
       "bloomMonths": [
@@ -112692,7 +112692,7 @@
     },
     {
       "id": "epilobium-oreganum",
-      "name": "Epilobium oreganum",
+      "name": "Grants pass willowherb",
       "latin": "Epilobium oreganum",
       "type": "perennial",
       "bloomMonths": [
@@ -112738,7 +112738,7 @@
     },
     {
       "id": "epilobium-oregonense",
-      "name": "Epilobium oregonense",
+      "name": "Oregon willowherb",
       "latin": "Epilobium oregonense",
       "type": "perennial",
       "bloomMonths": [
@@ -112784,7 +112784,7 @@
     },
     {
       "id": "epilobium-palustre",
-      "name": "Epilobium palustre",
+      "name": "Marsh willowherb",
       "latin": "Epilobium palustre",
       "type": "perennial",
       "bloomMonths": [
@@ -112830,7 +112830,7 @@
     },
     {
       "id": "epilobium-parviflorum",
-      "name": "Epilobium parviflorum",
+      "name": "Hoary willowherb",
       "latin": "Epilobium parviflorum",
       "type": "perennial",
       "bloomMonths": [
@@ -113612,7 +113612,7 @@
     },
     {
       "id": "erica-ciliaris",
-      "name": "Erica ciliaris",
+      "name": "Dorset heath",
       "latin": "Erica ciliaris",
       "type": "shrub",
       "bloomMonths": [
@@ -113661,7 +113661,7 @@
     },
     {
       "id": "erica-cinerea",
-      "name": "Erica cinerea",
+      "name": "Gray heath",
       "latin": "Erica cinerea",
       "type": "shrub",
       "bloomMonths": [
@@ -113710,7 +113710,7 @@
     },
     {
       "id": "erica-erigena",
-      "name": "Erica erigena",
+      "name": "Irish heath",
       "latin": "Erica erigena",
       "type": "shrub",
       "bloomMonths": [
@@ -113759,7 +113759,7 @@
     },
     {
       "id": "erica-multiflora",
-      "name": "Erica multiflora",
+      "name": "Mediterranean heath",
       "latin": "Erica multiflora",
       "type": "shrub",
       "bloomMonths": [
@@ -114003,7 +114003,7 @@
     },
     {
       "id": "erinus-alpinus",
-      "name": "Erinus alpinus",
+      "name": "Alpine balsam",
       "latin": "Erinus alpinus",
       "type": "perennial",
       "bloomMonths": [
@@ -114050,7 +114050,7 @@
     },
     {
       "id": "eritrichium-nanum",
-      "name": "Eritrichium nanum",
+      "name": "Arctic alpine forget-me-not",
       "latin": "Eritrichium nanum",
       "type": "perennial",
       "bloomMonths": [
@@ -114188,7 +114188,7 @@
     },
     {
       "id": "erodium-botrys",
-      "name": "Erodium botrys",
+      "name": "Wild geranium",
       "latin": "Erodium botrys",
       "type": "perennial",
       "bloomMonths": [
@@ -114234,7 +114234,7 @@
     },
     {
       "id": "erodium-chium",
-      "name": "Erodium chium",
+      "name": "Three-lobed stork's-bill",
       "latin": "Erodium chium",
       "type": "perennial",
       "bloomMonths": [
@@ -114326,7 +114326,7 @@
     },
     {
       "id": "erodium-ciconium",
-      "name": "Erodium ciconium",
+      "name": "Common stork's bill",
       "latin": "Erodium ciconium",
       "type": "annual",
       "bloomMonths": [
@@ -114511,7 +114511,7 @@
     },
     {
       "id": "erodium-laciniatum",
-      "name": "Erodium laciniatum",
+      "name": "Cutleaf stork's bill",
       "latin": "Erodium laciniatum",
       "type": "perennial",
       "bloomMonths": [
@@ -114557,7 +114557,7 @@
     },
     {
       "id": "erodium-lebelii",
-      "name": "Erodium lebelii",
+      "name": "Sticky stork's-bill",
       "latin": "Erodium lebelii",
       "type": "annual",
       "bloomMonths": [
@@ -114603,7 +114603,7 @@
     },
     {
       "id": "erodium-malacoides",
-      "name": "Erodium malacoides",
+      "name": "Mediterranean stork's bill",
       "latin": "Erodium malacoides",
       "type": "biennial",
       "bloomMonths": [
@@ -114741,7 +114741,7 @@
     },
     {
       "id": "erodium-moschatum",
-      "name": "Erodium moschatum",
+      "name": "Musk stork's-bill",
       "latin": "Erodium moschatum",
       "type": "biennial",
       "bloomMonths": [
@@ -115134,7 +115134,7 @@
     },
     {
       "id": "erythronium-tuolumnense",
-      "name": "Erythronium tuolumnense",
+      "name": "Tuolumne fawn-lily",
       "latin": "Erythronium tuolumnense",
       "type": "bulb",
       "bloomMonths": [
@@ -115270,7 +115270,7 @@
     },
     {
       "id": "erythrophleum-suaveolens",
-      "name": "Erythrophleum suaveolens",
+      "name": "Ordealtree",
       "latin": "Erythrophleum suaveolens",
       "type": "annual",
       "bloomMonths": [
@@ -115402,7 +115402,7 @@
     },
     {
       "id": "eschscholzia-caespitosa",
-      "name": "Eschscholzia caespitosa",
+      "name": "Tufted california-poppy",
       "latin": "Eschscholzia caespitosa",
       "type": "perennial",
       "bloomMonths": [
@@ -115449,7 +115449,7 @@
     },
     {
       "id": "eschscholzia-californica",
-      "name": "Eschscholzia californica",
+      "name": "California-poppy",
       "latin": "Eschscholzia californica",
       "type": "perennial",
       "bloomMonths": [
@@ -115542,7 +115542,7 @@
     },
     {
       "id": "eschscholzia-hypecoides",
-      "name": "Eschscholzia hypecoides",
+      "name": "San benito poppy",
       "latin": "Eschscholzia hypecoides",
       "type": "perennial",
       "bloomMonths": [
@@ -115588,7 +115588,7 @@
     },
     {
       "id": "eschscholzia-lemmonii",
-      "name": "Eschscholzia lemmonii",
+      "name": "Lemmon's poppy",
       "latin": "Eschscholzia lemmonii",
       "type": "perennial",
       "bloomMonths": [
@@ -115634,7 +115634,7 @@
     },
     {
       "id": "eschscholzia-lobbii",
-      "name": "Eschscholzia lobbii",
+      "name": "Frying-pans",
       "latin": "Eschscholzia lobbii",
       "type": "perennial",
       "bloomMonths": [
@@ -115726,7 +115726,7 @@
     },
     {
       "id": "eschscholzia-parishii",
-      "name": "Eschscholzia parishii",
+      "name": "Parish's poppy",
       "latin": "Eschscholzia parishii",
       "type": "perennial",
       "bloomMonths": [
@@ -115772,7 +115772,7 @@
     },
     {
       "id": "eschscholzia-ramosa",
-      "name": "Eschscholzia ramosa",
+      "name": "Channel island poppy",
       "latin": "Eschscholzia ramosa",
       "type": "perennial",
       "bloomMonths": [
@@ -116099,7 +116099,7 @@
     },
     {
       "id": "eustrephus-latifolius",
-      "name": "Eustrephus latifolius",
+      "name": "Orangevine",
       "latin": "Eustrephus latifolius",
       "type": "perennial",
       "bloomMonths": [
@@ -116518,7 +116518,7 @@
     },
     {
       "id": "flourensia-cernua",
-      "name": "Flourensia cernua",
+      "name": "Varnishbush",
       "latin": "Flourensia cernua",
       "type": "annual",
       "bloomMonths": [
@@ -116570,7 +116570,7 @@
     },
     {
       "id": "fragaria-ananassa",
-      "name": "Fragaria × ananassa",
+      "name": "Garden strawberry",
       "latin": "Fragaria × ananassa",
       "type": "shrub",
       "bloomMonths": [
@@ -116713,7 +116713,7 @@
     },
     {
       "id": "fragaria-chiloensis",
-      "name": "Fragaria chiloensis",
+      "name": "Beach strawberry",
       "latin": "Fragaria chiloensis",
       "type": "shrub",
       "bloomMonths": [
@@ -116901,7 +116901,7 @@
     },
     {
       "id": "fragaria-moschata",
-      "name": "Fragaria moschata",
+      "name": "Hautbois strawberry",
       "latin": "Fragaria moschata",
       "type": "shrub",
       "bloomMonths": [
@@ -117325,7 +117325,7 @@
     },
     {
       "id": "fragaria-viridis",
-      "name": "Fragaria viridis",
+      "name": "Green strawberry",
       "latin": "Fragaria viridis",
       "type": "shrub",
       "bloomMonths": [
@@ -118012,7 +118012,7 @@
     },
     {
       "id": "fuchsia-arborescens",
-      "name": "Fuchsia arborescens",
+      "name": "Aretillo",
       "latin": "Fuchsia arborescens",
       "type": "perennial",
       "bloomMonths": [
@@ -118059,7 +118059,7 @@
     },
     {
       "id": "fuchsia-boliviana",
-      "name": "Fuchsia boliviana",
+      "name": "Bolivian fuchsia",
       "latin": "Fuchsia boliviana",
       "type": "perennial",
       "bloomMonths": [
@@ -118200,7 +118200,7 @@
     },
     {
       "id": "fuchsia-corymbiflora",
-      "name": "Fuchsia corymbiflora",
+      "name": "Bolivian fuchsia",
       "latin": "Fuchsia corymbiflora",
       "type": "perennial",
       "bloomMonths": [
@@ -118670,7 +118670,7 @@
     },
     {
       "id": "fuchsia-magellanica",
-      "name": "Fuchsia magellanica",
+      "name": "Fuchsia",
       "latin": "Fuchsia magellanica",
       "type": "perennial",
       "bloomMonths": [
@@ -118765,7 +118765,7 @@
     },
     {
       "id": "fuchsia-paniculata",
-      "name": "Fuchsia paniculata",
+      "name": "Shrubby fuchsia",
       "latin": "Fuchsia paniculata",
       "type": "perennial",
       "bloomMonths": [
@@ -119187,7 +119187,7 @@
     },
     {
       "id": "fumaria-agraria",
-      "name": "Fumaria agraria",
+      "name": "Field fumitory",
       "latin": "Fumaria agraria",
       "type": "perennial",
       "bloomMonths": [
@@ -119233,7 +119233,7 @@
     },
     {
       "id": "fumaria-bastardii",
-      "name": "Fumaria bastardii",
+      "name": "Tall ramping-fumitory",
       "latin": "Fumaria bastardii",
       "type": "perennial",
       "bloomMonths": [
@@ -119279,7 +119279,7 @@
     },
     {
       "id": "fumaria-bicolor",
-      "name": "Fumaria bicolor",
+      "name": "Two-coloured fumitory",
       "latin": "Fumaria bicolor",
       "type": "perennial",
       "bloomMonths": [
@@ -119325,7 +119325,7 @@
     },
     {
       "id": "fumaria-capreolata",
-      "name": "Fumaria capreolata",
+      "name": "Climbing fumitory",
       "latin": "Fumaria capreolata",
       "type": "perennial",
       "bloomMonths": [
@@ -119371,7 +119371,7 @@
     },
     {
       "id": "fumaria-densiflora",
-      "name": "Fumaria densiflora",
+      "name": "Narrow-leaf fumitory",
       "latin": "Fumaria densiflora",
       "type": "perennial",
       "bloomMonths": [
@@ -119463,7 +119463,7 @@
     },
     {
       "id": "fumaria-muralis",
-      "name": "Fumaria muralis",
+      "name": "Common ramping-fumitory",
       "latin": "Fumaria muralis",
       "type": "perennial",
       "bloomMonths": [
@@ -119555,7 +119555,7 @@
     },
     {
       "id": "fumaria-parviflora",
-      "name": "Fumaria parviflora",
+      "name": "Fine-leaf fumitory",
       "latin": "Fumaria parviflora",
       "type": "perennial",
       "bloomMonths": [
@@ -120019,7 +120019,7 @@
     },
     {
       "id": "furcraea-tuberosa",
-      "name": "Furcraea tuberosa",
+      "name": "Female karata",
       "latin": "Furcraea tuberosa",
       "type": "perennial",
       "bloomMonths": [
@@ -120462,7 +120462,7 @@
     },
     {
       "id": "gagea-foliosa",
-      "name": "Gagea foliosa",
+      "name": "Leafy gagea",
       "latin": "Gagea foliosa",
       "type": "bulb",
       "bloomMonths": [
@@ -120612,7 +120612,7 @@
     },
     {
       "id": "gagea-lacaitae",
-      "name": "Gagea lacaitae",
+      "name": "Lacaita’s gagea",
       "latin": "Gagea lacaitae",
       "type": "bulb",
       "bloomMonths": [
@@ -120812,7 +120812,7 @@
     },
     {
       "id": "gagea-spathacea",
-      "name": "Gagea spathacea",
+      "name": "Belgian gagea",
       "latin": "Gagea spathacea",
       "type": "bulb",
       "bloomMonths": [
@@ -121381,7 +121381,7 @@
     },
     {
       "id": "gaultheria-hispidula",
-      "name": "Gaultheria hispidula",
+      "name": "Creeping snowberry",
       "latin": "Gaultheria hispidula",
       "type": "shrub",
       "bloomMonths": [
@@ -121522,7 +121522,7 @@
     },
     {
       "id": "gaultheria-mucronata",
-      "name": "Gaultheria mucronata",
+      "name": "Prickly heath",
       "latin": "Gaultheria mucronata",
       "type": "shrub",
       "bloomMonths": [
@@ -121757,7 +121757,7 @@
     },
     {
       "id": "gaultheria-shallon",
-      "name": "Gaultheria shallon",
+      "name": "Salal",
       "latin": "Gaultheria shallon",
       "type": "shrub",
       "bloomMonths": [
@@ -122176,7 +122176,7 @@
     },
     {
       "id": "gayophytum-humile",
-      "name": "Gayophytum humile",
+      "name": "Dwarf groundsmoke",
       "latin": "Gayophytum humile",
       "type": "annual",
       "bloomMonths": [
@@ -122685,7 +122685,7 @@
     },
     {
       "id": "geranium-argenteum",
-      "name": "Geranium argenteum",
+      "name": "Silvery cranesbill",
       "latin": "Geranium argenteum",
       "type": "perennial",
       "bloomMonths": [
@@ -122779,7 +122779,7 @@
     },
     {
       "id": "geranium-bicknellii",
-      "name": "Geranium bicknellii",
+      "name": "Bicknell's cranesbill",
       "latin": "Geranium bicknellii",
       "type": "biennial",
       "bloomMonths": [
@@ -123014,7 +123014,7 @@
     },
     {
       "id": "geranium-carolinianum",
-      "name": "Geranium carolinianum",
+      "name": "Carolina geranium",
       "latin": "Geranium carolinianum",
       "type": "annual",
       "bloomMonths": [
@@ -123061,7 +123061,7 @@
     },
     {
       "id": "geranium-cinereum",
-      "name": "Geranium cinereum",
+      "name": "Ashy cranesbill",
       "latin": "Geranium cinereum",
       "type": "perennial",
       "bloomMonths": [
@@ -123155,7 +123155,7 @@
     },
     {
       "id": "geranium-columbinum",
-      "name": "Geranium columbinum",
+      "name": "Long-stalk crane's-bill",
       "latin": "Geranium columbinum",
       "type": "annual",
       "bloomMonths": [
@@ -123202,7 +123202,7 @@
     },
     {
       "id": "geranium-cuneatum",
-      "name": "Geranium cuneatum",
+      "name": "Hinahina",
       "latin": "Geranium cuneatum",
       "type": "shrub",
       "bloomMonths": [
@@ -123297,7 +123297,7 @@
     },
     {
       "id": "geranium-dissectum",
-      "name": "Geranium dissectum",
+      "name": "Cut-leaf crane's-bill",
       "latin": "Geranium dissectum",
       "type": "perennial",
       "bloomMonths": [
@@ -123344,7 +123344,7 @@
     },
     {
       "id": "geranium-endressii",
-      "name": "Geranium endressii",
+      "name": "French crane's-bill",
       "latin": "Geranium endressii",
       "type": "perennial",
       "bloomMonths": [
@@ -123391,7 +123391,7 @@
     },
     {
       "id": "geranium-erianthum",
-      "name": "Geranium erianthum",
+      "name": "Woolly geranium",
       "latin": "Geranium erianthum",
       "type": "perennial",
       "bloomMonths": [
@@ -123438,7 +123438,7 @@
     },
     {
       "id": "geranium-himalayense",
-      "name": "Geranium himalayense",
+      "name": "Himalayan crane's-bill",
       "latin": "Geranium himalayense",
       "type": "perennial",
       "bloomMonths": [
@@ -123485,7 +123485,7 @@
     },
     {
       "id": "geranium-ibericum",
-      "name": "Geranium ibericum",
+      "name": "Caucasian crane's-bill",
       "latin": "Geranium ibericum",
       "type": "perennial",
       "bloomMonths": [
@@ -123532,7 +123532,7 @@
     },
     {
       "id": "geranium-lucidum",
-      "name": "Geranium lucidum",
+      "name": "Shining crane's-bill",
       "latin": "Geranium lucidum",
       "type": "annual",
       "bloomMonths": [
@@ -123673,7 +123673,7 @@
     },
     {
       "id": "geranium-maderense",
-      "name": "Geranium maderense",
+      "name": "Giant herb-robert",
       "latin": "Geranium maderense",
       "type": "herb",
       "bloomMonths": [
@@ -123814,7 +123814,7 @@
     },
     {
       "id": "geranium-nodosum",
-      "name": "Geranium nodosum",
+      "name": "Knotted crane's-bill",
       "latin": "Geranium nodosum",
       "type": "perennial",
       "bloomMonths": [
@@ -123861,7 +123861,7 @@
     },
     {
       "id": "geranium-oreganum",
-      "name": "Geranium oreganum",
+      "name": "Oregon geranium",
       "latin": "Geranium oreganum",
       "type": "perennial",
       "bloomMonths": [
@@ -123956,7 +123956,7 @@
     },
     {
       "id": "geranium-palmatum",
-      "name": "Geranium palmatum",
+      "name": "Canary island geranium",
       "latin": "Geranium palmatum",
       "type": "perennial",
       "bloomMonths": [
@@ -124003,7 +124003,7 @@
     },
     {
       "id": "geranium-palustre",
-      "name": "Geranium palustre",
+      "name": "Marsh cranesbill",
       "latin": "Geranium palustre",
       "type": "perennial",
       "bloomMonths": [
@@ -124097,7 +124097,7 @@
     },
     {
       "id": "geranium-platypetalum",
-      "name": "Geranium platypetalum",
+      "name": "Glandular crane's-bill",
       "latin": "Geranium platypetalum",
       "type": "perennial",
       "bloomMonths": [
@@ -124239,7 +124239,7 @@
     },
     {
       "id": "geranium-psilostemon",
-      "name": "Geranium psilostemon",
+      "name": "Armenian crane's-bill",
       "latin": "Geranium psilostemon",
       "type": "perennial",
       "bloomMonths": [
@@ -124287,7 +124287,7 @@
     },
     {
       "id": "geranium-purpureum",
-      "name": "Geranium purpureum",
+      "name": "Little-robin",
       "latin": "Geranium purpureum",
       "type": "perennial",
       "bloomMonths": [
@@ -124568,7 +124568,7 @@
     },
     {
       "id": "geranium-richardsonii",
-      "name": "Geranium richardsonii",
+      "name": "Richardson's geranium",
       "latin": "Geranium richardsonii",
       "type": "perennial",
       "bloomMonths": [
@@ -124661,7 +124661,7 @@
     },
     {
       "id": "geranium-rotundifolium",
-      "name": "Geranium rotundifolium",
+      "name": "Round-leaf crane's-bill",
       "latin": "Geranium rotundifolium",
       "type": "annual",
       "bloomMonths": [
@@ -124753,7 +124753,7 @@
     },
     {
       "id": "geranium-sanguineum",
-      "name": "Geranium sanguineum",
+      "name": "Bloody crane's-bill",
       "latin": "Geranium sanguineum",
       "type": "perennial",
       "bloomMonths": [
@@ -124800,7 +124800,7 @@
     },
     {
       "id": "geranium-sibiricum",
-      "name": "Geranium sibiricum",
+      "name": "Siberian crane's-bill",
       "latin": "Geranium sibiricum",
       "type": "perennial",
       "bloomMonths": [
@@ -124847,7 +124847,7 @@
     },
     {
       "id": "geranium-solanderi",
-      "name": "Geranium solanderi",
+      "name": "Hairy geranium",
       "latin": "Geranium solanderi",
       "type": "perennial",
       "bloomMonths": [
@@ -124989,7 +124989,7 @@
     },
     {
       "id": "geranium-thunbergii",
-      "name": "Geranium thunbergii",
+      "name": "Thunberg's geranium",
       "latin": "Geranium thunbergii",
       "type": "perennial",
       "bloomMonths": [
@@ -125083,7 +125083,7 @@
     },
     {
       "id": "geranium-tuberosum",
-      "name": "Geranium tuberosum",
+      "name": "Tuberous cranesbill",
       "latin": "Geranium tuberosum",
       "type": "perennial",
       "bloomMonths": [
@@ -125177,7 +125177,7 @@
     },
     {
       "id": "geranium-viscosissimum",
-      "name": "Geranium viscosissimum",
+      "name": "Sticky geranium",
       "latin": "Geranium viscosissimum",
       "type": "perennial",
       "bloomMonths": [
@@ -125417,7 +125417,7 @@
     },
     {
       "id": "glaucium-corniculatum",
-      "name": "Glaucium corniculatum",
+      "name": "Blackspot hornpoppy",
       "latin": "Glaucium corniculatum",
       "type": "annual",
       "bloomMonths": [
@@ -125747,7 +125747,7 @@
     },
     {
       "id": "gmelina-arborea",
-      "name": "Gmelina arborea",
+      "name": "Malay bush-beech",
       "latin": "Gmelina arborea",
       "type": "shrub",
       "bloomMonths": [
@@ -125794,7 +125794,7 @@
     },
     {
       "id": "gmelina-asiatica",
-      "name": "Gmelina asiatica",
+      "name": "Asian bushbeech",
       "latin": "Gmelina asiatica",
       "type": "perennial",
       "bloomMonths": [
@@ -125982,7 +125982,7 @@
     },
     {
       "id": "gmelina-philippensis",
-      "name": "Gmelina philippensis",
+      "name": "Wild sage",
       "latin": "Gmelina philippensis",
       "type": "perennial",
       "bloomMonths": [
@@ -126362,7 +126362,7 @@
     },
     {
       "id": "gratiola-officinalis",
-      "name": "Gratiola officinalis",
+      "name": "Hedge-hyssop",
       "latin": "Gratiola officinalis",
       "type": "perennial",
       "bloomMonths": [
@@ -126896,7 +126896,7 @@
     },
     {
       "id": "gymnocoronis-spilanthoides",
-      "name": "Gymnocoronis spilanthoides",
+      "name": "Senegal teaplant",
       "latin": "Gymnocoronis spilanthoides",
       "type": "annual",
       "bloomMonths": [
@@ -126994,7 +126994,7 @@
     },
     {
       "id": "gypsophila-oldhamiana",
-      "name": "Gypsophila oldhamiana",
+      "name": "Manchurian baby's-breath",
       "latin": "Gypsophila oldhamiana",
       "type": "annual",
       "bloomMonths": [
@@ -127235,7 +127235,7 @@
     },
     {
       "id": "haematoxylum-brasiletto",
-      "name": "Haematoxylum brasiletto",
+      "name": "Peachwood",
       "latin": "Haematoxylum brasiletto",
       "type": "shrub",
       "bloomMonths": [
@@ -127468,7 +127468,7 @@
     },
     {
       "id": "hastingsia-serpentinicola",
-      "name": "Hastingsia serpentinicola",
+      "name": "Klamath rushlily",
       "latin": "Hastingsia serpentinicola",
       "type": "perennial",
       "bloomMonths": [
@@ -127762,7 +127762,7 @@
     },
     {
       "id": "hazardia-detonsa",
-      "name": "Hazardia detonsa",
+      "name": "Island bristleweed",
       "latin": "Hazardia detonsa",
       "type": "shrub",
       "bloomMonths": [
@@ -127862,7 +127862,7 @@
     },
     {
       "id": "hazardia-squarrosa",
-      "name": "Hazardia squarrosa",
+      "name": "Saw-tooth goldenbush",
       "latin": "Hazardia squarrosa",
       "type": "shrub",
       "bloomMonths": [
@@ -128118,7 +128118,7 @@
     },
     {
       "id": "heliomeris-multiflora",
-      "name": "Heliomeris multiflora",
+      "name": "Showy goldeneye",
       "latin": "Heliomeris multiflora",
       "type": "annual",
       "bloomMonths": [
@@ -128307,7 +128307,7 @@
     },
     {
       "id": "heliotropium-amplexicaule",
-      "name": "Heliotropium amplexicaule",
+      "name": "Blue heliotrope",
       "latin": "Heliotropium amplexicaule",
       "type": "perennial",
       "bloomMonths": [
@@ -128353,7 +128353,7 @@
     },
     {
       "id": "heliotropium-angiospermum",
-      "name": "Heliotropium angiospermum",
+      "name": "Scorpion's-tail",
       "latin": "Heliotropium angiospermum",
       "type": "perennial",
       "bloomMonths": [
@@ -128398,7 +128398,7 @@
     },
     {
       "id": "heliotropium-anomalum",
-      "name": "Heliotropium anomalum",
+      "name": "Polynesian heliotrope",
       "latin": "Heliotropium anomalum",
       "type": "shrub",
       "bloomMonths": [
@@ -128444,7 +128444,7 @@
     },
     {
       "id": "heliotropium-arborescens",
-      "name": "Heliotropium arborescens",
+      "name": "Cherry-pie",
       "latin": "Heliotropium arborescens",
       "type": "perennial",
       "bloomMonths": [
@@ -128582,7 +128582,7 @@
     },
     {
       "id": "heliotropium-curassavicum",
-      "name": "Heliotropium curassavicum",
+      "name": "Smooth heliotrope",
       "latin": "Heliotropium curassavicum",
       "type": "perennial",
       "bloomMonths": [
@@ -128673,7 +128673,7 @@
     },
     {
       "id": "heliotropium-europaeum",
-      "name": "Heliotropium europaeum",
+      "name": "European heliotrope",
       "latin": "Heliotropium europaeum",
       "type": "perennial",
       "bloomMonths": [
@@ -128719,7 +128719,7 @@
     },
     {
       "id": "heliotropium-hirsutissimum",
-      "name": "Heliotropium hirsutissimum",
+      "name": "Hairy heliotrope",
       "latin": "Heliotropium hirsutissimum",
       "type": "perennial",
       "bloomMonths": [
@@ -128765,7 +128765,7 @@
     },
     {
       "id": "heliotropium-indicum",
-      "name": "Heliotropium indicum",
+      "name": "Turnsole",
       "latin": "Heliotropium indicum",
       "type": "annual",
       "bloomMonths": [
@@ -128856,7 +128856,7 @@
     },
     {
       "id": "helminthotheca-echioides",
-      "name": "Helminthotheca echioides",
+      "name": "Oxtongue",
       "latin": "Helminthotheca echioides",
       "type": "biennial",
       "bloomMonths": [
@@ -129097,7 +129097,7 @@
     },
     {
       "id": "hemitomes-congestum",
-      "name": "Hemitomes congestum",
+      "name": "Coneplant",
       "latin": "Hemitomes congestum",
       "type": "perennial",
       "bloomMonths": [
@@ -129198,7 +129198,7 @@
     },
     {
       "id": "hemizonia-congesta",
-      "name": "Hemizonia congesta",
+      "name": "Hayfield tarweed",
       "latin": "Hemizonia congesta",
       "type": "annual",
       "bloomMonths": [
@@ -129435,7 +129435,7 @@
     },
     {
       "id": "herniaria-glabra",
-      "name": "Herniaria glabra",
+      "name": "Herniary breastwort",
       "latin": "Herniaria glabra",
       "type": "annual",
       "bloomMonths": [
@@ -129481,7 +129481,7 @@
     },
     {
       "id": "herniaria-hirsuta",
-      "name": "Herniaria hirsuta",
+      "name": "Hairy rupturewort",
       "latin": "Herniaria hirsuta",
       "type": "annual",
       "bloomMonths": [
@@ -129634,7 +129634,7 @@
     },
     {
       "id": "hesperaloe-funifera",
-      "name": "Hesperaloe funifera",
+      "name": "New mexico false yucca",
       "latin": "Hesperaloe funifera",
       "type": "perennial",
       "bloomMonths": [
@@ -129679,7 +129679,7 @@
     },
     {
       "id": "hesperaloe-parviflora",
-      "name": "Hesperaloe parviflora",
+      "name": "Red hesperaloe",
       "latin": "Hesperaloe parviflora",
       "type": "perennial",
       "bloomMonths": [
@@ -129724,7 +129724,7 @@
     },
     {
       "id": "hesperantha-coccinea",
-      "name": "Hesperantha coccinea",
+      "name": "River-lily",
       "latin": "Hesperantha coccinea",
       "type": "perennial",
       "bloomMonths": [
@@ -129771,7 +129771,7 @@
     },
     {
       "id": "hesperevax-acaulis",
-      "name": "Hesperevax acaulis",
+      "name": "Stemless dwarf-cudweed",
       "latin": "Hesperevax acaulis",
       "type": "annual",
       "bloomMonths": [
@@ -130019,7 +130019,7 @@
     },
     {
       "id": "hesperoyucca-newberryi",
-      "name": "Hesperoyucca newberryi",
+      "name": "Newberry's yucca",
       "latin": "Hesperoyucca newberryi",
       "type": "perennial",
       "bloomMonths": [
@@ -130067,7 +130067,7 @@
     },
     {
       "id": "hesperoyucca-whipplei",
-      "name": "Hesperoyucca whipplei",
+      "name": "Our lord's-candle",
       "latin": "Hesperoyucca whipplei",
       "type": "perennial",
       "bloomMonths": [
@@ -130248,7 +130248,7 @@
     },
     {
       "id": "heuchera-americana",
-      "name": "Heuchera americana",
+      "name": "Alumroot",
       "latin": "Heuchera americana",
       "type": "perennial",
       "bloomMonths": [
@@ -130337,7 +130337,7 @@
     },
     {
       "id": "heuchera-cylindrica",
-      "name": "Heuchera cylindrica",
+      "name": "Mat alumroot",
       "latin": "Heuchera cylindrica",
       "type": "perennial",
       "bloomMonths": [
@@ -130381,7 +130381,7 @@
     },
     {
       "id": "heuchera-elegans",
-      "name": "Heuchera elegans",
+      "name": "Urnflower alumroot",
       "latin": "Heuchera elegans",
       "type": "perennial",
       "bloomMonths": [
@@ -130425,7 +130425,7 @@
     },
     {
       "id": "heuchera-maxima",
-      "name": "Heuchera maxima",
+      "name": "Island alumroot",
       "latin": "Heuchera maxima",
       "type": "perennial",
       "bloomMonths": [
@@ -130469,7 +130469,7 @@
     },
     {
       "id": "heuchera-merriamii",
-      "name": "Heuchera merriamii",
+      "name": "Merriam's alumroot",
       "latin": "Heuchera merriamii",
       "type": "perennial",
       "bloomMonths": [
@@ -130514,7 +130514,7 @@
     },
     {
       "id": "heuchera-micrantha",
-      "name": "Heuchera micrantha",
+      "name": "Alumroot",
       "latin": "Heuchera micrantha",
       "type": "perennial",
       "bloomMonths": [
@@ -130690,7 +130690,7 @@
     },
     {
       "id": "heuchera-rubescens",
-      "name": "Heuchera rubescens",
+      "name": "Jack-o'the-rocks",
       "latin": "Heuchera rubescens",
       "type": "perennial",
       "bloomMonths": [
@@ -130734,7 +130734,7 @@
     },
     {
       "id": "heuchera-sanguinea",
-      "name": "Heuchera sanguinea",
+      "name": "Coralbells",
       "latin": "Heuchera sanguinea",
       "type": "perennial",
       "bloomMonths": [
@@ -130778,7 +130778,7 @@
     },
     {
       "id": "heuchera-villosa",
-      "name": "Heuchera villosa",
+      "name": "Hairy alumroot",
       "latin": "Heuchera villosa",
       "type": "perennial",
       "bloomMonths": [
@@ -130875,7 +130875,7 @@
     },
     {
       "id": "hippuris-vulgaris",
-      "name": "Hippuris vulgaris",
+      "name": "Mare's-tail",
       "latin": "Hippuris vulgaris",
       "type": "perennial",
       "bloomMonths": [
@@ -130963,7 +130963,7 @@
     },
     {
       "id": "hoffmannseggia-glauca",
-      "name": "Hoffmannseggia glauca",
+      "name": "Pignut",
       "latin": "Hoffmannseggia glauca",
       "type": "annual",
       "bloomMonths": [
@@ -131007,7 +131007,7 @@
     },
     {
       "id": "hoffmannseggia-microphylla",
-      "name": "Hoffmannseggia microphylla",
+      "name": "Wand holdback",
       "latin": "Hoffmannseggia microphylla",
       "type": "annual",
       "bloomMonths": [
@@ -131274,7 +131274,7 @@
     },
     {
       "id": "honckenya-peploides",
-      "name": "Honckenya peploides",
+      "name": "Sea-sandwort",
       "latin": "Honckenya peploides",
       "type": "annual",
       "bloomMonths": [
@@ -131851,7 +131851,7 @@
     },
     {
       "id": "hosta-plantaginea",
-      "name": "Hosta plantaginea",
+      "name": "August-lily",
       "latin": "Hosta plantaginea",
       "type": "herb",
       "bloomMonths": [
@@ -132648,7 +132648,7 @@
     },
     {
       "id": "hydrangea-arborescens",
-      "name": "Hydrangea arborescens",
+      "name": "Sevenbark",
       "latin": "Hydrangea arborescens",
       "type": "shrub",
       "bloomMonths": [
@@ -132697,7 +132697,7 @@
     },
     {
       "id": "hydrangea-aspera",
-      "name": "Hydrangea aspera",
+      "name": "Rough-leaf hydrangea",
       "latin": "Hydrangea aspera",
       "type": "shrub",
       "bloomMonths": [
@@ -132841,7 +132841,7 @@
     },
     {
       "id": "hydrangea-cinerea",
-      "name": "Hydrangea cinerea",
+      "name": "Ashy hydrangea",
       "latin": "Hydrangea cinerea",
       "type": "shrub",
       "bloomMonths": [
@@ -133178,7 +133178,7 @@
     },
     {
       "id": "hydrangea-paniculata",
-      "name": "Hydrangea paniculata",
+      "name": "Peegee hydrangea",
       "latin": "Hydrangea paniculata",
       "type": "shrub",
       "bloomMonths": [
@@ -133848,7 +133848,7 @@
     },
     {
       "id": "hylomecon-japonica",
-      "name": "Hylomecon japonica",
+      "name": "Forest-poppy",
       "latin": "Hylomecon japonica",
       "type": "perennial",
       "bloomMonths": [
@@ -133983,7 +133983,7 @@
     },
     {
       "id": "hymenaea-courbaril",
-      "name": "Hymenaea courbaril",
+      "name": "Brazilian copal",
       "latin": "Hymenaea courbaril",
       "type": "annual",
       "bloomMonths": [
@@ -134112,7 +134112,7 @@
     },
     {
       "id": "hymenaea-verrucosa",
-      "name": "Hymenaea verrucosa",
+      "name": "East african copal",
       "latin": "Hymenaea verrucosa",
       "type": "annual",
       "bloomMonths": [
@@ -134290,7 +134290,7 @@
     },
     {
       "id": "hypecoum-imberbe",
-      "name": "Hypecoum imberbe",
+      "name": "Sicklefruit hypecoum",
       "latin": "Hypecoum imberbe",
       "type": "perennial",
       "bloomMonths": [
@@ -134336,7 +134336,7 @@
     },
     {
       "id": "hypecoum-pendulum",
-      "name": "Hypecoum pendulum",
+      "name": "Pendent hypecoum",
       "latin": "Hypecoum pendulum",
       "type": "perennial",
       "bloomMonths": [
@@ -134382,7 +134382,7 @@
     },
     {
       "id": "hypecoum-procumbens",
-      "name": "Hypecoum procumbens",
+      "name": "Procumbent hypecoum",
       "latin": "Hypecoum procumbens",
       "type": "perennial",
       "bloomMonths": [
@@ -134693,7 +134693,7 @@
     },
     {
       "id": "intsia-palembanica",
-      "name": "Intsia palembanica",
+      "name": "Merbau",
       "latin": "Intsia palembanica",
       "type": "annual",
       "bloomMonths": [
@@ -134833,7 +134833,7 @@
     },
     {
       "id": "iris-laevigata",
-      "name": "Iris laevigata",
+      "name": "Japanese iris",
       "latin": "Iris laevigata",
       "type": "bulb",
       "bloomMonths": [
@@ -135193,7 +135193,7 @@
     },
     {
       "id": "ixia-maculata",
-      "name": "Ixia maculata",
+      "name": "Yellow ixia",
       "latin": "Ixia maculata",
       "type": "bulb",
       "bloomMonths": [
@@ -135373,7 +135373,7 @@
     },
     {
       "id": "ixia-paniculata",
-      "name": "Ixia paniculata",
+      "name": "Tubular corn-lily",
       "latin": "Ixia paniculata",
       "type": "bulb",
       "bloomMonths": [
@@ -135418,7 +135418,7 @@
     },
     {
       "id": "ixia-polystachya",
-      "name": "Ixia polystachya",
+      "name": "White-and-yellow-flower cornlily",
       "latin": "Ixia polystachya",
       "type": "bulb",
       "bloomMonths": [
@@ -135508,7 +135508,7 @@
     },
     {
       "id": "ixia-viridiflora",
-      "name": "Ixia viridiflora",
+      "name": "Turquoise ixia",
       "latin": "Ixia viridiflora",
       "type": "bulb",
       "bloomMonths": [
@@ -135600,7 +135600,7 @@
     },
     {
       "id": "jamesia-americana",
-      "name": "Jamesia americana",
+      "name": "Cliff jamesia",
       "latin": "Jamesia americana",
       "type": "shrub",
       "bloomMonths": [
@@ -135789,7 +135789,7 @@
     },
     {
       "id": "jepsonia-parryi",
-      "name": "Jepsonia parryi",
+      "name": "Parry's jepsonia",
       "latin": "Jepsonia parryi",
       "type": "perennial",
       "bloomMonths": [
@@ -135832,7 +135832,7 @@
     },
     {
       "id": "kalaharia-uncinata",
-      "name": "Kalaharia uncinata",
+      "name": "Cat's claw clerodendrum",
       "latin": "Kalaharia uncinata",
       "type": "perennial",
       "bloomMonths": [
@@ -135923,7 +135923,7 @@
     },
     {
       "id": "kalanchoe-beauverdii",
-      "name": "Kalanchoe beauverdii",
+      "name": "Beauverd's widow's-thrill",
       "latin": "Kalanchoe beauverdii",
       "type": "annual",
       "bloomMonths": [
@@ -135968,7 +135968,7 @@
     },
     {
       "id": "kalanchoe-beharensis",
-      "name": "Kalanchoe beharensis",
+      "name": "Donkey's ear",
       "latin": "Kalanchoe beharensis",
       "type": "annual",
       "bloomMonths": [
@@ -136058,7 +136058,7 @@
     },
     {
       "id": "kalanchoe-blossfeldiana",
-      "name": "Kalanchoe blossfeldiana",
+      "name": "Flaming katy",
       "latin": "Kalanchoe blossfeldiana",
       "type": "annual",
       "bloomMonths": [
@@ -136148,7 +136148,7 @@
     },
     {
       "id": "kalanchoe-daigremontiana",
-      "name": "Kalanchoe daigremontiana",
+      "name": "Mother-of-millions",
       "latin": "Kalanchoe daigremontiana",
       "type": "annual",
       "bloomMonths": [
@@ -136373,7 +136373,7 @@
     },
     {
       "id": "kalanchoe-gastonis-bonnieri",
-      "name": "Kalanchoe gastonis-bonnieri",
+      "name": "Palm beachbells",
       "latin": "Kalanchoe gastonis-bonnieri",
       "type": "annual",
       "bloomMonths": [
@@ -137841,7 +137841,7 @@
     },
     {
       "id": "krigia-montana",
-      "name": "Krigia montana",
+      "name": "Mountain dwarfdandelion",
       "latin": "Krigia montana",
       "type": "annual",
       "bloomMonths": [
@@ -137893,7 +137893,7 @@
     },
     {
       "id": "krigia-occidentalis",
-      "name": "Krigia occidentalis",
+      "name": "Western dwarfdandelion",
       "latin": "Krigia occidentalis",
       "type": "annual",
       "bloomMonths": [
@@ -138737,7 +138737,7 @@
     },
     {
       "id": "lappula-occidentalis",
-      "name": "Lappula occidentalis",
+      "name": "Spiny sheepbur",
       "latin": "Lappula occidentalis",
       "type": "biennial",
       "bloomMonths": [
@@ -138931,7 +138931,7 @@
     },
     {
       "id": "layia-chrysanthemoides",
-      "name": "Layia chrysanthemoides",
+      "name": "Smooth tidytips",
       "latin": "Layia chrysanthemoides",
       "type": "annual",
       "bloomMonths": [
@@ -139143,7 +139143,7 @@
     },
     {
       "id": "layia-glandulosa",
-      "name": "Layia glandulosa",
+      "name": "White layia",
       "latin": "Layia glandulosa",
       "type": "annual",
       "bloomMonths": [
@@ -139196,7 +139196,7 @@
     },
     {
       "id": "layia-heterotricha",
-      "name": "Layia heterotricha",
+      "name": "Paleyellow tidytips",
       "latin": "Layia heterotricha",
       "type": "annual",
       "bloomMonths": [
@@ -139249,7 +139249,7 @@
     },
     {
       "id": "layia-hieracioides",
-      "name": "Layia hieracioides",
+      "name": "Tall tidytips",
       "latin": "Layia hieracioides",
       "type": "annual",
       "bloomMonths": [
@@ -139514,7 +139514,7 @@
     },
     {
       "id": "layia-platyglossa",
-      "name": "Layia platyglossa",
+      "name": "Coastal tidytips",
       "latin": "Layia platyglossa",
       "type": "annual",
       "bloomMonths": [
@@ -139770,7 +139770,7 @@
     },
     {
       "id": "leptarrhena-pyrolifolia",
-      "name": "Leptarrhena pyrolifolia",
+      "name": "Leatherleaf-saxifrage",
       "latin": "Leptarrhena pyrolifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -140447,7 +140447,7 @@
     },
     {
       "id": "lilium-catesbaei",
-      "name": "Lilium catesbaei",
+      "name": "Catesby's lily",
       "latin": "Lilium catesbaei",
       "type": "bulb",
       "bloomMonths": [
@@ -140547,7 +140547,7 @@
     },
     {
       "id": "lilium-columbianum",
-      "name": "Lilium columbianum",
+      "name": "Spotted lily",
       "latin": "Lilium columbianum",
       "type": "bulb",
       "bloomMonths": [
@@ -140647,7 +140647,7 @@
     },
     {
       "id": "lilium-formosanum",
-      "name": "Lilium formosanum",
+      "name": "Formosan lily",
       "latin": "Lilium formosanum",
       "type": "bulb",
       "bloomMonths": [
@@ -140745,7 +140745,7 @@
     },
     {
       "id": "lilium-humboldtii",
-      "name": "Lilium humboldtii",
+      "name": "Humboldt lily",
       "latin": "Lilium humboldtii",
       "type": "bulb",
       "bloomMonths": [
@@ -140895,7 +140895,7 @@
     },
     {
       "id": "lilium-kesselringianum",
-      "name": "Lilium kesselringianum",
+      "name": "Kesselring lily",
       "latin": "Lilium kesselringianum",
       "type": "bulb",
       "bloomMonths": [
@@ -140995,7 +140995,7 @@
     },
     {
       "id": "lilium-maritimum",
-      "name": "Lilium maritimum",
+      "name": "Coastal lily",
       "latin": "Lilium maritimum",
       "type": "bulb",
       "bloomMonths": [
@@ -141145,7 +141145,7 @@
     },
     {
       "id": "lilium-michauxii",
-      "name": "Lilium michauxii",
+      "name": "Carolina lily",
       "latin": "Lilium michauxii",
       "type": "bulb",
       "bloomMonths": [
@@ -141193,7 +141193,7 @@
     },
     {
       "id": "lilium-michiganense",
-      "name": "Lilium michiganense",
+      "name": "Michigan lily",
       "latin": "Lilium michiganense",
       "type": "bulb",
       "bloomMonths": [
@@ -141293,7 +141293,7 @@
     },
     {
       "id": "lilium-nepalense",
-      "name": "Lilium nepalense",
+      "name": "Nepal lily",
       "latin": "Lilium nepalense",
       "type": "bulb",
       "bloomMonths": [
@@ -141393,7 +141393,7 @@
     },
     {
       "id": "lilium-occidentale",
-      "name": "Lilium occidentale",
+      "name": "Eureka lily",
       "latin": "Lilium occidentale",
       "type": "bulb",
       "bloomMonths": [
@@ -141590,7 +141590,7 @@
     },
     {
       "id": "lilium-pensylvanicum",
-      "name": "Lilium pensylvanicum",
+      "name": "Candlestick lily",
       "latin": "Lilium pensylvanicum",
       "type": "bulb",
       "bloomMonths": [
@@ -141640,7 +141640,7 @@
     },
     {
       "id": "lilium-philadelphicum",
-      "name": "Lilium philadelphicum",
+      "name": "Flame lily",
       "latin": "Lilium philadelphicum",
       "type": "perennial",
       "bloomMonths": [
@@ -141790,7 +141790,7 @@
     },
     {
       "id": "lilium-pyrenaicum",
-      "name": "Lilium pyrenaicum",
+      "name": "Pyrenean lily",
       "latin": "Lilium pyrenaicum",
       "type": "bulb",
       "bloomMonths": [
@@ -141990,7 +141990,7 @@
     },
     {
       "id": "lilium-speciosum",
-      "name": "Lilium speciosum",
+      "name": "Japanese lily",
       "latin": "Lilium speciosum",
       "type": "bulb",
       "bloomMonths": [
@@ -142040,7 +142040,7 @@
     },
     {
       "id": "lilium-superbum",
-      "name": "Lilium superbum",
+      "name": "American turk's-cap lily",
       "latin": "Lilium superbum",
       "type": "bulb",
       "bloomMonths": [
@@ -142140,7 +142140,7 @@
     },
     {
       "id": "lilium-washingtonianum",
-      "name": "Lilium washingtonianum",
+      "name": "Washington lily",
       "latin": "Lilium washingtonianum",
       "type": "bulb",
       "bloomMonths": [
@@ -142374,7 +142374,7 @@
     },
     {
       "id": "limnophila-sessiliflora",
-      "name": "Limnophila sessiliflora",
+      "name": "Asian marshweed",
       "latin": "Limnophila sessiliflora",
       "type": "herb",
       "bloomMonths": [
@@ -142464,7 +142464,7 @@
     },
     {
       "id": "linaria-alpina",
-      "name": "Linaria alpina",
+      "name": "Alpine toadflax",
       "latin": "Linaria alpina",
       "type": "annual",
       "bloomMonths": [
@@ -142554,7 +142554,7 @@
     },
     {
       "id": "linaria-arenaria",
-      "name": "Linaria arenaria",
+      "name": "Sand toadflax",
       "latin": "Linaria arenaria",
       "type": "annual",
       "bloomMonths": [
@@ -142645,7 +142645,7 @@
     },
     {
       "id": "linaria-dalmatica",
-      "name": "Linaria dalmatica",
+      "name": "Balkan toadflax",
       "latin": "Linaria dalmatica",
       "type": "perennial",
       "bloomMonths": [
@@ -142690,7 +142690,7 @@
     },
     {
       "id": "linaria-genistifolia",
-      "name": "Linaria genistifolia",
+      "name": "Broomleaf toadflax",
       "latin": "Linaria genistifolia",
       "type": "annual",
       "bloomMonths": [
@@ -142735,7 +142735,7 @@
     },
     {
       "id": "linaria-maroccana",
-      "name": "Linaria maroccana",
+      "name": "Annual toadflax",
       "latin": "Linaria maroccana",
       "type": "annual",
       "bloomMonths": [
@@ -142780,7 +142780,7 @@
     },
     {
       "id": "linaria-purpurea",
-      "name": "Linaria purpurea",
+      "name": "Purple toadflax",
       "latin": "Linaria purpurea",
       "type": "annual",
       "bloomMonths": [
@@ -142825,7 +142825,7 @@
     },
     {
       "id": "linaria-repens",
-      "name": "Linaria repens",
+      "name": "Striped toadflax",
       "latin": "Linaria repens",
       "type": "annual",
       "bloomMonths": [
@@ -142960,7 +142960,7 @@
     },
     {
       "id": "linaria-triphylla",
-      "name": "Linaria triphylla",
+      "name": "Three-leaved toadflax",
       "latin": "Linaria triphylla",
       "type": "annual",
       "bloomMonths": [
@@ -143050,7 +143050,7 @@
     },
     {
       "id": "linaria-vulgaris",
-      "name": "Linaria vulgaris",
+      "name": "Toadflax",
       "latin": "Linaria vulgaris",
       "type": "annual",
       "bloomMonths": [
@@ -143139,7 +143139,7 @@
     },
     {
       "id": "liriodendron-chinense",
-      "name": "Liriodendron chinense",
+      "name": "Chinese tuliptree",
       "latin": "Liriodendron chinense",
       "type": "shrub",
       "bloomMonths": [
@@ -143183,7 +143183,7 @@
     },
     {
       "id": "liriodendron-tulipifera",
-      "name": "Liriodendron tulipifera",
+      "name": "Tulip-poplar",
       "latin": "Liriodendron tulipifera",
       "type": "shrub",
       "bloomMonths": [
@@ -143274,7 +143274,7 @@
     },
     {
       "id": "lithodora-fruticosa",
-      "name": "Lithodora fruticosa",
+      "name": "Shrubby gromwell",
       "latin": "Lithodora fruticosa",
       "type": "perennial",
       "bloomMonths": [
@@ -143366,7 +143366,7 @@
     },
     {
       "id": "lithophragma-affine",
-      "name": "Lithophragma affine",
+      "name": "San francisco woodland-star",
       "latin": "Lithophragma affine",
       "type": "perennial",
       "bloomMonths": [
@@ -143456,7 +143456,7 @@
     },
     {
       "id": "lithophragma-glabrum",
-      "name": "Lithophragma glabrum",
+      "name": "Fringecup",
       "latin": "Lithophragma glabrum",
       "type": "perennial",
       "bloomMonths": [
@@ -143636,7 +143636,7 @@
     },
     {
       "id": "lithophragma-tenellum",
-      "name": "Lithophragma tenellum",
+      "name": "Slender woodlandstar",
       "latin": "Lithophragma tenellum",
       "type": "perennial",
       "bloomMonths": [
@@ -143773,7 +143773,7 @@
     },
     {
       "id": "littorella-uniflora",
-      "name": "Littorella uniflora",
+      "name": "American shoreweed",
       "latin": "Littorella uniflora",
       "type": "perennial",
       "bloomMonths": [
@@ -144240,7 +144240,7 @@
     },
     {
       "id": "lomandra-hystrix",
-      "name": "Lomandra hystrix",
+      "name": "Creek mat-rush",
       "latin": "Lomandra hystrix",
       "type": "perennial",
       "bloomMonths": [
@@ -144381,7 +144381,7 @@
     },
     {
       "id": "lomandra-longifolia",
-      "name": "Lomandra longifolia",
+      "name": "Longleaf mat-rush",
       "latin": "Lomandra longifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -144899,7 +144899,7 @@
     },
     {
       "id": "lophospermum-erubescens",
-      "name": "Lophospermum erubescens",
+      "name": "Mexican twist",
       "latin": "Lophospermum erubescens",
       "type": "perennial",
       "bloomMonths": [
@@ -145178,7 +145178,7 @@
     },
     {
       "id": "ludwigia-glandulosa",
-      "name": "Ludwigia glandulosa",
+      "name": "Cylindricfruit primrose-willow",
       "latin": "Ludwigia glandulosa",
       "type": "perennial",
       "bloomMonths": [
@@ -145408,7 +145408,7 @@
     },
     {
       "id": "ludwigia-palustris",
-      "name": "Ludwigia palustris",
+      "name": "Hampshire-purslane",
       "latin": "Ludwigia palustris",
       "type": "perennial",
       "bloomMonths": [
@@ -145499,7 +145499,7 @@
     },
     {
       "id": "ludwigia-peruviana",
-      "name": "Ludwigia peruviana",
+      "name": "Peruvian primrose-willow",
       "latin": "Ludwigia peruviana",
       "type": "perennial",
       "bloomMonths": [
@@ -145684,7 +145684,7 @@
     },
     {
       "id": "ludwigia-sphaerocarpa",
-      "name": "Ludwigia sphaerocarpa",
+      "name": "Globefruit primrose-willow",
       "latin": "Ludwigia sphaerocarpa",
       "type": "perennial",
       "bloomMonths": [
@@ -145823,7 +145823,7 @@
     },
     {
       "id": "lyonia-ligustrina",
-      "name": "Lyonia ligustrina",
+      "name": "He-huckleberry",
       "latin": "Lyonia ligustrina",
       "type": "shrub",
       "bloomMonths": [
@@ -145871,7 +145871,7 @@
     },
     {
       "id": "lyonia-lucida",
-      "name": "Lyonia lucida",
+      "name": "Fetterbush",
       "latin": "Lyonia lucida",
       "type": "shrub",
       "bloomMonths": [
@@ -145919,7 +145919,7 @@
     },
     {
       "id": "lyonia-mariana",
-      "name": "Lyonia mariana",
+      "name": "Staggerbush",
       "latin": "Lyonia mariana",
       "type": "perennial",
       "bloomMonths": [
@@ -146204,7 +146204,7 @@
     },
     {
       "id": "macleaya-cordata",
-      "name": "Macleaya cordata",
+      "name": "Plume poppy",
       "latin": "Macleaya cordata",
       "type": "perennial",
       "bloomMonths": [
@@ -146252,7 +146252,7 @@
     },
     {
       "id": "macleaya-microcarpa",
-      "name": "Macleaya microcarpa",
+      "name": "Plume-poppy",
       "latin": "Macleaya microcarpa",
       "type": "perennial",
       "bloomMonths": [
@@ -147702,7 +147702,7 @@
     },
     {
       "id": "magnolia-figo",
-      "name": "Magnolia figo",
+      "name": "Chenille copperleaf",
       "latin": "Magnolia figo",
       "type": "shrub",
       "bloomMonths": [
@@ -147790,7 +147790,7 @@
     },
     {
       "id": "magnolia-fraseri",
-      "name": "Magnolia fraseri",
+      "name": "Fraser's magnolia",
       "latin": "Magnolia fraseri",
       "type": "shrub",
       "bloomMonths": [
@@ -148144,7 +148144,7 @@
     },
     {
       "id": "magnolia-kobus",
-      "name": "Magnolia kobus",
+      "name": "Kobus magnolia",
       "latin": "Magnolia kobus",
       "type": "shrub",
       "bloomMonths": [
@@ -148320,7 +148320,7 @@
     },
     {
       "id": "magnolia-liliiflora",
-      "name": "Magnolia liliiflora",
+      "name": "Purple magnolia",
       "latin": "Magnolia liliiflora",
       "type": "shrub",
       "bloomMonths": [
@@ -148364,7 +148364,7 @@
     },
     {
       "id": "magnolia-macrophylla",
-      "name": "Magnolia macrophylla",
+      "name": "Big-leaf magnolia",
       "latin": "Magnolia macrophylla",
       "type": "shrub",
       "bloomMonths": [
@@ -148540,7 +148540,7 @@
     },
     {
       "id": "magnolia-obovata",
-      "name": "Magnolia obovata",
+      "name": "Japanese whitebark magnolia",
       "latin": "Magnolia obovata",
       "type": "shrub",
       "bloomMonths": [
@@ -148584,7 +148584,7 @@
     },
     {
       "id": "magnolia-officinalis",
-      "name": "Magnolia officinalis",
+      "name": "Magnolia-bark",
       "latin": "Magnolia officinalis",
       "type": "shrub",
       "bloomMonths": [
@@ -148936,7 +148936,7 @@
     },
     {
       "id": "magnolia-salicifolia",
-      "name": "Magnolia salicifolia",
+      "name": "Anise magnolia",
       "latin": "Magnolia salicifolia",
       "type": "shrub",
       "bloomMonths": [
@@ -149112,7 +149112,7 @@
     },
     {
       "id": "magnolia-sieboldii",
-      "name": "Magnolia sieboldii",
+      "name": "Oyama magnolia",
       "latin": "Magnolia sieboldii",
       "type": "shrub",
       "bloomMonths": [
@@ -149333,7 +149333,7 @@
     },
     {
       "id": "magnolia-sprengeri",
-      "name": "Magnolia sprengeri",
+      "name": "Sprenger's magnolia",
       "latin": "Magnolia sprengeri",
       "type": "shrub",
       "bloomMonths": [
@@ -149377,7 +149377,7 @@
     },
     {
       "id": "magnolia-stellata",
-      "name": "Magnolia stellata",
+      "name": "Star magnolia",
       "latin": "Magnolia stellata",
       "type": "shrub",
       "bloomMonths": [
@@ -149422,7 +149422,7 @@
     },
     {
       "id": "magnolia-tripetala",
-      "name": "Magnolia tripetala",
+      "name": "Umbrella magnolia",
       "latin": "Magnolia tripetala",
       "type": "shrub",
       "bloomMonths": [
@@ -149466,7 +149466,7 @@
     },
     {
       "id": "magnolia-virginiana",
-      "name": "Magnolia virginiana",
+      "name": "Swamp-laurel",
       "latin": "Magnolia virginiana",
       "type": "shrub",
       "bloomMonths": [
@@ -150565,7 +150565,7 @@
     },
     {
       "id": "meconopsis-betonicifolia",
-      "name": "Meconopsis betonicifolia",
+      "name": "Bailey's blue-poppy",
       "latin": "Meconopsis betonicifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -150704,7 +150704,7 @@
     },
     {
       "id": "meconopsis-horridula",
-      "name": "Meconopsis horridula",
+      "name": "Prickly blue-poppy",
       "latin": "Meconopsis horridula",
       "type": "perennial",
       "bloomMonths": [
@@ -151939,7 +151939,7 @@
     },
     {
       "id": "micranthes-californica",
-      "name": "Micranthes californica",
+      "name": "California saxifrage",
       "latin": "Micranthes californica",
       "type": "perennial",
       "bloomMonths": [
@@ -151982,7 +151982,7 @@
     },
     {
       "id": "micranthes-ferruginea",
-      "name": "Micranthes ferruginea",
+      "name": "Russethair saxifrage",
       "latin": "Micranthes ferruginea",
       "type": "perennial",
       "bloomMonths": [
@@ -152068,7 +152068,7 @@
     },
     {
       "id": "micranthes-integrifolia",
-      "name": "Micranthes integrifolia",
+      "name": "Columbian pseudosaxifrage",
       "latin": "Micranthes integrifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -152111,7 +152111,7 @@
     },
     {
       "id": "micranthes-micranthidifolia",
-      "name": "Micranthes micranthidifolia",
+      "name": "Lettuceleaf saxifrage",
       "latin": "Micranthes micranthidifolia",
       "type": "perennial",
       "bloomMonths": [
@@ -152197,7 +152197,7 @@
     },
     {
       "id": "micranthes-nidifica",
-      "name": "Micranthes nidifica",
+      "name": "Peak pseudosaxifrage",
       "latin": "Micranthes nidifica",
       "type": "perennial",
       "bloomMonths": [
@@ -152326,7 +152326,7 @@
     },
     {
       "id": "micranthes-odontoloma",
-      "name": "Micranthes odontoloma",
+      "name": "Brook saxifrage",
       "latin": "Micranthes odontoloma",
       "type": "perennial",
       "bloomMonths": [
@@ -152455,7 +152455,7 @@
     },
     {
       "id": "micranthes-pensylvanica",
-      "name": "Micranthes pensylvanica",
+      "name": "Pennsylvania saxifrage",
       "latin": "Micranthes pensylvanica",
       "type": "perennial",
       "bloomMonths": [
@@ -152498,7 +152498,7 @@
     },
     {
       "id": "micranthes-petiolaris",
-      "name": "Micranthes petiolaris",
+      "name": "Michaux's pseudosaxifrage",
       "latin": "Micranthes petiolaris",
       "type": "perennial",
       "bloomMonths": [
@@ -152670,7 +152670,7 @@
     },
     {
       "id": "micranthes-tolmiei",
-      "name": "Micranthes tolmiei",
+      "name": "Tolmie's saxifrage",
       "latin": "Micranthes tolmiei",
       "type": "perennial",
       "bloomMonths": [
@@ -153664,7 +153664,7 @@
     },
     {
       "id": "mitella-diphylla",
-      "name": "Mitella diphylla",
+      "name": "Bishop's-cap",
       "latin": "Mitella diphylla",
       "type": "perennial",
       "bloomMonths": [
@@ -153708,7 +153708,7 @@
     },
     {
       "id": "mitella-nuda",
-      "name": "Mitella nuda",
+      "name": "Naked miterwort",
       "latin": "Mitella nuda",
       "type": "perennial",
       "bloomMonths": [
@@ -154251,7 +154251,7 @@
     },
     {
       "id": "monotropa-hypopitys",
-      "name": "Monotropa hypopitys",
+      "name": "Yellow bird's-nest",
       "latin": "Monotropa hypopitys",
       "type": "perennial",
       "bloomMonths": [
@@ -154299,7 +154299,7 @@
     },
     {
       "id": "monotropa-uniflora",
-      "name": "Monotropa uniflora",
+      "name": "Indian-pipe",
       "latin": "Monotropa uniflora",
       "type": "perennial",
       "bloomMonths": [
@@ -154634,7 +154634,7 @@
     },
     {
       "id": "moraea-aristata",
-      "name": "Moraea aristata",
+      "name": "Peacock iris",
       "latin": "Moraea aristata",
       "type": "bulb",
       "bloomMonths": [
@@ -154818,7 +154818,7 @@
     },
     {
       "id": "moraea-sisyrinchium",
-      "name": "Moraea sisyrinchium",
+      "name": "Barbary nut-iris",
       "latin": "Moraea sisyrinchium",
       "type": "bulb",
       "bloomMonths": [
@@ -155177,7 +155177,7 @@
     },
     {
       "id": "myosotis-alpestris",
-      "name": "Myosotis alpestris",
+      "name": "Alpine forget-me-not",
       "latin": "Myosotis alpestris",
       "type": "perennial",
       "bloomMonths": [
@@ -155221,7 +155221,7 @@
     },
     {
       "id": "myosotis-arvensis",
-      "name": "Myosotis arvensis",
+      "name": "Common forget-me-not",
       "latin": "Myosotis arvensis",
       "type": "perennial",
       "bloomMonths": [
@@ -155265,7 +155265,7 @@
     },
     {
       "id": "myosotis-discolor",
-      "name": "Myosotis discolor",
+      "name": "Changing forget-me-not",
       "latin": "Myosotis discolor",
       "type": "perennial",
       "bloomMonths": [
@@ -155485,7 +155485,7 @@
     },
     {
       "id": "myosotis-stricta",
-      "name": "Myosotis stricta",
+      "name": "Strict forget-me-not",
       "latin": "Myosotis stricta",
       "type": "perennial",
       "bloomMonths": [

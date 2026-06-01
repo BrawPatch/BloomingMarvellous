@@ -63,9 +63,10 @@ else
   # (canonical store is S3). Skipped silently when no local copy exists —
   # in that case the ingest will fall back to whatever's already in S3 or
   # to family-level grower's tips.
+  CONTENT_BUCKET="$( cd "$ENV_DIR" && terraform output -raw s3_bucket_name )"
+
   LOCAL_GEMINI_KEY="$BACKEND_DIR/../API_Keys/GeminiKey.txt"
   if [ -f "$LOCAL_GEMINI_KEY" ]; then
-    CONTENT_BUCKET="$( cd "$ENV_DIR" && terraform output -raw s3_bucket_name )"
     echo "→ Syncing Gemini API key to s3://$CONTENT_BUCKET/secrets/gemini.key"
     aws s3 cp "$LOCAL_GEMINI_KEY" "s3://$CONTENT_BUCKET/secrets/gemini.key" \
       --content-type "text/plain" \
@@ -73,6 +74,17 @@ else
       --no-progress
   else
     echo "→ Skipping Gemini key sync (no local API_Keys/GeminiKey.txt)"
+  fi
+
+  LOCAL_TREFLE_KEY="$BACKEND_DIR/../API_Keys/TrefleKey.txt"
+  if [ -f "$LOCAL_TREFLE_KEY" ]; then
+    echo "→ Syncing Trefle API key to s3://$CONTENT_BUCKET/secrets/trefle.key"
+    aws s3 cp "$LOCAL_TREFLE_KEY" "s3://$CONTENT_BUCKET/secrets/trefle.key" \
+      --content-type "text/plain" \
+      --metadata "purpose=trefle-ingest,managed-by=deploy.sh" \
+      --no-progress
+  else
+    echo "→ Skipping Trefle key sync (no local API_Keys/TrefleKey.txt)"
   fi
 
   echo "→ Refreshing plant library from Wikidata / Wikipedia / Commons"

@@ -38,7 +38,7 @@ import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 // ── Args ─────────────────────────────────────────────────────────────────────
 
 function parseArgs(argv) {
-  const args = { limit: null, out: null, dryRun: false, verbose: false, softFail: false, noTips: false, refreshTips: false, discover: false, rebalance: false };
+  const args = { limit: null, out: null, dryRun: false, verbose: false, softFail: false, noTips: false, refreshTips: false, discover: false, rebalance: false, enrichTrefle: false };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--limit") args.limit = parseInt(argv[++i], 10);
@@ -49,6 +49,7 @@ function parseArgs(argv) {
     else if (a === "--refresh-tips") args.refreshTips = true;
     else if (a === "--discover") args.discover = true;
     else if (a === "--rebalance") args.rebalance = true;
+    else if (a === "--enrich-trefle") args.enrichTrefle = true;
     else if (a === "--verbose" || a === "-v") args.verbose = true;
   }
   return args;
@@ -1464,6 +1465,163 @@ function toLibraryItem(r) {
 
 const COMMON_NAMES_CACHE_PATH = fileURLToPath(new URL("../data/common-names-cache.json", import.meta.url));
 
+// ── Trefle gap-fill ──────────────────────────────────────────────────────────
+//
+// Trefle (https://trefle.io) is a curated plant API with strong common-name
+// and image coverage. We use it strictly to fill blanks — if a record already
+// has a non-Latin name and an image, we don't even hit the API. Cached in
+// trefle-cache.json keyed by Latin binomial so repeat runs are free.
+
+const LOCAL_TREFLE_KEY_PATH = fileURLToPath(new URL("../../API_Keys/TrefleKey.txt", import.meta.url));
+const TREFLE_S3_KEY_OBJECT  = "secrets/trefle.key";
+const TREFLE_CACHE_PATH = fileURLToPath(new URL("../data/trefle-cache.json", import.meta.url));
+
+async function resolveTrefleKey() {
+  const fromEnv = (process.env.TREFLE_API_KEY || "").trim();
+  if (fromEnv) return { key: fromEnv, source: "env (TREFLE_API_KEY)" };
+  if (existsSync(LOCAL_TREFLE_KEY_PATH)) {
+    const text = readFileSync(LOCAL_TREFLE_KEY_PATH, "utf-8").trim();
+    if (text) return { key: text, source: `local ${path.relative(process.cwd(), LOCAL_TREFLE_KEY_PATH)}` };
+  }
+  const env = (process.env.GEMINI_KEY_S3_ENV || "development").trim();
+  const bucket = `blooming-marvellous-${env}-content`;
+  try {
+    const s3 = new S3Client({ region: process.env.AWS_REGION ?? "us-east-1" });
+    const res = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: TREFLE_S3_KEY_OBJECT }));
+    const text = (await res.Body.transformToString()).trim();
+    if (text) return { key: text, source: `s3://${bucket}/${TREFLE_S3_KEY_OBJECT}` };
+  } catch (err) {
+    if (args.verbose) console.warn(`  · Trefle S3 key fetch failed: ${err.message}`);
+  }
+  return { key: null, source: null };
+}
+
+function loadTrefleCache() {
+  if (!existsSync(TREFLE_CACHE_PATH)) return {};
+  try { return JSON.parse(readFileSync(TREFLE_CACHE_PATH, "utf-8")); }
+  catch { return {}; }
+}
+function saveTrefleCache(cache) {
+  try {
+    mkdirSync(path.dirname(TREFLE_CACHE_PATH), { recursive: true });
+    writeFileSync(TREFLE_CACHE_PATH, JSON.stringify(cache, null, 2) + "\n");
+  } catch (err) {
+    console.warn(`⚠️ Failed to save Trefle cache: ${err.message}`);
+  }
+}
+
+async function trefleSearch(latin, apiKey) {
+  // The /v1/plants endpoint supports filter[scientific_name]= for exact
+  // taxonomy lookup. The first hit is the canonical entry.
+  const url = `https://trefle.io/api/v1/plants?filter[scientific_name]=${encodeURIComponent(latin)}&token=${encodeURIComponent(apiKey)}`;
+  try {
+    const data = await getJson(url, { timeoutMs: 12000 });
+    const hit = data?.data?.[0];
+    if (!hit) return null;
+    return {
+      commonName: hit.common_name?.trim() || null,
+      imageUrl: hit.image_url?.trim() || null,
+      family: hit.family?.trim() || null,
+      genus: hit.genus?.trim() || null,
+      slug: hit.slug?.trim() || null,
+    };
+  } catch (err) {
+    if (args.verbose) console.warn(`  · Trefle ${latin}: ${err.message}`);
+    return null;
+  }
+}
+
+function needsTrefleFill(plant) {
+  // Gap-fill ONLY — never overwrite. Trigger lookup if:
+  //   - name still equals the Latin binomial (common-name pass missed it), or
+  //   - imageUrl is empty.
+  const nameStillLatin = !plant.name || plant.name === plant.latin
+    || plant.name.startsWith(plant.latin)
+    || plant.name === `× ${plant.latin}`;
+  const noImage = !plant.imageUrl;
+  return nameStillLatin || noImage;
+}
+
+async function enrichFromTrefle(items) {
+  const { key, source } = await resolveTrefleKey();
+  if (!key) {
+    console.log("ℹ︎  No Trefle key resolved — skipping --enrich-trefle.");
+    return;
+  }
+  console.log(`→ Trefle gap-fill (key source: ${source})…`);
+
+  const cache = loadTrefleCache();
+  let calls = 0;
+  let hits = 0;
+  let nameFilled = 0;
+  let imageFilled = 0;
+  let skipped = 0;
+
+  for (let i = 0; i < items.length; i++) {
+    const p = items[i];
+    if (!needsTrefleFill(p)) { skipped++; continue; }
+
+    let hit = cache[p.latin];
+    if (hit === undefined) {
+      hit = await trefleSearch(p.latin, key);
+      cache[p.latin] = hit ?? null;     // cache misses too so we don't re-try
+      calls++;
+      // Trefle free tier ~120 req/min; 350 ms keeps us safely under that.
+      await new Promise(res => setTimeout(res, 350));
+    } else {
+      hits++;
+    }
+    if (hit) {
+      // Fill name only if currently Latin AND Trefle gave a usable common name.
+      const nameWasLatin = !p.name || p.name === p.latin || p.name.startsWith(p.latin) || p.name === `× ${p.latin}`;
+      if (nameWasLatin && hit.commonName && hit.commonName.toLowerCase() !== p.latin.toLowerCase()) {
+        p.name = capitalize(hit.commonName);
+        nameFilled++;
+      }
+      // Fill imageUrl only if missing AND Trefle's image isn't an SVG.
+      if (!p.imageUrl && hit.imageUrl && !hit.imageUrl.toLowerCase().endsWith(".svg")) {
+        p.imageUrl = hit.imageUrl;
+        imageFilled++;
+      }
+    }
+    if ((i + 1) % 50 === 0) {
+      console.log(`  ${i + 1}/${items.length} (live ${calls}, cached ${hits}, skipped ${skipped}, filled ${nameFilled}n+${imageFilled}img)`);
+      saveTrefleCache(cache);
+    }
+  }
+  saveTrefleCache(cache);
+  console.log(`✓ Trefle pass — ${calls} live calls, ${hits} cached, ${skipped} had no gaps.`);
+  console.log(`  Filled: ${nameFilled} common names, ${imageFilled} images.`);
+}
+
+async function runTrefleEnrich() {
+  if (!existsSync(OUT_PATH)) {
+    console.error(`Cannot enrich — ${OUT_PATH} does not exist.`);
+    process.exit(1);
+  }
+  const payload = JSON.parse(readFileSync(OUT_PATH, "utf-8"));
+  if (!Array.isArray(payload.items)) {
+    console.error(`Cannot enrich — ${OUT_PATH} is not a v2 LIBRARY blob.`);
+    process.exit(1);
+  }
+  console.log(`Loaded ${payload.items.length} plants from ${OUT_PATH}.`);
+
+  await enrichFromTrefle(payload.items);
+
+  payload.generated = new Date().toISOString();
+  payload.source = (payload.source ?? "") + " + trefle gap-fill";
+
+  if (args.dryRun) {
+    console.log("→ Dry run — first 3 items:");
+    for (const p of payload.items.slice(0, 3)) console.log("  ", p.latin, "→", p.name, p.imageUrl ? "🖼" : "—");
+    return;
+  }
+
+  writeFileSync(OUT_PATH, JSON.stringify(payload, null, 2) + "\n");
+  console.log(`✓ Wrote ${OUT_PATH} (${payload.items.length} items).`);
+}
+
+
 function loadCommonNamesCache() {
   if (!existsSync(COMMON_NAMES_CACHE_PATH)) return {};
   try { return JSON.parse(readFileSync(COMMON_NAMES_CACHE_PATH, "utf-8")); }
@@ -1600,6 +1758,11 @@ async function main() {
 
   if (args.rebalance) {
     await runRebalance();
+    return;
+  }
+
+  if (args.enrichTrefle) {
+    await runTrefleEnrich();
     return;
   }
 
