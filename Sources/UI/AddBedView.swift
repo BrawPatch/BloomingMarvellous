@@ -11,6 +11,8 @@ public struct AddBedView: View {
 
     @EnvironmentObject private var store: GardenStore
     @SwiftUI.Environment(\.dismiss) private var dismiss
+    @AppStorage(LengthUnit.storageKey) private var lengthUnitRaw: String = LengthUnit.metres.rawValue
+    private var lengthUnit: LengthUnit { LengthUnit(rawValue: lengthUnitRaw) ?? .metres }
 
     @State private var name: String = ""
     @State private var gardenId: UUID?
@@ -95,7 +97,7 @@ public struct AddBedView: View {
 
     private var sizeFields: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SectionLabel("Size (cm)", icon: "📏")
+            SectionLabel("Size (\(lengthUnit.suffix))", icon: "📏")
             HStack(spacing: 12) {
                 stepperField("Width", value: $widthCm)
                 stepperField("Length", value: $lengthCm)
@@ -109,7 +111,7 @@ public struct AddBedView: View {
                 .font(.custom("Nunito-Bold", size: 12))
                 .foregroundStyle(Color.bmText2)
             Stepper(value: value, in: 10...1000, step: 10) {
-                Text("\(value.wrappedValue) cm")
+                Text(LengthFormat.display(cm: value.wrappedValue, unit: lengthUnit))
                     .font(.custom("Nunito-Bold", size: 14))
                     .foregroundStyle(Color.bmText1)
             }

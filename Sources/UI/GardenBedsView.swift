@@ -7,6 +7,8 @@ import BloomingMarvellous
 public struct GardenBedsView: View {
 
     @EnvironmentObject private var store: GardenStore
+    @AppStorage(LengthUnit.storageKey) private var lengthUnitRaw: String = LengthUnit.metres.rawValue
+    private var lengthUnit: LengthUnit { LengthUnit(rawValue: lengthUnitRaw) ?? .metres }
     @State private var search: String = ""
     @State private var statusFilter: BedStatus?
     @State private var sunFilter: Sunlight?
@@ -160,7 +162,7 @@ public struct GardenBedsView: View {
                 statusChip(b.status)
             }
 
-            Text(b.dimensionLabel)
+            Text(b.dimensionLabel(unit: lengthUnit))
                 .font(.custom("Nunito-SemiBold", size: 12))
                 .foregroundStyle(Color.bmText2)
 

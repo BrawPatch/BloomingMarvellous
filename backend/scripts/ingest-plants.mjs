@@ -34,6 +34,7 @@ import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { resolveSpreadCm } from "./spread-defaults.mjs";
 
 // ── Args ─────────────────────────────────────────────────────────────────────
 
@@ -1440,6 +1441,9 @@ function toLibraryItem(r) {
     buyLink: amazonSearchUrl(r.latin),
   };
   if (r.heightCm != null) item.heightCm = r.heightCm;
+  item.spreadCm = r.spreadCm != null
+    ? r.spreadCm
+    : resolveSpreadCm({ id: r.id, latin: r.latin, type: r.type });
   if (r.colorHex)         item.colorHex = r.colorHex;
   if (r.imageUrl)         item.imageUrl = r.imageUrl;
   if (Array.isArray(r.preferredAcidity) && r.preferredAcidity.length) {

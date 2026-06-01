@@ -36,6 +36,11 @@ public struct Plant: Identifiable, Codable, Equatable {
     public var latin: String
     public var type: PlantType
     public var heightCm: Int?
+    /// Mature spread (canopy diameter) in cm. Drives the Bed Planting Map
+    /// capacity calculation: `bedArea / (π × (spreadCm/2)²) = max plants`.
+    /// Optional so old payloads still decode; nil = picker won't enforce
+    /// a per-bed cap for this species.
+    public var spreadCm: Int?
     public var colorHex: String?
 
     // Bloom + lifecycle windows (1-indexed months)
@@ -89,6 +94,7 @@ public struct Plant: Identifiable, Codable, Equatable {
                 latin: String,
                 type: PlantType,
                 heightCm: Int? = nil,
+                spreadCm: Int? = nil,
                 colorHex: String? = nil,
                 bloomMonths: [Int] = [],
                 sowIndoorMonths: [Int] = [],
@@ -115,6 +121,7 @@ public struct Plant: Identifiable, Codable, Equatable {
         self.latin = latin
         self.type = type
         self.heightCm = heightCm
+        self.spreadCm = spreadCm
         self.colorHex = colorHex
         self.bloomMonths = bloomMonths
         self.sowIndoorMonths = sowIndoorMonths

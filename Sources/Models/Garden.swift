@@ -195,6 +195,15 @@ public struct Bed: Identifiable, Codable, Equatable {
     public var sunlightOverride: Sunlight?
     public var acidityOverride: SoilAcidity?
 
+    /// Physical layout: how many of each plant (by id) are placed in this
+    /// bed. Drives the Bed Planting Map's capacity model and grid render.
+    /// Empty by default; pre-existing beds decode this as an empty dict.
+    public var plantCounts: [String: Int]
+    /// Plant ids that should be treated as perennials and carried over to
+    /// the next planting season. Stored as `[String]` (not `Set`) so the
+    /// JSON encoder produces a stable ordered array on disk.
+    public var perennials: [String]
+
     public init(id: UUID = UUID(),
                 gardenId: UUID,
                 name: String,
@@ -205,7 +214,9 @@ public struct Bed: Identifiable, Codable, Equatable {
                 wetnessOverride: Wetness? = nil,
                 exposureOverride: WeatherExposure? = nil,
                 sunlightOverride: Sunlight? = nil,
-                acidityOverride: SoilAcidity? = nil) {
+                acidityOverride: SoilAcidity? = nil,
+                plantCounts: [String: Int] = [:],
+                perennials: [String] = []) {
         self.id = id
         self.gardenId = gardenId
         self.name = name
@@ -217,6 +228,35 @@ public struct Bed: Identifiable, Codable, Equatable {
         self.exposureOverride = exposureOverride
         self.sunlightOverride = sunlightOverride
         self.acidityOverride = acidityOverride
+        self.plantCounts = plantCounts
+        self.perennials = perennials
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, gardenId, name, widthCm, lengthCm, status
+        case soilTypeOverride, wetnessOverride, exposureOverride, sunlightOverride, acidityOverride
+        case plantCounts, perennials
+    }
+
+    /// Custom decode so existing persisted beds (which predate the
+    /// `plantCounts` / `perennials` fields) keep loading cleanly. The
+    /// synthesised init(from:) treats missing required fields as fatal —
+    /// not what we want for an additive schema bump.
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id               = try c.decode(UUID.self, forKey: .id)
+        gardenId         = try c.decode(UUID.self, forKey: .gardenId)
+        name             = try c.decode(String.self, forKey: .name)
+        widthCm          = try c.decode(Int.self, forKey: .widthCm)
+        lengthCm         = try c.decode(Int.self, forKey: .lengthCm)
+        status           = try c.decode(BedStatus.self, forKey: .status)
+        soilTypeOverride = try c.decodeIfPresent(SoilType.self, forKey: .soilTypeOverride)
+        wetnessOverride  = try c.decodeIfPresent(Wetness.self, forKey: .wetnessOverride)
+        exposureOverride = try c.decodeIfPresent(WeatherExposure.self, forKey: .exposureOverride)
+        sunlightOverride = try c.decodeIfPresent(Sunlight.self, forKey: .sunlightOverride)
+        acidityOverride  = try c.decodeIfPresent(SoilAcidity.self, forKey: .acidityOverride)
+        plantCounts      = try c.decodeIfPresent([String: Int].self, forKey: .plantCounts) ?? [:]
+        perennials       = try c.decodeIfPresent([String].self, forKey: .perennials) ?? []
     }
 
     public var overridesGarden: Bool {
@@ -234,4 +274,11 @@ public struct Bed: Identifiable, Codable, Equatable {
     public func effectiveAcidity(garden: Garden)  -> SoilAcidity?     { acidityOverride   ?? garden.acidity }
 
     public var dimensionLabel: String { "\(widthCm) × \(lengthCm) cm" }
+
+    /// Unit-aware label used by Bed list rows / detail header. Falls back
+    /// to `dimensionLabel` (cm) for callers that haven't been threaded
+    /// through the user's preference yet.
+    public func dimensionLabel(unit: LengthUnit) -> String {
+        LengthFormat.dimensions(widthCm: widthCm, lengthCm: lengthCm, unit: unit)
+    }
 }

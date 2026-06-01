@@ -8,6 +8,8 @@ public struct BedDetailView: View {
 
     @EnvironmentObject private var store: GardenStore
     @EnvironmentObject private var library: LibraryStore
+    @AppStorage(LengthUnit.storageKey) private var lengthUnitRaw: String = LengthUnit.metres.rawValue
+    private var lengthUnit: LengthUnit { LengthUnit(rawValue: lengthUnitRaw) ?? .metres }
     @State private var showingSoilOverride = false
     @State private var showingEdit = false
     @State private var showingDeleteConfirm = false
@@ -88,7 +90,7 @@ public struct BedDetailView: View {
                     .background(bed.status == .active ? Color.bmGreen : Color.bmAmber)
                     .clipShape(Capsule())
             }
-            Text("\(bed.dimensionLabel) · in \(garden.name)")
+            Text("\(bed.dimensionLabel(unit: lengthUnit)) · in \(garden.name)")
                 .font(.custom("Nunito-SemiBold", size: 12))
                 .foregroundStyle(Color.bmText2)
         }
@@ -292,6 +294,8 @@ public struct BedDetailView: View {
 
 struct EditBedView: View {
     @EnvironmentObject private var store: GardenStore
+    @AppStorage(LengthUnit.storageKey) private var lengthUnitRaw: String = LengthUnit.metres.rawValue
+    private var lengthUnit: LengthUnit { LengthUnit(rawValue: lengthUnitRaw) ?? .metres }
     @SwiftUI.Environment(\.dismiss) private var dismiss
     @State var bed: Bed
 
@@ -300,8 +304,10 @@ struct EditBedView: View {
             Form {
                 Section("Bed") {
                     TextField("Name", text: $bed.name)
-                    Stepper("Width: \(bed.widthCm) cm", value: $bed.widthCm, in: 30...500, step: 10)
-                    Stepper("Length: \(bed.lengthCm) cm", value: $bed.lengthCm, in: 30...1000, step: 10)
+                    Stepper("Width: \(LengthFormat.display(cm: bed.widthCm, unit: lengthUnit))",
+                            value: $bed.widthCm, in: 30...500, step: 10)
+                    Stepper("Length: \(LengthFormat.display(cm: bed.lengthCm, unit: lengthUnit))",
+                            value: $bed.lengthCm, in: 30...1000, step: 10)
                     Picker("Status", selection: $bed.status) {
                         ForEach(BedStatus.allCases) { Text($0.label).tag($0) }
                     }

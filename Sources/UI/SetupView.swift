@@ -17,6 +17,9 @@ import BloomingMarvellous
 public struct SetupView: View {
 
     @EnvironmentObject private var store: GardenStore
+    @AppStorage(LengthUnit.storageKey) private var lengthUnitRaw: String = LengthUnit.metres.rawValue
+    private var lengthUnit: LengthUnit { LengthUnit(rawValue: lengthUnitRaw) ?? .metres }
+
     @State private var page: Int = 0
 
     // Address
@@ -203,6 +206,16 @@ public struct SetupView: View {
                     .overlay(RoundedRectangle(cornerRadius: 12)
                         .stroke(Color.bmBorder, lineWidth: 1.5))
 
+                Text("Units")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Picker("Units", selection: $lengthUnitRaw) {
+                    ForEach(LengthUnit.allCases) { u in
+                        Text(u.label).tag(u.rawValue)
+                    }
+                }
+                .pickerStyle(.segmented)
+
                 HStack(spacing: 12) {
                     sizeStepper("Width",  value: $bedWidth)
                     sizeStepper("Length", value: $bedLength)
@@ -257,7 +270,7 @@ public struct SetupView: View {
                 .font(.custom("Nunito-Bold", size: 12))
                 .foregroundStyle(Color.bmText2)
             Stepper(value: value, in: 10...1000, step: 10) {
-                Text("\(value.wrappedValue) cm")
+                Text(LengthFormat.display(cm: value.wrappedValue, unit: lengthUnit))
                     .font(.custom("Nunito-Bold", size: 14))
                     .foregroundStyle(Color.bmText1)
             }
