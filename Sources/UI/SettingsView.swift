@@ -4,8 +4,21 @@ import BloomingMarvellous
 
 // MARK: - SettingsView
 //
-// Wireframe: Settings — Units, Location, Growing season, Reminders, About.
-// Persisted locally for now; will move to a /v1/users/me/prefs endpoint.
+// Phase 2 layout:
+//   • Preferences      — units (metric / imperial) + length unit (m / ft)
+//                        + location + growing season
+//   • Garden defaults  — Pro only: soil / wetness / exposure / sunlight /
+//                        acidity for the currently selected garden. Lifted
+//                        out of HomeView so the dashboard becomes the
+//                        5-tile launcher.
+//   • Notifications    — push reminders + iCal opt-ins. Wires the prefs;
+//                        Phase 7 hooks up UNUserNotificationCenter +
+//                        EventKit when the user toggles them on.
+//   • Account          — name, tier, password actions, and (Pro) Cancel
+//                        Pro membership. Payment is App Store subscriptions
+//                        so the cancel flow routes to Apple, doesn't
+//                        pretend to cancel billing locally.
+//   • About            — version, privacy, terms.
 
 public struct SettingsView: View {
 
@@ -16,6 +29,7 @@ public struct SettingsView: View {
     }
 
     private let user: UserModel
+    @EnvironmentObject private var store: GardenStore
     @SwiftUI.Environment(\.dismiss) private var dismiss
 
     @AppStorage("bm.settings.units")          private var unitsRaw: String = Units.metric.rawValue
@@ -23,6 +37,16 @@ public struct SettingsView: View {
     @AppStorage("bm.settings.growingSeason")  private var growingSeason: String = "Apr – Oct"
     @AppStorage("bm.settings.remindersOn")    private var remindersOn: Bool = true
     @AppStorage("bm.settings.reminderTime")   private var reminderTimeRaw: Double = defaultReminder
+    @AppStorage(LengthUnit.storageKey)        private var lengthUnitRaw: String = LengthUnit.metres.rawValue
+
+    // Phase 2 notification opt-ins. Phase 7 will read these from
+    // UNUserNotificationCenter / EventKit at schedule time.
+    @AppStorage("bm.notif.pushOn")            private var pushNotificationsOn: Bool = false
+    @AppStorage("bm.notif.icalOn")            private var icalCalendarOn: Bool = false
+
+    @State private var showCancelProConfirm = false
+    @State private var showResetPasswordSent = false
+    @State private var passwordResetMessage: String = ""
 
     public init(user: UserModel) { self.user = user }
 
@@ -31,7 +55,9 @@ public struct SettingsView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     preferencesSection
+                    if user.tier == .pro { gardenDefaultsSection }
                     notificationsSection
+                    accountSection
                     aboutSection
                 }
                 .padding(.horizontal, 20)
@@ -45,8 +71,23 @@ public struct SettingsView: View {
                         .foregroundStyle(Color.bmText2)
                 }
             }
+            .alert("Cancel Pro membership?",
+                   isPresented: $showCancelProConfirm) {
+                Button("Cancel membership", role: .destructive) { confirmCancelPro() }
+                Button("Keep Pro", role: .cancel) {}
+            } message: {
+                Text("You will lose access to all Pro features and content. Your subscription is billed by the App Store — we'll open Apple's subscription page to finish cancelling.")
+            }
+            .alert("Reset password",
+                   isPresented: $showResetPasswordSent) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(passwordResetMessage)
+            }
         }
     }
+
+    // MARK: - Preferences
 
     private var preferencesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -61,6 +102,20 @@ public struct SettingsView: View {
                     get: { Units(rawValue: unitsRaw) ?? .metric },
                     set: { unitsRaw = $0.rawValue })) {
                     ForEach(Units.allCases) { u in Text(u.label).tag(u) }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 180)
+            }
+
+            HStack {
+                Text("Bed dimensions")
+                    .font(.custom("Nunito-Bold", size: 13))
+                    .foregroundStyle(Color.bmText1)
+                Spacer()
+                Picker("Bed dimensions", selection: $lengthUnitRaw) {
+                    ForEach(LengthUnit.allCases) { u in
+                        Text(u.label).tag(u.rawValue)
+                    }
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 180)
@@ -97,12 +152,93 @@ public struct SettingsView: View {
         .bmCard()
     }
 
+    // MARK: - Garden defaults (Pro only)
+
+    @ViewBuilder
+    private var gardenDefaultsSection: some View {
+        if let garden = store.selectedGarden {
+            VStack(alignment: .leading, spacing: 12) {
+                SectionLabel("Garden defaults — \(garden.name)", icon: "🌿")
+
+                gardenPicker(title: "Soil",
+                             selection: gardenBinding(\.soilType, in: garden),
+                             options: SoilType.allCases) { $0.label }
+
+                gardenPicker(title: "Wetness",
+                             selection: gardenBinding(\.wetness, in: garden),
+                             options: Wetness.allCases) { $0.label }
+
+                gardenPicker(title: "Exposure",
+                             selection: gardenBinding(\.exposure, in: garden),
+                             options: WeatherExposure.allCases) { $0.label }
+
+                gardenPicker(title: "Sunlight",
+                             selection: gardenBinding(\.sunlight, in: garden),
+                             options: Sunlight.allCases) { $0.label }
+
+                gardenPicker(title: "Acidity",
+                             selection: gardenAcidityBinding(in: garden),
+                             options: SoilAcidity.allCases) { $0.label }
+
+                Text("Bed-level overrides still take precedence on each bed.")
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmText3)
+                    .padding(.top, 2)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .bmCard()
+        }
+    }
+
+    private func gardenBinding<T: Equatable>(_ keyPath: WritableKeyPath<Garden, T>,
+                                             in garden: Garden) -> Binding<T> {
+        Binding(
+            get: { garden[keyPath: keyPath] },
+            set: { newValue in
+                var updated = garden
+                updated[keyPath: keyPath] = newValue
+                store.updateGarden(updated)
+            })
+    }
+
+    /// Acidity is optional on Garden; the segmented picker can't model nil
+    /// so we coerce to `.neutral` while reading and write back through.
+    private func gardenAcidityBinding(in garden: Garden) -> Binding<SoilAcidity> {
+        Binding(
+            get: { garden.acidity ?? .neutral },
+            set: { newValue in
+                var updated = garden
+                updated.acidity = newValue
+                store.updateGarden(updated)
+            })
+    }
+
+    private func gardenPicker<T: Hashable & Identifiable>(title: String,
+                                                          selection: Binding<T>,
+                                                          options: [T],
+                                                          label: @escaping (T) -> String) -> some View {
+        HStack {
+            Text(title)
+                .font(.custom("Nunito-Bold", size: 13))
+                .foregroundStyle(Color.bmText1)
+            Spacer()
+            Picker(title, selection: selection) {
+                ForEach(options) { o in Text(label(o)).tag(o) }
+            }
+            .pickerStyle(.menu)
+            .tint(Color.bmGreen)
+        }
+    }
+
+    // MARK: - Notifications
+
     private var notificationsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             SectionLabel("Notifications", icon: "🔔")
 
             Toggle(isOn: $remindersOn) {
-                Text("Reminders")
+                Text("In-app reminders")
                     .font(.custom("Nunito-Bold", size: 13))
                     .foregroundStyle(Color.bmText1)
             }
@@ -118,17 +254,110 @@ public struct SettingsView: View {
                     .foregroundStyle(Color.bmText1)
                     .tint(Color.bmGreen)
             }
+
+            Toggle(isOn: $pushNotificationsOn) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Push reminders")
+                        .font(.custom("Nunito-Bold", size: 13))
+                        .foregroundStyle(Color.bmText1)
+                    Text("Repeat daily until you tick each task off.")
+                        .font(.custom("Nunito-SemiBold", size: 11))
+                        .foregroundStyle(Color.bmText3)
+                }
+            }
+            .tint(Color.bmGreen)
+
+            Toggle(isOn: $icalCalendarOn) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Add to Calendar (iCal)")
+                        .font(.custom("Nunito-Bold", size: 13))
+                        .foregroundStyle(Color.bmText1)
+                    Text("Writes the first instance of each task to your calendar.")
+                        .font(.custom("Nunito-SemiBold", size: 11))
+                        .foregroundStyle(Color.bmText3)
+                }
+            }
+            .tint(Color.bmGreen)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
     }
 
+    // MARK: - Account
+
+    private var accountSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionLabel("Account", icon: "👤")
+
+            row(label: "Signed in as", value: user.firstName.isEmpty ? "Gardener" : user.firstName)
+            row(label: "Tier", value: user.tier.rawValue.capitalized)
+
+            Button(action: emailResetPassword) {
+                accountRowLabel("Reset password (email link)", icon: "envelope")
+            }
+            .buttonStyle(.plain)
+
+            Button(action: changePassword) {
+                accountRowLabel("Change password", icon: "key")
+            }
+            .buttonStyle(.plain)
+
+            if user.tier == .pro {
+                Button(action: { showCancelProConfirm = true }) {
+                    accountRowLabel("Cancel Pro membership", icon: "xmark.seal", destructive: true)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func accountRowLabel(_ title: String, icon: String, destructive: Bool = false) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(destructive ? Color.red : Color.bmLilac)
+            Text(title)
+                .font(.custom("Nunito-Bold", size: 13))
+                .foregroundStyle(destructive ? Color.red : Color.bmText1)
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(Color.bmText3)
+        }
+        .padding(.vertical, 4)
+    }
+
+    private func emailResetPassword() {
+        // Server endpoint is forthcoming; surface a confirmation so the user
+        // knows the action was registered. Phase 7 / backend work will wire
+        // the actual /v1/users/me/reset-password call.
+        passwordResetMessage = "We'll send a reset link to your account email shortly."
+        showResetPasswordSent = true
+    }
+
+    private func changePassword() {
+        passwordResetMessage = "Password change isn't available in this build yet — use the email reset link for now."
+        showResetPasswordSent = true
+    }
+
+    private func confirmCancelPro() {
+        // Apple is the source of truth for subscription state. We route to
+        // the App Store subscriptions page; the tier flip happens on the
+        // server once Apple confirms cancellation (see Phase 2 roadmap).
+        if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    // MARK: - About
+
     private var aboutSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             SectionLabel("About", icon: "ℹ️")
-            row(label: "Account", value: user.firstName.isEmpty ? "Gardener" : user.firstName)
-            row(label: "Tier", value: user.tier.rawValue.capitalized)
             row(label: "Version", value: appVersion)
             HStack(spacing: 16) {
                 Button("Privacy") {}

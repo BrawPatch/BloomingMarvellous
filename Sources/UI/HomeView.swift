@@ -17,6 +17,7 @@ public struct HomeView: View {
     @State private var showingSettings = false
     @State private var showingTasks = false
     @State private var showingBeds = false
+    @State private var showingPlantingMap = false
     @State private var toast: ToastBanner.Message?
 
     public init(user: UserModel,
@@ -41,10 +42,7 @@ public struct HomeView: View {
                         onLogout: onLogout
                     )
 
-                    if let garden = store.selectedGarden {
-                        gardenSummary(garden)
-                        shortcutCards(garden)
-                    }
+                    tileGrid
 
                     Spacer(minLength: 12)
                 }
@@ -77,12 +75,17 @@ public struct HomeView: View {
         }
         .sheet(isPresented: $showingSettings) {
             SettingsView(user: user)
+                .environmentObject(store)
         }
         .sheet(isPresented: $showingTasks) {
             TaskListView()
         }
         .navigationDestination(isPresented: $showingBeds) {
             GardenBedsView()
+                .environmentObject(store)
+        }
+        .navigationDestination(isPresented: $showingPlantingMap) {
+            PlantingMapPlaceholderView()
                 .environmentObject(store)
         }
         .safeAreaInset(edge: .top, spacing: 0) {
@@ -103,74 +106,55 @@ public struct HomeView: View {
         }
     }
 
-    // MARK: - Garden summary card
+    // MARK: - Tile grid (Phase 2)
+    //
+    // Five entry points: Beds, Plant Picker, Bloom Planner, Garden Calendar,
+    // Planting Map. The old inline garden-defaults strip moved into Settings,
+    // and the picker / bloom / calendar tiles now hand straight to the
+    // matching bottom-tab destination so the grid is the canonical launcher.
 
-    @ViewBuilder
-    private func gardenSummary(_ garden: Garden) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            SectionLabel("Garden defaults", icon: "🌿")
-            HStack(spacing: 10) {
-                badge("Soil", garden.soilType.label, .bmGreen)
-                badge("Wet",  garden.wetness.shortLabel, .bmSky)
-                badge("Sun",  garden.sunlight.shortLabel, .bmAmber)
-            }
-            HStack(spacing: 10) {
-                badge("Exposure", garden.exposure.label, .bmLeafSage)
-                Spacer(minLength: 0)
-                Text("\(store.beds(in: garden.id).count) beds")
-                    .font(.custom("Nunito-Bold", size: 12))
-                    .foregroundStyle(Color.bmText3)
-            }
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .bmCard()
-        .padding(.horizontal, 20)
-    }
+    private var tileGrid: some View {
+        let columns = [
+            GridItem(.flexible(), spacing: 12),
+            GridItem(.flexible(), spacing: 12),
+        ]
+        let bedCount = store.selectedGarden.map { store.beds(in: $0.id).count } ?? 0
+        return LazyVGrid(columns: columns, spacing: 12) {
+            tile(title: "Beds",
+                 subtitle: "\(bedCount) bed\(bedCount == 1 ? "" : "s")",
+                 icon: "🪴",
+                 tint: .bmGreen) { showingBeds = true }
 
-    private func badge(_ label: String, _ value: String, _ color: Color) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(label.uppercased())
-                .font(.custom("Fredoka-SemiBold", size: 9))
-                .foregroundStyle(Color.bmText3)
-                .kerning(0.5)
-            Text(value)
-                .font(.custom("Nunito-Bold", size: 12))
-                .foregroundStyle(.white)
-        }
-        .padding(.horizontal, 10).padding(.vertical, 6)
-        .background(color)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-    }
+            tile(title: "Plant Picker",
+                 subtitle: "Browse by bloom month",
+                 icon: "🔍",
+                 tint: .bmPeach) { onSelectTab(.picker) }
 
-    // MARK: - Shortcut cards
+            tile(title: "Bloom Planner",
+                 subtitle: "Plan the season",
+                 icon: "🌸",
+                 tint: .bmLilac) { onSelectTab(.bloom) }
 
-    @ViewBuilder
-    private func shortcutCards(_ garden: Garden) -> some View {
-        VStack(spacing: 12) {
-            shortcut(title: "Garden beds",
-                     subtitle: "\(store.beds(in: garden.id).count) bed\(store.beds(in: garden.id).count == 1 ? "" : "s")",
-                     icon: "🪴",
-                     tint: .bmGreen) { showingBeds = true }
-            shortcut(title: "This week's tasks",
-                     subtitle: "Sow · Transplant · Harvest",
-                     icon: "✅",
-                     tint: .bmSky) { showingTasks = true }
-            shortcut(title: "Add to schedule",
-                     subtitle: "Plan plant + event",
-                     icon: "🌸",
-                     tint: .bmPeach) { onSelectTab(.picker) }
+            tile(title: "Garden Calendar",
+                 subtitle: "Sow · Transplant · Harvest",
+                 icon: "📅",
+                 tint: .bmSky) { onSelectTab(.planting) }
+
+            tile(title: "Planting Map",
+                 subtitle: "Bed layout · PDF print",
+                 icon: "🗺️",
+                 tint: .bmLeafSage) { showingPlantingMap = true }
         }
         .padding(.horizontal, 20)
     }
 
-    private func shortcut(title: String,
-                          subtitle: String,
-                          icon: String,
-                          tint: Color,
-                          action: @escaping () -> Void) -> some View {
+    private func tile(title: String,
+                      subtitle: String,
+                      icon: String,
+                      tint: Color,
+                      action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            HStack(spacing: 14) {
+            VStack(alignment: .leading, spacing: 10) {
                 ZStack {
                     Circle().fill(tint.opacity(0.18))
                         .frame(width: 46, height: 46)
@@ -181,14 +165,13 @@ public struct HomeView: View {
                         .font(.custom("Nunito-Bold", size: 15))
                         .foregroundStyle(Color.bmText1)
                     Text(subtitle)
-                        .font(.custom("Nunito-SemiBold", size: 12))
+                        .font(.custom("Nunito-SemiBold", size: 11))
                         .foregroundStyle(Color.bmText2)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
                 }
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(Color.bmText3)
             }
+            .frame(maxWidth: .infinity, minHeight: 130, alignment: .topLeading)
             .padding(14)
             .background(Color.bmBgCard)
             .clipShape(RoundedRectangle(cornerRadius: 16))
