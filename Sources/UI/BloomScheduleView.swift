@@ -154,7 +154,7 @@ struct BloomMonthSheet: View {
         } else {
             ForEach(beds) { bed in
                 let plants = store.picks(month: month, bedId: bed.id).compactMap(library.plant(id:))
-                bedSection(bedName: bed.name, plants: plants)
+                bedSection(bed: bed, plants: plants)
             }
             if beds.allSatisfy({ store.picks(month: month, bedId: $0.id).isEmpty }) {
                 emptyState
@@ -162,18 +162,35 @@ struct BloomMonthSheet: View {
         }
     }
 
-    private func bedSection(bedName: String, plants: [Plant]) -> some View {
+    private func bedSection(bed: Bed, plants: [Plant]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: "square.grid.3x3.fill")
                     .foregroundStyle(Color.bmGreen)
-                Text(bedName)
+                Text(bed.name)
                     .font(.custom("Fredoka-SemiBold", size: 15))
                     .foregroundStyle(Color.bmText1)
                 Spacer()
                 Text("\(plants.count)")
                     .font(.custom("Nunito-Bold", size: 11))
                     .foregroundStyle(Color.bmText3)
+                NavigationLink {
+                    BedDetailView(bedId: bed.id)
+                        .environmentObject(store)
+                        .environmentObject(library)
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "square.and.pencil")
+                            .font(.system(size: 11, weight: .bold))
+                        Text("Edit bed")
+                            .font(.custom("Fredoka-SemiBold", size: 11))
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 10).padding(.vertical, 5)
+                    .background(Color.bmGreen)
+                    .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
             }
             if plants.isEmpty {
                 Text("No picks for this bed in \(monthName(month)).")

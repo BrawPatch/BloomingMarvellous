@@ -420,7 +420,7 @@ struct PlantPickerGalleryView: View {
 
         func suitsColor(_ p: Plant) -> Bool {
             guard let want = colorFilter else { return true }
-            return BloomColor.band(forHex: p.colorHex) == want
+            return BloomColor.nearestBands(forHex: p.colorHex).contains(want)
         }
 
         return months.map { m in
@@ -692,6 +692,26 @@ public enum BloomColor: String, CaseIterable, Identifiable {
             if d < bestDist { bestDist = d; bestBand = band }
         }
         return bestBand
+    }
+
+    /// Top-N nearest bands. Used by the picker's colour filter — the
+    /// library only carries 8 distinct hex values from the ingest
+    /// defaults (no yellow, no white, etc.), so a strict single-band
+    /// match returns zero plants for half of the chips. Letting a
+    /// plant register against its three closest bands lifts every chip
+    /// out of the empty state while still keeping pink/red/purple
+    /// queries useful.
+    public static func nearestBands(forHex hex: String?, count: Int = 3) -> Set<BloomColor> {
+        guard let hex else { return Set(BloomColor.allCases) }
+        let c = Color(hex: hex).cgColor?.components ?? [1, 1, 1, 1]
+        let r = Double(c[0]), g = Double(c[1]), b = Double(c[2])
+        let ranked = BloomColor.allCases
+            .map { band -> (BloomColor, Double) in
+                let (rr, gg, bb) = band.referenceRGB
+                return (band, (r-rr)*(r-rr) + (g-gg)*(g-gg) + (b-bb)*(b-bb))
+            }
+            .sorted { $0.1 < $1.1 }
+        return Set(ranked.prefix(count).map { $0.0 })
     }
 }
 
