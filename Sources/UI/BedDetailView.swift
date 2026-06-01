@@ -13,7 +13,6 @@ public struct BedDetailView: View {
     @State private var showingSoilOverride = false
     @State private var showingEdit = false
     @State private var showingDeleteConfirm = false
-    @State private var showingAddPlant = false
     @State private var showingNewSeasonConfirm = false
     @SwiftUI.Environment(\.dismiss) private var dismiss
 
@@ -64,14 +63,6 @@ public struct BedDetailView: View {
             if let bed = store.bed(id: bedId) {
                 EditBedView(bed: bed)
                     .environmentObject(store)
-            }
-        }
-        .sheet(isPresented: $showingAddPlant) {
-            if let bed = store.bed(id: bedId) {
-                AddPlantToBedSheet(bed: bed,
-                                   resolvedPlants: resolvedPlantsForLayout(bed: bed))
-                    .environmentObject(store)
-                    .environmentObject(library)
             }
         }
         .confirmationDialog("Delete bed?",
@@ -332,8 +323,18 @@ public struct BedDetailView: View {
             }
 
             HStack(spacing: 10) {
-                Button {
-                    showingAddPlant = true
+                // Hand off straight to the Plant Picker scoped to this
+                // bed — picks land in bedPicks for `bed.id` and the
+                // layout card auto-surfaces them with a stepper on the
+                // gardener's return. Bypasses the old narrow sheet.
+                NavigationLink {
+                    PlantPickerMonthView()
+                        .environmentObject(store)
+                        .environmentObject(library)
+                        .onAppear {
+                            store.selectedGardenId = bed.gardenId
+                            store.selectedBedId = bed.id
+                        }
                 } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "plus")
@@ -567,113 +568,6 @@ public struct BedDetailView: View {
 
     private func monthAbbr(_ m: Int) -> String {
         ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m - 1]
-    }
-}
-
-// MARK: - AddPlantToBedSheet (Phase 3)
-//
-// Lists every plant the user has bloom-picked in this bed that isn't yet
-// physically placed in `plantCounts`. Tap to add one. The picker uses the
-// existing bloom-pick set so the bed surface stays consistent with what
-// the user has already committed to in the Plant Picker.
-
-struct AddPlantToBedSheet: View {
-    @EnvironmentObject private var store: GardenStore
-    @EnvironmentObject private var library: LibraryStore
-    @SwiftUI.Environment(\.dismiss) private var dismiss
-
-    let bed: Bed
-    let resolvedPlants: [String: Plant]
-
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 10) {
-                    if candidates.isEmpty {
-                        emptyState
-                    } else {
-                        ForEach(candidates) { plant in
-                            Button { addAndDismiss(plant.id) } label: {
-                                row(plant)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 16)
-            }
-            .bmSheetBackdrop()
-            .bmNavTitle("Add a plant", icon: "🌱")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") { dismiss() }
-                        .foregroundStyle(Color.bmText2)
-                }
-            }
-        }
-    }
-
-    private var emptyState: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("No bloom picks yet for this bed.")
-                .font(.custom("Nunito-Bold", size: 13))
-                .foregroundStyle(Color.bmText1)
-            Text("Open the Plant Picker, choose this bed, and tap the months you'd like a plant to bloom. Plants picked here will then appear in this sheet so you can place them.")
-                .font(.custom("Nunito-SemiBold", size: 12))
-                .foregroundStyle(Color.bmText2)
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .bmCard()
-    }
-
-    private func row(_ plant: Plant) -> some View {
-        HStack(spacing: 10) {
-            Circle()
-                .fill(plant.colorHex.flatMap { Color(hex: $0) } ?? Color.bmGreen)
-                .frame(width: 16, height: 16)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(plant.name)
-                    .font(.custom("Nunito-Bold", size: 13))
-                    .foregroundStyle(Color.bmText1)
-                Text(footprint(plant))
-                    .font(.custom("Nunito-SemiBold", size: 11))
-                    .foregroundStyle(Color.bmText3)
-            }
-            Spacer()
-            Image(systemName: "plus.circle.fill")
-                .foregroundStyle(Color.bmGreen)
-        }
-        .padding(12)
-        .background(Color.bmBgSoft)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(RoundedRectangle(cornerRadius: 12)
-            .stroke(Color.bmBorder, lineWidth: 1))
-    }
-
-    private func footprint(_ plant: Plant) -> String {
-        var parts: [String] = []
-        if let h = plant.heightCm { parts.append("\(h) cm tall") }
-        if let s = plant.spreadCm { parts.append("\(s) cm spread") }
-        return parts.joined(separator: " · ")
-    }
-
-    private var candidates: [Plant] {
-        var pickedIds: Set<String> = []
-        for m in 1...12 {
-            pickedIds.formUnion(store.picks(month: m, bedId: bed.id))
-        }
-        let placed = Set(bed.plantCounts.keys)
-        return pickedIds
-            .subtracting(placed)
-            .compactMap { resolvedPlants[$0] ?? library.plant(id: $0) }
-            .sorted { $0.name < $1.name }
-    }
-
-    private func addAndDismiss(_ plantId: String) {
-        store.adjustPlantCount(plantId: plantId, in: bed.id, by: 1)
-        dismiss()
     }
 }
 
