@@ -85,7 +85,7 @@ public struct HomeView: View {
                 .environmentObject(store)
         }
         .navigationDestination(isPresented: $showingPlantingMap) {
-            PlantingMapPlaceholderView()
+            PlantingMapView()
                 .environmentObject(store)
         }
         .safeAreaInset(edge: .top, spacing: 0) {
