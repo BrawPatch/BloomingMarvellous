@@ -392,14 +392,20 @@ struct PlantPickerGalleryView: View {
         let entitled = library.plants
         let climate = store.climate
 
-        // Pre-compute the garden-condition filter once.
+        // Pre-compute the garden-condition filter once. Sunlight + acidity
+        // use soft matching (see `sunlightCompatible` / `acidityCompatible`)
+        // so a sunny_am garden doesn't accidentally exclude every plant
+        // listed as sunny_always, and a mildly_alkaline garden still suits
+        // plants happy in neutral or very_alkaline soil.
         func suitsGarden(_ p: Plant) -> Bool {
             guard let g = store.selectedGarden else { return true }
             let soilOk = p.preferredSoil.isEmpty || p.preferredSoil.contains(g.soilType)
-            let sunOk  = p.preferredSunlight.isEmpty || p.preferredSunlight.contains(g.sunlight)
+            let sunOk  = sunlightCompatible(garden: g.sunlight,
+                                            plantPrefers: p.preferredSunlight)
             let acidOk: Bool
-            if let acids = p.preferredAcidity, !acids.isEmpty, let gAcid = g.acidity {
-                acidOk = acids.contains(gAcid)
+            if let gAcid = g.acidity {
+                acidOk = acidityCompatible(garden: gAcid,
+                                           plantPrefers: p.preferredAcidity ?? [])
             } else {
                 acidOk = true
             }
@@ -1137,5 +1143,54 @@ struct PlantDetailView: View {
             withAnimation { savedToast = nil }
         }
     }
+}
+
+// MARK: - Matched-filter compatibility helpers
+//
+// The original strict-membership check turned into a UX dead end: a
+// `sunny_am` garden excluded every plant whose preferred set was
+// `[sunny_always]` (the majority of the ingested library), and a
+// `mildly_alkaline` garden excluded every plant tagged `[neutral]`. The
+// helpers below relax both axes:
+//
+//   • Sunlight: partial-sun (am / pm) gardens accept plants happy in any
+//     sunny band; full-sun gardens also accept partial-sun plants;
+//     shaded gardens stay strict so we don't surface sun-lovers.
+//   • Acidity: a garden suits any plant whose preferred bands sit within
+//     one step of the garden's pH band — neutral plants pass for mildly
+//     acidic / mildly alkaline gardens, and so on.
+
+private func sunlightCompatible(garden: Sunlight, plantPrefers: [Sunlight]) -> Bool {
+    if plantPrefers.isEmpty { return true }
+    if plantPrefers.contains(garden) { return true }
+    switch garden {
+    case .sunnyAlways:
+        // Full sun garden still suits plants happy in partial sun.
+        return plantPrefers.contains(.sunnyAM) || plantPrefers.contains(.sunnyPM)
+    case .sunnyAM, .sunnyPM:
+        // Partial-sun garden tolerates any sunny preference (the morning /
+        // afternoon distinction is finer than what the library encodes).
+        return plantPrefers.contains(.sunnyAlways)
+            || plantPrefers.contains(.sunnyAM)
+            || plantPrefers.contains(.sunnyPM)
+    case .shadedAlways:
+        return false
+    }
+}
+
+private func acidityCompatible(garden: SoilAcidity, plantPrefers: [SoilAcidity]) -> Bool {
+    if plantPrefers.isEmpty { return true }
+    if plantPrefers.contains(garden) { return true }
+    let bandIndex: (SoilAcidity) -> Int = {
+        switch $0 {
+        case .veryAcidic:     return 0
+        case .mildlyAcidic:   return 1
+        case .neutral:        return 2
+        case .mildlyAlkaline: return 3
+        case .veryAlkaline:   return 4
+        }
+    }
+    let g = bandIndex(garden)
+    return plantPrefers.contains { abs(bandIndex($0) - g) <= 1 }
 }
 #endif
