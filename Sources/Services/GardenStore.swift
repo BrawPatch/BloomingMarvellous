@@ -46,6 +46,12 @@ public final class GardenStore: ObservableObject {
     @Published public var postcode: String = "" { didSet { persist() } }
     @Published public var country:  String = "GB" { didSet { persist() } }
 
+    /// Schedule task IDs the user has ticked off. Phase 7 uses these to
+    /// cancel pending daily push reminders for completed tasks; the UI
+    /// also greys out the matching row in the Planting Schedule. The set
+    /// persists across launches so reminders stay quiet.
+    @Published public private(set) var completedTaskIds: Set<String> = [] { didSet { persist() } }
+
     public let user: UserModel
 
     /// Reflects the postcode in a coarse climate bucket. Recomputed when
@@ -90,6 +96,7 @@ public final class GardenStore: ObservableObject {
             bedPicks         = snap.bedPicks
             postcode         = snap.postcode
             country          = snap.country
+            completedTaskIds = snap.completedTaskIds
         } else if seedFirstGarden {
             // Legacy default — kept so existing callers that don't go through
             // the Setup wizard still get a usable garden to render against.
@@ -114,12 +121,14 @@ public final class GardenStore: ObservableObject {
         var bedPicks:   [UUID: [Int: [String]]] = [:]
         var postcode: String = ""
         var country:  String = "GB"
+        var completedTaskIds: Set<String> = []
 
         init(gardens: [Garden], beds: [Bed],
              selectedGardenId: UUID?, selectedBedId: UUID?,
              bloomPicks: [UUID: [Int: [String]]],
              bedPicks: [UUID: [Int: [String]]],
-             postcode: String, country: String) {
+             postcode: String, country: String,
+             completedTaskIds: Set<String>) {
             self.gardens = gardens
             self.beds = beds
             self.selectedGardenId = selectedGardenId
@@ -128,6 +137,7 @@ public final class GardenStore: ObservableObject {
             self.bedPicks = bedPicks
             self.postcode = postcode
             self.country = country
+            self.completedTaskIds = completedTaskIds
         }
 
         // Custom decoder so snapshots written before `bedPicks` / `selectedBedId`
@@ -143,6 +153,7 @@ public final class GardenStore: ObservableObject {
             bedPicks         = (try? c.decode([UUID: [Int: [String]]].self, forKey: .bedPicks))   ?? [:]
             postcode         = (try? c.decode(String.self, forKey: .postcode)) ?? ""
             country          = (try? c.decode(String.self, forKey: .country))  ?? "GB"
+            completedTaskIds = (try? c.decode(Set<String>.self, forKey: .completedTaskIds)) ?? []
         }
     }
 
@@ -160,7 +171,8 @@ public final class GardenStore: ObservableObject {
                             bloomPicks: bloomPicks,
                             bedPicks: bedPicks,
                             postcode: postcode,
-                            country: country)
+                            country: country,
+                            completedTaskIds: completedTaskIds)
         guard let data = try? JSONEncoder().encode(snap) else { return }
         defaults.set(data, forKey: storageKey)
     }
@@ -329,6 +341,20 @@ public final class GardenStore: ObservableObject {
         var b = beds[idx]
         b.carriedOver.removeAll { $0 == plantId }
         beds[idx] = b
+    }
+
+    // MARK: - Schedule completions (Phase 7)
+
+    public func isTaskDone(id: String) -> Bool {
+        completedTaskIds.contains(id)
+    }
+
+    public func markTaskDone(id: String) {
+        completedTaskIds.insert(id)
+    }
+
+    public func markTaskNotDone(id: String) {
+        completedTaskIds.remove(id)
     }
 
     public func bed(id: UUID) -> Bed? {

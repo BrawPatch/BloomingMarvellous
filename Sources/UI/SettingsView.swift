@@ -266,6 +266,9 @@ public struct SettingsView: View {
                 }
             }
             .tint(Color.bmGreen)
+            .onChange(of: pushNotificationsOn) { newValue in
+                Task { await handlePushToggle(newValue) }
+            }
 
             Toggle(isOn: $icalCalendarOn) {
                 VStack(alignment: .leading, spacing: 2) {
@@ -278,6 +281,9 @@ public struct SettingsView: View {
                 }
             }
             .tint(Color.bmGreen)
+            .onChange(of: icalCalendarOn) { newValue in
+                Task { await handleICalToggle(newValue) }
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -397,6 +403,31 @@ public struct SettingsView: View {
         comps.hour = 8
         comps.minute = 0
         return (Calendar.current.date(from: comps) ?? Date()).timeIntervalSince1970
+    }
+
+    // MARK: - Phase 7 permission handlers
+
+    @MainActor
+    private func handlePushToggle(_ newValue: Bool) async {
+        if newValue {
+            let granted = await NotificationScheduler.shared.requestPermission()
+            if !granted {
+                // OS denied — reflect back so the toggle doesn't lie about state.
+                pushNotificationsOn = false
+            }
+        } else {
+            NotificationScheduler.shared.cancelAll()
+        }
+    }
+
+    @MainActor
+    private func handleICalToggle(_ newValue: Bool) async {
+        if newValue {
+            let granted = await CalendarSyncService.shared.requestPermission()
+            if !granted { icalCalendarOn = false }
+        } else {
+            await CalendarSyncService.shared.cancelAll()
+        }
     }
 }
 #endif

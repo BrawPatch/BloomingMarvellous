@@ -24,6 +24,10 @@ public struct PlantingScheduleView: View {
     @State private var displayedMonth: Date = Calendar.current.startOfMonth(for: Date())
     @State private var filters = ScheduleFilters()
 
+    @AppStorage("bm.notif.pushOn")          private var pushNotificationsOn: Bool = false
+    @AppStorage("bm.notif.icalOn")          private var icalCalendarOn: Bool = false
+    @AppStorage("bm.settings.reminderTime") private var reminderTimeRaw: Double = 0
+
     public init() {}
 
     public var body: some View {
@@ -35,11 +39,26 @@ public struct PlantingScheduleView: View {
                                   beds: store.beds,
                                   showKinds: true)
                     .padding(.horizontal, 4)
-                Button("Today") { displayedMonth = Calendar.current.startOfMonth(for: Date()) }
-                    .font(.custom("Fredoka-SemiBold", size: 12))
-                    .foregroundStyle(Color.bmGreen)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(.horizontal, 4)
+                HStack {
+                    if pushNotificationsOn || icalCalendarOn {
+                        Button {
+                            Task { await syncAll() }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: "arrow.triangle.2.circlepath")
+                                    .font(.system(size: 11, weight: .bold))
+                                Text("Sync reminders")
+                                    .font(.custom("Fredoka-SemiBold", size: 12))
+                            }
+                            .foregroundStyle(Color.bmGreen)
+                        }
+                    }
+                    Spacer()
+                    Button("Today") { displayedMonth = Calendar.current.startOfMonth(for: Date()) }
+                        .font(.custom("Fredoka-SemiBold", size: 12))
+                        .foregroundStyle(Color.bmGreen)
+                }
+                .padding(.horizontal, 4)
                 monthGrid
                 legend
                 let evs = eventsInDisplayedMonth
@@ -99,15 +118,21 @@ public struct PlantingScheduleView: View {
 
     @ViewBuilder
     private func eventRow(_ event: ScheduledEvent) -> some View {
+        let done = store.isTaskDone(id: event.id)
         HStack(spacing: 10) {
             ZStack {
-                Circle().fill(event.kind.color.opacity(0.2)).frame(width: 32, height: 32)
-                Text(event.kind.emoji).font(.system(size: 16))
+                Circle()
+                    .fill(event.kind.color.opacity(done ? 0.08 : 0.2))
+                    .frame(width: 32, height: 32)
+                Text(event.kind.emoji)
+                    .font(.system(size: 16))
+                    .opacity(done ? 0.4 : 1)
             }
             VStack(alignment: .leading, spacing: 1) {
                 Text("\(event.kind.label) \(event.plantName)")
                     .font(.custom("Nunito-Bold", size: 13))
-                    .foregroundStyle(Color.bmText1)
+                    .foregroundStyle(done ? Color.bmText3 : Color.bmText1)
+                    .strikethrough(done)
                 Text("For \(Self.monthName(event.bloomMonth)) bloom · start \(Self.dayLabel(month: event.month, day: event.day))")
                     .font(.custom("Nunito-SemiBold", size: 11))
                     .foregroundStyle(Color.bmText2)
@@ -116,10 +141,34 @@ public struct PlantingScheduleView: View {
                     .foregroundStyle(Color.bmText3)
             }
             Spacer()
+            Button {
+                toggleDone(event)
+            } label: {
+                Image(systemName: done ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 20))
+                    .foregroundStyle(done ? Color.bmGreen : Color.bmText3)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(done ? "Mark not done" : "Mark done")
         }
         .padding(.horizontal, 10).padding(.vertical, 6)
         .background(Color.bmBgSoft)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
+    private func toggleDone(_ event: ScheduledEvent) {
+        if store.isTaskDone(id: event.id) {
+            store.markTaskNotDone(id: event.id)
+            // Re-schedule push for this one when push is on.
+            if pushNotificationsOn {
+                Task { await syncAll() }
+            }
+        } else {
+            store.markTaskDone(id: event.id)
+            if pushNotificationsOn {
+                NotificationScheduler.shared.cancel(taskId: event.id)
+            }
+        }
     }
 
     private func scopeLabel(_ event: ScheduledEvent) -> String {
@@ -345,6 +394,44 @@ public struct PlantingScheduleView: View {
         f.locale = Locale(identifier: "en_US_POSIX")
         f.dateFormat = "LLLL yyyy"
         return f.string(from: d)
+    }
+
+    // MARK: - Phase 7: sync helpers
+
+    private func tasksForSync() -> [ScheduleTask] {
+        generatedEvents.map { event in
+            ScheduleTask(
+                id: event.id,
+                title: "\(event.kind.label) \(event.plantName)",
+                body: "For \(Self.monthName(event.bloomMonth)) bloom — \(scopeLabel(event))",
+                month: event.month,
+                day: event.day)
+        }
+    }
+
+    private func reminderHourMinute() -> (Int, Int) {
+        let date = reminderTimeRaw > 0
+            ? Date(timeIntervalSince1970: reminderTimeRaw)
+            : Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? Date()
+        let comps = Calendar.current.dateComponents([.hour, .minute], from: date)
+        return (comps.hour ?? 8, comps.minute ?? 0)
+    }
+
+    @MainActor
+    private func syncAll() async {
+        let tasks = tasksForSync()
+        let completed = store.completedTaskIds
+        let (h, m) = reminderHourMinute()
+        if pushNotificationsOn {
+            await NotificationScheduler.shared.sync(tasks: tasks,
+                                                    completedIds: completed,
+                                                    reminderHour: h,
+                                                    reminderMinute: m)
+        }
+        if icalCalendarOn {
+            await CalendarSyncService.shared.sync(tasks: tasks,
+                                                  completedIds: completed)
+        }
     }
 }
 
