@@ -14,6 +14,7 @@ public struct BedDetailView: View {
     @State private var showingEdit = false
     @State private var showingDeleteConfirm = false
     @State private var showingAddPlant = false
+    @State private var showingNewSeasonConfirm = false
     @SwiftUI.Environment(\.dismiss) private var dismiss
 
     let bedId: UUID
@@ -83,6 +84,16 @@ public struct BedDetailView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("This bed and its crops will be removed. This can't be undone.")
+        }
+        .confirmationDialog("Start a new planting season?",
+                            isPresented: $showingNewSeasonConfirm,
+                            titleVisibility: .visible) {
+            Button("Start new season", role: .destructive) {
+                store.startNewSeason(bedId: bedId)
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Annuals will be cleared so this bed is ready for new planting. Perennials stay in place and will be marked \"Carried over from last year\".")
         }
     }
 
@@ -317,19 +328,37 @@ public struct BedDetailView: View {
                 }
             }
 
-            Button {
-                showingAddPlant = true
-            } label: {
-                HStack(spacing: 6) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 12, weight: .bold))
-                    Text("Add a plant")
-                        .font(.custom("Fredoka-SemiBold", size: 13))
+            HStack(spacing: 10) {
+                Button {
+                    showingAddPlant = true
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 12, weight: .bold))
+                        Text("Add a plant")
+                            .font(.custom("Fredoka-SemiBold", size: 13))
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 14).padding(.vertical, 8)
+                    .background(Color.bmGreen)
+                    .clipShape(Capsule())
                 }
-                .foregroundStyle(.white)
-                .padding(.horizontal, 14).padding(.vertical, 8)
-                .background(Color.bmGreen)
-                .clipShape(Capsule())
+
+                if !bed.plantCounts.isEmpty {
+                    Button {
+                        showingNewSeasonConfirm = true
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.triangle.2.circlepath")
+                                .font(.system(size: 11, weight: .bold))
+                            Text("Start new season")
+                                .font(.custom("Fredoka-SemiBold", size: 12))
+                        }
+                        .foregroundStyle(Color.bmGreen)
+                        .padding(.horizontal, 12).padding(.vertical, 8)
+                        .overlay(Capsule().stroke(Color.bmGreen, lineWidth: 1.5))
+                    }
+                }
             }
             .padding(.top, 4)
         }
@@ -352,6 +381,8 @@ public struct BedDetailView: View {
                                capacity: BedCapacityModel) -> some View {
         let count = bed.plantCounts[plant.id] ?? 0
         let atCap = capacity.atCapacity(plantId: plant.id)
+        let isPerennial = bed.perennials.contains(plant.id)
+        let isCarriedOver = bed.carriedOver.contains(plant.id)
         return VStack(alignment: .leading, spacing: 6) {
             HStack(alignment: .center, spacing: 10) {
                 Circle()
@@ -368,6 +399,45 @@ public struct BedDetailView: View {
                 Spacer()
                 stepperCluster(plant: plant, bed: bed, count: count, atCap: atCap)
             }
+
+            HStack(spacing: 6) {
+                Button {
+                    store.togglePerennial(plantId: plant.id, in: bed.id)
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: isPerennial ? "checkmark.circle.fill" : "circle")
+                            .font(.system(size: 11, weight: .bold))
+                        Text("Perennial")
+                            .font(.custom("Nunito-Bold", size: 11))
+                    }
+                    .foregroundStyle(isPerennial ? Color.bmGreen : Color.bmText3)
+                }
+                .buttonStyle(.plain)
+
+                if isCarriedOver {
+                    HStack(spacing: 4) {
+                        Image(systemName: "leaf.fill")
+                            .font(.system(size: 9, weight: .bold))
+                        Text("Carried over from last year")
+                            .font(.custom("Fredoka-SemiBold", size: 9))
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 7).padding(.vertical, 2)
+                    .background(Color.bmLeafSage)
+                    .clipShape(Capsule())
+
+                    Button {
+                        store.setPlantCount(plantId: plant.id, in: bed.id, to: 0)
+                    } label: {
+                        Text("Remove last season's")
+                            .font(.custom("Nunito-Bold", size: 11))
+                            .foregroundStyle(Color.bmRed)
+                    }
+                    .buttonStyle(.plain)
+                }
+                Spacer()
+            }
+
             if atCap {
                 Text("Free up space to add more plants.")
                     .font(.custom("Nunito-SemiBold", size: 11))

@@ -269,6 +269,7 @@ public final class GardenStore: ObservableObject {
         if count <= 0 {
             b.plantCounts.removeValue(forKey: plantId)
             b.perennials.removeAll { $0 == plantId }
+            b.carriedOver.removeAll { $0 == plantId }
         } else {
             b.plantCounts[plantId] = count
         }
@@ -291,6 +292,42 @@ public final class GardenStore: ObservableObject {
         } else {
             b.perennials.append(plantId)
         }
+        beds[idx] = b
+    }
+
+    // MARK: - Seasons (Phase 5)
+
+    /// Roll the bed into a new planting season. Every species currently in
+    /// `plantCounts` that's marked as a perennial keeps its count and is
+    /// added to `carriedOver` so the UI can label it. Annuals (anything
+    /// not in `perennials`) are stripped out, freeing their bed area for
+    /// new planting. Pre-existing `carriedOver` markers from prior seasons
+    /// are folded in so perennials carried across multiple years stay
+    /// labelled.
+    public func startNewSeason(bedId: UUID) {
+        guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
+        var b = beds[idx]
+        var nextCounts: [String: Int] = [:]
+        var nextCarried: Set<String> = Set(b.carriedOver)
+        for (pid, count) in b.plantCounts where b.perennials.contains(pid) {
+            nextCounts[pid] = count
+            nextCarried.insert(pid)
+        }
+        // Drop carried-over markers for anything that didn't survive
+        // the rollover (e.g. user toggled the perennial flag off).
+        nextCarried = nextCarried.intersection(nextCounts.keys)
+        b.plantCounts = nextCounts
+        b.carriedOver = Array(nextCarried).sorted()
+        beds[idx] = b
+    }
+
+    /// Drop the "carried over from last year" marker without removing the
+    /// plant from the bed. Useful when the gardener decides this season's
+    /// perennial display is fresh new growth rather than last year's stock.
+    public func acknowledgeCarriedOver(plantId: String, in bedId: UUID) {
+        guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
+        var b = beds[idx]
+        b.carriedOver.removeAll { $0 == plantId }
         beds[idx] = b
     }
 

@@ -203,6 +203,12 @@ public struct Bed: Identifiable, Codable, Equatable {
     /// the next planting season. Stored as `[String]` (not `Set`) so the
     /// JSON encoder produces a stable ordered array on disk.
     public var perennials: [String]
+    /// Plant ids that have been carried over from a previous season —
+    /// i.e. they were present when `startNewSeason` last ran and were
+    /// marked as `perennials`. Used to surface the "Carried over from
+    /// last year" badge in the bed crops list (Phase 5). Cleared when
+    /// the species is removed from the bed.
+    public var carriedOver: [String]
 
     public init(id: UUID = UUID(),
                 gardenId: UUID,
@@ -216,7 +222,8 @@ public struct Bed: Identifiable, Codable, Equatable {
                 sunlightOverride: Sunlight? = nil,
                 acidityOverride: SoilAcidity? = nil,
                 plantCounts: [String: Int] = [:],
-                perennials: [String] = []) {
+                perennials: [String] = [],
+                carriedOver: [String] = []) {
         self.id = id
         self.gardenId = gardenId
         self.name = name
@@ -230,12 +237,13 @@ public struct Bed: Identifiable, Codable, Equatable {
         self.acidityOverride = acidityOverride
         self.plantCounts = plantCounts
         self.perennials = perennials
+        self.carriedOver = carriedOver
     }
 
     private enum CodingKeys: String, CodingKey {
         case id, gardenId, name, widthCm, lengthCm, status
         case soilTypeOverride, wetnessOverride, exposureOverride, sunlightOverride, acidityOverride
-        case plantCounts, perennials
+        case plantCounts, perennials, carriedOver
     }
 
     /// Custom decode so existing persisted beds (which predate the
@@ -257,6 +265,7 @@ public struct Bed: Identifiable, Codable, Equatable {
         acidityOverride  = try c.decodeIfPresent(SoilAcidity.self, forKey: .acidityOverride)
         plantCounts      = try c.decodeIfPresent([String: Int].self, forKey: .plantCounts) ?? [:]
         perennials       = try c.decodeIfPresent([String].self, forKey: .perennials) ?? []
+        carriedOver      = try c.decodeIfPresent([String].self, forKey: .carriedOver) ?? []
     }
 
     public var overridesGarden: Bool {
