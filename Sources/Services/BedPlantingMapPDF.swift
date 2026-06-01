@@ -160,7 +160,7 @@ public enum BedPlantingMapPDF {
                 }
                 let r = CGRect(x: cursorX, y: cursorY,
                                width: circleSize, height: circleSize)
-                color.withAlphaComponent(0.7).setFill()
+                color.setFill()
                 glyphColor.setStroke()
                 let path = UIBezierPath(ovalIn: r)
                 path.fill()
@@ -170,7 +170,7 @@ public enum BedPlantingMapPDF {
                 let glyphPt = max(7, min(12, circleSize * 0.55))
                 let attrs: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: glyphPt, weight: .bold),
-                    .foregroundColor: glyphColor,
+                    .foregroundColor: UIColor.white,
                 ]
                 let letterSize = (entry.letter as NSString).size(withAttributes: attrs)
                 let letterPt = CGPoint(x: r.midX - letterSize.width / 2,
@@ -253,7 +253,7 @@ public enum BedPlantingMapPDF {
         ]
         let letterAttrs: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 9, weight: .bold),
-            .foregroundColor: UIColor(white: 0.1, alpha: 1),
+            .foregroundColor: UIColor.white,
         ]
         ("Key" as NSString).draw(at: CGPoint(x: rect.minX, y: rect.minY),
                                  withAttributes: headerAttrs)
@@ -261,9 +261,9 @@ public enum BedPlantingMapPDF {
         var y = rect.minY + 20
         for entry in entries {
             let dot = CGRect(x: rect.minX, y: y, width: 14, height: 14)
-            entry.uiColor.withAlphaComponent(0.7).setFill()
+            entry.uiColor.setFill()
             UIBezierPath(ovalIn: dot).fill()
-            UIColor(white: 0.1, alpha: 1).setStroke()
+            UIColor.black.setStroke()
             let outline = UIBezierPath(ovalIn: dot)
             outline.lineWidth = 0.9
             outline.stroke()
@@ -295,16 +295,19 @@ public enum BedPlantingMapPDF {
         let letter: String
         let plant: Plant
         let count: Int
+        let paletteHex: String
         var uiColor: UIColor {
-            if let hex = plant.colorHex, let c = UIColor(hex: hex) { return c }
-            return UIColor.systemGreen
+            UIColor(hex: paletteHex) ?? UIColor.systemGreen
         }
     }
 
     private static func orderedEntries(bed: Bed,
                                        plants: [String: Plant]) -> [LayoutEntry] {
         BedLayoutKey.entries(bed: bed, plants: plants).map { key in
-            LayoutEntry(letter: key.letter, plant: key.plant, count: key.count)
+            LayoutEntry(letter: key.letter,
+                        plant: key.plant,
+                        count: key.count,
+                        paletteHex: key.paletteHex)
         }
     }
 }

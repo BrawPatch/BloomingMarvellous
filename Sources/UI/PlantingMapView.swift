@@ -262,9 +262,7 @@ struct BedPlantingMapDetailView: View {
         return VStack(alignment: .leading, spacing: 8) {
             SectionLabel("Key", icon: "🌿")
             ForEach(entries, id: \.letter) { entry in
-                legendRow(letter: entry.letter,
-                          plant: entry.plant,
-                          count: entry.count)
+                legendRow(entry: entry)
             }
         }
         .padding(16)
@@ -272,25 +270,24 @@ struct BedPlantingMapDetailView: View {
         .bmCard()
     }
 
-    private func legendRow(letter: String, plant: Plant, count: Int) -> some View {
+    private func legendRow(entry: BedLayoutKeyEntry) -> some View {
         HStack(spacing: 10) {
             ZStack {
                 Circle()
-                    .fill(plant.colorHex.flatMap { Color(hex: $0) } ?? Color.bmGreen)
-                    .opacity(0.7)
+                    .fill(Color(hex: entry.paletteHex))
                     .frame(width: 22, height: 22)
                 Circle()
-                    .stroke(Color.bmText1, lineWidth: 1.2)
+                    .stroke(Color.black, lineWidth: 1.2)
                     .frame(width: 22, height: 22)
-                Text(letter)
+                Text(entry.letter)
                     .font(.system(size: 11, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color.bmText1)
+                    .foregroundStyle(.white)
             }
-            Text("\(plant.name) ×\(count)")
+            Text("\(entry.plant.name) ×\(entry.count)")
                 .font(.custom("Nunito-Bold", size: 12))
                 .foregroundStyle(Color.bmText1)
             Spacer()
-            Text(footprint(plant))
+            Text(footprint(entry.plant))
                 .font(.custom("Nunito-SemiBold", size: 10))
                 .foregroundStyle(Color.bmText3)
         }

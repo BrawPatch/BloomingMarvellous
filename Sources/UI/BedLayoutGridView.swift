@@ -71,8 +71,8 @@ struct BedLayoutGridView: View {
         for entry in BedLayoutKey.entries(bed: bed, plants: plants) {
             let spread = Double(entry.plant.spreadCm ?? 30)
             let circleSize = max(14, spread * scale)
-            let fill = entry.plant.canvasFill
-            let stroke = Color.bmText1
+            let fill = Color(hex: entry.paletteHex)
+            let stroke = Color.black
 
             for _ in 0..<entry.count {
                 if cursorX + circleSize > canvasW - 4 {
@@ -90,11 +90,12 @@ struct BedLayoutGridView: View {
                            with: .color(stroke),
                            lineWidth: 1.4)
 
-                // Letter glyph, sized to fit even small footprints.
+                // Letter glyph in white so it stays legible on top of the
+                // saturated palette fill.
                 let glyphSize = max(8, min(14, circleSize * 0.55))
                 let letter = Text(entry.letter)
                     .font(.system(size: glyphSize, weight: .bold, design: .rounded))
-                    .foregroundColor(Color.bmText1)
+                    .foregroundColor(.white)
                 ctx.draw(letter,
                          at: CGPoint(x: rect.midX, y: rect.midY),
                          anchor: .center)
@@ -150,19 +151,4 @@ struct BedLayoutGridView: View {
     }
 }
 
-private extension Plant {
-    /// Visible fill for the canvas. The original tint pulled from
-    /// `colorHex` was sometimes lighter than the mint background and
-    /// vanished; we blend it 70% towards a richer green so every dot
-    /// has at least a visible weight, and we never go below alpha 0.55.
-    var canvasFill: Color {
-        let base: Color
-        if let hex = colorHex, !hex.isEmpty {
-            base = Color(hex: hex)
-        } else {
-            base = Color.bmGreen
-        }
-        return base.opacity(0.7)
-    }
-}
 #endif
