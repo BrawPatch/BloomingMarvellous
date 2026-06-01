@@ -48,8 +48,25 @@ public struct Plant: Identifiable, Codable, Equatable {
     // Preferences
     public var preferredSoil:     [SoilType]
     public var preferredSunlight: [Sunlight]
+    // Optional so old payloads still decode; nil/empty = no preference
+    // (the matched filter treats that as "tolerates anything").
+    public var preferredAcidity:  [SoilAcidity]?
+    public var preferredWetness:  [Wetness]?
+
+    // Structured sowing details — surfaced in the Plant Detail "Sowing
+    // details" card. All optional; the free-text `germinationRequirements`
+    // remains the fallback narrative when these are absent.
+    public var seedDepthMm:         Int?
+    public var germinationTempC:    Int?
+    public var germinationDays:     String?
+    public var lightForGermination: String?
 
     // Editorial copy
+    /// Narrative description of the plant (typically a Wikipedia summary).
+    /// Optional so older payloads keep decoding.
+    public var description: String?
+    /// Bulleted, actionable grower's tips — should be short and per-cultivar
+    /// where possible, family-level otherwise. One bullet per `\n`.
     public var growersTips: String
     public var germinationRequirements: String
 
@@ -62,6 +79,10 @@ public struct Plant: Identifiable, Codable, Equatable {
 
     // Affiliate / purchase link (Amazon stub).
     public var buyLink: URL?
+
+    // Photographic image (Wikimedia Commons hosted, sourced by Latin name
+    // from the ingest pipeline). Optional — older library payloads may omit.
+    public var imageUrl: URL?
 
     public init(id: String,
                 name: String,
@@ -76,11 +97,19 @@ public struct Plant: Identifiable, Codable, Equatable {
                 harvestMonths: [Int] = [],
                 preferredSoil: [SoilType] = [],
                 preferredSunlight: [Sunlight] = [],
+                preferredAcidity: [SoilAcidity]? = nil,
+                preferredWetness: [Wetness]? = nil,
+                seedDepthMm: Int? = nil,
+                germinationTempC: Int? = nil,
+                germinationDays: String? = nil,
+                lightForGermination: String? = nil,
+                description: String? = nil,
                 growersTips: String = "",
                 germinationRequirements: String = "",
                 companions: [String] = [],
                 access: String = "free",
-                buyLink: URL? = nil) {
+                buyLink: URL? = nil,
+                imageUrl: URL? = nil) {
         self.id = id
         self.name = name
         self.latin = latin
@@ -94,11 +123,19 @@ public struct Plant: Identifiable, Codable, Equatable {
         self.harvestMonths = harvestMonths
         self.preferredSoil = preferredSoil
         self.preferredSunlight = preferredSunlight
+        self.preferredAcidity = preferredAcidity
+        self.preferredWetness = preferredWetness
+        self.seedDepthMm = seedDepthMm
+        self.germinationTempC = germinationTempC
+        self.germinationDays = germinationDays
+        self.lightForGermination = lightForGermination
+        self.description = description
         self.growersTips = growersTips
         self.germinationRequirements = germinationRequirements
         self.companions = companions
         self.access = access
         self.buyLink = buyLink
+        self.imageUrl = imageUrl
     }
 
     public func blooms(in month: Int) -> Bool { bloomMonths.contains(month) }

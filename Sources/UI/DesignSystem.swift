@@ -187,6 +187,127 @@ public struct FlowerView: View {
     }
 }
 
+// MARK: - Floral backdrop (mint base + faint scattered flowers / leaves)
+//
+// Extends the HomeView top-banner motif across the rest of the app so every
+// screen feels part of the same floral world. Sits *behind* page content
+// and ignores hits. Designed so the scattered illustrations are off-canvas
+// or in the safe-area gutters and never overlap interactive UI.
+
+public struct FloralBackdrop: ViewModifier {
+    public init() {}
+    public func body(content: Content) -> some View {
+        ZStack {
+            Color.bmBg.ignoresSafeArea()
+            GeometryReader { geo in
+                Group {
+                    FlowerView(size: 64, petalColor: .bmFlowerPink, centerColor: .bmLilac)
+                        .rotationEffect(.degrees(-18))
+                        .position(x: -10, y: 16)
+                        .opacity(0.22)
+                    LeafView(size: 42, color: .bmLeafSage)
+                        .rotationEffect(.degrees(28))
+                        .position(x: geo.size.width + 4, y: 70)
+                        .opacity(0.20)
+                    FlowerView(size: 34, petalColor: .bmLilac, centerColor: .bmAmber)
+                        .rotationEffect(.degrees(12))
+                        .position(x: 22, y: geo.size.height * 0.62)
+                        .opacity(0.18)
+                    LeafView(size: 28, color: .bmGreenMid)
+                        .rotationEffect(.degrees(-22))
+                        .position(x: geo.size.width - 24, y: geo.size.height - 40)
+                        .opacity(0.22)
+                    FlowerView(size: 22, petalColor: .bmPeach, centerColor: .bmFlowerLilac)
+                        .rotationEffect(.degrees(40))
+                        .position(x: geo.size.width * 0.5, y: geo.size.height - 12)
+                        .opacity(0.18)
+                }
+            }
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+            content
+        }
+    }
+}
+
+public extension View {
+    /// Mint background + faint floral decorations (matches HomeView's top
+    /// banner motif). Use as the outermost background on any tab screen.
+    func bmFloralBackdrop() -> some View { modifier(FloralBackdrop()) }
+}
+
+// MARK: - Sheet backdrop (form-friendly variant)
+//
+// Modals share the BM mint base + two small accent flowers, deliberately
+// quieter than `FloralBackdrop` so they don't compete with form inputs.
+
+public struct SheetBackdrop: ViewModifier {
+    public init() {}
+    public func body(content: Content) -> some View {
+        ZStack {
+            Color.bmBg.ignoresSafeArea()
+            GeometryReader { geo in
+                Group {
+                    FlowerView(size: 38, petalColor: .bmFlowerPink, centerColor: .bmLilac)
+                        .rotationEffect(.degrees(-16))
+                        .position(x: -2, y: 28)
+                        .opacity(0.16)
+                    LeafView(size: 26, color: .bmLeafSage)
+                        .rotationEffect(.degrees(24))
+                        .position(x: geo.size.width - 14, y: geo.size.height - 28)
+                        .opacity(0.18)
+                }
+            }
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+            content
+        }
+    }
+}
+
+public extension View {
+    /// Soft sheet background — same mint base as `bmFloralBackdrop` but
+    /// with two restrained accents that stay out of the form's way.
+    func bmSheetBackdrop() -> some View { modifier(SheetBackdrop()) }
+}
+
+// MARK: - bmNavTitle (sticker-style inline title in the nav bar)
+
+public struct BMNavTitle: ViewModifier {
+    let title: String
+    let icon: String?
+    public init(_ title: String, icon: String? = nil) {
+        self.title = title
+        self.icon  = icon
+    }
+    public func body(content: Content) -> some View {
+        content
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack(spacing: 5) {
+                        if let icon { Text(icon).font(.system(size: 14)) }
+                        Text(title)
+                            .font(.custom("Fredoka-SemiBold", size: 15))
+                            .foregroundStyle(Color.bmText1)
+                    }
+                    .padding(.horizontal, 12).padding(.vertical, 5)
+                    .background(Color.white.opacity(0.92))
+                    .clipShape(Capsule())
+                    .overlay(Capsule().stroke(Color.bmGreenMid, lineWidth: 1.5))
+                    .shadow(color: Color.bmGreen.opacity(0.18), radius: 3, y: 1)
+                }
+            }
+    }
+}
+
+public extension View {
+    /// Replaces the default `.navigationTitle` with the BM sticker-pill style.
+    func bmNavTitle(_ title: String, icon: String? = nil) -> some View {
+        modifier(BMNavTitle(title, icon: icon))
+    }
+}
+
 public struct LeafView: View {
     let size: CGFloat
     let color: Color

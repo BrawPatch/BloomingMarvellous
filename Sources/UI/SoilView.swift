@@ -21,6 +21,7 @@ public struct SoilView: View {
     @State private var wetness: Wetness     = .normalWell
     @State private var exposure: WeatherExposure = .normal
     @State private var sunlight: Sunlight   = .sunnyAlways
+    @State private var acidity: SoilAcidity = .neutral
     @State private var didLoad = false
     @State private var toast: ToastBanner.Message?
 
@@ -28,27 +29,44 @@ public struct SoilView: View {
 
     public init(scope: Scope? = nil) { self.initialScope = scope }
 
-    public var body: some View {
-        ZStack(alignment: .top) {
-            Color.bmBg.ignoresSafeArea()
+    /// Detect whether we're being shown inside a NavigationStack that has
+    /// no other ancestors — i.e. presented as a sheet from BedDetailView —
+    /// so we know to render a "Done" close button. Tab-presented copies of
+    /// SoilView don't need it (the tab bar is the way out).
+    @SwiftUI.Environment(\.dismiss) private var dismiss
+    private var isPresentedAsSheet: Bool {
+        // When a `scope:` was passed at init the caller is the bed-detail
+        // override sheet — only path that needs an in-modal close.
+        initialScope != nil
+    }
 
-            ScrollView {
-                VStack(spacing: 18) {
-                    scopePicker
-                    soilTypeSection
-                    wetnessSection
-                    exposureSection
-                    sunlightSection
-                    saveButton
-                    Spacer(minLength: 12)
-                }
-                .padding(20)
-                .padding(.top, 20)
+    public var body: some View {
+        ScrollView {
+            VStack(spacing: 18) {
+                scopePicker
+                soilTypeSection
+                aciditySection
+                wetnessSection
+                exposureSection
+                sunlightSection
+                saveButton
+                Spacer(minLength: 12)
             }
-            ToastBanner(message: $toast)
+            .padding(20)
+            .padding(.top, 20)
         }
-        .navigationTitle("Soil & Conditions")
-        .navigationBarTitleDisplayMode(.inline)
+        .bmFloralBackdrop()
+        .overlay(alignment: .top) { ToastBanner(message: $toast) }
+        .bmNavTitle("Soil & Conditions", icon: "🌿")
+        .toolbar {
+            if isPresentedAsSheet {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Close") { dismiss() }
+                        .font(.custom("Nunito-Bold", size: 14))
+                        .foregroundStyle(Color.bmText2)
+                }
+            }
+        }
         .onAppear(perform: loadIfNeeded)
     }
 
@@ -110,6 +128,16 @@ public struct SoilView: View {
     private var sunlightSection: some View {
         sectionCard(label: "Sunlight", icon: "☀️") {
             chipsRow(options: Sunlight.allCases, selection: $sunlight) { $0.label }
+        }
+    }
+
+    private var aciditySection: some View {
+        sectionCard(label: "Soil acidity (pH)", icon: "🧪") {
+            chipsRow(options: SoilAcidity.allCases, selection: $acidity) { $0.label }
+            Text("Drives which plants the matched picker suggests. Most UK soils are mildly acidic to neutral.")
+                .font(.custom("Nunito-SemiBold", size: 11))
+                .foregroundStyle(Color.bmText3)
+                .padding(.top, 2)
         }
     }
 
@@ -177,6 +205,7 @@ public struct SoilView: View {
             wetness  = g.wetness
             exposure = g.exposure
             sunlight = g.sunlight
+            acidity  = g.acidity ?? .neutral
         case .bed(let id):
             guard let bed = store.bed(id: id),
                   let g = store.garden(id: bed.gardenId) else { return }
@@ -184,6 +213,7 @@ public struct SoilView: View {
             wetness  = bed.effectiveWetness(garden: g)
             exposure = bed.effectiveExposure(garden: g)
             sunlight = bed.effectiveSunlight(garden: g)
+            acidity  = bed.effectiveAcidity(garden: g) ?? .neutral
         }
     }
 
@@ -195,18 +225,28 @@ public struct SoilView: View {
             g.wetness  = wetness
             g.exposure = exposure
             g.sunlight = sunlight
+            g.acidity  = acidity
             store.updateGarden(g)
             toast = .init(text: "Garden defaults saved", icon: "🌱")
         case .bed(let id):
             guard var b = store.bed(id: id),
                   let g = store.garden(id: b.gardenId) else { return }
             // Only set overrides for values that diverge from the garden.
-            b.soilTypeOverride = (soilType != g.soilType) ? soilType : nil
-            b.wetnessOverride  = (wetness  != g.wetness)  ? wetness  : nil
-            b.exposureOverride = (exposure != g.exposure) ? exposure : nil
-            b.sunlightOverride = (sunlight != g.sunlight) ? sunlight : nil
+            b.soilTypeOverride = (soilType != g.soilType)             ? soilType : nil
+            b.wetnessOverride  = (wetness  != g.wetness)              ? wetness  : nil
+            b.exposureOverride = (exposure != g.exposure)             ? exposure : nil
+            b.sunlightOverride = (sunlight != g.sunlight)             ? sunlight : nil
+            b.acidityOverride  = (acidity  != (g.acidity ?? .neutral)) ? acidity  : nil
             store.updateBed(b)
             toast = .init(text: "Bed override saved", icon: "✓")
+        }
+        // When presented as a sheet (from Bed Detail → Override garden
+        // defaults) close after saving so the user lands back on the bed.
+        if isPresentedAsSheet {
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 600_000_000)
+                dismiss()
+            }
         }
     }
 }

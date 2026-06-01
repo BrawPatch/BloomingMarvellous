@@ -71,6 +71,70 @@ public enum Sunlight: String, Codable, CaseIterable, Identifiable, Equatable {
     }
 }
 
+// MARK: - SoilAcidity (pH bands)
+//
+// 5-band split of pH (0–14):
+//   veryAcidic     (pH 0   – 4.0)
+//   mildlyAcidic   (pH 4.0 – 5.5)
+//   neutral        (pH 5.5 – 6.5)
+//   mildlyAlkaline (pH 6.5 – 7.5)
+//   veryAlkaline   (pH 7.5 – 14)
+//
+// Used for both the garden/bed setting and the plant's preferredAcidity
+// list. A plant with an empty/nil acidity list is treated as
+// "tolerates anything" by the matched filter.
+
+public enum SoilAcidity: String, Codable, CaseIterable, Identifiable, Equatable {
+    case veryAcidic     = "very_acidic"
+    case mildlyAcidic   = "mildly_acidic"
+    case neutral
+    case mildlyAlkaline = "mildly_alkaline"
+    case veryAlkaline   = "very_alkaline"
+
+    public var id: String { rawValue }
+
+    public var label: String {
+        switch self {
+        case .veryAcidic:     return "Very acidic"
+        case .mildlyAcidic:   return "Mildly acidic"
+        case .neutral:        return "Neutral"
+        case .mildlyAlkaline: return "Mildly alkaline"
+        case .veryAlkaline:   return "Very alkaline"
+        }
+    }
+
+    /// Compact label for tile badges.
+    public var shortLabel: String {
+        switch self {
+        case .veryAcidic:     return "v.acid"
+        case .mildlyAcidic:   return "acid"
+        case .neutral:        return "neut"
+        case .mildlyAlkaline: return "alk"
+        case .veryAlkaline:   return "v.alk"
+        }
+    }
+
+    /// Inclusive pH range that maps to this band.
+    public var pHRange: ClosedRange<Double> {
+        switch self {
+        case .veryAcidic:     return 0.0...4.0
+        case .mildlyAcidic:   return 4.0...5.5
+        case .neutral:        return 5.5...6.5
+        case .mildlyAlkaline: return 6.5...7.5
+        case .veryAlkaline:   return 7.5...14.0
+        }
+    }
+
+    /// Map a raw pH reading to a band. Returns nil for nonsense.
+    public static func band(forPH pH: Double) -> SoilAcidity? {
+        guard pH >= 0, pH <= 14 else { return nil }
+        for band in SoilAcidity.allCases where band.pHRange.contains(pH) {
+            return band
+        }
+        return nil
+    }
+}
+
 // MARK: - BedStatus
 
 public enum BedStatus: String, Codable, CaseIterable, Identifiable, Equatable {
@@ -91,19 +155,24 @@ public struct Garden: Identifiable, Codable, Equatable {
     public var wetness: Wetness
     public var exposure: WeatherExposure
     public var sunlight: Sunlight
+    // Optional so older persisted gardens still decode; nil = "not set",
+    // which the Plant Picker treats as "don't filter on acidity".
+    public var acidity: SoilAcidity?
 
     public init(id: UUID = UUID(),
                 name: String,
                 soilType: SoilType = .loam,
                 wetness: Wetness = .normalWell,
                 exposure: WeatherExposure = .normal,
-                sunlight: Sunlight = .sunnyAlways) {
+                sunlight: Sunlight = .sunnyAlways,
+                acidity: SoilAcidity? = .neutral) {
         self.id = id
         self.name = name
         self.soilType = soilType
         self.wetness = wetness
         self.exposure = exposure
         self.sunlight = sunlight
+        self.acidity = acidity
     }
 }
 
@@ -124,6 +193,7 @@ public struct Bed: Identifiable, Codable, Equatable {
     public var wetnessOverride: Wetness?
     public var exposureOverride: WeatherExposure?
     public var sunlightOverride: Sunlight?
+    public var acidityOverride: SoilAcidity?
 
     public init(id: UUID = UUID(),
                 gardenId: UUID,
@@ -134,7 +204,8 @@ public struct Bed: Identifiable, Codable, Equatable {
                 soilTypeOverride: SoilType? = nil,
                 wetnessOverride: Wetness? = nil,
                 exposureOverride: WeatherExposure? = nil,
-                sunlightOverride: Sunlight? = nil) {
+                sunlightOverride: Sunlight? = nil,
+                acidityOverride: SoilAcidity? = nil) {
         self.id = id
         self.gardenId = gardenId
         self.name = name
@@ -145,6 +216,7 @@ public struct Bed: Identifiable, Codable, Equatable {
         self.wetnessOverride = wetnessOverride
         self.exposureOverride = exposureOverride
         self.sunlightOverride = sunlightOverride
+        self.acidityOverride = acidityOverride
     }
 
     public var overridesGarden: Bool {
@@ -152,12 +224,14 @@ public struct Bed: Identifiable, Codable, Equatable {
         || wetnessOverride != nil
         || exposureOverride != nil
         || sunlightOverride != nil
+        || acidityOverride != nil
     }
 
     public func effectiveSoil(garden: Garden)     -> SoilType         { soilTypeOverride  ?? garden.soilType }
     public func effectiveWetness(garden: Garden)  -> Wetness          { wetnessOverride   ?? garden.wetness }
     public func effectiveExposure(garden: Garden) -> WeatherExposure  { exposureOverride  ?? garden.exposure }
     public func effectiveSunlight(garden: Garden) -> Sunlight         { sunlightOverride  ?? garden.sunlight }
+    public func effectiveAcidity(garden: Garden)  -> SoilAcidity?     { acidityOverride   ?? garden.acidity }
 
     public var dimensionLabel: String { "\(widthCm) × \(lengthCm) cm" }
 }

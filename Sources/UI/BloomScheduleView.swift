@@ -4,56 +4,55 @@ import BloomingMarvellous
 
 // MARK: - BloomScheduleView
 //
-// Wireframe: Bloom Schedule (List). Months Jan–Dec; each month lists the
-// plants the user has picked for that bloom window. Picks come from the
-// PlantDetailView "Add to bloom schedule" action.
+// Two-year bloom calendar (current year from "today onward" + the whole of
+// next year, so plants that need autumn sowing for spring bloom show up).
+// Each month is a tappable chip; tapping opens a per-garden / per-bed sheet
+// listing every pick for that month with a tap-through to PlantDetailView so
+// the gardener can flip the pick state back off.
 
 public struct BloomScheduleView: View {
 
     @EnvironmentObject private var store: GardenStore
+    @EnvironmentObject private var library: LibraryStore
+
+    @State private var sheetMonth: ScheduleMonth?
 
     public init() {}
 
     public var body: some View {
-        ZStack {
-            Color.bmBg.ignoresSafeArea()
-            ScrollView {
-                VStack(spacing: 14) {
-                    ForEach(1...12, id: \.self) { m in
-                        monthCard(month: m)
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 18)
+        ScrollView {
+            VStack(spacing: 18) {
+                let cal = Calendar.current
+                let now = Date()
+                let thisYear = cal.component(.year, from: now)
+                let thisMonth = cal.component(.month, from: now)
+                yearSection(year: thisYear, startMonth: thisMonth)
+                yearSection(year: thisYear + 1, startMonth: 1)
             }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 18)
         }
-        .navigationTitle("Bloom schedule")
-        .navigationBarTitleDisplayMode(.inline)
+        .bmFloralBackdrop()
+        .bmNavTitle("Bloom schedule", icon: "🌺")
+        .sheet(item: $sheetMonth) { m in
+            BloomMonthSheet(year: m.year, month: m.month)
+                .environmentObject(store)
+                .environmentObject(library)
+        }
     }
 
-    @ViewBuilder
-    private func monthCard(month: Int) -> some View {
-        let picks = store.picks(month: month).compactMap(PlantLibrary.plant(id:))
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(Self.monthName(month))
-                    .font(.custom("Fredoka-SemiBold", size: 16))
-                    .foregroundStyle(Color.bmText1)
-                Spacer()
-                Text("\(picks.count) plant\(picks.count == 1 ? "" : "s")")
-                    .font(.custom("Nunito-SemiBold", size: 11))
-                    .foregroundStyle(Color.bmText3)
-            }
+    // MARK: - Year section
 
-            if picks.isEmpty {
-                Text("No picks yet — add from Plant Picker.")
-                    .font(.custom("Nunito-SemiBold", size: 12))
-                    .foregroundStyle(Color.bmText3)
-            } else {
-                VStack(spacing: 6) {
-                    ForEach(picks) { plant in
-                        pickRow(plant, month: month)
-                    }
+    private func yearSection(year: Int, startMonth: Int) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(String(year))
+                .font(.custom("Fredoka-SemiBold", size: 20))
+                .foregroundStyle(Color.bmText1)
+                .padding(.leading, 4)
+
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
+                ForEach(startMonth...12, id: \.self) { m in
+                    monthChip(year: year, month: m)
                 }
             }
         }
@@ -62,34 +61,212 @@ public struct BloomScheduleView: View {
         .bmCard()
     }
 
-    private func pickRow(_ plant: Plant, month: Int) -> some View {
-        HStack(spacing: 10) {
-            Circle()
-                .fill(Color(hex: plant.colorHex ?? "#c4eeda"))
-                .frame(width: 22, height: 22)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(plant.name)
+    private func monthChip(year: Int, month: Int) -> some View {
+        let count = monthPickCount(month: month)
+        return Button {
+            sheetMonth = ScheduleMonth(year: year, month: month)
+        } label: {
+            VStack(spacing: 4) {
+                Text(Self.shortMonth(month))
                     .font(.custom("Nunito-Bold", size: 13))
                     .foregroundStyle(Color.bmText1)
-                Text(plant.type.label)
-                    .font(.custom("Nunito-SemiBold", size: 11))
-                    .foregroundStyle(Color.bmText2)
+                Text(count == 0 ? "—" : "\(count) plant\(count == 1 ? "" : "s")")
+                    .font(.custom("Nunito-SemiBold", size: 10))
+                    .foregroundStyle(count == 0 ? Color.bmText3 : Color.bmGreen)
             }
-            Spacer()
-            Button {
-                store.removePick(plantId: plant.id, month: month)
-            } label: {
-                Image(systemName: "minus.circle.fill")
-                    .foregroundStyle(Color.bmRed)
-            }
-            .buttonStyle(.plain)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(count == 0 ? Color.bmBgSoft : Color.bmGreenLight)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(RoundedRectangle(cornerRadius: 12)
+                .stroke(count == 0 ? Color.bmBorder : Color.bmGreen.opacity(0.4), lineWidth: 1.5))
         }
-        .padding(.horizontal, 10).padding(.vertical, 6)
-        .background(Color.bmBgSoft)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .buttonStyle(.plain)
     }
 
-    private static func monthName(_ m: Int) -> String {
+    /// Counts unique plants picked in a calendar month, resolved via the
+    /// server library (with bundled fallback) so Wikipedia-ingested plants
+    /// don't silently disappear.
+    private func monthPickCount(month: Int) -> Int {
+        store.picks(month: month).compactMap(library.plant(id:)).count
+    }
+
+    static func shortMonth(_ m: Int) -> String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        return f.shortMonthSymbols[m - 1]
+    }
+}
+
+// MARK: - ScheduleMonth identifier
+
+public struct ScheduleMonth: Identifiable, Hashable {
+    public let year: Int
+    public let month: Int
+    public var id: String { "\(year)-\(month)" }
+}
+
+// MARK: - BloomMonthSheet
+//
+// Per-month sheet: for Pro, list picks grouped by bed in the selected
+// garden; for Free, a single garden-scoped list. Each pick taps through to
+// PlantDetailView so the user can toggle the pick state back off.
+
+struct BloomMonthSheet: View {
+    let year: Int
+    let month: Int
+
+    @EnvironmentObject private var store: GardenStore
+    @EnvironmentObject private var library: LibraryStore
+    @SwiftUI.Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 14) {
+                    if store.user.tier == .pro {
+                        proSections
+                    } else {
+                        freeSection
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+            }
+            .bmSheetBackdrop()
+            .bmNavTitle("\(monthName(month)) \(year)", icon: "🌺")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Close") { dismiss() }
+                        .foregroundStyle(Color.bmText2)
+                }
+            }
+        }
+    }
+
+    // MARK: - Pro: per-bed grouping
+
+    @ViewBuilder
+    private var proSections: some View {
+        let beds = store.bedsInSelectedGarden
+        if beds.isEmpty {
+            emptyState
+        } else {
+            ForEach(beds) { bed in
+                let plants = store.picks(month: month, bedId: bed.id).compactMap(library.plant(id:))
+                bedSection(bedName: bed.name, plants: plants)
+            }
+            if beds.allSatisfy({ store.picks(month: month, bedId: $0.id).isEmpty }) {
+                emptyState
+            }
+        }
+    }
+
+    private func bedSection(bedName: String, plants: [Plant]) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: "square.grid.3x3.fill")
+                    .foregroundStyle(Color.bmGreen)
+                Text(bedName)
+                    .font(.custom("Fredoka-SemiBold", size: 15))
+                    .foregroundStyle(Color.bmText1)
+                Spacer()
+                Text("\(plants.count)")
+                    .font(.custom("Nunito-Bold", size: 11))
+                    .foregroundStyle(Color.bmText3)
+            }
+            if plants.isEmpty {
+                Text("No picks for this bed in \(monthName(month)).")
+                    .font(.custom("Nunito-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText3)
+            } else {
+                ForEach(plants) { p in
+                    pickRow(p)
+                }
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    // MARK: - Free: single garden list
+
+    @ViewBuilder
+    private var freeSection: some View {
+        let plants = store.picks(month: month).compactMap(library.plant(id:))
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: "leaf.fill")
+                    .foregroundStyle(Color.bmGreen)
+                Text(store.selectedGarden?.name ?? "Garden")
+                    .font(.custom("Fredoka-SemiBold", size: 15))
+                    .foregroundStyle(Color.bmText1)
+                Spacer()
+                Text("\(plants.count)")
+                    .font(.custom("Nunito-Bold", size: 11))
+                    .foregroundStyle(Color.bmText3)
+            }
+            if plants.isEmpty {
+                emptyState
+            } else {
+                ForEach(plants) { p in
+                    pickRow(p)
+                }
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func pickRow(_ plant: Plant) -> some View {
+        NavigationLink {
+            PlantDetailView(plantId: plant.id)
+                .environmentObject(store)
+                .environmentObject(library)
+        } label: {
+            HStack(spacing: 10) {
+                BMPlantImage(plant: plant, height: 44, cornerRadius: 10)
+                    .frame(width: 56)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(plant.name)
+                        .font(.custom("Nunito-Bold", size: 13))
+                        .foregroundStyle(Color.bmText1)
+                    Text(plant.latin)
+                        .font(.custom("Nunito-SemiBold", size: 11))
+                        .italic()
+                        .foregroundStyle(Color.bmText2)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(Color.bmText3)
+            }
+            .padding(.horizontal, 10).padding(.vertical, 6)
+            .background(Color.bmBgSoft)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 6) {
+            Text("🌱").font(.system(size: 28))
+            Text("No picks yet for \(monthName(month))")
+                .font(.custom("Fredoka-SemiBold", size: 14))
+                .foregroundStyle(Color.bmText1)
+            Text("Open Plant Picker, choose a plant, and tap \(monthName(month)) on its detail screen to add it here.")
+                .font(.custom("Nunito-SemiBold", size: 11))
+                .foregroundStyle(Color.bmText2)
+                .multilineTextAlignment(.center)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity)
+        .bmCard()
+    }
+
+    private func monthName(_ m: Int) -> String {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
         return f.monthSymbols[m - 1]

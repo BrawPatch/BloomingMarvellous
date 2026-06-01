@@ -2,81 +2,254 @@
 import SwiftUI
 import BloomingMarvellous
 
+// MARK: - PickerMode
+//
+// Drives the default vs. unfiltered behaviour described in the latest
+// product brief:
+//   • .matched   — filter by the selected garden's defaults (soil, wetness,
+//                   exposure, sunlight) AND the regional growing season
+//                   derived from the postcode.
+//   • .all       — show every plant the user is entitled to. Manual
+//                   Sun/Soil/Height refinements are available in this mode.
+
+public enum PickerMode: String, CaseIterable, Identifiable {
+    case matched, all
+    public var id: String { rawValue }
+    public var label: String {
+        switch self {
+        case .matched: return "Matched to garden"
+        case .all:     return "All plants"
+        }
+    }
+}
+
 // MARK: - PlantPickerMonthView
 //
-// Wireframe: Plant Picker — Month. User picks a target bloom month and
-// optional filters (sun / soil / height), then drills into the gallery.
+// User picks one or more target bloom months and a filter mode, then drills
+// into a per-month gallery.
 
 public struct PlantPickerMonthView: View {
 
-    @State private var month: Int = Calendar.current.component(.month, from: Date())
+    @EnvironmentObject private var store: GardenStore
+
+    @State private var months: Set<Int> = [Calendar.current.component(.month, from: Date())]
+    @State private var mode: PickerMode = .matched
+
+    // Manual refinements — only relevant when `mode == .all`.
     @State private var sunFilter: Sunlight?
     @State private var soilFilter: SoilType?
     @State private var minHeightCm: Int = 0
 
+    // Cross-mode filters
+    @State private var acidityFilter: SoilAcidity?
+    @State private var colorFilter:   BloomColor?
+
     public init() {}
 
     public var body: some View {
-        ZStack {
-            Color.bmBg.ignoresSafeArea()
-            ScrollView {
-                VStack(spacing: 16) {
-                    targetMonthSection
-                    filtersSection
-                    NavigationLink {
-                        PlantPickerGalleryView(month: month,
-                                               sunFilter: sunFilter,
-                                               soilFilter: soilFilter,
-                                               minHeightCm: minHeightCm)
-                    } label: {
-                        Text("View plants")
-                            .font(.custom("Fredoka-SemiBold", size: 16))
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(Color.bmGreen)
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
-                            .shadow(color: Color.bmGreen.opacity(0.25), radius: 6, y: 2)
-                    }
-                    .padding(.top, 4)
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 18)
+        ScrollView {
+            VStack(spacing: 16) {
+                modeToggle
+                if mode == .matched { matchedContextCard }
+                targetMonthsSection
+                bloomColourSection
+                if mode == .all { manualFiltersSection }
+                viewPlantsButton
             }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 18)
         }
-        .navigationTitle("Plant picker")
-        .navigationBarTitleDisplayMode(.inline)
+        .bmFloralBackdrop()
+        .bmNavTitle("Plant picker", icon: "🌷")
     }
 
-    private var targetMonthSection: some View {
+    // MARK: - Bloom colour filter (cross-mode)
+
+    private var bloomColourSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionLabel("Select target bloom month", icon: "🌸")
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
-                ForEach(1...12, id: \.self) { m in
-                    Button {
-                        month = m
-                    } label: {
-                        Text(Self.monthName(m))
-                            .font(.custom("Nunito-Bold", size: 12))
-                            .foregroundStyle(month == m ? .white : Color.bmText2)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
-                            .background(month == m ? Color.bmGreen : Color.bmBgCard)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .overlay(RoundedRectangle(cornerRadius: 10)
-                                .stroke(month == m ? Color.bmGreen : Color.bmBorder, lineWidth: 1.5))
+            HStack {
+                SectionLabel("Bloom colour", icon: "🎨")
+                Spacer()
+                if colorFilter != nil {
+                    Button("Clear") { colorFilter = nil }
+                        .font(.custom("Fredoka-SemiBold", size: 12))
+                        .foregroundStyle(Color.bmText2)
+                }
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(BloomColor.allCases) { c in
+                        Button {
+                            colorFilter = (colorFilter == c) ? nil : c
+                        } label: {
+                            HStack(spacing: 5) {
+                                Circle()
+                                    .fill(c.swatch)
+                                    .frame(width: 14, height: 14)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 1.5))
+                                Text(c.label)
+                                    .font(.custom("Nunito-Bold", size: 12))
+                                    .foregroundStyle(colorFilter == c ? .white : Color.bmText2)
+                            }
+                            .padding(.horizontal, 10).padding(.vertical, 6)
+                            .background(colorFilter == c ? Color.bmGreen : Color.bmBgCard)
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(
+                                colorFilter == c ? Color.bmGreen : Color.bmBorder,
+                                lineWidth: 1.5))
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
             }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    // MARK: - Mode toggle
+
+    private var modeToggle: some View {
+        HStack(spacing: 0) {
+            ForEach(PickerMode.allCases) { m in
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) { mode = m }
+                } label: {
+                    Text(m.label)
+                        .font(.custom("Fredoka-SemiBold", size: 13))
+                        .foregroundStyle(mode == m ? .white : Color.bmText2)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(mode == m ? Color.bmGreen : Color.clear)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+            }
+        }
+        .padding(4)
+        .background(Color.bmBgCard)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14)
+            .stroke(Color.bmBorder, lineWidth: 1.5))
+    }
+
+    // MARK: - Matched context
+
+    private var matchedContextCard: some View {
+        let climate = store.climate
+        return VStack(alignment: .leading, spacing: 8) {
+            SectionLabel("Filtering for", icon: "🎯")
+
+            if let g = store.selectedGarden {
+                HStack(spacing: 6) {
+                    miniChip(g.name, color: .bmText2)
+                    miniChip(g.soilType.label, color: .bmGreen)
+                    miniChip(g.sunlight.shortLabel, color: .bmAmber)
+                    miniChip(g.wetness.shortLabel, color: .bmSky)
+                    if let a = g.acidity {
+                        miniChip(a.shortLabel, color: .bmLilac)
+                    }
+                }
+            }
+
+            HStack(spacing: 6) {
+                Image(systemName: "location.fill").font(.system(size: 11)).foregroundStyle(Color.bmLilac)
+                Text(climate.regionLabel)
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText1)
+                Text("·").foregroundStyle(Color.bmText3)
+                Text(climate.hardinessLabel)
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmText2)
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func miniChip(_ text: String, color: Color) -> some View {
+        Text(text)
+            .font(.custom("Nunito-Bold", size: 10))
+            .foregroundStyle(color)
+            .padding(.horizontal, 7).padding(.vertical, 3)
+            .background(color.opacity(0.15))
+            .clipShape(Capsule())
+    }
+
+    // MARK: - Target months (multi-select)
+
+    private var targetMonthsSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                SectionLabel("Target bloom months", icon: "🌸")
+                Spacer()
+                if months.count > 1 {
+                    Text("\(months.count) selected")
+                        .font(.custom("Nunito-Bold", size: 11))
+                        .foregroundStyle(Color.bmText3)
+                }
+            }
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
+                ForEach(1...12, id: \.self) { m in
+                    monthChip(m)
+                }
+            }
+            HStack(spacing: 12) {
+                Button("Clear")    { months = [] }
+                    .font(.custom("Fredoka-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Button("All year")  { months = Set(1...12) }
+                    .font(.custom("Fredoka-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmGreen)
+                if mode == .matched {
+                    Button("Growing season only") {
+                        months = store.climate.growingSeason
+                    }
+                    .font(.custom("Fredoka-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmLilac)
+                }
+                Spacer()
+            }
+            .padding(.top, 4)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
     }
 
-    private var filtersSection: some View {
+    @ViewBuilder
+    private func monthChip(_ m: Int) -> some View {
+        let selected = months.contains(m)
+        let inSeason = mode == .matched && store.climate.growingSeason.contains(m)
+        Button {
+            if selected { months.remove(m) } else { months.insert(m) }
+        } label: {
+            VStack(spacing: 2) {
+                Text(Self.monthName(m))
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(selected ? .white : Color.bmText2)
+                if mode == .matched && !inSeason {
+                    Text("off-season")
+                        .font(.custom("Nunito-Bold", size: 8))
+                        .foregroundStyle(Color.bmText3)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .background(selected ? Color.bmGreen : Color.bmBgCard)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10)
+                .stroke(selected ? Color.bmGreen : Color.bmBorder, lineWidth: 1.5))
+            .opacity(mode == .matched && !inSeason ? 0.55 : 1)
+        }
+    }
+
+    // MARK: - Manual filters (only in .all mode)
+
+    private var manualFiltersSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionLabel("Optional filters", icon: "🔎")
+            SectionLabel("Refine", icon: "🔎")
 
             VStack(alignment: .leading, spacing: 6) {
                 Text("Sun")
@@ -125,7 +298,37 @@ public struct PlantPickerMonthView: View {
         .bmCard()
     }
 
-    private static func monthName(_ m: Int) -> String {
+    // MARK: - View plants
+
+    private var viewPlantsButton: some View {
+        NavigationLink {
+            PlantPickerGalleryView(months: Array(months).sorted(),
+                                   mode: mode,
+                                   manualSun: sunFilter,
+                                   manualSoil: soilFilter,
+                                   minHeightCm: minHeightCm,
+                                   colorFilter: colorFilter,
+                                   acidityOverride: acidityFilter)
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass").font(.system(size: 14, weight: .bold))
+                Text("View plants")
+                    .font(.custom("Fredoka-SemiBold", size: 16))
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(canSubmit ? Color.bmGreen : Color.bmGreenMid)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .shadow(color: Color.bmGreen.opacity(0.25), radius: 6, y: 2)
+        }
+        .disabled(!canSubmit)
+        .padding(.top, 4)
+    }
+
+    private var canSubmit: Bool { !months.isEmpty }
+
+    static func monthName(_ m: Int) -> String {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
         return f.shortMonthSymbols[m - 1]
@@ -134,63 +337,168 @@ public struct PlantPickerMonthView: View {
 
 // MARK: - PlantPickerGalleryView
 //
-// Wireframe: Plant Picker — Gallery. 2-col grid of plants matching the
-// filters, with type/color/height chips. Tap → Plant modal.
+// Grouped results: one section per selected month. Plants that bloom in
+// multiple selected months appear in each matching section (duplicated by
+// design, per the brief).
 
 struct PlantPickerGalleryView: View {
 
-    let month: Int
-    let sunFilter: Sunlight?
-    let soilFilter: SoilType?
+    let months: [Int]
+    let mode: PickerMode
+    let manualSun: Sunlight?
+    let manualSoil: SoilType?
     let minHeightCm: Int
+    let colorFilter: BloomColor?
+    /// Explicit acidity filter applied in addition to the matched filter
+    /// (e.g. when the user wants to override the garden default for this
+    /// one search). nil = don't apply an extra constraint.
+    let acidityOverride: SoilAcidity?
 
     @EnvironmentObject private var store: GardenStore
     @EnvironmentObject private var library: LibraryStore
 
-    private var matches: [Plant] {
-        library.plants.filter { plant in
-            guard plant.blooms(in: month) else { return false }
-            if let sun = sunFilter, !plant.preferredSunlight.contains(sun) { return false }
-            if let soil = soilFilter, !plant.preferredSoil.contains(soil) { return false }
-            if let h = plant.heightCm, h < minHeightCm { return false }
-            return true
+    var body: some View {
+        ScrollView {
+            if case .failed(let msg) = library.status {
+                offlineBanner(msg)
+            }
+            if grouped.allSatisfy({ $0.plants.isEmpty }) {
+                emptyState
+            } else {
+                LazyVStack(spacing: 18) {
+                    ForEach(grouped, id: \.month) { group in
+                        section(for: group)
+                    }
+                }
+                .padding(20)
+            }
+        }
+        .bmFloralBackdrop()
+        .bmNavTitle(months.count == 1
+                    ? "\(PlantPickerMonthView.monthName(months[0])) bloom"
+                    : "\(months.count)-month bloom",
+                    icon: "🌸")
+        .task { await library.loadIfNeeded() }
+    }
+
+    // MARK: - Filter pipeline
+
+    private struct MonthGroup {
+        let month: Int
+        let plants: [Plant]
+    }
+
+    private var grouped: [MonthGroup] {
+        let entitled = library.plants
+        let climate = store.climate
+
+        // Pre-compute the garden-condition filter once.
+        func suitsGarden(_ p: Plant) -> Bool {
+            guard let g = store.selectedGarden else { return true }
+            let soilOk = p.preferredSoil.isEmpty || p.preferredSoil.contains(g.soilType)
+            let sunOk  = p.preferredSunlight.isEmpty || p.preferredSunlight.contains(g.sunlight)
+            let acidOk: Bool
+            if let acids = p.preferredAcidity, !acids.isEmpty, let gAcid = g.acidity {
+                acidOk = acids.contains(gAcid)
+            } else {
+                acidOk = true
+            }
+            let wetOk: Bool
+            if let wetnesses = p.preferredWetness, !wetnesses.isEmpty {
+                wetOk = wetnesses.contains(g.wetness)
+            } else {
+                wetOk = true
+            }
+            return soilOk && sunOk && acidOk && wetOk
+        }
+
+        func suitsColor(_ p: Plant) -> Bool {
+            guard let want = colorFilter else { return true }
+            return BloomColor.band(forHex: p.colorHex) == want
+        }
+
+        return months.map { m in
+            let plants = entitled.filter { p in
+                guard p.blooms(in: m) else { return false }
+                guard suitsColor(p) else { return false }
+                if let a = acidityOverride,
+                   let acids = p.preferredAcidity, !acids.isEmpty,
+                   !acids.contains(a) {
+                    return false
+                }
+                switch mode {
+                case .matched:
+                    guard suitsGarden(p) else { return false }
+                    guard climate.suits(p) else { return false }
+                    return true
+                case .all:
+                    if let s = manualSun, !p.preferredSunlight.contains(s)  { return false }
+                    if let s = manualSoil, !p.preferredSoil.contains(s)     { return false }
+                    if let h = p.heightCm, h < minHeightCm                  { return false }
+                    return true
+                }
+            }
+            return MonthGroup(month: m, plants: plants)
         }
     }
 
-    var body: some View {
-        ZStack {
-            Color.bmBg.ignoresSafeArea()
-            ScrollView {
-                if case .failed(let msg) = library.status {
-                    offlineBanner(msg)
-                }
-                if matches.isEmpty {
-                    Text("No plants match these filters.\nTry relaxing one.")
-                        .font(.custom("Nunito-SemiBold", size: 13))
-                        .foregroundStyle(Color.bmText2)
-                        .multilineTextAlignment(.center)
-                        .padding(.top, 40)
-                } else {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 2),
-                              spacing: 12) {
-                        ForEach(matches) { p in
-                            NavigationLink {
-                                PlantDetailView(plantId: p.id)
-                                    .environmentObject(store)
-                                    .environmentObject(library)
-                            } label: {
-                                tile(p)
-                            }
-                            .buttonStyle(.plain)
+    // MARK: - Section + tile
+
+    @ViewBuilder
+    private func section(for group: MonthGroup) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text(PlantPickerMonthView.monthName(group.month))
+                    .font(.custom("Fredoka-SemiBold", size: 16))
+                    .foregroundStyle(Color.bmText1)
+                Spacer()
+                Text("\(group.plants.count) plant\(group.plants.count == 1 ? "" : "s")")
+                    .font(.custom("Nunito-Bold", size: 11))
+                    .foregroundStyle(Color.bmText3)
+            }
+
+            if group.plants.isEmpty {
+                Text(mode == .matched
+                     ? "Nothing in your garden suits this month. Try All plants."
+                     : "No matches.")
+                    .font(.custom("Nunito-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText3)
+                    .padding(.vertical, 6)
+            } else {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 2),
+                          spacing: 12) {
+                    ForEach(group.plants) { p in
+                        NavigationLink {
+                            PlantDetailView(plantId: p.id)
+                                .environmentObject(store)
+                                .environmentObject(library)
+                        } label: {
+                            tile(p)
                         }
+                        .buttonStyle(.plain)
                     }
-                    .padding(20)
                 }
             }
         }
-        .navigationTitle("\(PlantPickerMonthView_monthName(month)) bloom")
-        .navigationBarTitleDisplayMode(.inline)
-        .task { await library.loadIfNeeded() }
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 10) {
+            Text("🌱").font(.system(size: 38))
+            Text(mode == .matched ? "No matches for your garden" : "No plants found")
+                .font(.custom("Fredoka-SemiBold", size: 16))
+                .foregroundStyle(Color.bmText1)
+            Text(mode == .matched
+                 ? "Try toggling to All plants, or pick different bloom months."
+                 : "Try different filters.")
+                .font(.custom("Nunito-SemiBold", size: 12))
+                .foregroundStyle(Color.bmText2)
+                .multilineTextAlignment(.center)
+        }
+        .padding(28)
+        .frame(maxWidth: .infinity)
+        .bmCard()
+        .padding(20)
     }
 
     private func offlineBanner(_ message: String) -> some View {
@@ -212,12 +520,28 @@ struct PlantPickerGalleryView: View {
 
     private func tile(_ p: Plant) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(hex: p.colorHex ?? "#c4eeda").opacity(0.45))
-                    .frame(height: 96)
-                Text(emoji(for: p.type))
-                    .font(.system(size: 36))
+            ZStack(alignment: .topTrailing) {
+                plantImage(p, height: 96, cornerRadius: 12)
+                if let acid = primaryAcidity(p) {
+                    Text(acid.shortLabel)
+                        .font(.custom("Fredoka-SemiBold", size: 9))
+                        .foregroundStyle(.white)
+                        .kerning(0.3)
+                        .padding(.horizontal, 6).padding(.vertical, 3)
+                        .background(acidityBadgeColor(acid))
+                        .clipShape(Capsule())
+                        .overlay(Capsule().stroke(Color.white, lineWidth: 1))
+                        .padding(6)
+                        .accessibilityLabel("Prefers \(acid.label) soil")
+                }
+                if store.isPickedInSelectedScope(plantId: p.id) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 22))
+                        .foregroundStyle(Color.white, Color.bmGreen)
+                        .padding(6)
+                        .accessibilityLabel("Already in your plan")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
             }
             Text(p.name)
                 .font(.custom("Nunito-Bold", size: 14))
@@ -241,6 +565,21 @@ struct PlantPickerGalleryView: View {
             .stroke(Color.bmBorder, lineWidth: 1.5))
     }
 
+    private func primaryAcidity(_ p: Plant) -> SoilAcidity? {
+        // If the plant carries an explicit acidity preference, surface the
+        // mid-band value as the indicator. Otherwise no badge.
+        guard let acids = p.preferredAcidity, !acids.isEmpty else { return nil }
+        return acids.sorted { $0.rawValue < $1.rawValue }[acids.count / 2]
+    }
+
+    private func acidityBadgeColor(_ a: SoilAcidity) -> Color {
+        switch a {
+        case .veryAcidic, .mildlyAcidic: return .bmRed
+        case .neutral:                   return .bmGreen
+        case .mildlyAlkaline, .veryAlkaline: return .bmSky
+        }
+    }
+
     private func chip(_ text: String, color: Color) -> some View {
         Text(text)
             .font(.custom("Nunito-Bold", size: 10))
@@ -250,23 +589,119 @@ struct PlantPickerGalleryView: View {
             .clipShape(Capsule())
     }
 
-    private func emoji(for t: PlantType) -> String {
-        switch t {
-        case .annual:    return "🌸"
-        case .perennial: return "🌷"
-        case .biennial:  return "🌼"
-        case .bulb:      return "🌹"
-        case .shrub:     return "🪴"
-        case .herb:      return "🌿"
-        case .vegetable: return "🥕"
-        }
+    private func plantImage(_ p: Plant, height: CGFloat, cornerRadius: CGFloat) -> some View {
+        BMPlantImage(plant: p, height: height, cornerRadius: cornerRadius)
     }
 }
 
-// MARK: - PlantDetailView
+// MARK: - Shared plant image
 //
-// Wireframe: Plant modal (full screen). Hero, details, growers' tips, buy
-// link, Add to plan.
+// AsyncImage with a colour-card placeholder + emoji fallback. Used by both
+// the picker tile (96 px) and the detail hero (180 px). The Wikimedia Commons
+// URLs come pre-thumbnailed at width=800 by the ingest pipeline.
+
+struct BMPlantImage: View {
+    let plant: Plant
+    let height: CGFloat
+    let cornerRadius: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(Color(hex: plant.colorHex ?? "#c4eeda").opacity(0.45))
+                .frame(height: height)
+            if let url = plant.imageUrl {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let img):
+                        img
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity, maxHeight: height)
+                            .clipped()
+                            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                    case .empty:
+                        ProgressView().tint(Color.bmGreen)
+                    case .failure:
+                        emojiFallback
+                    @unknown default:
+                        emojiFallback
+                    }
+                }
+                .frame(height: height)
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            } else {
+                emojiFallback
+            }
+        }
+    }
+
+    private var emojiFallback: some View {
+        Text(emojiFor(plant.type)).font(.system(size: height * 0.38))
+    }
+}
+
+// MARK: - BloomColor (named bands for the colour filter)
+//
+// Maps a plant's `colorHex` swatch to the nearest named bloom colour band.
+// Used by the picker to filter results and by the swatch chips in the
+// filter row.
+
+public enum BloomColor: String, CaseIterable, Identifiable {
+    case white, yellow, orange, red, pink, purple, blue, green
+
+    public var id: String { rawValue }
+
+    public var label: String { rawValue.capitalized }
+
+    public var swatch: Color {
+        switch self {
+        case .white:  return Color(hex: "#f5f5f5")
+        case .yellow: return Color(hex: "#f0d860")
+        case .orange: return Color(hex: "#f0a060")
+        case .red:    return Color(hex: "#d85050")
+        case .pink:   return Color(hex: "#f0a8c0")
+        case .purple: return Color(hex: "#b890d0")
+        case .blue:   return Color(hex: "#7090d0")
+        case .green:  return Color(hex: "#80b890")
+        }
+    }
+
+    /// Reference (R, G, B) for each band, used for nearest-band assignment.
+    fileprivate var referenceRGB: (Double, Double, Double) {
+        let h = swatch.cgColor?.components ?? [1, 1, 1, 1]
+        return (Double(h[0]), Double(h[1]), Double(h[2]))
+    }
+
+    /// Pick the closest band to a given hex (Euclidean RGB distance).
+    public static func band(forHex hex: String?) -> BloomColor? {
+        guard let hex else { return nil }
+        let c = Color(hex: hex).cgColor?.components ?? [1, 1, 1, 1]
+        let r = Double(c[0]), g = Double(c[1]), b = Double(c[2])
+        var bestBand: BloomColor = .white
+        var bestDist: Double = .infinity
+        for band in BloomColor.allCases {
+            let (rr, gg, bb) = band.referenceRGB
+            let d = (r-rr)*(r-rr) + (g-gg)*(g-gg) + (b-bb)*(b-bb)
+            if d < bestDist { bestDist = d; bestBand = band }
+        }
+        return bestBand
+    }
+}
+
+fileprivate func emojiFor(_ t: PlantType) -> String {
+    switch t {
+    case .annual:    return "🌸"
+    case .perennial: return "🌷"
+    case .biennial:  return "🌼"
+    case .bulb:      return "🌹"
+    case .shrub:     return "🪴"
+    case .herb:      return "🌿"
+    case .vegetable: return "🥕"
+    }
+}
+
+// MARK: - PlantDetailView (unchanged from previous iteration)
 
 struct PlantDetailView: View {
 
@@ -276,47 +711,113 @@ struct PlantDetailView: View {
     @EnvironmentObject private var library: LibraryStore
     @SwiftUI.Environment(\.dismiss) private var dismiss
 
-    @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date())
-    @State private var picked = false
+    // Local "pending" picks. The chips toggle in this set without touching
+    // the store; the explicit Save button commits the diff so the gardener
+    // sees a clear submit step.
+    @State private var pending: Set<Int> = []
+    @State private var didSeed = false
+    @State private var savedToast: String?
 
     private var plant: Plant? { library.plant(id: plantId) }
 
     var body: some View {
-        ZStack {
-            Color.bmBg.ignoresSafeArea()
+        Group {
             if let p = plant {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
                         hero(p)
+                        descriptionSection(p)
                         details(p)
+                        growersTipsSection(p)
+                        sowingDetailsSection(p)
                         addToPlanSection(p)
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 18)
                 }
+                .onAppear { syncPendingFromStore(p) }
+                .onChange(of: store.selectedBedId) { _ in syncPendingFromStore(p) }
             } else {
                 Text("Plant not found.")
                     .font(.custom("Nunito-SemiBold", size: 14))
                     .foregroundStyle(Color.bmText2)
             }
         }
-        .navigationTitle(plant?.name ?? "Plant")
-        .navigationBarTitleDisplayMode(.inline)
+        .bmFloralBackdrop()
+        .bmNavTitle(plant?.name ?? "Plant", icon: "🌼")
+        .overlay(alignment: .top) {
+            if let toast = savedToast {
+                Text(toast)
+                    .font(.custom("Nunito-Bold", size: 13))
+                    .foregroundStyle(Color.bmText1)
+                    .padding(.horizontal, 16).padding(.vertical, 10)
+                    .background(Color.white)
+                    .clipShape(Capsule())
+                    .overlay(Capsule().stroke(Color.bmGreenMid, lineWidth: 1.5))
+                    .shadow(color: .black.opacity(0.1), radius: 6, y: 2)
+                    .padding(.top, 8)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
     }
 
     private func hero(_ p: Plant) -> some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 18)
-                .fill(Color(hex: p.colorHex ?? "#c4eeda").opacity(0.4))
-                .frame(height: 180)
-            VStack(spacing: 6) {
-                Text("🌸").font(.system(size: 56))
-                Text(p.latin)
-                    .font(.custom("Nunito-SemiBold", size: 12))
-                    .foregroundStyle(Color.bmText2)
-                    .italic()
-            }
+        VStack(spacing: 4) {
+            BMPlantImage(plant: p, height: 180, cornerRadius: 18)
+            Text(p.name)
+                .font(.custom("Fredoka-SemiBold", size: 18))
+                .foregroundStyle(Color.bmText1)
+                .padding(.top, 4)
+            Text(p.latin)
+                .font(.custom("Nunito-SemiBold", size: 12))
+                .foregroundStyle(Color.bmText2)
+                .italic()
         }
+    }
+
+    @ViewBuilder
+    private func descriptionSection(_ p: Plant) -> some View {
+        if let desc = p.description, !desc.isEmpty {
+            VStack(alignment: .leading, spacing: 6) {
+                SectionLabel("Description", icon: "📖")
+                Text(desc)
+                    .font(.custom("Nunito-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText1)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .bmCard()
+        }
+    }
+
+    @ViewBuilder
+    private func growersTipsSection(_ p: Plant) -> some View {
+        if !p.growersTips.isEmpty {
+            VStack(alignment: .leading, spacing: 6) {
+                SectionLabel("Grower's tips", icon: "💡")
+                let bullets = p.growersTips
+                    .split(separator: "\n", omittingEmptySubsequences: true)
+                    .map(String.init)
+                ForEach(Array(bullets.enumerated()), id: \.offset) { _, bullet in
+                    HStack(alignment: .top, spacing: 8) {
+                        Text("•")
+                            .font(.custom("Nunito-Bold", size: 13))
+                            .foregroundStyle(Color.bmGreen)
+                        Text(bullet)
+                            .font(.custom("Nunito-SemiBold", size: 12))
+                            .foregroundStyle(Color.bmText1)
+                    }
+                }
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .bmCard()
+        }
+    }
+
+    private func syncPendingFromStore(_ p: Plant) {
+        pending = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
+        didSeed = true
     }
 
     private func details(_ p: Plant) -> some View {
@@ -326,12 +827,11 @@ struct PlantDetailView: View {
             if let h = p.heightCm { row("Height", "\(h) cm") }
             row("Preferred soil",     p.preferredSoil.map(\.label).joined(separator: ", "))
             row("Preferred sunlight", p.preferredSunlight.map(\.label).joined(separator: ", "))
-
-            if !p.germinationRequirements.isEmpty {
-                paragraph("Germination requirements", p.germinationRequirements)
+            if let wet = p.preferredWetness, !wet.isEmpty {
+                row("Preferred moisture", wet.map(\.label).joined(separator: ", "))
             }
-            if !p.growersTips.isEmpty {
-                paragraph("Growers' tips", p.growersTips)
+            if let acid = p.preferredAcidity, !acid.isEmpty {
+                row("Preferred pH",   acid.map(\.label).joined(separator: ", "))
             }
 
             if let link = p.buyLink {
@@ -352,6 +852,86 @@ struct PlantDetailView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
+    }
+
+    private func sowingDetailsSection(_ p: Plant) -> some View {
+        // Always render the card — when data is sparse we surface a
+        // rule-of-thumb derived from bloom months + plant type so the
+        // gardener still has actionable guidance.
+        VStack(alignment: .leading, spacing: 10) {
+            SectionLabel("Sowing details", icon: "🌱")
+
+            if !p.bloomMonths.isEmpty {
+                row("Target bloom", monthList(p.bloomMonths))
+            }
+            if let d = p.seedDepthMm        { row("Seed depth", "\(d) mm") }
+            if let t = p.germinationTempC   { row("Temperature", "\(t) °C") }
+            if let days = p.germinationDays { row("Days to germinate", days) }
+            if let light = p.lightForGermination {
+                row("Light at germination", light)
+            }
+            if !p.sowIndoorMonths.isEmpty {
+                row("Sow indoors", monthList(p.sowIndoorMonths))
+            }
+            if !p.sowDirectMonths.isEmpty {
+                row("Sow direct",  monthList(p.sowDirectMonths))
+            }
+            if !p.transplantMonths.isEmpty {
+                row("Transplant",  monthList(p.transplantMonths))
+            }
+            if !p.harvestMonths.isEmpty {
+                row("Harvest",     monthList(p.harvestMonths))
+            }
+            if !p.germinationRequirements.isEmpty {
+                paragraph("Germination requirements", p.germinationRequirements)
+            }
+            if !hasSpecificSowingDetail(p) {
+                Text(sowingRuleOfThumb(p))
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmText3)
+                    .padding(.top, 4)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func hasSpecificSowingDetail(_ p: Plant) -> Bool {
+        p.seedDepthMm != nil
+        || p.germinationTempC != nil
+        || p.germinationDays != nil
+        || p.lightForGermination != nil
+        || !p.sowIndoorMonths.isEmpty
+        || !p.sowDirectMonths.isEmpty
+        || !p.transplantMonths.isEmpty
+        || !p.harvestMonths.isEmpty
+        || !p.germinationRequirements.isEmpty
+    }
+
+    /// Plain-English fallback derived from bloom month + plant type. Mirrors
+    /// the same "12 weeks before bloom" rule the planting schedule uses.
+    private func sowingRuleOfThumb(_ p: Plant) -> String {
+        let firstBloom = p.bloomMonths.sorted().first ?? 6
+        let bloomName = PlantPickerMonthView.monthName(firstBloom)
+        switch p.type {
+        case .annual, .biennial:
+            return "Detailed sowing data isn't recorded yet. Rule of thumb for a \(bloomName)-blooming \(p.type.label.lowercased()): start indoors 8–12 weeks before bloom, prick out into pots, harden off, and plant out after the last frost."
+        case .perennial:
+            return "Detailed sowing data isn't recorded yet. Most \(p.type.label.lowercased())s prefer autumn sowing or division — buy potted in spring for a \(bloomName) first bloom."
+        case .bulb:
+            return "Detailed sowing data isn't recorded yet. For \(bloomName) flowers plant bulbs in autumn at a depth of about 3× the bulb's height; spring-flowering bulbs go in Sep–Nov, summer ones in Apr–May."
+        case .shrub:
+            return "Detailed sowing data isn't recorded yet. \(p.type.label) — plant bare-root from late autumn to early spring; container-grown any frost-free month."
+        case .herb:
+            return "Detailed sowing data isn't recorded yet. Sow indoors 6–8 weeks before last frost or direct outdoors once soil is warm; pinch tips often to keep leafy."
+        case .vegetable:
+            return "Detailed sowing data isn't recorded yet. Start indoors 6–8 weeks before last frost, transplant after the frost, harvest from \(bloomName) onwards."
+        }
+    }
+
+    private func monthList(_ months: [Int]) -> String {
+        months.sorted().map { PlantPickerMonthView.monthName($0) }.joined(separator: ", ")
     }
 
     private func row(_ label: String, _ value: String) -> some View {
@@ -377,41 +957,145 @@ struct PlantDetailView: View {
         }
     }
 
+    @ViewBuilder
     private func addToPlanSection(_ p: Plant) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+        let isPro = store.user.tier == .pro
+        let beds = store.bedsInSelectedGarden
+        VStack(alignment: .leading, spacing: 12) {
             SectionLabel("Add to plan", icon: "🗓")
-            Picker("Bloom month", selection: $selectedMonth) {
-                ForEach(1...12, id: \.self) { m in
-                    Text(PlantPickerMonthView_monthName(m)).tag(m)
+
+            if isPro && !beds.isEmpty {
+                Text("Bed")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Menu {
+                    ForEach(beds) { b in
+                        Button {
+                            store.selectedBedId = b.id
+                        } label: {
+                            HStack {
+                                Text(b.name)
+                                if store.selectedBedId == b.id {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "square.grid.3x3.fill")
+                            .foregroundStyle(Color.bmGreen)
+                        Text(store.selectedBed?.name ?? beds.first?.name ?? "Pick a bed")
+                            .font(.custom("Nunito-Bold", size: 13))
+                            .foregroundStyle(Color.bmText1)
+                        Spacer()
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundStyle(Color.bmText3)
+                    }
+                    .padding(.horizontal, 12).padding(.vertical, 10)
+                    .background(Color.bmBgSoft)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.bmBorder, lineWidth: 1))
                 }
             }
-            .pickerStyle(.menu)
-            .tint(Color.bmGreen)
 
-            Button {
-                store.togglePick(plantId: p.id, month: selectedMonth)
-                picked = true
-            } label: {
-                Text(picked ? "Added ✓" : "Add to bloom schedule")
-                    .font(.custom("Fredoka-SemiBold", size: 14))
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-                    .background(picked ? Color.bmGreenMid : Color.bmGreen)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            Text("Bloom months — tap to stagger across the season")
+                .font(.custom("Nunito-Bold", size: 12))
+                .foregroundStyle(Color.bmText2)
+
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
+                ForEach(1...12, id: \.self) { m in
+                    monthPickChip(month: m)
+                }
             }
+
+            if !pending.isEmpty {
+                Text("Selected \(pending.count) month\(pending.count == 1 ? "" : "s") — tap Save below to add them to your bloom schedule.")
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmText3)
+            }
+
+            savePickButton(plant: p)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
     }
-}
 
-// File-local copy so the gallery title can reuse the formatter without
-// piercing PlantPickerMonthView's static.
-private func PlantPickerMonthView_monthName(_ m: Int) -> String {
-    let f = DateFormatter()
-    f.locale = Locale(identifier: "en_US_POSIX")
-    return f.shortMonthSymbols[m - 1]
+    private func monthPickChip(month m: Int) -> some View {
+        let selected = pending.contains(m)
+        return Button {
+            if selected { pending.remove(m) } else { pending.insert(m) }
+        } label: {
+            VStack(spacing: 2) {
+                Text(PlantPickerMonthView.monthName(m))
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(selected ? .white : Color.bmText1)
+                if selected {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .background(selected ? Color.bmGreen : Color.bmBgSoft)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10)
+                .stroke(selected ? Color.bmGreen : Color.bmBorder, lineWidth: 1.5))
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private func savePickButton(plant p: Plant) -> some View {
+        let committed = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
+        let hasDiff = pending != committed
+        Button {
+            commitPicks(plant: p, committed: committed)
+        } label: {
+            Text(savePickButtonLabel(committed: committed))
+                .font(.custom("Fredoka-SemiBold", size: 15))
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 13)
+                .background(hasDiff ? Color.bmGreen : Color.bmGreenMid)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .shadow(color: hasDiff ? Color.bmGreen.opacity(0.25) : .clear, radius: 5, y: 2)
+        }
+        .disabled(!hasDiff)
+        .padding(.top, 4)
+    }
+
+    private func savePickButtonLabel(committed: Set<Int>) -> String {
+        if pending.isEmpty && committed.isEmpty { return "Pick a month" }
+        if pending == committed { return "Saved ✓" }
+        if pending.isEmpty       { return "Remove from schedule" }
+        if committed.isEmpty     { return "Add \(pending.count) to bloom schedule" }
+        return "Update bloom schedule (\(pending.count))"
+    }
+
+    private func commitPicks(plant p: Plant, committed: Set<Int>) {
+        let toAdd    = pending.subtracting(committed)
+        let toRemove = committed.subtracting(pending)
+        for m in toAdd    { store.togglePick(plantId: p.id, month: m) }
+        for m in toRemove { store.togglePick(plantId: p.id, month: m) }
+        let count = pending.count
+        let summary: String
+        if count == 0 {
+            summary = "Removed from schedule"
+        } else if count == 1 {
+            summary = "Added to 1 month ✓"
+        } else {
+            summary = "Added to \(count) months ✓"
+        }
+        withAnimation(.spring(response: 0.3)) { savedToast = summary }
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 1_400_000_000)
+            withAnimation { savedToast = nil }
+        }
+    }
 }
 #endif

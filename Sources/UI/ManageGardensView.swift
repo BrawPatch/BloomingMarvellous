@@ -21,25 +21,21 @@ public struct ManageGardensView: View {
 
     public var body: some View {
         NavigationStack {
-            ZStack {
-                Color.bmBg.ignoresSafeArea()
-
-                ScrollView {
-                    VStack(spacing: 12) {
-                        if store.gardens.isEmpty {
-                            emptyState
-                        } else {
-                            ForEach(store.gardens) { g in
-                                row(for: g)
-                            }
+            ScrollView {
+                VStack(spacing: 12) {
+                    if store.gardens.isEmpty {
+                        emptyState
+                    } else {
+                        ForEach(store.gardens) { g in
+                            row(for: g)
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 16)
                 }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
             }
-            .navigationTitle("Manage gardens")
-            .navigationBarTitleDisplayMode(.inline)
+            .bmSheetBackdrop()
+            .bmNavTitle("Manage gardens", icon: "🌷")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Back") { dismiss() }

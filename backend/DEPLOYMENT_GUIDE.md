@@ -246,11 +246,168 @@ node scripts/seed-content.mjs --env development
 node scripts/seed-content.mjs --env production
 ```
 
-`deploy.sh` already invokes this at the end of each deploy, so the only
-time you'd run it manually is to update content **without** redeploying
-infrastructure. Edit the `HOME` and `DATA` arrays at the top of
-`scripts/seed-content.mjs` and re-run; the items carry `access` markers and
-the Lambda filters them per request.
+`deploy.sh` already invokes this at the end of each deploy, so each
+release build automatically refreshes `v1/home.json`, `v1/data.json`, and
+`v1/library.json` in the env's S3 bucket. The only time you'd run seed
+manually is to update content without redeploying infrastructure.
+
+* `HOME` and `DATA` items live inline in `scripts/seed-content.mjs` —
+  edit them in place and re-run.
+* `LIBRARY` (the Plant Picker / Bloom Schedule catalogue) is loaded from
+  `backend/data/library.json`. That file is committed and is overwritten
+  by `scripts/ingest-plants.mjs` (see §4a). The seed script falls back to
+  a small inline list if the JSON is missing.
+
+### 4a. Plant library — automatic on every deploy
+
+`deploy.sh` runs `scripts/ingest-plants.mjs --soft-fail` immediately before
+`scripts/seed-content.mjs`. That means every `./scripts/deploy.sh <env>`
+publishes a freshly-fetched library to that environment's S3 bucket — no
+manual ingest step is required.
+
+```bash
+# Standard release: refreshes infra, re-ingests the library, pushes to dev S3.
+./scripts/deploy.sh development
+
+# Same for prod.
+./scripts/deploy.sh production
+```
+
+The `--soft-fail` flag means if Wikidata or Wikipedia is temporarily
+unreachable, the ingest exits 0 and the deploy continues with the existing
+`backend/data/library.json` (the last good committed snapshot). A failed
+ingest never blocks a release.
+
+#### Manual ingest
+
+You can also re-run the ingest outside of a deploy:
+
+```bash
+cd backend
+# Full run — writes backend/data/library.json (~148 seed taxa, ~146 published).
+node scripts/ingest-plants.mjs
+
+# Smoke test — first 25 taxa, sample printed instead of written.
+node scripts/ingest-plants.mjs --limit 25 --dry-run
+```
+
+Then commit the regenerated `backend/data/library.json` so the next
+deploy's `--soft-fail` ingest has a freshly-good fallback even if the
+external APIs are flapping.
+
+#### Per-cultivar grower's tips via Gemini
+
+The ingest asks **Google Gemini** for 5 short cultivar-specific UK
+gardening tips per plant. The default model is `gemini-flash-latest`
+with `thinkingBudget: 0` (override via `GEMINI_MODEL`). Without a key
+the script keeps the family-level bullets defined in `FAMILY_DEFAULTS`
+and prints a one-line notice — so a missing key is always safe.
+
+##### Key lifecycle
+
+The Gemini API key is **never committed to git**. `API_Keys/` is in
+`.gitignore`. The canonical store is an object in each env's S3
+bucket, KMS-encrypted by the bucket's default server-side encryption.
+
+`scripts/ingest-plants.mjs` resolves the key at runtime in this order:
+
+1. **Environment variable** — `GEMINI_API_KEY` or `GOOGLE_API_KEY`.
+   Cheapest; useful for CI / one-off overrides.
+2. **Local file** — `API_Keys/GeminiKey.txt` at the repo root.
+   Gitignored. The recommended source on a developer machine.
+3. **S3 fallback** — `s3://blooming-marvellous-<env>-content/secrets/gemini.key`.
+   Defaults to the development env; override with
+   `GEMINI_KEY_S3_ENV=production` (the `deploy.sh` script sets this to
+   the env being deployed automatically).
+
+First non-empty value wins. Log line on startup says which source was
+used so you can confirm.
+
+##### Bootstrapping a new machine
+
+```bash
+# 1. Create a key at https://aistudio.google.com/apikey, then drop it in:
+mkdir -p API_Keys
+echo "..." > API_Keys/GeminiKey.txt    # this file is gitignored
+
+# 2. Push it to both env S3 buckets via the normal deploy.
+./scripts/deploy.sh development
+./scripts/deploy.sh production
+```
+
+From then on, machines without the local file can still re-ingest —
+they'll pull the key from S3.
+
+##### Rotating the key
+
+Treat any key that appears in shell history, chat transcripts, or
+non-secret channels as compromised.
+
+```bash
+# 1. Create a new key in AI Studio; revoke the old one.
+echo "<new-key>" > API_Keys/GeminiKey.txt
+
+# 2. Push to S3 for both envs (deploy.sh does this end-to-end, but a
+#    standalone sync is fine too):
+aws s3 cp API_Keys/GeminiKey.txt \
+  s3://blooming-marvellous-development-content/secrets/gemini.key
+aws s3 cp API_Keys/GeminiKey.txt \
+  s3://blooming-marvellous-production-content/secrets/gemini.key
+```
+
+##### Running the ingest
+
+```bash
+# Standard run — picks up the key from env / local file / S3.
+node scripts/ingest-plants.mjs
+
+# Force re-generation of every plant (bypass tips-cache.json).
+node scripts/ingest-plants.mjs --refresh-tips
+
+# Skip Gemini for this run only — useful when iterating on the rest of
+# the pipeline.
+node scripts/ingest-plants.mjs --no-tips
+```
+
+Results are cached at `backend/data/tips-cache.json` keyed by plant id,
+so re-runs are free unless you pass `--refresh-tips`.
+
+`./scripts/deploy.sh <env>` does the sync + ingest + seed in one shot.
+
+#### How the ingest is sourced
+
+* **Seed list:** 148 curated UK garden Latin names in
+  `SEED_LATINS` inside `ingest-plants.mjs`. Each name is resolved to a
+  Wikidata QID via `wbsearchentities`, preferring species-rank hits and
+  rejecting cultivar / lexeme matches.
+* **Photos:** Wikidata `P18` → Wikimedia Commons
+  `Special:FilePath/<file>?width=800` (always photographic — illustrations,
+  botanical plates, and SVGs are filtered out).
+* **Common name:** Wikipedia sitelink title → multi-word English alias →
+  Latin fallback. Single-word aliases (cultivar nicknames, brand names)
+  are rejected.
+* **Tips / sun / soil / bloom / type / height / acidity / sowing details:**
+  Wikipedia REST summary, parsed by conservative regex. Acidity keywords
+  (`ericaceous`, `acidic`, `alkaline`, `lime-loving`, `calcareous`, etc.)
+  map onto the 5-band `SoilAcidity` enum. Structured sowing fields
+  (`seedDepthMm`, `germinationTempC`, `germinationDays`,
+  `lightForGermination`) are extracted when present; absent values fall
+  back to the free-text `germinationRequirements` in the iOS detail card.
+  Empty fields cascade through: *cultivar → species → genus → family
+  (`FAMILY_DEFAULTS`) → generic UK-garden defaults*. The picker always
+  has a match.
+* **Validation:** records still missing `preferredSoil`,
+  `preferredSunlight`, or `bloomMonths` after inheritance are dropped
+  with a count in the script output (typically 0).
+
+| Concern | Where |
+|---------|-------|
+| Add a plant by Latin name             | append to `SEED_LATINS` in `scripts/ingest-plants.mjs` |
+| Add a new field to `Plant`            | `Sources/Models/Plant.swift`, then add to `toLibraryItem` in `ingest-plants.mjs` |
+| Different external source             | replace `fetchAgmList()` in `ingest-plants.mjs` |
+| Override an inherited field           | edit `backend/data/library.json` directly — your edits survive until the next ingest |
+| Family-level defaults are wrong       | `FAMILY_DEFAULTS` map in `ingest-plants.mjs` |
+| Skip ingest for one deploy            | comment out the ingest line in `scripts/deploy.sh` for the run |
 
 ## 5. Create users
 
@@ -323,6 +480,7 @@ that override first.
 | Lambda code (`lambda/index.mjs`)  | `./scripts/deploy.sh <env>` (re-archives + re-uploads function)     |
 | Infrastructure (`modules/api/*.tf`) | `./scripts/deploy.sh <env>`                                       |
 | `/home` or `/data` content        | edit `scripts/seed-content.mjs`, re-run `node scripts/seed-content.mjs --env <env>` |
+| Plant `/library` content          | automatic on every deploy (`scripts/deploy.sh` calls `ingest-plants.mjs --soft-fail` before seed). Out-of-band refresh: `node scripts/ingest-plants.mjs && git commit data/library.json` |
 | Add a user                        | `node scripts/create-user.mjs --env <env> --username ... ...`        |
 | Upgrade a free user to pro        | re-run `create-user.mjs` with `--tier pro` (idempotent)              |
 | Grant a pack purchase             | re-run `create-user.mjs` with `--tier pro --pack pack_exotic …`      |

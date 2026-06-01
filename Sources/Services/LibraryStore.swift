@@ -23,16 +23,27 @@ public final class LibraryStore: ObservableObject {
 
     public init(service: LibraryServiceProtocol = LibraryService()) {
         self.service = service
+        // Kick off the initial fetch immediately so it doesn't depend on
+        // any single view's lifetime. SwiftUI's `.task` modifier cancels
+        // its child task when the host view dismisses, which previously
+        // killed the URLSessionTask mid-flight and stuck us on the
+        // bundled fallback. This Task lives at the store's lifetime.
+        Task { await self.loadIfNeeded() }
     }
 
     /// Loads the server library. Safe to call repeatedly — only one fetch
     /// runs at a time. On failure, `plants` is left pointing at the
-    /// bundled fallback so the UI keeps working.
+    /// bundled fallback so the UI keeps working. The actual network call
+    /// runs in a detached task so SwiftUI `.task` cancellation cannot
+    /// abort it (the caller's structured concurrency scope ends when the
+    /// view disappears, but the fetch keeps going).
     public func loadIfNeeded() async {
         if status == .loading || status == .loaded { return }
         status = .loading
         do {
-            let server = try await service.fetchLibrary()
+            let server = try await Task.detached(priority: .userInitiated) { [service] in
+                try await service.fetchLibrary()
+            }.value
             plants = server.isEmpty ? PlantLibrary.all : server
             status = .loaded
         } catch {

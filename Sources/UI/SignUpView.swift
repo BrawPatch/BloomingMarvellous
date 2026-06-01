@@ -50,8 +50,7 @@ public struct SignUpView: View {
                     .padding(.vertical, 18)
                 }
             }
-            .navigationTitle("Create account")
-            .navigationBarTitleDisplayMode(.inline)
+            .bmNavTitle("Create account", icon: "🌱")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") { dismiss() }

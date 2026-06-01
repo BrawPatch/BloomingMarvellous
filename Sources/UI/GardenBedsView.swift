@@ -16,17 +16,13 @@ public struct GardenBedsView: View {
     public init() {}
 
     public var body: some View {
-        ZStack {
-            Color.bmBg.ignoresSafeArea()
-
-            VStack(spacing: 12) {
-                searchAndFilters
-                bedsList
-            }
-            .padding(.top, 12)
+        VStack(spacing: 12) {
+            searchAndFilters
+            bedsList
         }
-        .navigationTitle("Garden beds")
-        .navigationBarTitleDisplayMode(.inline)
+        .padding(.top, 12)
+        .bmFloralBackdrop()
+        .bmNavTitle("Garden beds", icon: "🪴")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
