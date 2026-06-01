@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "generated": "2026-06-01T14:55:05.000Z",
-  "source": "wikidata-rhs-agm + wikipedia + commons + inheritance + rebalance/common-name pass + trefle gap-fill + amazon buyLinks",
+  "generated": "2026-06-01T15:34:04.586Z",
+  "source": "wikidata-rhs-agm + wikipedia + commons + inheritance + rebalance/common-name pass + trefle gap-fill + amazon buyLinks + bundled-17 reseed",
   "items": [
     {
       "id": "dracaena-suffruticosa",
@@ -159013,6 +159013,659 @@
       ],
       "description": "Nemosenecio nikoensis is a species of flowering plant in the aster family (Asteraceae). It is endemic to Japan, where it is widespread and found on all four main islands. Its natural habitat is in wet forests in the mountains, where it grows along streamsides.",
       "buyLink": "https://www.amazon.co.uk/s?k=Nemosenecio%20nikoensis%20seeds&tag=bloomingmarvelous-21"
+    },
+    {
+      "id": "lavender",
+      "name": "Lavender",
+      "latin": "Lavandula angustifolia",
+      "type": "perennial",
+      "heightCm": 60,
+      "colorHex": "#b8a0d8",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [
+        3,
+        4
+      ],
+      "sowDirectMonths": [
+        4,
+        5
+      ],
+      "transplantMonths": [
+        5,
+        6
+      ],
+      "harvestMonths": [
+        7,
+        8
+      ],
+      "preferredSoil": [
+        "loam",
+        "sandy",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "preferredWetness": [
+        "normal_well",
+        "slightly_dry"
+      ],
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ],
+      "growersTips": "Free-draining soil and full sun. Prune after flowering.\nLavender hates wet feet — plant on a mound if your soil is heavy.\nPrune by a third in late August to keep the plant compact.\nMediterranean origin means it tolerates drought once established.\nCompanion to roses — deters aphids.",
+      "germinationRequirements": "Light required. Surface-sow at 18–22°C. 14–21 days.",
+      "companions": [
+        "marigold"
+      ],
+      "access": "free",
+      "buyLink": "https://www.amazon.co.uk/s?k=Lavandula%20angustifolia%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/010ffc8860641c73888c8664743f1527d284f258"
+    },
+    {
+      "id": "sunflower",
+      "name": "Sunflower",
+      "latin": "Helianthus annuus",
+      "type": "annual",
+      "heightCm": 200,
+      "colorHex": "#e8b070",
+      "bloomMonths": [
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [
+        3,
+        4
+      ],
+      "sowDirectMonths": [
+        4,
+        5
+      ],
+      "transplantMonths": [
+        5
+      ],
+      "harvestMonths": [
+        9,
+        10
+      ],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral",
+        "mildly_acidic"
+      ],
+      "growersTips": "Deep watering once a week. Stake tall varieties.\nSow direct after last frost or start indoors 2 weeks earlier.\nProtect young seedlings from slugs and snails.\nLeave heads after flowering — finches will strip the seeds.\nCut stems on a slight angle for best vase life.",
+      "germinationRequirements": "Sow 2 cm deep at 18–24°C. 7–14 days.",
+      "companions": [
+        "cosmos"
+      ],
+      "access": "free",
+      "buyLink": "https://www.amazon.co.uk/s?k=Helianthus%20annuus%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/e92bdbc5adc4e91cc0c5aa8e9f102833a28bc6e3"
+    },
+    {
+      "id": "cosmos",
+      "name": "Cosmos",
+      "latin": "Cosmos bipinnatus",
+      "type": "annual",
+      "heightCm": 90,
+      "colorHex": "#f0a898",
+      "bloomMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "sowIndoorMonths": [
+        3,
+        4
+      ],
+      "sowDirectMonths": [
+        4,
+        5
+      ],
+      "transplantMonths": [
+        5,
+        6
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "preferredWetness": [
+        "normal_well",
+        "slightly_dry"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Deadhead regularly for continuous bloom. Tolerates poor soil.\nPinch tips at 30 cm to encourage branching.\nStake taller varieties — flowers get top-heavy.\nGood for pollinators throughout summer.\nSelf-seeds prolifically if heads are left intact.",
+      "germinationRequirements": "Sow 5 mm deep at 18°C. 7–10 days.",
+      "companions": [
+        "sunflower"
+      ],
+      "access": "free",
+      "buyLink": "https://www.amazon.co.uk/s?k=Cosmos%20bipinnatus%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/ec0acd1dcd59fdbb169472c0a6768e6239f0f73d"
+    },
+    {
+      "id": "sweet-pea",
+      "name": "Sweet Pea",
+      "latin": "Lathyrus odoratus",
+      "type": "annual",
+      "heightCm": 200,
+      "colorHex": "#c0a0d8",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [
+        10,
+        11,
+        1,
+        2
+      ],
+      "sowDirectMonths": [
+        3,
+        4
+      ],
+      "transplantMonths": [
+        4,
+        5
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Provide trellis or canes. Pinch tips to encourage branching.\nSoak seeds overnight for faster germination.\nPick flowers daily — more cutting, more blooms.\nMulch in spring to keep roots cool.\nAutumn-sown plants flower earlier than spring sowings.",
+      "germinationRequirements": "Soak seed 24h. Sow 2 cm deep at 15°C. 10–21 days.",
+      "companions": [],
+      "access": "free",
+      "buyLink": "https://www.amazon.co.uk/s?k=Lathyrus%20odoratus%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/2ceed94d3efadc76f6480c964b105086f60a594b"
+    },
+    {
+      "id": "marigold",
+      "name": "Marigold",
+      "latin": "Tagetes patula",
+      "type": "annual",
+      "heightCm": 30,
+      "colorHex": "#f4b8b0",
+      "bloomMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "sowIndoorMonths": [
+        3,
+        4
+      ],
+      "sowDirectMonths": [
+        4,
+        5
+      ],
+      "transplantMonths": [
+        5
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Great companion for tomatoes — repels aphids and whitefly.\nDeadhead to extend the flowering season.\nTolerates poor soil; don't over-feed.\nEasy to save seed from spent flower heads.\nWatch for slugs on seedlings.",
+      "germinationRequirements": "Sow 5 mm deep at 18–22°C. 5–10 days.",
+      "companions": [
+        "lavender"
+      ],
+      "access": "free",
+      "buyLink": "https://www.amazon.co.uk/s?k=Tagetes%20patula%20seeds&tag=bloomingmarvelous-21"
+    },
+    {
+      "id": "delphinium",
+      "name": "Delphinium",
+      "latin": "Delphinium elatum",
+      "type": "perennial",
+      "heightCm": 180,
+      "colorHex": "#88c8e0",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [
+        2,
+        3
+      ],
+      "sowDirectMonths": [],
+      "transplantMonths": [
+        5
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Stake before flowering — top-heavy stems flop in wind.\nCut back after first flush for a second flowering in autumn.\nDivide clumps every 3 years to keep them vigorous.\nWatch for slugs on emerging shoots.\nMulch in spring with well-rotted manure.",
+      "germinationRequirements": "Sow 5 mm deep at 13–15°C in dark. 14–28 days.",
+      "companions": [
+        "peony"
+      ],
+      "access": "pro",
+      "buyLink": "https://www.amazon.co.uk/s?k=Delphinium%20elatum%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/08e61830ac41c8f4fa51ce752fc119abde564740"
+    },
+    {
+      "id": "dahlia",
+      "name": "Dahlia",
+      "latin": "Dahlia pinnata",
+      "type": "bulb",
+      "heightCm": 120,
+      "colorHex": "#f0a898",
+      "bloomMonths": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [
+        4,
+        5
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Lift tubers after first frost in cold areas, store in dry compost.\nPinch tips at 30 cm for bushier plants.\nStake tall varieties before they flop.\nFeed weekly with high-potash fertiliser once buds form.\nWatch for earwigs on petals.",
+      "germinationRequirements": "Tubers, not seeds. Start indoors Mar, plant out after last frost.",
+      "companions": [],
+      "access": "pro",
+      "buyLink": "https://www.amazon.co.uk/s?k=Dahlia%20pinnata%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/c2eca2a169fd0398f1163404804ede794cf11027"
+    },
+    {
+      "id": "peony",
+      "name": "Peony",
+      "latin": "Paeonia lactiflora",
+      "type": "perennial",
+      "heightCm": 90,
+      "colorHex": "#f4b8b0",
+      "bloomMonths": [
+        5,
+        6
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [
+        10,
+        11,
+        3
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Plant crown shallow — 3 cm below soil; too deep means no flowers.\nDon't move once established — they sulk for years.\nMulch in spring but keep crown clear.\nDeadhead spent blooms to redirect energy to roots.\nSupport heavy double blooms with peony rings.",
+      "germinationRequirements": "Bare-root tubers, plant Oct–Nov or Mar.",
+      "companions": [
+        "delphinium"
+      ],
+      "access": "pro",
+      "buyLink": "https://www.amazon.co.uk/s?k=Paeonia%20lactiflora%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/c3407d6fcf6614b611bdec4c5ab10672f12224e5"
+    },
+    {
+      "id": "hellebore",
+      "name": "Hellebore",
+      "latin": "Helleborus orientalis",
+      "type": "perennial",
+      "heightCm": 45,
+      "colorHex": "#c0a0d8",
+      "bloomMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [
+        9
+      ],
+      "transplantMonths": [
+        9,
+        10
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "chalky"
+      ],
+      "preferredSunlight": [
+        "sunny_pm",
+        "shaded_always"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral",
+        "mildly_alkaline"
+      ],
+      "growersTips": "Cut old leaves in late winter to show flowers.\nMulch annually with well-rotted compost.\nTolerates dry shade once established.\nAll parts toxic — wear gloves when pruning.\nSelf-seeds — leave a few flowers for new plants.",
+      "germinationRequirements": "Sow fresh seed; needs cold period. 6–12 months.",
+      "companions": [],
+      "access": "pro",
+      "buyLink": "https://www.amazon.co.uk/s?k=Helleborus%20orientalis%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/a672cebbad21d02d25ce2a20b03d5abafcb9a90c"
+    },
+    {
+      "id": "echinacea",
+      "name": "Echinacea",
+      "latin": "Echinacea purpurea",
+      "type": "perennial",
+      "heightCm": 90,
+      "colorHex": "#c0a0d8",
+      "bloomMonths": [
+        7,
+        8,
+        9
+      ],
+      "sowIndoorMonths": [
+        3,
+        4
+      ],
+      "sowDirectMonths": [
+        5
+      ],
+      "transplantMonths": [
+        5,
+        6
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam",
+        "sandy"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "preferredWetness": [
+        "normal_well",
+        "slightly_dry"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Leave seed heads for goldfinches in autumn.\nDrought tolerant once established.\nCut back hard in late winter.\nDivide every 3–4 years to maintain vigour.\nGreat for pollinators and dried flower arrangements.",
+      "germinationRequirements": "Sow 5 mm at 18°C. 10–21 days.",
+      "companions": [],
+      "access": "pro",
+      "buyLink": "https://www.amazon.co.uk/s?k=Echinacea%20purpurea%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/f361f698d1c4311acc817de62f65926024f659fd"
+    },
+    {
+      "id": "phalaenopsis",
+      "name": "Phalaenopsis Orchid",
+      "latin": "Phalaenopsis amabilis",
+      "type": "perennial",
+      "heightCm": 40,
+      "colorHex": "#f4b8b0",
+      "bloomMonths": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "sowIndoorMonths": [],
+      "sowDirectMonths": [],
+      "transplantMonths": [
+        4,
+        5
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "peaty"
+      ],
+      "preferredSunlight": [
+        "sunny_am",
+        "sunny_pm"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "mildly_acidic"
+      ],
+      "growersTips": "Bright indirect light — never direct midday sun.\nWater by soaking once a week, then drain fully.\nUse orchid bark, not standard compost.\nRe-pot every 2 years after flowering.\nFeed weakly, weekly.",
+      "germinationRequirements": "Buy as nursery plant; seed propagation requires lab conditions.",
+      "companions": [],
+      "access": "pack_exotic",
+      "buyLink": "https://www.amazon.co.uk/s?k=Phalaenopsis%20amabilis%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/4a7555e3a5c70a1f9e63666dd62a6a6ccc46643f"
+    },
+    {
+      "id": "bird-of-paradise",
+      "name": "Bird of Paradise",
+      "latin": "Strelitzia reginae",
+      "type": "perennial",
+      "heightCm": 200,
+      "colorHex": "#e8b070",
+      "bloomMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "sowIndoorMonths": [
+        3,
+        4
+      ],
+      "sowDirectMonths": [],
+      "transplantMonths": [
+        5
+      ],
+      "harvestMonths": [],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Heated greenhouse or conservatory in the UK. Min 10°C overnight.\nNeeds bright light and warm temperatures year-round.\nWater deeply but let dry between waterings in winter.\nFeed monthly during growing season.\nDivide established clumps in spring.",
+      "germinationRequirements": "Soak seed 48h, sow at 25°C. Slow — 1–6 months.",
+      "companions": [],
+      "access": "pack_exotic",
+      "buyLink": "https://www.amazon.co.uk/s?k=Strelitzia%20reginae%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/e4f2713e640f0a4d549e9517b5c3f0f12b531188"
+    },
+    {
+      "id": "tomato-gardener",
+      "name": "Tomato Gardener's Delight",
+      "latin": "Solanum lycopersicum",
+      "type": "vegetable",
+      "heightCm": 180,
+      "colorHex": "#e07070",
+      "bloomMonths": [
+        6,
+        7,
+        8
+      ],
+      "sowIndoorMonths": [
+        2,
+        3,
+        4
+      ],
+      "sowDirectMonths": [],
+      "transplantMonths": [
+        5,
+        6
+      ],
+      "harvestMonths": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "mildly_acidic",
+        "neutral"
+      ],
+      "growersTips": "Pinch out side shoots on cordon varieties.\nFeed weekly once fruit sets, with high-potash food.\nWater consistently — irregular watering causes splits.\nStake firmly — laden trusses are heavy.\nWatch for blight in damp summers.",
+      "germinationRequirements": "Sow 5 mm at 21°C. 7–10 days.",
+      "companions": [
+        "marigold"
+      ],
+      "access": "pack_edible",
+      "buyLink": "https://www.amazon.co.uk/s?k=Solanum%20lycopersicum%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/400851a79391dbe6f667c66e4bf70299e9921853"
+    },
+    {
+      "id": "basil",
+      "name": "Basil",
+      "latin": "Ocimum basilicum",
+      "type": "herb",
+      "heightCm": 30,
+      "colorHex": "#7aaa8a",
+      "bloomMonths": [],
+      "sowIndoorMonths": [
+        3,
+        4,
+        5
+      ],
+      "sowDirectMonths": [
+        5,
+        6
+      ],
+      "transplantMonths": [
+        5,
+        6
+      ],
+      "harvestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "preferredSoil": [
+        "loam"
+      ],
+      "preferredSunlight": [
+        "sunny_always",
+        "sunny_pm"
+      ],
+      "preferredWetness": [
+        "normal_well"
+      ],
+      "preferredAcidity": [
+        "neutral"
+      ],
+      "growersTips": "Pinch flowering tips to keep leaves coming.\nCompanion to tomato — repels whitefly.\nDoesn't like cold — keep indoors until June.\nWater morning, not evening, to avoid mildew.\nPick whole stems above a leaf pair, not single leaves.",
+      "germinationRequirements": "Surface-sow at 21°C. Light required. 5–10 days.",
+      "companions": [
+        "tomato-gardener"
+      ],
+      "access": "pack_edible",
+      "buyLink": "https://www.amazon.co.uk/s?k=Ocimum%20basilicum%20seeds&tag=bloomingmarvelous-21",
+      "imageUrl": "https://bs.plantnet.org/image/o/eaf722de31333a8724b4bb72c8d51959530fae56"
     }
   ]
 }
