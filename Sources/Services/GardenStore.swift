@@ -258,6 +258,42 @@ public final class GardenStore: ObservableObject {
         if selectedBedId == id { selectedBedId = bedsInSelectedGarden.first?.id }
     }
 
+    // MARK: - Plant counts (Bed Planting Map — Phase 3)
+
+    /// Replace the count of `plantId` in `bedId`. A non-positive count
+    /// removes the entry entirely so empty species don't linger in the
+    /// dict. Triggers a single persist via the `beds` didSet.
+    public func setPlantCount(plantId: String, in bedId: UUID, to count: Int) {
+        guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
+        var b = beds[idx]
+        if count <= 0 {
+            b.plantCounts.removeValue(forKey: plantId)
+            b.perennials.removeAll { $0 == plantId }
+        } else {
+            b.plantCounts[plantId] = count
+        }
+        beds[idx] = b
+    }
+
+    public func adjustPlantCount(plantId: String, in bedId: UUID, by delta: Int) {
+        let current = bed(id: bedId)?.plantCounts[plantId] ?? 0
+        setPlantCount(plantId: plantId, in: bedId, to: current + delta)
+    }
+
+    /// Toggle the perennial flag for a placed plant. No-op if the plant
+    /// isn't in this bed's plantCounts.
+    public func togglePerennial(plantId: String, in bedId: UUID) {
+        guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
+        var b = beds[idx]
+        guard b.plantCounts[plantId] != nil else { return }
+        if let p = b.perennials.firstIndex(of: plantId) {
+            b.perennials.remove(at: p)
+        } else {
+            b.perennials.append(plantId)
+        }
+        beds[idx] = b
+    }
+
     public func bed(id: UUID) -> Bed? {
         beds.first(where: { $0.id == id })
     }
