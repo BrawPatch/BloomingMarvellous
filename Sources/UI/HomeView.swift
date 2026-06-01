@@ -18,6 +18,7 @@ public struct HomeView: View {
     @State private var showingTasks = false
     @State private var showingBeds = false
     @State private var showingPlantingMap = false
+    @State private var showingStore = false
     @State private var toast: ToastBanner.Message?
 
     public init(user: UserModel,
@@ -39,6 +40,7 @@ public struct HomeView: View {
                         store: store,
                         onSwitchGarden: { showingGardenPicker = true },
                         onAddGarden:    { showingCreateGarden = true },
+                        onUpgrade:      { showingStore = true },
                         onLogout: onLogout
                     )
 
@@ -77,6 +79,9 @@ public struct HomeView: View {
             SettingsView(user: user)
                 .environmentObject(store)
         }
+        .sheet(isPresented: $showingStore) {
+            StoreSheet()
+        }
         .sheet(isPresented: $showingTasks) {
             TaskListView()
         }
@@ -89,8 +94,12 @@ public struct HomeView: View {
                 .environmentObject(store)
         }
         .safeAreaInset(edge: .top, spacing: 0) {
-            HStack {
+            HStack(spacing: 8) {
                 Spacer()
+                ContextualHelpButton(topic: .home)
+                    .padding(8)
+                    .background(Circle().fill(Color.white.opacity(0.75)))
+                    .shadow(color: .black.opacity(0.08), radius: 2, y: 1)
                 Button { showingSettings = true } label: {
                     Image(systemName: "gearshape.fill")
                         .font(.system(size: 14, weight: .bold))
@@ -194,6 +203,7 @@ private struct GardenTopBar: View {
     let store: GardenStore
     let onSwitchGarden: () -> Void
     let onAddGarden: () -> Void
+    let onUpgrade: () -> Void
     let onLogout: () -> Void
 
     var body: some View {
@@ -243,21 +253,40 @@ private struct GardenTopBar: View {
                         .opacity(store.canAddGarden ? 1 : 0.35)
                     }
                 } else {
-                    HStack(spacing: 6) {
-                        Text("🌱")
-                        Text(store.selectedGarden?.name ?? "My Garden")
-                            .font(.custom("Nunito-Bold", size: 12))
-                            .foregroundStyle(Color.bmText1)
-                        Text("FREE")
-                            .font(.custom("Fredoka-SemiBold", size: 9))
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 6).padding(.vertical, 2)
-                            .background(Color.bmLeafSage)
+                    HStack(spacing: 8) {
+                        HStack(spacing: 6) {
+                            Text("🌱")
+                            Text(store.selectedGarden?.name ?? "My Garden")
+                                .font(.custom("Nunito-Bold", size: 12))
+                                .foregroundStyle(Color.bmText1)
+                            Text("FREE")
+                                .font(.custom("Fredoka-SemiBold", size: 9))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6).padding(.vertical, 2)
+                                .background(Color.bmLeafSage)
+                                .clipShape(Capsule())
+                        }
+                        .padding(.horizontal, 12).padding(.vertical, 5)
+                        .background(Color.white.opacity(0.75))
+                        .clipShape(Capsule())
+
+                        // Subtle Pro upsell pill — opens the StoreSheet
+                        // so Free users can subscribe without digging
+                        // through Settings → Account.
+                        Button(action: onUpgrade) {
+                            HStack(spacing: 4) {
+                                Text("✨")
+                                    .font(.system(size: 11))
+                                Text("Go Pro")
+                                    .font(.custom("Fredoka-SemiBold", size: 11))
+                                    .foregroundStyle(.white)
+                            }
+                            .padding(.horizontal, 10).padding(.vertical, 5)
+                            .background(Color.bmLilac)
                             .clipShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .padding(.horizontal, 12).padding(.vertical, 5)
-                    .background(Color.white.opacity(0.75))
-                    .clipShape(Capsule())
                 }
             }
             .padding(.vertical, 14)

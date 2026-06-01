@@ -27,21 +27,21 @@ public struct GardenBedsView: View {
         .bmNavTitle("Garden beds", icon: "🪴")
         .toolbar {
             // "All plants" sits on the trailing side next to + so the
-            // system back button stays in topBarLeading.
-            if store.user.tier == .pro {
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        PlantManagementView()
-                            .environmentObject(store)
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "leaf.fill")
-                                .font(.system(size: 11, weight: .bold))
-                            Text("All plants")
-                                .font(.custom("Fredoka-SemiBold", size: 12))
-                        }
-                        .foregroundStyle(Color.bmGreen)
+            // system back button stays in topBarLeading. Available to
+            // Free and Pro — PlantManagementView now falls back to a
+            // bloom-pick-derived roll-up on Free.
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    PlantManagementView()
+                        .environmentObject(store)
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "leaf.fill")
+                            .font(.system(size: 11, weight: .bold))
+                        Text("All plants")
+                            .font(.custom("Fredoka-SemiBold", size: 12))
                     }
+                    .foregroundStyle(Color.bmGreen)
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -51,6 +51,9 @@ public struct GardenBedsView: View {
                     Image(systemName: "plus.circle.fill")
                         .foregroundStyle(Color.bmGreen)
                 }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                ContextualHelpButton(topic: .beds)
             }
         }
         .sheet(isPresented: $showingAddBed) {

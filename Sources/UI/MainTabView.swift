@@ -21,6 +21,11 @@ public struct MainTabView: View {
     private let user: UserModel
     private let onLogout: () -> Void
     @State private var selection: AppTab = .home
+    /// Splash gate. True once the user has tapped through SplashView's
+    /// "Enter the garden" CTA. Stays in @State (not @AppStorage) so the
+    /// splash + Pro CTA shows every session — matches the brief.
+    @State private var splashCompleted: Bool = false
+    @State private var showingStore: Bool = false
 
     @MainActor
     public init(user: UserModel, onLogout: @escaping () -> Void) {
@@ -52,7 +57,13 @@ public struct MainTabView: View {
 
     public var body: some View {
         Group {
-            if store.hasCompletedSetup {
+            if !splashCompleted {
+                SplashView(user: user,
+                           onContinue: { splashCompleted = true },
+                           onUpgrade: { showingStore = true },
+                           onBuyPack: { _ in showingStore = true })
+                    .environmentObject(library)
+            } else if store.hasCompletedSetup {
                 tabsBody
             } else {
                 SetupView()
@@ -61,6 +72,9 @@ public struct MainTabView: View {
             }
         }
         .task { await library.loadIfNeeded() }
+        .sheet(isPresented: $showingStore) {
+            StoreSheet()
+        }
     }
 
     private var tabsBody: some View {

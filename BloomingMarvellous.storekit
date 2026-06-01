@@ -1,0 +1,77 @@
+{
+  "identifier" : "BloomingMarvellous",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "EXOTICPACK001",
+      "localizations" : [
+        {
+          "description" : "Tropicals, orchids, and conservatory species for indoor and sheltered planting.",
+          "displayName" : "Exotic Pack",
+          "locale" : "en_GB"
+        }
+      ],
+      "productID" : "com.bloomingmarvellous.pack.exotic",
+      "referenceName" : "Exotic Pack",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "EDIBLEPACK001",
+      "localizations" : [
+        {
+          "description" : "Veg, herbs, and kitchen-garden crops with sowing windows tuned to your climate.",
+          "displayName" : "Edible Pack",
+          "locale" : "en_GB"
+        }
+      ],
+      "productID" : "com.bloomingmarvellous.pack.edible",
+      "referenceName" : "Edible Pack",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_compatibilityTimeRate" : 1,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_GB",
+    "_storefront" : "GBR",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "BMProGroup001",
+      "localizations" : [],
+      "name" : "Blooming Marvellous Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "2.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "PROMONTHLY001",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Multi-garden planning, the bed planting map, A4 PDF printing, push reminders, and the full Plant Management view.",
+              "displayName" : "Blooming Marvellous Pro",
+              "locale" : "en_GB"
+            }
+          ],
+          "productID" : "com.bloomingmarvellous.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Pro — Monthly",
+          "subscriptionGroupID" : "BMProGroup001",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

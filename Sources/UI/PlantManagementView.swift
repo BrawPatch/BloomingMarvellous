@@ -30,9 +30,7 @@ public struct PlantManagementView: View {
                                   showKinds: false)
                     .padding(.horizontal, 4)
 
-                if store.user.tier == .free {
-                    freeState
-                } else if filteredPlacements.isEmpty {
+                if filteredPlacements.isEmpty {
                     emptyState
                 } else {
                     placementsCard
@@ -43,23 +41,14 @@ public struct PlantManagementView: View {
         }
         .bmFloralBackdrop()
         .bmNavTitle("Plant management", icon: "🌿")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                ContextualHelpButton(topic: .plantManagement)
+            }
+        }
     }
 
     // MARK: - Sections
-
-    private var freeState: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("Available on Pro")
-                .font(.custom("Fredoka-SemiBold", size: 14))
-                .foregroundStyle(Color.bmText1)
-            Text("Plant management aggregates every plant across all of your gardens and beds. Upgrade to Pro to see your entire collection in one filterable list.")
-                .font(.custom("Nunito-SemiBold", size: 12))
-                .foregroundStyle(Color.bmText2)
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .bmCard()
-    }
 
     private var emptyState: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -182,6 +171,42 @@ public struct PlantManagementView: View {
                     bedName: bed.name,
                     perennial: bed.perennials.contains(pid),
                     carriedOver: bed.carriedOver.contains(pid)))
+            }
+        }
+        // Free tier (or Pro users who haven't filled in plantCounts) still
+        // benefit from a roll-up of bloom-picked species. Anything in
+        // bloomPicks / bedPicks that isn't already accounted for above is
+        // surfaced with an effective count of 1 so the view never looks
+        // empty just because the gardener hasn't run Plant layout yet.
+        let placedKey: Set<String> = Set(out.map { "\($0.bedId)-\($0.plantId)" })
+        switch store.user.tier {
+        case .free:
+            for garden in store.gardens where filters.includes(gardenId: garden.id) {
+                for bed in store.beds(in: garden.id) where filters.includes(bedId: bed.id) {
+                    var pickedIds: Set<String> = []
+                    for m in 1...12 { pickedIds.formUnion(store.picks(month: m, gardenId: garden.id)) }
+                    for pid in pickedIds where !placedKey.contains("\(bed.id)-\(pid)") {
+                        out.append(Placement(
+                            plantId: pid, count: 1,
+                            gardenId: garden.id, gardenName: garden.name,
+                            bedId: bed.id, bedName: bed.name,
+                            perennial: false, carriedOver: false))
+                    }
+                }
+            }
+        case .pro:
+            for bed in store.beds where filters.includes(bedId: bed.id) {
+                guard let garden = store.garden(id: bed.gardenId),
+                      filters.includes(gardenId: garden.id) else { continue }
+                var pickedIds: Set<String> = []
+                for m in 1...12 { pickedIds.formUnion(store.picks(month: m, bedId: bed.id)) }
+                for pid in pickedIds where !placedKey.contains("\(bed.id)-\(pid)") {
+                    out.append(Placement(
+                        plantId: pid, count: 1,
+                        gardenId: garden.id, gardenName: garden.name,
+                        bedId: bed.id, bedName: bed.name,
+                        perennial: false, carriedOver: false))
+                }
             }
         }
         return out

@@ -37,6 +37,11 @@ public struct PlantingMapView: View {
         }
         .bmFloralBackdrop()
         .bmNavTitle("Planting Map", icon: "🗺️")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                ContextualHelpButton(topic: .plantingMap)
+            }
+        }
     }
 
     // MARK: - Sections

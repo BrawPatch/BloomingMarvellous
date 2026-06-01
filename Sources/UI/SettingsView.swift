@@ -47,6 +47,7 @@ public struct SettingsView: View {
     @State private var showCancelProConfirm = false
     @State private var showResetPasswordSent = false
     @State private var passwordResetMessage: String = ""
+    @State private var showingStore = false
 
     public init(user: UserModel) { self.user = user }
 
@@ -55,7 +56,11 @@ public struct SettingsView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     preferencesSection
-                    if user.tier == .pro { gardenDefaultsSection }
+                    // Free tier still benefits from editing the (single)
+                    // garden's defaults here — the section was previously
+                    // gated to Pro, which made the Settings screen feel
+                    // half-empty for Free users.
+                    gardenDefaultsSection
                     notificationsSection
                     accountSection
                     aboutSection
@@ -70,6 +75,9 @@ public struct SettingsView: View {
                     Button("Back") { dismiss() }
                         .foregroundStyle(Color.bmText2)
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    ContextualHelpButton(topic: .settings)
+                }
             }
             .alert("Cancel Pro membership?",
                    isPresented: $showCancelProConfirm) {
@@ -83,6 +91,9 @@ public struct SettingsView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(passwordResetMessage)
+            }
+            .sheet(isPresented: $showingStore) {
+                StoreSheet()
             }
         }
     }
@@ -298,6 +309,14 @@ public struct SettingsView: View {
 
             row(label: "Signed in as", value: user.firstName.isEmpty ? "Gardener" : user.firstName)
             row(label: "Tier", value: user.tier.rawValue.capitalized)
+
+            Button { showingStore = true } label: {
+                accountRowLabel(user.tier == .free
+                                    ? "Upgrade to Pro / buy content packs"
+                                    : "Manage content packs",
+                                icon: "sparkles")
+            }
+            .buttonStyle(.plain)
 
             Button(action: emailResetPassword) {
                 accountRowLabel("Reset password (email link)", icon: "envelope")

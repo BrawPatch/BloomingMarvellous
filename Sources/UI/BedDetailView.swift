@@ -52,6 +52,9 @@ public struct BedDetailView: View {
                     .font(.custom("Nunito-Bold", size: 14))
                     .foregroundStyle(Color.bmGreen)
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                ContextualHelpButton(topic: .bedDetail)
+            }
         }
         .sheet(isPresented: $showingSoilOverride) {
             NavigationStack {

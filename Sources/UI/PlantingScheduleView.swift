@@ -73,6 +73,11 @@ public struct PlantingScheduleView: View {
         }
         .bmFloralBackdrop()
         .bmNavTitle("Planting schedule", icon: "🗓")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                ContextualHelpButton(topic: .plantingSchedule)
+            }
+        }
     }
 
     private var emptyHint: some View {
