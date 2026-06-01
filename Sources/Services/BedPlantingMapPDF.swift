@@ -131,20 +131,22 @@ public enum BedPlantingMapPDF {
         let bg = UIBezierPath(roundedRect: canvasRect, cornerRadius: 8)
         UIColor(white: 0.96, alpha: 1).setFill()
         bg.fill()
-        UIColor(white: 0.6, alpha: 1).setStroke()
+        UIColor(white: 0.4, alpha: 1).setStroke()
         bg.lineWidth = 1
         bg.stroke()
         ctx.restoreGState()
 
         // Plant circles — tallest at the back (top of page = back of bed),
-        // wrap rows; new species starts a new row.
+        // wrap rows; new species starts a new row. Each circle carries
+        // the species letter so the gardener can cross-reference the key.
         var cursorX: CGFloat = canvasRect.minX + 4
         var cursorY: CGFloat = canvasRect.minY + 4
         var rowH: CGFloat = 0
+        let glyphColor = UIColor(white: 0.1, alpha: 1)
 
         for entry in entries {
             let spreadCm = CGFloat(entry.plant.spreadCm ?? 30)
-            let circleSize = max(10, spreadCm * scale)
+            let circleSize = max(14, spreadCm * scale)
             let color = entry.uiColor
 
             for _ in 0..<entry.count {
@@ -154,21 +156,30 @@ public enum BedPlantingMapPDF {
                     rowH = 0
                 }
                 if cursorY + circleSize > canvasRect.maxY - 4 {
-                    // Out of room — stop drawing further plants.
                     return
                 }
                 let r = CGRect(x: cursorX, y: cursorY,
                                width: circleSize, height: circleSize)
-                color.withAlphaComponent(0.55).setFill()
-                color.setStroke()
+                color.withAlphaComponent(0.7).setFill()
+                glyphColor.setStroke()
                 let path = UIBezierPath(ovalIn: r)
                 path.fill()
-                path.lineWidth = 0.8
+                path.lineWidth = 0.9
                 path.stroke()
+
+                let glyphPt = max(7, min(12, circleSize * 0.55))
+                let attrs: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.systemFont(ofSize: glyphPt, weight: .bold),
+                    .foregroundColor: glyphColor,
+                ]
+                let letterSize = (entry.letter as NSString).size(withAttributes: attrs)
+                let letterPt = CGPoint(x: r.midX - letterSize.width / 2,
+                                       y: r.midY - letterSize.height / 2)
+                (entry.letter as NSString).draw(at: letterPt, withAttributes: attrs)
+
                 cursorX += circleSize + 2
                 rowH = max(rowH, circleSize)
             }
-            // New species → new row, so height tiers stay grouped.
             cursorX = canvasRect.minX + 4
             cursorY += rowH + 2
             rowH = 0
@@ -176,14 +187,59 @@ public enum BedPlantingMapPDF {
 
         // "Front of bed" caption
         let caption = "Front of bed"
-        let attrs: [NSAttributedString.Key: Any] = [
+        let captionAttrs: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 9, weight: .bold),
             .foregroundColor: UIColor.darkGray,
         ]
-        let size = (caption as NSString).size(withAttributes: attrs)
-        (caption as NSString).draw(at: CGPoint(x: canvasRect.midX - size.width / 2,
+        let captionSize = (caption as NSString).size(withAttributes: captionAttrs)
+        (caption as NSString).draw(at: CGPoint(x: canvasRect.midX - captionSize.width / 2,
                                                y: canvasRect.maxY + 4),
-                                   withAttributes: attrs)
+                                   withAttributes: captionAttrs)
+
+        drawScaleBar(in: canvasRect, scale: scale, ctx: ctx)
+    }
+
+    private static func drawScaleBar(in canvasRect: CGRect,
+                                     scale: CGFloat,
+                                     ctx: CGContext) {
+        let candidates: [CGFloat] = [10, 25, 50, 100, 200, 500]
+        let cm = candidates.first { $0 * scale >= 40 && $0 * scale <= 120 } ?? 50
+        let pxLen = cm * scale
+        let pad: CGFloat = 8
+        let y = canvasRect.maxY - pad - 14
+        let x0 = canvasRect.maxX - pad - pxLen
+        let x1 = canvasRect.maxX - pad
+
+        let bar = UIBezierPath()
+        bar.move(to: CGPoint(x: x0, y: y))
+        bar.addLine(to: CGPoint(x: x1, y: y))
+        bar.move(to: CGPoint(x: x0, y: y - 3))
+        bar.addLine(to: CGPoint(x: x0, y: y + 3))
+        bar.move(to: CGPoint(x: x1, y: y - 3))
+        bar.addLine(to: CGPoint(x: x1, y: y + 3))
+        UIColor.darkGray.setStroke()
+        bar.lineWidth = 1
+        bar.stroke()
+
+        let label = scaleLabel(cm: cm)
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 8, weight: .bold),
+            .foregroundColor: UIColor.darkGray,
+        ]
+        let size = (label as NSString).size(withAttributes: attrs)
+        (label as NSString).draw(at: CGPoint(x: (x0 + x1) / 2 - size.width / 2,
+                                             y: y - size.height - 2),
+                                 withAttributes: attrs)
+    }
+
+    private static func scaleLabel(cm: CGFloat) -> String {
+        if cm >= 100 {
+            let m = cm / 100
+            return m.truncatingRemainder(dividingBy: 1) == 0
+                ? "\(Int(m)) m"
+                : String(format: "%.1f m", m)
+        }
+        return "\(Int(cm)) cm"
     }
 
     private static func drawLegend(entries: [LayoutEntry], in rect: CGRect) {
@@ -195,21 +251,31 @@ public enum BedPlantingMapPDF {
             .font: UIFont.systemFont(ofSize: 11),
             .foregroundColor: UIColor.darkGray,
         ]
-        ("Legend" as NSString).draw(at: CGPoint(x: rect.minX, y: rect.minY),
-                                    withAttributes: headerAttrs)
+        let letterAttrs: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 9, weight: .bold),
+            .foregroundColor: UIColor(white: 0.1, alpha: 1),
+        ]
+        ("Key" as NSString).draw(at: CGPoint(x: rect.minX, y: rect.minY),
+                                 withAttributes: headerAttrs)
 
         var y = rect.minY + 20
         for entry in entries {
-            let dot = CGRect(x: rect.minX, y: y + 2, width: 10, height: 10)
+            let dot = CGRect(x: rect.minX, y: y, width: 14, height: 14)
             entry.uiColor.withAlphaComponent(0.7).setFill()
             UIBezierPath(ovalIn: dot).fill()
-            entry.uiColor.setStroke()
-            let line = UIBezierPath(ovalIn: dot)
-            line.lineWidth = 0.6
-            line.stroke()
+            UIColor(white: 0.1, alpha: 1).setStroke()
+            let outline = UIBezierPath(ovalIn: dot)
+            outline.lineWidth = 0.9
+            outline.stroke()
+
+            let lSize = (entry.letter as NSString).size(withAttributes: letterAttrs)
+            (entry.letter as NSString).draw(at: CGPoint(
+                x: dot.midX - lSize.width / 2,
+                y: dot.midY - lSize.height / 2),
+                withAttributes: letterAttrs)
 
             let text = legendLine(entry)
-            (text as NSString).draw(at: CGPoint(x: rect.minX + 16, y: y),
+            (text as NSString).draw(at: CGPoint(x: rect.minX + 20, y: y + 1),
                                     withAttributes: rowAttrs)
             y += 20
             if y > rect.maxY - 4 { break }
@@ -226,6 +292,7 @@ public enum BedPlantingMapPDF {
     // MARK: - Layout entries
 
     private struct LayoutEntry {
+        let letter: String
         let plant: Plant
         let count: Int
         var uiColor: UIColor {
@@ -236,12 +303,9 @@ public enum BedPlantingMapPDF {
 
     private static func orderedEntries(bed: Bed,
                                        plants: [String: Plant]) -> [LayoutEntry] {
-        bed.plantCounts
-            .compactMap { (pid, count) -> LayoutEntry? in
-                guard count > 0, let p = plants[pid] else { return nil }
-                return LayoutEntry(plant: p, count: count)
-            }
-            .sorted { ($0.plant.heightCm ?? 0) > ($1.plant.heightCm ?? 0) }
+        BedLayoutKey.entries(bed: bed, plants: plants).map { key in
+            LayoutEntry(letter: key.letter, plant: key.plant, count: key.count)
+        }
     }
 }
 

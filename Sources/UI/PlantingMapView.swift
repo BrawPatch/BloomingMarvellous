@@ -258,15 +258,13 @@ struct BedPlantingMapDetailView: View {
 
     private func legend(bed: Bed) -> some View {
         let plants = resolved(bed: bed)
-        let ordered = bed.plantCounts.keys.sorted {
-            (plants[$0]?.heightCm ?? 0) > (plants[$1]?.heightCm ?? 0)
-        }
+        let entries = BedLayoutKey.entries(bed: bed, plants: plants)
         return VStack(alignment: .leading, spacing: 8) {
-            SectionLabel("Legend", icon: "🌿")
-            ForEach(ordered, id: \.self) { pid in
-                if let plant = plants[pid] {
-                    legendRow(plant: plant, count: bed.plantCounts[pid] ?? 0)
-                }
+            SectionLabel("Key", icon: "🌿")
+            ForEach(entries, id: \.letter) { entry in
+                legendRow(letter: entry.letter,
+                          plant: entry.plant,
+                          count: entry.count)
             }
         }
         .padding(16)
@@ -274,11 +272,20 @@ struct BedPlantingMapDetailView: View {
         .bmCard()
     }
 
-    private func legendRow(plant: Plant, count: Int) -> some View {
+    private func legendRow(letter: String, plant: Plant, count: Int) -> some View {
         HStack(spacing: 10) {
-            Circle()
-                .fill(plant.colorHex.flatMap { Color(hex: $0) } ?? Color.bmGreen)
-                .frame(width: 12, height: 12)
+            ZStack {
+                Circle()
+                    .fill(plant.colorHex.flatMap { Color(hex: $0) } ?? Color.bmGreen)
+                    .opacity(0.7)
+                    .frame(width: 22, height: 22)
+                Circle()
+                    .stroke(Color.bmText1, lineWidth: 1.2)
+                    .frame(width: 22, height: 22)
+                Text(letter)
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.bmText1)
+            }
             Text("\(plant.name) ×\(count)")
                 .font(.custom("Nunito-Bold", size: 12))
                 .foregroundStyle(Color.bmText1)
