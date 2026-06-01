@@ -198,33 +198,69 @@ public struct FloralBackdrop: ViewModifier {
     public init() {}
     public func body(content: Content) -> some View {
         ZStack {
-            Color.bmBg.ignoresSafeArea()
+            // Subtle mint gradient (matches the HomeView GardenTopBar palette).
+            LinearGradient(
+                colors: [Color(hex: "#d8f5e8"), Color(hex: "#caf0e2"), Color(hex: "#c4eeda")],
+                startPoint: .topLeading, endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+
             GeometryReader { geo in
                 Group {
-                    FlowerView(size: 64, petalColor: .bmFlowerPink, centerColor: .bmLilac)
+                    // Top-left corner cluster.
+                    FlowerView(size: 72, petalColor: .bmFlowerPink, centerColor: .bmLilac)
                         .rotationEffect(.degrees(-18))
-                        .position(x: -10, y: 16)
-                        .opacity(0.22)
-                    LeafView(size: 42, color: .bmLeafSage)
+                        .position(x: -8, y: 24)
+                        .opacity(0.55)
+                    FlowerView(size: 36, petalColor: .bmPeach, centerColor: .bmAmber)
+                        .rotationEffect(.degrees(22))
+                        .position(x: 46, y: 88)
+                        .opacity(0.5)
+                    LeafView(size: 36, color: .bmLeafSage)
                         .rotationEffect(.degrees(28))
-                        .position(x: geo.size.width + 4, y: 70)
-                        .opacity(0.20)
-                    FlowerView(size: 34, petalColor: .bmLilac, centerColor: .bmAmber)
+                        .position(x: 18, y: 130)
+                        .opacity(0.45)
+
+                    // Top-right corner cluster.
+                    FlowerView(size: 52, petalColor: .bmLilac, centerColor: .bmFlowerLilac)
+                        .rotationEffect(.degrees(15))
+                        .position(x: geo.size.width - 12, y: 64)
+                        .opacity(0.5)
+                    LeafView(size: 42, color: .bmGreenMid)
+                        .rotationEffect(.degrees(-30))
+                        .position(x: geo.size.width - 38, y: 132)
+                        .opacity(0.45)
+
+                    // Mid-left whisper.
+                    FlowerView(size: 28, petalColor: .bmFlowerPink, centerColor: .bmAmber)
                         .rotationEffect(.degrees(12))
-                        .position(x: 22, y: geo.size.height * 0.62)
-                        .opacity(0.18)
-                    LeafView(size: 28, color: .bmGreenMid)
+                        .position(x: 26, y: geo.size.height * 0.55)
+                        .opacity(0.4)
+
+                    // Bottom-left.
+                    LeafView(size: 44, color: .bmLeafSage)
                         .rotationEffect(.degrees(-22))
-                        .position(x: geo.size.width - 24, y: geo.size.height - 40)
-                        .opacity(0.22)
-                    FlowerView(size: 22, petalColor: .bmPeach, centerColor: .bmFlowerLilac)
+                        .position(x: -2, y: geo.size.height - 80)
+                        .opacity(0.45)
+                    FlowerView(size: 34, petalColor: .bmPeach, centerColor: .bmFlowerLilac)
                         .rotationEffect(.degrees(40))
-                        .position(x: geo.size.width * 0.5, y: geo.size.height - 12)
-                        .opacity(0.18)
+                        .position(x: 56, y: geo.size.height - 30)
+                        .opacity(0.5)
+
+                    // Bottom-right cluster.
+                    FlowerView(size: 56, petalColor: .bmLilac, centerColor: .bmFlowerPink)
+                        .rotationEffect(.degrees(-12))
+                        .position(x: geo.size.width - 30, y: geo.size.height - 70)
+                        .opacity(0.5)
+                    LeafView(size: 30, color: .bmGreenMid)
+                        .rotationEffect(.degrees(35))
+                        .position(x: geo.size.width - 70, y: geo.size.height - 18)
+                        .opacity(0.45)
                 }
             }
             .ignoresSafeArea()
             .allowsHitTesting(false)
+
             content
         }
     }
@@ -245,17 +281,25 @@ public struct SheetBackdrop: ViewModifier {
     public init() {}
     public func body(content: Content) -> some View {
         ZStack {
-            Color.bmBg.ignoresSafeArea()
+            LinearGradient(
+                colors: [Color(hex: "#d8f5e8"), Color(hex: "#caf0e2")],
+                startPoint: .topLeading, endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
             GeometryReader { geo in
                 Group {
-                    FlowerView(size: 38, petalColor: .bmFlowerPink, centerColor: .bmLilac)
+                    FlowerView(size: 46, petalColor: .bmFlowerPink, centerColor: .bmLilac)
                         .rotationEffect(.degrees(-16))
-                        .position(x: -2, y: 28)
-                        .opacity(0.16)
-                    LeafView(size: 26, color: .bmLeafSage)
+                        .position(x: 8, y: 36)
+                        .opacity(0.42)
+                    LeafView(size: 32, color: .bmLeafSage)
                         .rotationEffect(.degrees(24))
-                        .position(x: geo.size.width - 14, y: geo.size.height - 28)
-                        .opacity(0.18)
+                        .position(x: geo.size.width - 18, y: geo.size.height - 32)
+                        .opacity(0.42)
+                    FlowerView(size: 26, petalColor: .bmPeach, centerColor: .bmAmber)
+                        .rotationEffect(.degrees(20))
+                        .position(x: geo.size.width - 38, y: 60)
+                        .opacity(0.38)
                 }
             }
             .ignoresSafeArea()

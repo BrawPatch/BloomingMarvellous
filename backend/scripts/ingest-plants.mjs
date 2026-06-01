@@ -1408,6 +1408,16 @@ function validate(records) {
 
 // ── Trim record to LIBRARY schema (drop scratch fields) ──────────────────────
 
+// Amazon UK search URL for "<latin name> seeds". `tag=` placeholder so future
+// versions can drop in a real Amazon Associates ID without re-running the
+// ingest — just sed across the library.json.
+const AMAZON_AFFILIATE_TAG = process.env.AMAZON_AFFILIATE_TAG || "bloomingmarvelous-21";
+
+function amazonSearchUrl(latin) {
+  const q = encodeURIComponent(`${latin} seeds`);
+  return `https://www.amazon.co.uk/s?k=${q}&tag=${encodeURIComponent(AMAZON_AFFILIATE_TAG)}`;
+}
+
 function toLibraryItem(r) {
   const item = {
     id: r.id,
@@ -1425,6 +1435,9 @@ function toLibraryItem(r) {
     germinationRequirements: r.germinationRequirements ?? "",
     companions: r.companions ?? [],
     access: r.access ?? "free",
+    // Always populate buyLink — Amazon UK search for the Latin name + "seeds".
+    // The UI shows the Buy seeds button when present.
+    buyLink: amazonSearchUrl(r.latin),
   };
   if (r.heightCm != null) item.heightCm = r.heightCm;
   if (r.colorHex)         item.colorHex = r.colorHex;
