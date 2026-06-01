@@ -26,8 +26,10 @@ public struct GardenBedsView: View {
         .bmFloralBackdrop()
         .bmNavTitle("Garden beds", icon: "🪴")
         .toolbar {
+            // "All plants" sits on the trailing side next to + so the
+            // system back button stays in topBarLeading.
             if store.user.tier == .pro {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
                         PlantManagementView()
                             .environmentObject(store)

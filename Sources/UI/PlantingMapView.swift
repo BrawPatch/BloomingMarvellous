@@ -89,10 +89,12 @@ public struct PlantingMapView: View {
     }
 
     private func thumbnail(_ bed: Bed) -> some View {
-        let resolved = resolvedPlants(for: bed)
-        let totalPlants = bed.plantCounts.values.reduce(0, +)
+        let bedForRender = bedWithEffectiveCounts(bed)
+        let resolved = resolvedPlants(for: bedForRender)
+        let totalPlants = bedForRender.plantCounts.values.reduce(0, +)
+        let derived = bed.plantCounts.isEmpty && !bedForRender.plantCounts.isEmpty
         return VStack(alignment: .leading, spacing: 8) {
-            BedLayoutGridView(bed: bed, plants: resolved)
+            BedLayoutGridView(bed: bedForRender, plants: resolved)
                 .frame(height: 110)
             VStack(alignment: .leading, spacing: 2) {
                 Text(bed.name)
@@ -101,9 +103,14 @@ public struct PlantingMapView: View {
                 Text(gardenName(for: bed))
                     .font(.custom("Nunito-SemiBold", size: 10))
                     .foregroundStyle(Color.bmText3)
-                Text("\(totalPlants) plant\(totalPlants == 1 ? "" : "s") · \(bed.plantCounts.count) species")
+                Text("\(totalPlants) plant\(totalPlants == 1 ? "" : "s") · \(bedForRender.plantCounts.count) species")
                     .font(.custom("Nunito-SemiBold", size: 10))
                     .foregroundStyle(Color.bmText3)
+                if derived {
+                    Text("Planned — open the bed's Plant layout to set counts")
+                        .font(.custom("Nunito-SemiBold", size: 10))
+                        .foregroundStyle(Color.bmAmber)
+                }
             }
         }
         .padding(12)
@@ -116,11 +123,38 @@ public struct PlantingMapView: View {
 
     // MARK: - Data helpers
 
+    /// Beds eligible for the gallery: anything with either a physical
+    /// placement (`plantCounts`) or a planned bloom pick (`bedPicks`).
+    /// Planned-only beds render with a derived "one of each species"
+    /// layout so the user still gets a map without having to round-trip
+    /// through the Plant Layout card.
     private var plantedBeds: [Bed] {
         let gardenIds = Set(store.gardens.map(\.id))
         return store.beds
-            .filter { gardenIds.contains($0.gardenId) && !$0.plantCounts.isEmpty }
+            .filter { bed in
+                guard gardenIds.contains(bed.gardenId) else { return false }
+                if !bed.plantCounts.isEmpty { return true }
+                return !plannedSpeciesIds(forBed: bed.id).isEmpty
+            }
             .sorted { $0.name < $1.name }
+    }
+
+    /// Returns a copy of `bed` whose `plantCounts` is populated when the
+    /// real one is empty. Derivation is "1 of each species the user has
+    /// picked anywhere across the 12 months in this bed".
+    private func bedWithEffectiveCounts(_ bed: Bed) -> Bed {
+        if !bed.plantCounts.isEmpty { return bed }
+        let ids = plannedSpeciesIds(forBed: bed.id)
+        guard !ids.isEmpty else { return bed }
+        var copy = bed
+        copy.plantCounts = Dictionary(uniqueKeysWithValues: ids.map { ($0, 1) })
+        return copy
+    }
+
+    private func plannedSpeciesIds(forBed bedId: UUID) -> Set<String> {
+        var ids: Set<String> = []
+        for m in 1...12 { ids.formUnion(store.picks(month: m, bedId: bedId)) }
+        return ids
     }
 
     private func resolvedPlants(for bed: Bed) -> [String: Plant] {
@@ -154,11 +188,13 @@ struct BedPlantingMapDetailView: View {
 
     var body: some View {
         Group {
-            if let bed = store.bed(id: bedId),
-               let garden = store.garden(id: bed.gardenId) {
+            if let rawBed = store.bed(id: bedId),
+               let garden = store.garden(id: rawBed.gardenId) {
+                let bed = bedWithEffectiveCounts(rawBed)
+                let derived = rawBed.plantCounts.isEmpty && !bed.plantCounts.isEmpty
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
-                        header(bed: bed, garden: garden)
+                        header(bed: bed, garden: garden, derived: derived)
                         BedLayoutGridView(bed: bed, plants: resolved(bed: bed))
                             .frame(height: 320)
                             .padding(.horizontal, 4)
@@ -186,9 +222,21 @@ struct BedPlantingMapDetailView: View {
         }
     }
 
+    /// Same fallback as the gallery: derive 1 of each picked species
+    /// when the user hasn't placed anything physically yet.
+    private func bedWithEffectiveCounts(_ bed: Bed) -> Bed {
+        if !bed.plantCounts.isEmpty { return bed }
+        var ids: Set<String> = []
+        for m in 1...12 { ids.formUnion(store.picks(month: m, bedId: bed.id)) }
+        guard !ids.isEmpty else { return bed }
+        var copy = bed
+        copy.plantCounts = Dictionary(uniqueKeysWithValues: ids.map { ($0, 1) })
+        return copy
+    }
+
     // MARK: Sections
 
-    private func header(bed: Bed, garden: Garden) -> some View {
+    private func header(bed: Bed, garden: Garden, derived: Bool) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(bed.name)
                 .font(.custom("Fredoka-SemiBold", size: 20))
@@ -196,6 +244,12 @@ struct BedPlantingMapDetailView: View {
             Text("\(bed.widthCm) × \(bed.lengthCm) cm · in \(garden.name)")
                 .font(.custom("Nunito-SemiBold", size: 12))
                 .foregroundStyle(Color.bmText2)
+            if derived {
+                Text("Derived from your bloom picks (1 of each species). Open the bed's Plant layout card to set real counts.")
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmAmber)
+                    .padding(.top, 4)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)

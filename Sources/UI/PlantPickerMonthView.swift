@@ -964,6 +964,46 @@ struct PlantDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             SectionLabel("Add to plan", icon: "🗓")
 
+            if isPro && store.gardens.count > 1 {
+                Text("Garden")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Menu {
+                    ForEach(store.gardens) { g in
+                        Button {
+                            store.selectedGardenId = g.id
+                            // Bounce the bed selection to a bed inside the new
+                            // garden so the bed picker below stays consistent.
+                            store.selectedBedId = store.beds(in: g.id).first?.id
+                        } label: {
+                            HStack {
+                                Text(g.name)
+                                if store.selectedGardenId == g.id {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "leaf.fill")
+                            .foregroundStyle(Color.bmGreen)
+                        Text(store.selectedGarden?.name ?? "Pick a garden")
+                            .font(.custom("Nunito-Bold", size: 13))
+                            .foregroundStyle(Color.bmText1)
+                        Spacer()
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundStyle(Color.bmText3)
+                    }
+                    .padding(.horizontal, 12).padding(.vertical, 10)
+                    .background(Color.bmBgSoft)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.bmBorder, lineWidth: 1))
+                }
+            }
+
             if isPro && !beds.isEmpty {
                 Text("Bed")
                     .font(.custom("Nunito-Bold", size: 12))
