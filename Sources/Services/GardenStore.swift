@@ -383,6 +383,13 @@ public final class GardenStore: ObservableObject {
         bedPicks[bedId]?[month] ?? []
     }
 
+    /// Plant IDs picked for `month` in a specific garden (Free tier
+    /// model). Used by the Phase 6 schedule when it folds events across
+    /// every garden the user owns.
+    public func picks(month: Int, gardenId: UUID) -> [String] {
+        bloomPicks[gardenId]?[month] ?? []
+    }
+
     public func togglePick(plantId: String, month: Int) {
         switch user.tier {
         case .free:

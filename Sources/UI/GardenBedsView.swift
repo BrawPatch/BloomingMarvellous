@@ -26,6 +26,22 @@ public struct GardenBedsView: View {
         .bmFloralBackdrop()
         .bmNavTitle("Garden beds", icon: "🪴")
         .toolbar {
+            if store.user.tier == .pro {
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink {
+                        PlantManagementView()
+                            .environmentObject(store)
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "leaf.fill")
+                                .font(.system(size: 11, weight: .bold))
+                            Text("All plants")
+                                .font(.custom("Fredoka-SemiBold", size: 12))
+                        }
+                        .foregroundStyle(Color.bmGreen)
+                    }
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     showingAddBed = true
