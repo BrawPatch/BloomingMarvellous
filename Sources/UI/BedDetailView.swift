@@ -301,6 +301,7 @@ public struct BedDetailView: View {
     private func plantLayoutCard(_ bed: Bed) -> some View {
         let resolved = resolvedPlantsForLayout(bed: bed)
         let capacity = BedCapacityModel(bed: bed, plants: resolved)
+        let layoutIds = layoutSpeciesIds(bed: bed, resolved: resolved)
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
                 SectionLabel("Plant layout", icon: "🗺️")
@@ -312,16 +313,18 @@ public struct BedDetailView: View {
 
             fillBar(fraction: capacity.fillFraction)
 
-            if bed.plantCounts.isEmpty {
-                Text("No plants placed yet. Pick some bloom months for this bed, then add them to the layout.")
+            if layoutIds.isEmpty {
+                Text("No bloom picks for this bed yet. Pick a plant in the Plant Picker — it'll appear here with a stepper so you can set how many you'd like.")
                     .font(.custom("Nunito-SemiBold", size: 12))
                     .foregroundStyle(Color.bmText2)
             } else {
-                BedLayoutGridView(bed: bed, plants: resolved)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 4)
+                if !bed.plantCounts.isEmpty {
+                    BedLayoutGridView(bed: bed, plants: resolved)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 4)
+                }
 
-                ForEach(orderedPlantedIds(bed: bed, resolved: resolved), id: \.self) { pid in
+                ForEach(layoutIds, id: \.self) { pid in
                     if let plant = resolved[pid] {
                         plantCountRow(bed: bed, plant: plant, capacity: capacity)
                     }
@@ -367,8 +370,17 @@ public struct BedDetailView: View {
         .bmCard()
     }
 
-    private func orderedPlantedIds(bed: Bed, resolved: [String: Plant]) -> [String] {
-        bed.plantCounts.keys.sorted { lhs, rhs in
+    /// All species the Plant layout card should render a stepper for —
+    /// the union of plants the user has physically placed (`plantCounts`)
+    /// and plants they've bloom-picked anywhere in this bed (`bedPicks`).
+    /// Surfacing planned-but-not-placed species means the gardener can
+    /// set counts inline rather than round-tripping through "Add a plant".
+    private func layoutSpeciesIds(bed: Bed, resolved: [String: Plant]) -> [String] {
+        var ids = Set(bed.plantCounts.keys)
+        for m in 1...12 {
+            ids.formUnion(store.picks(month: m, bedId: bed.id))
+        }
+        return ids.sorted { lhs, rhs in
             let l = resolved[lhs]?.heightCm ?? 0
             let r = resolved[rhs]?.heightCm ?? 0
             if l != r { return l > r } // tallest first
@@ -453,7 +465,12 @@ public struct BedDetailView: View {
                                 bed: Bed,
                                 count: Int,
                                 atCap: Bool) -> some View {
-        HStack(spacing: 8) {
+        // Decrement icon shifts between three states:
+        //   • count == 0 → minus disabled (nothing to remove)
+        //   • count == 1 → trash (next tap removes the species)
+        //   • count > 1  → minus (next tap drops by one)
+        let canDecrement = count > 0
+        return HStack(spacing: 8) {
             Button {
                 if count <= 1 {
                     store.setPlantCount(plantId: plant.id, in: bed.id, to: 0)
@@ -461,17 +478,18 @@ public struct BedDetailView: View {
                     store.adjustPlantCount(plantId: plant.id, in: bed.id, by: -1)
                 }
             } label: {
-                Image(systemName: count <= 1 ? "trash.fill" : "minus")
+                Image(systemName: count == 1 ? "trash.fill" : "minus")
                     .font(.system(size: 11, weight: .bold))
                     .foregroundStyle(.white)
                     .padding(8)
-                    .background(Circle().fill(count <= 1 ? Color.bmRed : Color.bmText2))
+                    .background(Circle().fill(decrementColor(count: count)))
             }
             .buttonStyle(.plain)
+            .disabled(!canDecrement)
 
             Text("\(count)")
                 .font(.custom("Fredoka-SemiBold", size: 14))
-                .foregroundStyle(Color.bmText1)
+                .foregroundStyle(count == 0 ? Color.bmText3 : Color.bmText1)
                 .frame(minWidth: 20)
 
             Button {
@@ -486,6 +504,12 @@ public struct BedDetailView: View {
             .buttonStyle(.plain)
             .disabled(atCap)
         }
+    }
+
+    private func decrementColor(count: Int) -> Color {
+        if count == 0 { return Color.bmText3 }
+        if count == 1 { return Color.bmRed }
+        return Color.bmText2
     }
 
     private func plantFootprintLabel(_ plant: Plant) -> String {
