@@ -12,8 +12,10 @@ public enum UserTier: String, Codable, Equatable {
 // Mirrors the backend `KNOWN_PACKS` set in backend/lambda/index.mjs.
 // Pack purchases are only meaningful for `.pro` users.
 public enum ContentPack: String, Codable, Equatable, CaseIterable {
-    case exotic = "pack_exotic"
-    case edible = "pack_edible"
+    case exotic  = "pack_exotic"
+    case edible  = "pack_edible"
+    case fruit   = "pack_fruit"
+    case rockery = "pack_rockery"
 }
 
 // MARK: - UserModel

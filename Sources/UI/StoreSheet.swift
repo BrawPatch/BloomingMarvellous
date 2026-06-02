@@ -201,6 +201,8 @@ public struct StoreSheet: View {
         case .proSubscription: return .bmLilac
         case .packExotic:      return .bmPeach
         case .packEdible:      return .bmGreen
+        case .packFruit:       return .bmRed
+        case .packRockery:     return .bmLeafSage
         }
     }
 

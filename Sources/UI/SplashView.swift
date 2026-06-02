@@ -277,8 +277,16 @@ public struct SplashView: View {
                     Color.bmPeach)
         case .edible:
             return ("🥕", "Edible Pack",
-                    "750+ veg, herbs & kitchen-garden favourites with sow & harvest dates for your area.",
+                    "Hundreds of veg & herbs with sow & harvest dates for your area.",
                     Color.bmGreen)
+        case .fruit:
+            return ("🍓", "Fruit Pack",
+                    "Berries, orchard trees & soft fruit — perfect for jam-makers and pie-bakers.",
+                    Color.bmRed)
+        case .rockery:
+            return ("🪨", "Rockery & Shrubs Pack",
+                    "Tough alpines, evergreen structure plants, and dry-stone favourites.",
+                    Color.bmLeafSage)
         }
     }
 }

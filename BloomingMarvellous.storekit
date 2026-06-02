@@ -31,6 +31,36 @@
       "productID" : "com.bloomingmarvellous.pack.edible",
       "referenceName" : "Edible Pack",
       "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "5.99",
+      "familyShareable" : false,
+      "internalID" : "FRUITPACK001",
+      "localizations" : [
+        {
+          "description" : "Berries, orchard trees and soft fruit — perfect for jam-makers and pie-bakers.",
+          "displayName" : "Fruit Pack",
+          "locale" : "en_GB"
+        }
+      ],
+      "productID" : "com.bloomingmarvellous.pack.fruit",
+      "referenceName" : "Fruit Pack",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "5.99",
+      "familyShareable" : false,
+      "internalID" : "ROCKERYPACK001",
+      "localizations" : [
+        {
+          "description" : "Tough alpines, evergreen structure plants, and dry-stone favourites.",
+          "displayName" : "Rockery & Shrubs Pack",
+          "locale" : "en_GB"
+        }
+      ],
+      "productID" : "com.bloomingmarvellous.pack.rockery",
+      "referenceName" : "Rockery & Shrubs Pack",
+      "type" : "NonConsumable"
     }
   ],
   "settings" : {

@@ -20,11 +20,13 @@ public enum StoreProductID: String, CaseIterable {
     case proSubscription = "com.bloomingmarvellous.pro.monthly"
     case packExotic      = "com.bloomingmarvellous.pack.exotic"
     case packEdible      = "com.bloomingmarvellous.pack.edible"
+    case packFruit       = "com.bloomingmarvellous.pack.fruit"
+    case packRockery     = "com.bloomingmarvellous.pack.rockery"
 
     public var isSubscription: Bool {
         switch self {
         case .proSubscription: return true
-        case .packExotic, .packEdible: return false
+        case .packExotic, .packEdible, .packFruit, .packRockery: return false
         }
     }
 
@@ -33,6 +35,8 @@ public enum StoreProductID: String, CaseIterable {
         case .proSubscription: return "Blooming Marvellous Pro"
         case .packExotic:      return "Exotic Pack"
         case .packEdible:      return "Edible Pack"
+        case .packFruit:       return "Fruit Pack"
+        case .packRockery:     return "Rockery & Shrubs Pack"
         }
     }
 
@@ -41,6 +45,8 @@ public enum StoreProductID: String, CaseIterable {
         case .proSubscription: return "✨"
         case .packExotic:      return "🌺"
         case .packEdible:      return "🥕"
+        case .packFruit:       return "🍓"
+        case .packRockery:     return "🪨"
         }
     }
 
@@ -48,7 +54,9 @@ public enum StoreProductID: String, CaseIterable {
         switch self {
         case .proSubscription: return "1,000+ more plants to fall in love with"
         case .packExotic:      return "1,000+ tropical & conservatory beauties"
-        case .packEdible:      return "750+ veg, herbs & kitchen-garden favourites"
+        case .packEdible:      return "Hundreds of veg & herbs for the kitchen garden"
+        case .packFruit:       return "Berries, orchard trees & soft fruit galore"
+        case .packRockery:     return "Hardy shrubs, alpines & dry-stone favourites"
         }
     }
 
@@ -59,7 +67,11 @@ public enum StoreProductID: String, CaseIterable {
         case .packExotic:
             return "Bring the tropics home — orchids, palms, and conservatory species, with planting windows tuned to UK weather."
         case .packEdible:
-            return "Grow your dinner — veg, herbs, and kitchen-garden crops with sow / transplant / harvest dates picked for your climate."
+            return "Grow your dinner — veg and herbs with sow, transplant and harvest dates picked for your climate."
+        case .packFruit:
+            return "From strawberries to apple trees — soft fruit, orchard classics and berry bushes for jam-makers and pie-bakers."
+        case .packRockery:
+            return "Tough, low-water plants for stone walls, gravel gardens and shrub borders — including alpines and evergreen structure plants."
         }
     }
 
@@ -68,6 +80,8 @@ public enum StoreProductID: String, CaseIterable {
         case .proSubscription: return nil
         case .packExotic:      return .exotic
         case .packEdible:      return .edible
+        case .packFruit:       return .fruit
+        case .packRockery:     return .rockery
         }
     }
 }

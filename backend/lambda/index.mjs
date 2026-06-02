@@ -55,7 +55,12 @@ const USERS_TABLE      = process.env.USERS_TABLE;
 const SESSIONS_TABLE   = process.env.SESSIONS_TABLE;
 const SESSION_TTL_DAYS = parseInt(process.env.SESSION_TTL_DAYS ?? "30", 10);
 
-const KNOWN_PACKS = new Set(["pack_exotic", "pack_edible"]);
+const KNOWN_PACKS = new Set([
+  "pack_exotic",
+  "pack_edible",
+  "pack_fruit",
+  "pack_rockery",
+]);
 
 const SECURITY_HEADERS = {
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
