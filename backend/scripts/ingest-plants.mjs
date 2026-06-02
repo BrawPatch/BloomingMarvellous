@@ -762,36 +762,70 @@ function cleanCommonName(title) {
 // have to hand-author them. `kind` controls which tier-pool the matched
 // taxa land in. The family label is what gets stored on the plant record.
 const FAMILY_LIST = [
-  // Vegetable + edible families → pack_edible
+  // Vegetable + edible families → pack_edible (kitchen-garden crops). The
+  // post-ingest retag-packs.mjs then carves fruit-bearing genera out into
+  // pack_fruit, so adding fruit families here is fine.
   { family: "Solanaceae",     kind: "vegetable" },
   { family: "Brassicaceae",   kind: "vegetable" },
   { family: "Cucurbitaceae",  kind: "vegetable" },
   { family: "Apiaceae",       kind: "vegetable" },
   { family: "Polygonaceae",   kind: "vegetable" }, // rhubarb / sorrel
-  { family: "Amaranthaceae",  kind: "vegetable" }, // beets / spinach (formerly Chenopodiaceae)
-  { family: "Amaryllidaceae", kind: "vegetable" }, // alliums (onion, garlic, chives)
+  { family: "Amaranthaceae",  kind: "vegetable" }, // beets / spinach
+  { family: "Amaryllidaceae", kind: "vegetable" }, // alliums
+  { family: "Lamiaceae",      kind: "vegetable", suffix: "_herbs" }, // mints + herb cultivars
+  { family: "Grossulariaceae", kind: "vegetable" }, // currants, gooseberries → pack_fruit later
+  { family: "Vitaceae",       kind: "vegetable" }, // grapes → pack_fruit later
+  { family: "Moraceae",       kind: "vegetable" }, // figs, mulberry → pack_fruit later
+  { family: "Rutaceae",       kind: "vegetable" }, // citrus → pack_fruit later
+  { family: "Actinidiaceae",  kind: "vegetable" }, // kiwi → pack_fruit later
+  { family: "Caricaceae",     kind: "vegetable" }, // papaya → pack_fruit later
 
   // Ornamental flowering families → free / pro / pack_exotic by Latin order
   { family: "Asteraceae",     kind: "ornamental" },
-  { family: "Rosaceae",       kind: "ornamental" },
-  { family: "Lamiaceae",      kind: "ornamental" }, // lavender, salvia, monarda
+  { family: "Rosaceae",       kind: "ornamental" }, // many fruit + ornamental
+  { family: "Lamiaceae",      kind: "ornamental" },
   { family: "Iridaceae",      kind: "ornamental" },
   { family: "Liliaceae",      kind: "ornamental" },
   { family: "Ranunculaceae",  kind: "ornamental" },
-  { family: "Ericaceae",      kind: "ornamental" },
+  { family: "Ericaceae",      kind: "ornamental" }, // heathers + blueberries
   { family: "Hydrangeaceae",  kind: "ornamental" },
   { family: "Caryophyllaceae",kind: "ornamental" },
   { family: "Geraniaceae",    kind: "ornamental" },
   { family: "Boraginaceae",   kind: "ornamental" },
   { family: "Saxifragaceae",  kind: "ornamental" },
-  { family: "Crassulaceae",   kind: "ornamental" },
+  { family: "Crassulaceae",   kind: "ornamental" }, // sempervivum, sedum
   { family: "Plantaginaceae", kind: "ornamental" },
   { family: "Papaveraceae",   kind: "ornamental" },
   { family: "Onagraceae",     kind: "ornamental" },
   { family: "Orchidaceae",    kind: "ornamental" },
-  { family: "Fabaceae",       kind: "ornamental" }, // sweet pea, lupins…
+  { family: "Fabaceae",       kind: "ornamental" },
   { family: "Magnoliaceae",   kind: "ornamental" },
-  { family: "Asparagaceae",   kind: "ornamental" }, // hostas, hyacinths
+  { family: "Asparagaceae",   kind: "ornamental" },
+
+  // Added 2026-06: more breadth so pack pools hit the new minimums.
+  { family: "Primulaceae",      kind: "ornamental" }, // primulas, cyclamen
+  { family: "Violaceae",        kind: "ornamental" }, // violas, pansies
+  { family: "Campanulaceae",    kind: "ornamental" }, // bellflowers
+  { family: "Adoxaceae",        kind: "ornamental" }, // viburnum, elder
+  { family: "Caprifoliaceae",   kind: "ornamental" }, // honeysuckle
+  { family: "Cornaceae",        kind: "ornamental" }, // dogwoods
+  { family: "Aquifoliaceae",    kind: "ornamental" }, // hollies → pack_rockery
+  { family: "Buxaceae",         kind: "ornamental" }, // box hedging
+  { family: "Berberidaceae",    kind: "ornamental" }, // barberry, mahonia
+  { family: "Pinaceae",         kind: "ornamental" }, // conifers
+  { family: "Cupressaceae",     kind: "ornamental" }, // junipers
+  { family: "Theaceae",         kind: "ornamental" }, // camellias
+  { family: "Apocynaceae",      kind: "ornamental" }, // periwinkles, oleander
+  { family: "Begoniaceae",      kind: "ornamental" }, // begonias
+  { family: "Cactaceae",        kind: "ornamental" }, // cacti → pack_exotic
+  { family: "Aizoaceae",        kind: "ornamental" }, // mesembs
+  { family: "Dryopteridaceae",  kind: "ornamental" }, // ferns
+  { family: "Polypodiaceae",    kind: "ornamental" }, // ferns
+  { family: "Pteridaceae",      kind: "ornamental" }, // ferns
+  { family: "Bromeliaceae",     kind: "ornamental" }, // bromeliads → pack_exotic
+  { family: "Araceae",          kind: "ornamental" }, // aroids, calla lilies
+  { family: "Gesneriaceae",     kind: "ornamental" }, // African violets, gloxinia
+  { family: "Acanthaceae",      kind: "ornamental" }, // bear's breeches
 ];
 
 async function resolveFamilyQid(familyName) {
@@ -826,8 +860,9 @@ async function buildFamilyQids() {
 
 // Per-family discovery target. Smaller for families that are mostly weedy
 // or tropical; larger for showy garden mainstays. The total across all
-// families should comfortably exceed 3,250 after dedupe.
-const FAMILY_TARGET = 200;
+// families should comfortably exceed 10,000 after dedupe (we then carve
+// into tier pools via TARGET_FREE / TARGET_PRO / TARGET_PACK_*).
+const FAMILY_TARGET = 500;
 
 const SPARQL_ENDPOINT_URL = "https://query.wikidata.org/sparql";
 
@@ -852,7 +887,7 @@ async function discoverFamily(familyName, familyQid, kind, target) {
   // Taxa in or under this family that have a Latin name (P225), a Wikimedia
   // image (P18), and an English Wikipedia article. Limit kept tight to stay
   // under the SPARQL 60s timeout; we'll cap per-family at `target` post-fetch.
-  const limit = Math.min(target * 2, 600);
+  const limit = Math.min(target * 2, 1000);
   const query = `
     SELECT DISTINCT ?item ?taxon ?image ?genusLabel WHERE {
       ?item wdt:P171/wdt:P171* wd:${familyQid} .
@@ -929,10 +964,14 @@ async function discoverAll() {
 //     next  TARGET_PACK_EXOTIC → "pack_exotic"
 //     rest dropped (catalogue is already enormous)
 
-const TARGET_FREE        = 250;
-const TARGET_PRO         = 1000;
-const TARGET_PACK_EXOTIC = 1000;
-const TARGET_PACK_EDIBLE = 1000;
+// Post-discovery tier carving. The retag-packs.mjs pass runs after the
+// ingest writes library.json and re-balances genera into pack_rockery
+// and pack_fruit, so these targets are the headroom for each "raw"
+// pool before the retag fans species out across all six tiers.
+const TARGET_FREE        = 500;
+const TARGET_PRO         = 4000;
+const TARGET_PACK_EXOTIC = 2500;
+const TARGET_PACK_EDIBLE = 2000;
 
 function assignTiers(rows) {
   const veg = rows.filter(r => r.kind === "vegetable").slice(0, TARGET_PACK_EDIBLE);
