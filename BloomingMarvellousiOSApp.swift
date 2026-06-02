@@ -22,12 +22,17 @@ struct BloomingMarvellousiOSApp: App {
             || ProcessInfo.processInfo.arguments.contains("-BM_AUTO_LOGIN")
 
         if autoLogin {
+            // BM_AUTO_LOGIN_TIER=free / pro lets the screenshot tour or a
+            // quick QA pass land in either tier without provisioning a
+            // real user. Defaults to Pro so the existing flows still work.
+            let tier: UserTier = (env["BM_AUTO_LOGIN_TIER"] == "free") ? .free : .pro
+            let packs: [ContentPack] = (tier == .pro) ? ContentPack.allCases : []
             self._session = State(initialValue: UserModel(
                 userId: 99_999,
                 firstName: env["BM_AUTO_LOGIN_NAME"] ?? "Chance",
                 apiToken: "",
-                tier: .pro,
-                purchasedPacks: ContentPack.allCases))
+                tier: tier,
+                purchasedPacks: packs))
         } else if auth.hasStoredToken() {
             // We have a token but no UserModel cached on disk yet — synthesise a
             // minimal one so the home view can render. The next /home or /data
