@@ -3,7 +3,7 @@
   "nonRenewingSubscriptions" : [],
   "products" : [
     {
-      "displayPrice" : "1.99",
+      "displayPrice" : "5.99",
       "familyShareable" : false,
       "internalID" : "EXOTICPACK001",
       "localizations" : [
@@ -18,7 +18,7 @@
       "type" : "NonConsumable"
     },
     {
-      "displayPrice" : "1.99",
+      "displayPrice" : "5.99",
       "familyShareable" : false,
       "internalID" : "EDIBLEPACK001",
       "localizations" : [
