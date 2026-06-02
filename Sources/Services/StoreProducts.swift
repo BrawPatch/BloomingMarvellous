@@ -36,14 +36,30 @@ public enum StoreProductID: String, CaseIterable {
         }
     }
 
+    public var emoji: String {
+        switch self {
+        case .proSubscription: return "✨"
+        case .packExotic:      return "🌺"
+        case .packEdible:      return "🥕"
+        }
+    }
+
+    public var shortPitch: String {
+        switch self {
+        case .proSubscription: return "1,000+ more plants to fall in love with"
+        case .packExotic:      return "1,000+ tropical & conservatory beauties"
+        case .packEdible:      return "750+ veg, herbs & kitchen-garden favourites"
+        }
+    }
+
     public var blurb: String {
         switch self {
         case .proSubscription:
-            return "Multi-garden planning, the bed planting map, A4 PDF printing, push reminders, and the full Plant Management view."
+            return "Unlock over 1,000 more plants to play with — plus multi-garden planning, the bed planting map, daily reminders, and the all-plants summary across every bed."
         case .packExotic:
-            return "Tropicals, orchids, and conservatory species for indoor and sheltered planting."
+            return "Bring the tropics home — orchids, palms, and conservatory species, with planting windows tuned to UK weather."
         case .packEdible:
-            return "Veg, herbs, and kitchen-garden crops with sowing windows tuned to your climate."
+            return "Grow your dinner — veg, herbs, and kitchen-garden crops with sow / transplant / harvest dates picked for your climate."
         }
     }
 

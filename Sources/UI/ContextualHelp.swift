@@ -47,110 +47,110 @@ public enum HelpTopic: String, CaseIterable, Identifiable {
         switch self {
         case .home:
             return """
-            The Home dashboard is your launcher — five tiles open the workflows you'll spend most of your time in.
+            Welcome home! This is your dashboard — five little tiles to take you wherever you need to go.
 
-            • Beds — manage every planting bed in your garden(s).
-            • Plant Picker — browse the plant library by bloom month.
-            • Bloom Planner — see what's flowering in each calendar month.
-            • Garden Calendar — sow / transplant / harvest schedule.
-            • Planting Map — printable A4 layouts for each bed.
+            • Beds — every planting bed you've set up, ready to tweak.
+            • Plant Picker — browse hundreds of plants, sorted by when they bloom.
+            • Bloom Planner — peek at what'll be flowering each month.
+            • Garden Calendar — your sow, transplant, and harvest to-do list.
+            • Planting Map — pretty bed layouts you can take into the garden.
 
-            Tap the gear icon (top-right) for Settings, where you'll change units, garden defaults (Pro), notifications, and account.
+            Tap the ⚙️ gear (top-right) for Settings, and the ❓ for help on any screen.
             """
         case .beds:
             return """
-            This is the list of every bed in your garden(s). Tap a bed to open its detail screen.
+            All your beds in one tidy list. Tap any of them to dig into the details.
 
-            • Use the search bar to filter by name.
-            • Status chips narrow by Planned vs Active.
-            • The + button (top-right) creates a new bed.
-            • Pro users also see "All plants" — a single roll-up of every species placed across every bed.
+            • Search by name when the list grows.
+            • Status chips help you separate "Planned" from "Active".
+            • Hit + (top-right) to add a brand-new bed.
+            • "All plants" pulls every species you've picked across every bed into one tidy summary.
             """
         case .bedDetail:
             return """
-            Everything about one bed in one place.
+            Everything that makes this bed special, in one spot.
 
-            • Conditions: soil, wetness, exposure, sunlight. Override the garden defaults here per bed if needed.
-            • Crops: the bloom-month picks you've assigned to this bed.
-            • Plant layout (Pro): set how many of each species are physically in the bed. The fill bar tracks bed area; once you hit capacity for a species the + button greys out and a "Free up space" hint appears.
-            • Start new season (Pro): rolls perennials into the next season and clears annuals so the bed is ready for fresh planting.
+            • Conditions: soil, wetness, exposure, sunlight. Override the garden defaults if this corner of the garden behaves differently.
+            • Crops: the plants you've chosen to bloom here, month by month.
+            • Plant layout: set how many of each plant lives here. The bar at the top shows how full the bed is; once a species is at capacity, the + greys out and a friendly "Free up space" nudge appears.
+            • Start new season: tidy the bed for the next planting cycle — perennials stay put, annuals clear out, ready for fresh growth.
             """
         case .plantPicker:
             return """
-            Browse the plant library by bloom month.
+            Your library of plants, sorted by bloom month so you can plan a beautiful year.
 
-            • Matched mode: filters by your garden's soil / sunlight / wetness / acidity.
-            • All mode: every plant your tier is entitled to.
-            • Colour chips filter by bloom colour (matches the top 3 nearest bands).
-            • Tap a tile to open Plant Detail, where you commit it to a month / bed / garden.
+            • Matched mode: only suggests plants that'll be happy in your garden.
+            • All mode: shows every plant you have access to — handy for browsing.
+            • Colour chips help you pick a palette.
+            • Tap a tile to see the full plant detail and pop it into your plan.
             """
         case .plantDetail:
             return """
-            Per-plant editorial card plus the "Add to plan" workflow.
+            Everything you need to know about a plant, plus the "Add to plan" controls.
 
-            • Garden / Bed menus (Pro): pick where this plant lives.
-            • Bloom month chips: tap one or several to stagger the species across the season.
-            • Save commits the change to your plan.
-            • Buy seeds opens an Amazon UK affiliate search for the Latin name.
+            • Garden / Bed menus: pick where this plant should live.
+            • Tap the months you'd like it to bloom — chain a few together to stagger the show.
+            • Save locks your choice in.
+            • Buy seeds takes you straight to an Amazon search for the Latin name.
             """
         case .bloomPlanner:
             return """
-            A month-by-month preview of what will be flowering in your garden.
+            A month-by-month sneak peek of your future garden in flower.
 
-            • Tap a month chip to see every species set to bloom that month, grouped by bed (Pro) or by garden (Free).
-            • Tap "Edit bed" on a bed card to flip into the bed detail screen and tweak.
-            • Use this view to spot gaps in the season — months with few or no picks need more attention.
+            • Tap any month to see what's blooming, grouped by bed.
+            • "Edit bed" jumps you straight in to make changes on the spot.
+            • Quiet months are gaps to fill — perfect places to add new picks.
             """
         case .plantingSchedule:
             return """
-            Calendar of sow / transplant / harvest tasks derived from your picks.
+            Your gardening to-do list, generated automatically from your picks.
 
-            • Sow events are scheduled ~12 weeks before each bloom month.
-            • Transplant / harvest use the plant's own earliest-month windows.
-            • Filter chips narrow by task type, garden, and bed (all multi-select).
-            • Tap the checkbox on a row to mark a task done — it grey-outs and (if push reminders are on) cancels the daily notification.
-            • Sync reminders pushes your tasks to iCal / local notifications based on your Settings opt-ins.
+            • Sow tasks land about 12 weeks before each bloom month.
+            • Transplant and harvest tasks come from each plant's own windows.
+            • Filter by task type, garden, or bed when the list gets busy.
+            • Tick the checkbox to mark a task done — it greys out and turns off the daily reminder.
+            • "Sync reminders" pushes everything to your iPhone notifications and Calendar (toggle them on in Settings first).
             """
         case .plantingMap:
             return """
-            Gallery of bed layouts you can print to A4.
+            Pretty, printable layouts for each of your beds.
 
-            • Every bed with at least one species in its bloom picks appears here.
-            • Tap a thumbnail for the full layout, the Key, and the "Share as A4 PDF" action.
-            • Circles are sized by plant spread, sorted tallest-back / shortest-front. Letters in the canvas match the Key.
-            • Beds without explicit Plant layout counts show a "Planned — open Plant layout to set counts" hint so you know to refine.
+            • Every bed with at least one plant pick gets its own little map.
+            • Tap a thumbnail for the full view, the Key, and "Share as A4 PDF".
+            • Each plant is a circle sized by how wide it'll grow, with the tallest at the back and a letter to match the Key.
+            • Beds with picks but no counts get a "Planned" hint — pop into the Plant layout to set numbers.
             """
         case .plantManagement:
             return """
-            Single roll-up of every species you've placed, across every bed and garden.
+            One tidy summary of every plant you're growing, across every bed.
 
-            • Grouped by species — the count on the right is the total across beds.
-            • Each placement row shows which bed / garden it lives in.
-            • Perennial and Carried-over badges flag long-lived species and post-rollover survivors.
-            • Use the filter chips at the top to narrow by garden / bed.
+            • Grouped by species — the number on the right is the total across the whole garden.
+            • Each row shows which bed and garden it's growing in.
+            • "Perennial" and "Carried over" badges flag the long-lived survivors.
+            • Filter chips help you focus on a single garden or bed when things get bushy.
             """
         case .settings:
             return """
-            • Preferences — Units, bed-dimension unit (m/ft), location, growing season.
-            • Garden defaults (Pro) — soil / wetness / exposure / sunlight / acidity for the selected garden. Bed overrides still win.
-            • Notifications — push reminders + iCal opt-ins. Toggling on requests the OS permission immediately.
-            • Account — reset password, change password, and (Pro) cancel Pro membership. Billing is App Store, so cancel routes you to apps.apple.com/account/subscriptions.
+            • Preferences — units, bed dimensions in m or ft, your location, and your growing season.
+            • Garden defaults — set the soil, wetness, exposure, sunlight, and acidity for your garden. Beds can override these.
+            • Notifications — turn on push reminders and Calendar entries (we'll ask iOS for permission when you toggle them on).
+            • Account — reset or change your password, sign out, and (for Pro) manage your subscription. Billing is via the App Store, so cancelling Pro routes you there.
             """
         case .setup:
             return """
-            First-run wizard. We capture three things:
+            Welcome aboard! Just a few quick questions and we'll have your garden ready.
 
-            • Address — postcode + country, used to bias the Plant Picker for your climate.
-            • Garden defaults — soil / wetness / exposure / sunlight / acidity. Beds inherit unless overridden.
-            • First bed — name, size, and status. You can add more beds later from the Beds tile (Pro).
+            • Address — postcode + country, so we can suggest plants that'll thrive in your weather.
+            • Garden defaults — soil, wetness, exposure, sunlight, and acidity. Your beds will inherit these.
+            • First bed — give it a name, set the size, and you're done. You can always add more later.
             """
         case .soil:
             return """
-            Set the conditions for the selected garden or override for a single bed.
+            Set the growing conditions for your garden or fine-tune them for a single bed.
 
-            • Soil type, wetness, exposure, sunlight — used by the Matched filter in the Plant Picker.
-            • Acidity (pH band) — neutral is the safe default; flip to mildly acidic / alkaline if you've tested the soil.
-            • Bed-level overrides stamp through to anywhere the Matched filter runs for that bed.
+            • Soil, wetness, exposure, sunlight — these drive the "Matched" suggestions in the Plant Picker.
+            • Acidity — leave on neutral if you're not sure; flip it once you've tested.
+            • Bed overrides take precedence everywhere the Matched filter runs.
             """
         }
     }

@@ -161,27 +161,40 @@ public struct SplashView: View {
 
     private var proUpgradeCard: some View {
         Button(action: onUpgrade) {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text("✨ Upgrade to Pro")
-                        .font(.custom("Fredoka-SemiBold", size: 16))
-                        .foregroundStyle(Color.bmText1)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(Color.bmText2)
+            HStack(alignment: .top, spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(Color.bmLilac.opacity(0.18))
+                        .frame(width: 50, height: 50)
+                    Text("✨")
+                        .font(.system(size: 26))
                 }
-                Text("Multi-garden planning, the bed planting map, A4 PDF printing, push reminders, and the full Plant Management view.")
-                    .font(.custom("Nunito-SemiBold", size: 12))
-                    .foregroundStyle(Color.bmText2)
-                    .multilineTextAlignment(.leading)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text("Try Pro & let your garden run wild")
+                            .font(.custom("Fredoka-SemiBold", size: 15))
+                            .foregroundStyle(Color.bmText1)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundStyle(Color.bmText2)
+                    }
+                    Text("1,000+ more plants to fall in love with, plus the bed planting map, daily reminders, and the all-plants summary.")
+                        .font(.custom("Nunito-SemiBold", size: 12))
+                        .foregroundStyle(Color.bmText2)
+                        .multilineTextAlignment(.leading)
+                }
             }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .overlay(RoundedRectangle(cornerRadius: 16)
+            .background(
+                LinearGradient(colors: [Color.white, Color.bmLilac.opacity(0.12)],
+                               startPoint: .leading, endPoint: .trailing)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 18))
+            .overlay(RoundedRectangle(cornerRadius: 18)
                 .stroke(Color.bmLilac, lineWidth: 1.5))
+            .shadow(color: Color.bmLilac.opacity(0.18), radius: 6, y: 3)
         }
         .buttonStyle(.plain)
     }
@@ -192,9 +205,14 @@ public struct SplashView: View {
             onBuyPack(pack)
         } label: {
             HStack(alignment: .top, spacing: 12) {
-                Text(info.emoji)
-                    .font(.system(size: 30))
-                VStack(alignment: .leading, spacing: 3) {
+                ZStack {
+                    Circle()
+                        .fill(info.accent.opacity(0.18))
+                        .frame(width: 50, height: 50)
+                    Text(info.emoji)
+                        .font(.system(size: 26))
+                }
+                VStack(alignment: .leading, spacing: 4) {
                     Text(info.title)
                         .font(.custom("Fredoka-SemiBold", size: 14))
                         .foregroundStyle(Color.bmText1)
@@ -205,14 +223,18 @@ public struct SplashView: View {
                 }
                 Spacer()
                 Image(systemName: "plus.circle.fill")
-                    .foregroundStyle(Color.bmPeach)
+                    .foregroundStyle(info.accent)
             }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.white)
+            .background(
+                LinearGradient(colors: [Color.white, info.accent.opacity(0.12)],
+                               startPoint: .leading, endPoint: .trailing)
+            )
             .clipShape(RoundedRectangle(cornerRadius: 14))
             .overlay(RoundedRectangle(cornerRadius: 14)
-                .stroke(Color.bmPeach.opacity(0.5), lineWidth: 1.5))
+                .stroke(info.accent.opacity(0.55), lineWidth: 1.5))
+            .shadow(color: info.accent.opacity(0.18), radius: 6, y: 3)
         }
         .buttonStyle(.plain)
     }
@@ -247,14 +269,16 @@ public struct SplashView: View {
         ContentPack.allCases.filter { !user.purchasedPacks.contains($0) }
     }
 
-    private func packCopy(_ pack: ContentPack) -> (emoji: String, title: String, subtitle: String) {
+    private func packCopy(_ pack: ContentPack) -> (emoji: String, title: String, subtitle: String, accent: Color) {
         switch pack {
         case .exotic:
             return ("🌺", "Exotic Pack",
-                    "Tropicals, orchids, and conservatory species for indoor and sheltered planting.")
+                    "1,000+ tropical & conservatory beauties for indoor and sheltered planting.",
+                    Color.bmPeach)
         case .edible:
             return ("🥕", "Edible Pack",
-                    "Veg, herbs, and kitchen-garden crops with sowing windows tuned to your climate.")
+                    "750+ veg, herbs & kitchen-garden favourites with sow & harvest dates for your area.",
+                    Color.bmGreen)
         }
     }
 }

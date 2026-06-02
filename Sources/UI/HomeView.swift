@@ -38,6 +38,7 @@ public struct HomeView: View {
                     GardenTopBar(
                         user: user,
                         store: store,
+                        storeManager: StoreManager.shared,
                         onSwitchGarden: { showingGardenPicker = true },
                         onAddGarden:    { showingCreateGarden = true },
                         onUpgrade:      { showingStore = true },
@@ -76,7 +77,7 @@ public struct HomeView: View {
                 .environmentObject(store)
         }
         .sheet(isPresented: $showingSettings) {
-            SettingsView(user: user)
+            SettingsView(user: user, onLogout: onLogout)
                 .environmentObject(store)
         }
         .sheet(isPresented: $showingStore) {
@@ -201,6 +202,7 @@ public struct HomeView: View {
 private struct GardenTopBar: View {
     let user: UserModel
     let store: GardenStore
+    @ObservedObject var storeManager: StoreManager
     let onSwitchGarden: () -> Void
     let onAddGarden: () -> Void
     let onUpgrade: () -> Void
@@ -277,15 +279,20 @@ private struct GardenTopBar: View {
                             HStack(spacing: 4) {
                                 Text("✨")
                                     .font(.system(size: 11))
-                                Text("Go Pro")
+                                Text(proPillTitle)
                                     .font(.custom("Fredoka-SemiBold", size: 11))
                                     .foregroundStyle(.white)
                             }
                             .padding(.horizontal, 10).padding(.vertical, 5)
-                            .background(Color.bmLilac)
+                            .background(
+                                LinearGradient(colors: [Color.bmLilac, Color.bmFlowerPink],
+                                               startPoint: .leading, endPoint: .trailing)
+                            )
                             .clipShape(Capsule())
+                            .shadow(color: Color.bmLilac.opacity(0.35), radius: 3, y: 1)
                         }
                         .buttonStyle(.plain)
+                        .task { await storeManager.loadProductsIfNeeded() }
                     }
                 }
             }
@@ -308,6 +315,12 @@ private struct GardenTopBar: View {
         .overlay(alignment: .bottom) {
             Rectangle().fill(Color.bmBorder).frame(height: 2)
         }
+    }
+
+    private var proPillTitle: String {
+        let price = storeManager.priceLabel(for: .proSubscription)
+        if price == "—" { return "Try Pro" }
+        return "Try Pro · \(price)/mo"
     }
 
     private var decorations: some View {

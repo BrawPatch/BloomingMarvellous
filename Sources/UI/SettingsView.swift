@@ -29,6 +29,7 @@ public struct SettingsView: View {
     }
 
     private let user: UserModel
+    private let onLogout: () -> Void
     @EnvironmentObject private var store: GardenStore
     @SwiftUI.Environment(\.dismiss) private var dismiss
 
@@ -49,7 +50,10 @@ public struct SettingsView: View {
     @State private var passwordResetMessage: String = ""
     @State private var showingStore = false
 
-    public init(user: UserModel) { self.user = user }
+    public init(user: UserModel, onLogout: @escaping () -> Void = {}) {
+        self.user = user
+        self.onLogout = onLogout
+    }
 
     public var body: some View {
         NavigationStack {
@@ -325,6 +329,14 @@ public struct SettingsView: View {
 
             Button(action: changePassword) {
                 accountRowLabel("Change password", icon: "key")
+            }
+            .buttonStyle(.plain)
+
+            Button(action: {
+                onLogout()
+                dismiss()
+            }) {
+                accountRowLabel("Sign out", icon: "rectangle.portrait.and.arrow.right", destructive: true)
             }
             .buttonStyle(.plain)
 
