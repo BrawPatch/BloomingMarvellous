@@ -1833,14 +1833,29 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`→ Wikipedia summaries for ${rows.length} taxa…`);
-  const raw = [];
-  let i = 0;
-  for (const row of rows) {
-    raw.push(await buildRawRecord(row, i));
-    i++;
-    if (args.verbose && i % 25 === 0) console.log(`  ${i}/${rows.length}`);
+  console.log(`→ Wikipedia summaries for ${rows.length} taxa (batches of 12)…`);
+  // Batched parallelism so 9 K taxa land in minutes rather than hours.
+  // 12 in-flight is enough to saturate Wikipedia's CDN while staying
+  // polite. Promise.allSettled so a single 404 doesn't kill the batch.
+  const raw = new Array(rows.length);
+  const BATCH = 12;
+  for (let i = 0; i < rows.length; i += BATCH) {
+    const slice = rows.slice(i, i + BATCH);
+    const results = await Promise.allSettled(
+      slice.map((row, k) => buildRawRecord(row, i + k))
+    );
+    results.forEach((res, k) => {
+      raw[i + k] = res.status === "fulfilled" ? res.value : null;
+    });
+    if (args.verbose && (i + BATCH) % 240 < BATCH) {
+      console.log(`  ${Math.min(i + BATCH, rows.length)}/${rows.length}`);
+    }
   }
+  // Filter out the nulls from any batched failures so downstream code
+  // sees the same shape as the old sequential loop.
+  const rawClean = raw.filter(Boolean);
+  raw.length = 0;
+  raw.push(...rawClean);
 
   console.log("→ Applying cultivar → genus → family inheritance…");
   const inherited = inherit(raw);
