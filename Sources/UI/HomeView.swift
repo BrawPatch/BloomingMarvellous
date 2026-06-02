@@ -31,7 +31,7 @@ public struct HomeView: View {
 
     public var body: some View {
         ZStack(alignment: .top) {
-            Color.bmBg.ignoresSafeArea()
+            floralWallpaper
 
             ScrollView {
                 VStack(spacing: 18) {
@@ -114,6 +114,62 @@ public struct HomeView: View {
             .padding(.top, 6)
             .background(Color.clear)
         }
+    }
+
+    // MARK: - Floral wallpaper backdrop
+    //
+    // Replaces the flat mint behind the tile grid with a softly-tiled
+    // floral pattern so the home dashboard feels more like a garden and
+    // less like a UIKit list view. Decorations sit at low alpha so the
+    // white tile cards still pop.
+
+    private var floralWallpaper: some View {
+        ZStack {
+            LinearGradient(
+                colors: [Color(hex: "#e8f8ef"), Color(hex: "#d8f5e8"), Color(hex: "#caf0e2")],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            GeometryReader { geo in
+                let w = geo.size.width
+                let h = geo.size.height
+                Group {
+                    FlowerView(size: 70, petalColor: .bmFlowerPink, centerColor: .bmLilac)
+                        .rotationEffect(.degrees(-18))
+                        .position(x: 30, y: h * 0.18)
+                        .opacity(0.32)
+                    FlowerView(size: 90, petalColor: .bmLilac, centerColor: .bmPeach)
+                        .rotationEffect(.degrees(22))
+                        .position(x: w - 40, y: h * 0.28)
+                        .opacity(0.28)
+                    LeafView(size: 60, color: .bmLeafSage)
+                        .rotationEffect(.degrees(40))
+                        .position(x: w * 0.12, y: h * 0.46)
+                        .opacity(0.32)
+                    FlowerView(size: 55, petalColor: .bmPeach, centerColor: .bmAmber)
+                        .rotationEffect(.degrees(-25))
+                        .position(x: w * 0.85, y: h * 0.5)
+                        .opacity(0.3)
+                    LeafView(size: 50, color: .bmGreen)
+                        .rotationEffect(.degrees(-30))
+                        .position(x: w - 36, y: h * 0.68)
+                        .opacity(0.3)
+                    FlowerView(size: 80, petalColor: .bmFlowerLilac, centerColor: .bmFlowerPink)
+                        .rotationEffect(.degrees(12))
+                        .position(x: 38, y: h * 0.78)
+                        .opacity(0.32)
+                    FlowerView(size: 60, petalColor: .bmLilac, centerColor: .bmAmber)
+                        .rotationEffect(.degrees(-8))
+                        .position(x: w * 0.78, y: h * 0.92)
+                        .opacity(0.28)
+                    LeafView(size: 55, color: .bmLeafSage)
+                        .rotationEffect(.degrees(60))
+                        .position(x: w * 0.5, y: h - 30)
+                        .opacity(0.28)
+                }
+            }
+        }
+        .ignoresSafeArea()
     }
 
     // MARK: - Tile grid (Phase 2)
