@@ -91,6 +91,53 @@ function decide(p, genus) {
   return p.access;
 }
 
+// MARK: - Free-tier rebalance
+//
+// After the genus/type sort, sample the Free pool deliberately so it
+// reads as a friendly starter selection rather than the alphabetical
+// slice the ingest gives by default: 350 ornamentals chosen at random
+// across families, plus 50 fruit-pack picks and 50 edible-pack picks
+// so new gardeners see colour, fruit and dinner from day one.
+const FREE_ORNAMENTAL = 350;
+const FREE_FRUIT      = 50;
+const FREE_EDIBLE     = 50;
+
+function shuffle(arr, seed = 1337) {
+  // Deterministic Fisher-Yates with a tiny LCG so the Free starter
+  // pack is stable across re-runs but still spreads families evenly.
+  let s = seed;
+  const next = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+  const out = arr.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(next() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+function rebalanceFree() {
+  // First, clear every existing Free tag so we start from the rebalanced
+  // pools (Pro / pack_*). Plants already in a pack stay in their pack;
+  // anything tagged "free" rolls back into Pro for the carve below.
+  for (const p of items) {
+    if (p.access === "free") p.access = "pro";
+  }
+
+  // Ornamentals = anything tagged pro after the carve, minus the shrubs
+  // and alpines we just sent to pack_rockery (decide() above already did
+  // that, so what remains in "pro" is genuine ornamental perennial /
+  // annual / bulb material).
+  const proPool   = shuffle(items.filter(p => p.access === "pro"));
+  const fruitPool = shuffle(items.filter(p => p.access === "pack_fruit"));
+  const edPool    = shuffle(items.filter(p => p.access === "pack_edible"));
+
+  proPool.slice(0, FREE_ORNAMENTAL).forEach(p => p.access = "free");
+  fruitPool.slice(0, FREE_FRUIT).forEach(p => p.access = "free");
+  edPool.slice(0, FREE_EDIBLE).forEach(p => p.access = "free");
+}
+
+rebalanceFree();
+
 if (dryRun) {
   console.log("DRY RUN — no writes");
 }
