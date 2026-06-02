@@ -217,8 +217,14 @@ public struct SetupView: View {
                 .pickerStyle(.segmented)
 
                 HStack(spacing: 12) {
-                    sizeStepper("Width",  value: $bedWidth)
-                    sizeStepper("Length", value: $bedLength)
+                    BedDimensionField(title: "Width",
+                                      valueCm: $bedWidth,
+                                      unit: lengthUnit,
+                                      range: 10...1000)
+                    BedDimensionField(title: "Length",
+                                      valueCm: $bedLength,
+                                      unit: lengthUnit,
+                                      range: 10...1000)
                 }
 
                 Text("Status")

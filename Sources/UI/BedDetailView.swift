@@ -588,10 +588,14 @@ struct EditBedView: View {
             Form {
                 Section("Bed") {
                     TextField("Name", text: $bed.name)
-                    Stepper("Width: \(LengthFormat.display(cm: bed.widthCm, unit: lengthUnit))",
-                            value: $bed.widthCm, in: 30...500, step: 10)
-                    Stepper("Length: \(LengthFormat.display(cm: bed.lengthCm, unit: lengthUnit))",
-                            value: $bed.lengthCm, in: 30...1000, step: 10)
+                    BedDimensionField(title: "Width",
+                                      valueCm: $bed.widthCm,
+                                      unit: lengthUnit,
+                                      range: 30...500)
+                    BedDimensionField(title: "Length",
+                                      valueCm: $bed.lengthCm,
+                                      unit: lengthUnit,
+                                      range: 30...1000)
                     Picker("Status", selection: $bed.status) {
                         ForEach(BedStatus.allCases) { Text($0.label).tag($0) }
                     }

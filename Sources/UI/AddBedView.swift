@@ -99,28 +99,15 @@ public struct AddBedView: View {
         VStack(alignment: .leading, spacing: 8) {
             SectionLabel("Size (\(lengthUnit.suffix))", icon: "📏")
             HStack(spacing: 12) {
-                stepperField("Width", value: $widthCm)
-                stepperField("Length", value: $lengthCm)
+                BedDimensionField(title: "Width",
+                                  valueCm: $widthCm,
+                                  unit: lengthUnit,
+                                  range: 10...1000)
+                BedDimensionField(title: "Length",
+                                  valueCm: $lengthCm,
+                                  unit: lengthUnit,
+                                  range: 10...1000)
             }
-        }
-    }
-
-    private func stepperField(_ label: String, value: Binding<Int>) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(label)
-                .font(.custom("Nunito-Bold", size: 12))
-                .foregroundStyle(Color.bmText2)
-            Stepper(value: value, in: 10...1000, step: 10) {
-                Text(LengthFormat.display(cm: value.wrappedValue, unit: lengthUnit))
-                    .font(.custom("Nunito-Bold", size: 14))
-                    .foregroundStyle(Color.bmText1)
-            }
-            .tint(Color.bmGreen)
-            .padding(.horizontal, 10).padding(.vertical, 6)
-            .background(Color.bmBgSoft)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.bmBorder, lineWidth: 1))
         }
     }
 

@@ -41,6 +41,40 @@ public enum LengthFormat {
         }
     }
 
+    /// Plain numeric portion only — used as the placeholder/value of the
+    /// manual-entry text field in the bed dimension control. No unit
+    /// suffix and no leading sign.
+    public static func numericString(cm: Int, unit: LengthUnit) -> String {
+        switch unit {
+        case .metres: return trimmed(Double(cm) / 100.0)
+        case .feet:   return trimmed(Double(cm) / 30.48)
+        }
+    }
+
+    /// Inverse of `numericString` — accepts whatever the user has typed
+    /// (decimal or comma separator, optional trailing whitespace) and
+    /// returns the equivalent in cm. Returns nil if the input doesn't
+    /// parse to a positive value.
+    public static func cmFromString(_ raw: String, unit: LengthUnit) -> Int? {
+        let cleaned = raw.replacingOccurrences(of: ",", with: ".")
+                         .trimmingCharacters(in: .whitespaces)
+        guard let v = Double(cleaned), v >= 0 else { return nil }
+        switch unit {
+        case .metres: return Int((v * 100.0).rounded())
+        case .feet:   return Int((v * 30.48).rounded())
+        }
+    }
+
+    /// Step (in cm) for the +/- stepper buttons. 0.5 m in metric mode,
+    /// 1 ft in imperial mode — chunky enough to feel productive without
+    /// blowing past the target size.
+    public static func stepCm(for unit: LengthUnit) -> Int {
+        switch unit {
+        case .metres: return 50
+        case .feet:   return 30   // 30 cm ≈ 1 ft, kept as Int for the model
+        }
+    }
+
     /// Combined "W × L" label used by Bed.dimensionLabel(unit:).
     public static func dimensions(widthCm: Int, lengthCm: Int, unit: LengthUnit) -> String {
         switch unit {

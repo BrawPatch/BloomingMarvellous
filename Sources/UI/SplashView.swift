@@ -98,7 +98,7 @@ public struct SplashView: View {
                     .font(.custom("Fredoka-Bold", size: 30))
                     .foregroundStyle(Color.bmPeach)
             }
-            Text("Plant something marvellous, \(user.firstName.isEmpty ? "gardener" : user.firstName).")
+            Text("Welcome to the Blooming Marvellous Garden Planner — let's make your garden beautiful!")
                 .font(.custom("Nunito-SemiBold", size: 14))
                 .foregroundStyle(Color.bmText2)
                 .multilineTextAlignment(.center)
