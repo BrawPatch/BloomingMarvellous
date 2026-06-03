@@ -43,6 +43,14 @@ const FRUIT_GENERA = new Set([
   "Olea",
 ]);
 
+// Species-level overrides for genera that contain BOTH fruit-bearing and
+// purely-ornamental species (Lonicera, etc.). Listed by full Latin
+// binomial of the parent species so a cultivar like
+// "Lonicera caerulea 'Aurora'" still routes into pack_fruit.
+const FRUIT_SPECIES = new Set([
+  "Lonicera caerulea",
+]);
+
 // Alpine / rockery garden classics.
 const ALPINE_GENERA = new Set([
   "Sempervivum", "Sedum", "Saxifraga", "Aubrieta", "Aubretia",
@@ -80,6 +88,10 @@ for (const p of items) {
 }
 
 function decide(p, genus) {
+  // Species-level fruit override (e.g. Lonicera caerulea). Strip the
+  // cultivar suffix before checking so cultivar rows still match.
+  const speciesLatin = p.latin.replace(/\s+['‘].*$/u, "").trim();
+  if (FRUIT_SPECIES.has(speciesLatin)) return "pack_fruit";
   if (FRUIT_GENERA.has(genus)) return "pack_fruit";
   if (ALPINE_GENERA.has(genus)) return "pack_rockery";
   if (p.type === "shrub") return "pack_rockery";
