@@ -357,11 +357,42 @@ struct PlantPickerGalleryView: View {
     @EnvironmentObject private var store: GardenStore
     @EnvironmentObject private var library: LibraryStore
 
+    /// Free-text search applied across common + Latin names. Persists
+    /// for the lifetime of this gallery view.
+    @State private var search: String = ""
+    /// "Suitable for my soil" filter — only meaningful in `.all` mode
+    /// (in `.matched` mode the gardener already gets suitable plants).
+    @State private var soilOnly: Bool = false
+
     var body: some View {
         ScrollView {
             if case .failed(let msg) = library.status {
                 offlineBanner(msg)
             }
+            VStack(spacing: 12) {
+                PlantSearchBar(text: $search)
+                if mode == .all {
+                    Toggle(isOn: $soilOnly) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "leaf.fill")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(soilOnly ? Color.bmGreen : Color.bmText3)
+                            Text("Suitable for my soil & conditions")
+                                .font(.custom("Nunito-Bold", size: 13))
+                                .foregroundStyle(Color.bmText1)
+                        }
+                    }
+                    .tint(Color.bmGreen)
+                    .padding(.horizontal, 12).padding(.vertical, 8)
+                    .background(Color.bmBgSoft)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.bmBorder, lineWidth: 1.2))
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+
             if grouped.allSatisfy({ $0.plants.isEmpty }) {
                 emptyState
             } else {
@@ -441,10 +472,13 @@ struct PlantPickerGalleryView: View {
                     if let s = manualSun, !p.preferredSunlight.contains(s)  { return false }
                     if let s = manualSoil, !p.preferredSoil.contains(s)     { return false }
                     if let h = p.heightCm, h < minHeightCm                  { return false }
+                    if soilOnly, !suitsGarden(p)                            { return false }
                     return true
                 }
             }
-            return MonthGroup(month: m, plants: plants)
+            // Search + free text — applied across both modes.
+            let searched = PlantSectioning.filter(plants, search: search)
+            return MonthGroup(month: m, plants: searched)
         }
     }
 
@@ -471,18 +505,42 @@ struct PlantPickerGalleryView: View {
                     .foregroundStyle(Color.bmText3)
                     .padding(.vertical, 6)
             } else {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 2),
-                          spacing: 12) {
-                    ForEach(group.plants) { p in
-                        NavigationLink {
-                            PlantDetailView(plantId: p.id)
-                                .environmentObject(store)
-                                .environmentObject(library)
-                        } label: {
-                            tile(p)
-                        }
-                        .buttonStyle(.plain)
+                // Sub-group by PlantGroup (Flower / Veg / Herb / Fruit)
+                // so the gallery reads as a tidy catalog instead of a
+                // jumble of types.
+                ForEach(PlantSectioning.sections(for: group.plants)) { sec in
+                    typeSubsection(sec)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func typeSubsection(_ section: PlantSection) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Text(section.group.emoji)
+                Text(section.group.label.uppercased())
+                    .font(.custom("Fredoka-SemiBold", size: 10))
+                    .foregroundStyle(Color.bmText2)
+                    .kerning(0.6)
+                Spacer()
+                Text("\(section.plants.count)")
+                    .font(.custom("Nunito-Bold", size: 10))
+                    .foregroundStyle(Color.bmText3)
+            }
+            .padding(.top, 4)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 2),
+                      spacing: 12) {
+                ForEach(section.plants) { p in
+                    NavigationLink {
+                        PlantDetailView(plantId: p.id)
+                            .environmentObject(store)
+                            .environmentObject(library)
+                    } label: {
+                        tile(p)
                     }
+                    .buttonStyle(.plain)
                 }
             }
         }
@@ -754,6 +812,7 @@ struct PlantDetailView: View {
                         hero(p)
                         descriptionSection(p)
                         details(p)
+                        suitableForSection(p)
                         growersTipsSection(p)
                         sowingDetailsSection(p)
                         addToPlanSection(p)
@@ -814,6 +873,103 @@ struct PlantDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .bmCard()
         }
+    }
+
+    // MARK: - Suitable for
+    //
+    // Shows which of the user's gardens / beds this plant will be happy
+    // in, based on the same soft-match rules the picker uses (soil +
+    // sunlight + acidity + wetness). When the list is empty we tell
+    // the gardener what would have to change to make it work.
+
+    @ViewBuilder
+    private func suitableForSection(_ p: Plant) -> some View {
+        let matches = suitableMatches(for: p)
+        VStack(alignment: .leading, spacing: 8) {
+            SectionLabel("Suitable for", icon: "✅")
+            if matches.isEmpty {
+                Text("Doesn't quite match the conditions of any of your gardens or beds. The Plant Picker will still let you add it, but it might need a sheltered spot or amended soil.")
+                    .font(.custom("Nunito-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+            } else {
+                ForEach(matches, id: \.id) { match in
+                    HStack(spacing: 8) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(Color.bmGreen)
+                            .font(.system(size: 13, weight: .semibold))
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(match.title)
+                                .font(.custom("Nunito-Bold", size: 13))
+                                .foregroundStyle(Color.bmText1)
+                            Text(match.subtitle)
+                                .font(.custom("Nunito-SemiBold", size: 11))
+                                .foregroundStyle(Color.bmText3)
+                        }
+                        Spacer()
+                    }
+                }
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private struct SuitableMatch {
+        let id: String
+        let title: String
+        let subtitle: String
+    }
+
+    private func suitableMatches(for p: Plant) -> [SuitableMatch] {
+        var out: [SuitableMatch] = []
+        for garden in store.gardens {
+            let gardenSuits = matches(plant: p,
+                                      soil: garden.soilType,
+                                      sun:  garden.sunlight,
+                                      wet:  garden.wetness,
+                                      acid: garden.acidity)
+            if gardenSuits {
+                out.append(.init(
+                    id: "g-\(garden.id.uuidString)",
+                    title: garden.name,
+                    subtitle: "Garden defaults match: \(garden.soilType.label), \(garden.sunlight.shortLabel), \(garden.wetness.shortLabel)"
+                ))
+            }
+            for bed in store.beds(in: garden.id) {
+                let bSoil = bed.effectiveSoil(garden: garden)
+                let bSun  = bed.effectiveSunlight(garden: garden)
+                let bWet  = bed.effectiveWetness(garden: garden)
+                let bAcid = bed.effectiveAcidity(garden: garden)
+                let bedSuits = matches(plant: p, soil: bSoil, sun: bSun, wet: bWet, acid: bAcid)
+                if bedSuits {
+                    out.append(.init(
+                        id: "b-\(bed.id.uuidString)",
+                        title: "\(garden.name) · \(bed.name)",
+                        subtitle: "Bed conditions match: \(bSoil.label), \(bSun.shortLabel), \(bWet.shortLabel)"
+                    ))
+                }
+            }
+        }
+        return out
+    }
+
+    private func matches(plant p: Plant,
+                         soil: SoilType,
+                         sun: Sunlight,
+                         wet: Wetness,
+                         acid: SoilAcidity?) -> Bool {
+        let soilOk = p.preferredSoil.isEmpty || p.preferredSoil.contains(soil)
+        let sunOk = sunlightCompatible(garden: sun, plantPrefers: p.preferredSunlight)
+        let wetOk: Bool
+        if let w = p.preferredWetness, !w.isEmpty { wetOk = w.contains(wet) } else { wetOk = true }
+        let acidOk: Bool
+        if let g = acid {
+            acidOk = acidityCompatible(garden: g, plantPrefers: p.preferredAcidity ?? [])
+        } else {
+            acidOk = true
+        }
+        return soilOk && sunOk && wetOk && acidOk
     }
 
     @ViewBuilder

@@ -18,12 +18,15 @@ public struct PlantManagementView: View {
     @EnvironmentObject private var store: GardenStore
     @EnvironmentObject private var library: LibraryStore
     @State private var filters = ScheduleFilters()
+    @State private var search: String = ""
 
     public init() {}
 
     public var body: some View {
         ScrollView {
             VStack(spacing: 14) {
+                PlantSearchBar(text: $search)
+                    .padding(.horizontal, 4)
                 ScheduleFilterBar(filters: $filters,
                                   gardens: store.gardens,
                                   beds: store.beds,
@@ -65,10 +68,23 @@ public struct PlantManagementView: View {
     }
 
     private var placementsCard: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 14) {
             SectionLabel("Your plants (\(filteredPlacements.count))", icon: "🌿")
-            ForEach(groupedBySpecies, id: \.plantId) { group in
-                speciesGroup(group)
+            ForEach(typeGroupedSpecies, id: \.group) { typeBucket in
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 6) {
+                        Text(typeBucket.group.emoji)
+                        Text(typeBucket.group.label.uppercased())
+                            .font(.custom("Fredoka-SemiBold", size: 10))
+                            .foregroundStyle(Color.bmText2)
+                            .kerning(0.6)
+                        Spacer()
+                        Text("\(typeBucket.species.reduce(0) { $0 + $1.totalCount })")
+                            .font(.custom("Nunito-Bold", size: 10))
+                            .foregroundStyle(Color.bmText3)
+                    }
+                    ForEach(typeBucket.species, id: \.plantId) { speciesGroup($0) }
+                }
             }
         }
         .padding(14)
@@ -214,13 +230,40 @@ public struct PlantManagementView: View {
 
     private var groupedBySpecies: [SpeciesGroup] {
         let byId = Dictionary(grouping: filteredPlacements, by: \.plantId)
-        return byId.compactMap { (pid, placements) -> SpeciesGroup? in
+        let all = byId.compactMap { (pid, placements) -> SpeciesGroup? in
             guard let plant = library.plant(id: pid) else { return nil }
             return SpeciesGroup(plantId: pid,
                                 plant: plant,
                                 placements: placements.sorted { $0.bedName < $1.bedName })
         }
-        .sorted { $0.plant.name < $1.plant.name }
+        // Apply the shared search filter (common name + Latin).
+        let searched: [SpeciesGroup] = {
+            let q = search.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            guard !q.isEmpty else { return all }
+            return all.filter { g in
+                g.plant.name.lowercased().contains(q) ||
+                g.plant.latin.lowercased().contains(q)
+            }
+        }()
+        return searched.sorted { lhs, rhs in
+            let lg = PlantSectioning.genus(of: lhs.plant)
+            let rg = PlantSectioning.genus(of: rhs.plant)
+            if lg != rg { return lg < rg }
+            return lhs.plant.name.localizedCompare(rhs.plant.name) == .orderedAscending
+        }
+    }
+
+    fileprivate struct PlantTypeBucket {
+        let group: PlantGroup
+        let species: [SpeciesGroup]
+    }
+
+    private var typeGroupedSpecies: [PlantTypeBucket] {
+        let byType = Dictionary(grouping: groupedBySpecies) { PlantGroup.group(for: $0.plant) }
+        return PlantGroup.allCases.compactMap { g in
+            guard let bucket = byType[g], !bucket.isEmpty else { return nil }
+            return PlantTypeBucket(group: g, species: bucket)
+        }
     }
 }
 #endif
