@@ -1089,7 +1089,85 @@ function parseBloomMonths(text) {
   return monthsFound.size ? [...monthsFound].sort((a, b) => a - b) : null;
 }
 
-function parsePlantType(text, familyDefault) {
+// Genus + species overrides for the type heuristic. These keep ornamental
+// genera (Erysimum, Iberis, Aubrieta, …) from being miscast as "vegetable"
+// just because they live in a kitchen-garden family (Brassicaceae, etc.), and
+// pin true edibles (Brassica, Capsicum, Mentha, …) regardless of how their
+// Wikipedia summary is phrased. Mirrored in scripts/fix-types.mjs — keep
+// the two in sync when adding entries.
+const ORNAMENTAL_GENUS_TYPE = {
+  // Brassicaceae ornamentals
+  Erysimum: "perennial", Cheiranthus: "perennial", Iberis: "perennial",
+  Aubrieta: "perennial", Aubretia: "perennial", Aurinia: "perennial",
+  Arabis: "perennial", Draba: "perennial", Hesperis: "biennial",
+  Lunaria: "biennial", Matthiola: "annual", Alyssum: "perennial",
+  Lobularia: "annual", Schivereckia: "perennial", Aethionema: "perennial",
+  Berteroa: "biennial", Cardamine: "perennial", Crambe: "perennial",
+  // Lamiaceae ornamentals
+  Salvia: "perennial", Lavandula: "perennial", Nepeta: "perennial",
+  Stachys: "perennial", Monarda: "perennial", Agastache: "perennial",
+  Caryopteris: "shrub", Phlomis: "perennial", Perovskia: "shrub",
+  Ajuga: "perennial", Lamium: "perennial", Scutellaria: "perennial",
+  Teucrium: "perennial", Westringia: "shrub", Prostanthera: "shrub",
+  // Apiaceae ornamentals
+  Eryngium: "perennial", Astrantia: "perennial", Angelica: "biennial",
+  Bupleurum: "perennial", Ferula: "perennial", Heracleum: "biennial",
+  Pleurospermum: "perennial", Selinum: "perennial", Conium: "biennial",
+  Daucus: "biennial",
+  // Amaranthaceae ornamentals
+  Amaranthus: "annual", Celosia: "annual", Atriplex: "annual",
+  Gomphrena: "annual", Iresine: "perennial",
+  // Amaryllidaceae ornamental bulbs (Allium genus stays — culinary onions)
+  Narcissus: "bulb", Galanthus: "bulb", Leucojum: "bulb",
+  Hippeastrum: "bulb", Nerine: "bulb", Crinum: "bulb",
+  Agapanthus: "perennial", Amaryllis: "bulb", Sternbergia: "bulb",
+  Lycoris: "bulb", Zephyranthes: "bulb", Habranthus: "bulb",
+  Hymenocallis: "bulb", Eucharis: "bulb", Pancratium: "bulb",
+  // Polygonaceae ornamentals (Rheum stays via FRUIT_GENERA in retag-packs)
+  Persicaria: "perennial", Polygonum: "perennial", Bistorta: "perennial",
+  Rumex: "perennial", Eriogonum: "perennial", Fagopyrum: "annual",
+  Fallopia: "perennial",
+};
+
+const EDIBLE_GENUS_TYPE = {
+  Brassica: "vegetable", Raphanus: "vegetable", Nasturtium: "herb",
+  Lepidium: "herb", Eruca: "vegetable", Sinapis: "vegetable",
+  Armoracia: "vegetable", Wasabia: "herb",
+  Mentha: "herb", Thymus: "herb", Origanum: "herb", Ocimum: "herb",
+  Rosmarinus: "herb", Melissa: "herb", Satureja: "herb", Hyssopus: "herb",
+  Petroselinum: "herb", Foeniculum: "herb", Levisticum: "herb",
+  Pimpinella: "herb", Carum: "herb", Coriandrum: "herb", Anethum: "herb",
+  Apium: "vegetable", Pastinaca: "vegetable",
+  Capsicum: "vegetable", Physalis: "vegetable",
+  Beta: "vegetable", Spinacia: "vegetable",
+  Cucurbita: "vegetable", Cucumis: "vegetable", Citrullus: "vegetable",
+};
+
+const SPECIES_TYPE = {
+  "Salvia officinalis": "herb",
+  "Salvia rosmarinus": "herb",
+  "Solanum lycopersicum": "vegetable",
+  "Solanum tuberosum": "vegetable",
+  "Solanum melongena": "vegetable",
+  "Allium sativum": "vegetable", "Allium cepa": "vegetable",
+  "Allium porrum": "vegetable", "Allium fistulosum": "vegetable",
+  "Allium schoenoprasum": "herb", "Allium ampeloprasum": "vegetable",
+  "Allium tuberosum": "herb",
+  "Rumex acetosa": "herb", "Rumex scutatus": "herb",
+  "Rheum rhabarbarum": "vegetable",
+};
+
+function parsePlantType(text, familyDefault, latin) {
+  // Species + genus overrides win over description heuristics so an
+  // ornamental Erysimum doesn't get marked vegetable just because the
+  // family is Brassicaceae.
+  if (latin) {
+    const speciesLatin = latin.replace(/\s+['‘].*$/u, "").trim();
+    if (SPECIES_TYPE[speciesLatin]) return SPECIES_TYPE[speciesLatin];
+    const genus = latin.split(/\s+/)[0];
+    if (ORNAMENTAL_GENUS_TYPE[genus]) return ORNAMENTAL_GENUS_TYPE[genus];
+    if (EDIBLE_GENUS_TYPE[genus])     return EDIBLE_GENUS_TYPE[genus];
+  }
   if (!text) return familyDefault ?? null;
   const t = text.toLowerCase();
   if (/\bperennial\b/.test(t))  return "perennial";
@@ -1236,7 +1314,7 @@ async function buildRawRecord(row, ix) {
     qid: row.qid,
     genus: genusOf(row.latin),
     family,
-    type: parsePlantType(summary, familyDefaults?.type ?? null),
+    type: parsePlantType(summary, familyDefaults?.type ?? null, row.latin),
     heightCm: parseHeight(summary),
     colorHex: null,
     bloomMonths: parseBloomMonths(summary),
