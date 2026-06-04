@@ -172,44 +172,33 @@ public struct HomeView: View {
         .ignoresSafeArea()
     }
 
-    // MARK: - Tile grid (Phase 2)
+    // MARK: - Tile grid
     //
-    // Five entry points: Beds, Plant Picker, Bloom Planner, Garden Calendar,
-    // Planting Map. The old inline garden-defaults strip moved into Settings,
-    // and the picker / bloom / calendar tiles now hand straight to the
-    // matching bottom-tab destination so the grid is the canonical launcher.
+    // Three primary entry points: Pick your plants → catalogue + picker;
+    // Bloom Schedule → seasonal planner; Planting Schedule → sow/transplant/
+    // harvest calendar. Beds + Planting Map have moved into Settings and the
+    // Planting Map screen respectively.
 
     private var tileGrid: some View {
         let columns = [
             GridItem(.flexible(), spacing: 12),
             GridItem(.flexible(), spacing: 12),
         ]
-        let bedCount = store.selectedGarden.map { store.beds(in: $0.id).count } ?? 0
         return LazyVGrid(columns: columns, spacing: 12) {
-            tile(title: "Beds",
-                 subtitle: "\(bedCount) bed\(bedCount == 1 ? "" : "s")",
-                 icon: "🪴",
-                 tint: .bmGreen) { showingBeds = true }
-
-            tile(title: "Plant Picker",
-                 subtitle: "Browse by bloom month",
-                 icon: "🔍",
+            tile(title: "Pick your plants",
+                 subtitle: "Browse + match to your beds",
+                 icon: "🌷",
                  tint: .bmPeach) { onSelectTab(.picker) }
 
-            tile(title: "Bloom Planner",
-                 subtitle: "Plan the season",
+            tile(title: "Bloom Schedule",
+                 subtitle: "Plan your seasonal colour",
                  icon: "🌸",
                  tint: .bmLilac) { onSelectTab(.bloom) }
 
-            tile(title: "Garden Calendar",
+            tile(title: "Planting Schedule",
                  subtitle: "Sow · Transplant · Harvest",
                  icon: "📅",
                  tint: .bmSky) { onSelectTab(.planting) }
-
-            tile(title: "Planting Map",
-                 subtitle: "Bed layout · PDF print",
-                 icon: "🗺️",
-                 tint: .bmLeafSage) { showingPlantingMap = true }
         }
         .padding(.horizontal, 20)
     }

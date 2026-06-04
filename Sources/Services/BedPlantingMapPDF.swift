@@ -136,9 +136,73 @@ public enum BedPlantingMapPDF {
         bg.stroke()
         ctx.restoreGState()
 
-        // Plant circles — tallest at the back (top of page = back of bed),
-        // wrap rows; new species starts a new row. Each circle carries
-        // the species letter so the gardener can cross-reference the key.
+        // Two paths depending on whether the gardener has arranged the bed
+        // by hand in the Planting Map editor: explicit placements → draw
+        // each at its exact (xCm, yCm); empty placements → fall through to
+        // the legacy greedy row-pack so old beds still print sensibly.
+        if !bed.placements.isEmpty {
+            drawPlacements(bed: bed, entries: entries,
+                           canvasRect: canvasRect, scale: scale)
+        } else {
+            drawGreedyPack(entries: entries,
+                           canvasRect: canvasRect, scale: scale)
+        }
+
+        // "Front of bed" caption
+        let caption = "Front of bed"
+        let captionAttrs: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 9, weight: .bold),
+            .foregroundColor: UIColor.darkGray,
+        ]
+        let captionSize = (caption as NSString).size(withAttributes: captionAttrs)
+        (caption as NSString).draw(at: CGPoint(x: canvasRect.midX - captionSize.width / 2,
+                                               y: canvasRect.maxY + 4),
+                                   withAttributes: captionAttrs)
+
+        drawScaleBar(in: canvasRect, scale: scale, ctx: ctx)
+    }
+
+    private static func drawPlacements(bed: Bed,
+                                       entries: [LayoutEntry],
+                                       canvasRect: CGRect,
+                                       scale: CGFloat) {
+        // Index palette + letter + plant by plant id so each placement can
+        // pick up its rendering context in O(1).
+        var paletteByPid: [String: (color: UIColor, letter: String, plant: Plant)] = [:]
+        for entry in entries {
+            paletteByPid[entry.plant.id] = (entry.uiColor, entry.letter, entry.plant)
+        }
+        let glyphColor = UIColor(white: 0.1, alpha: 1)
+        for placement in bed.placements {
+            guard let info = paletteByPid[placement.plantId] else { continue }
+            let spreadCm = CGFloat(info.plant.spreadCm ?? 30)
+            let diameter = max(14, spreadCm * scale)
+            let cx = canvasRect.minX + CGFloat(placement.xCm) * scale
+            let cy = canvasRect.minY + CGFloat(placement.yCm) * scale
+            let r = CGRect(x: cx - diameter / 2,
+                           y: cy - diameter / 2,
+                           width: diameter, height: diameter)
+            info.color.setFill()
+            glyphColor.setStroke()
+            let path = UIBezierPath(ovalIn: r)
+            path.fill()
+            path.lineWidth = 0.9
+            path.stroke()
+            let glyphPt = max(7, min(12, diameter * 0.55))
+            let attrs: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: glyphPt, weight: .bold),
+                .foregroundColor: UIColor.white,
+            ]
+            let letterSize = (info.letter as NSString).size(withAttributes: attrs)
+            (info.letter as NSString).draw(at: CGPoint(x: r.midX - letterSize.width / 2,
+                                                       y: r.midY - letterSize.height / 2),
+                                            withAttributes: attrs)
+        }
+    }
+
+    private static func drawGreedyPack(entries: [LayoutEntry],
+                                       canvasRect: CGRect,
+                                       scale: CGFloat) {
         var cursorX: CGFloat = canvasRect.minX + 4
         var cursorY: CGFloat = canvasRect.minY + 4
         var rowH: CGFloat = 0
@@ -184,19 +248,6 @@ public enum BedPlantingMapPDF {
             cursorY += rowH + 2
             rowH = 0
         }
-
-        // "Front of bed" caption
-        let caption = "Front of bed"
-        let captionAttrs: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 9, weight: .bold),
-            .foregroundColor: UIColor.darkGray,
-        ]
-        let captionSize = (caption as NSString).size(withAttributes: captionAttrs)
-        (caption as NSString).draw(at: CGPoint(x: canvasRect.midX - captionSize.width / 2,
-                                               y: canvasRect.maxY + 4),
-                                   withAttributes: captionAttrs)
-
-        drawScaleBar(in: canvasRect, scale: scale, ctx: ctx)
     }
 
     private static func drawScaleBar(in canvasRect: CGRect,

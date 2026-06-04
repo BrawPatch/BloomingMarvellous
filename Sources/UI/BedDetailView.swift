@@ -296,9 +296,24 @@ public struct BedDetailView: View {
         let resolved = resolvedPlantsForLayout(bed: bed)
         let capacity = BedCapacityModel(bed: bed, plants: resolved)
         let layoutIds = layoutSpeciesIds(bed: bed, resolved: resolved)
+        // Stable palette dot + letter per species so the row matches the
+        // bed map even for plants the gardener has picked but not yet
+        // placed (count == 0). Order mirrors `layoutSpeciesIds` (tallest
+        // first) which mirrors `BedLayoutKey.entries()`.
+        let paletteByPid: [String: String] = Dictionary(
+            uniqueKeysWithValues: layoutIds.enumerated().map { idx, pid in
+                (pid, BedLayoutKey.palette[idx % BedLayoutKey.palette.count])
+            }
+        )
+        let letterByPid: [String: String] = Dictionary(
+            uniqueKeysWithValues: layoutIds.enumerated().map { idx, pid in
+                (pid, BedLayoutKey.letter(forIndex: idx))
+            }
+        )
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                SectionLabel("Plant layout", icon: "🗺️")
+                SectionLabel("Plants in bed", icon: "🌿")
+                Tooltip("Every plant you've picked for this bed. Use the steppers to set how many of each. The bar shows how full the bed is — each plant takes a (spread/2)² × π circle.")
                 Spacer()
                 Text(fillLabel(capacity))
                     .font(.custom("Nunito-Bold", size: 11))
@@ -312,17 +327,16 @@ public struct BedDetailView: View {
                     .font(.custom("Nunito-SemiBold", size: 12))
                     .foregroundStyle(Color.bmText2)
             } else {
-                if !bed.plantCounts.isEmpty {
-                    BedLayoutGridView(bed: bed, plants: resolved)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 4)
-                }
-
                 ForEach(layoutIds, id: \.self) { pid in
                     if let plant = resolved[pid] {
-                        plantCountRow(bed: bed, plant: plant, capacity: capacity)
+                        plantCountRow(bed: bed, plant: plant, capacity: capacity,
+                                      paletteHex: paletteByPid[pid],
+                                      letter: letterByPid[pid])
                     }
                 }
+                Text("The letter + colour next to each plant matches the Planting Map.")
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmText3)
             }
 
             HStack(spacing: 10) {
@@ -352,6 +366,23 @@ public struct BedDetailView: View {
                 }
 
                 if !bed.plantCounts.isEmpty {
+                    NavigationLink {
+                        BedMapEditorView(bedId: bed.id)
+                            .environmentObject(store)
+                            .environmentObject(library)
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "map")
+                                .font(.system(size: 11, weight: .bold))
+                            Text("Edit Planting Map")
+                                .font(.custom("Fredoka-SemiBold", size: 12))
+                        }
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12).padding(.vertical, 8)
+                        .background(Color.bmLilac)
+                        .clipShape(Capsule())
+                    }
+
                     Button {
                         showingNewSeasonConfirm = true
                     } label: {
@@ -394,16 +425,24 @@ public struct BedDetailView: View {
 
     private func plantCountRow(bed: Bed,
                                plant: Plant,
-                               capacity: BedCapacityModel) -> some View {
+                               capacity: BedCapacityModel,
+                               paletteHex: String?,
+                               letter: String?) -> some View {
         let count = bed.plantCounts[plant.id] ?? 0
         let atCap = capacity.atCapacity(plantId: plant.id)
-        let isPerennial = bed.perennials.contains(plant.id)
         let isCarriedOver = bed.carriedOver.contains(plant.id)
+        let dotColor = paletteHex.map { Color(hex: $0) } ?? Color.bmGreen
         return VStack(alignment: .leading, spacing: 6) {
             HStack(alignment: .center, spacing: 10) {
-                Circle()
-                    .fill(plant.colorHex.flatMap { Color(hex: $0) } ?? Color.bmGreen)
-                    .frame(width: 14, height: 14)
+                ZStack {
+                    Circle()
+                        .fill(dotColor)
+                        .frame(width: 22, height: 22)
+                    Text(letter ?? "")
+                        .font(.custom("Fredoka-SemiBold", size: 11))
+                        .foregroundStyle(.white)
+                }
+                .accessibilityLabel("Map letter \(letter ?? "?")")
                 VStack(alignment: .leading, spacing: 1) {
                     Text(plant.name)
                         .font(.custom("Nunito-Bold", size: 13))
@@ -411,26 +450,16 @@ public struct BedDetailView: View {
                     Text(plantFootprintLabel(plant))
                         .font(.custom("Nunito-SemiBold", size: 11))
                         .foregroundStyle(Color.bmText3)
+                    Text(capacityHint(plant: plant, capacity: capacity, count: count))
+                        .font(.custom("Nunito-Bold", size: 10))
+                        .foregroundStyle(atCap ? Color.bmAmber : Color.bmGreen)
                 }
                 Spacer()
                 stepperCluster(plant: plant, bed: bed, count: count, atCap: atCap)
             }
 
-            HStack(spacing: 6) {
-                Button {
-                    store.togglePerennial(plantId: plant.id, in: bed.id)
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: isPerennial ? "checkmark.circle.fill" : "circle")
-                            .font(.system(size: 11, weight: .bold))
-                        Text("Perennial")
-                            .font(.custom("Nunito-Bold", size: 11))
-                    }
-                    .foregroundStyle(isPerennial ? Color.bmGreen : Color.bmText3)
-                }
-                .buttonStyle(.plain)
-
-                if isCarriedOver {
+            if isCarriedOver {
+                HStack(spacing: 6) {
                     HStack(spacing: 4) {
                         Image(systemName: "leaf.fill")
                             .font(.system(size: 9, weight: .bold))
@@ -450,8 +479,8 @@ public struct BedDetailView: View {
                             .foregroundStyle(Color.bmRed)
                     }
                     .buttonStyle(.plain)
+                    Spacer()
                 }
-                Spacer()
             }
 
             if atCap {
@@ -521,6 +550,24 @@ public struct BedDetailView: View {
         if let h = plant.heightCm { parts.append("\(h) cm tall") }
         if let s = plant.spreadCm { parts.append("\(s) cm spread") }
         return parts.joined(separator: " · ")
+    }
+
+    /// Live capacity hint shown beneath each plant row. Updates as the
+    /// gardener adds or removes other species in this bed.
+    private func capacityHint(plant: Plant,
+                              capacity: BedCapacityModel,
+                              count: Int) -> String {
+        // No known spread → footprint unknown → no cap to display.
+        guard let maxAllowed = capacity.maxAllowed(plantId: plant.id) else {
+            return "Spread unknown — fit by eye"
+        }
+        if maxAllowed == 0 && count == 0 {
+            return "No room for this one in the current layout"
+        }
+        if count >= maxAllowed {
+            return "At max — free up space for more"
+        }
+        return "Up to \(maxAllowed) fit alongside the others"
     }
 
     private func fillLabel(_ capacity: BedCapacityModel) -> String {

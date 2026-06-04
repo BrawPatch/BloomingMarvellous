@@ -4,21 +4,94 @@ import BloomingMarvellous
 
 // MARK: - PickerMode
 //
-// Drives the default vs. unfiltered behaviour described in the latest
-// product brief:
-//   • .matched   — filter by the selected garden's defaults (soil, wetness,
-//                   exposure, sunlight) AND the regional growing season
-//                   derived from the postcode.
-//   • .all       — show every plant the user is entitled to. Manual
-//                   Sun/Soil/Height refinements are available in this mode.
+// Two top-level tabs on the picker:
+//   • .matched — pre-filters the catalogue against the active bed (Pro)
+//                or garden (Free) — soil, sunlight, wetness, acidity,
+//                plus the regional growing season from the postcode.
+//   • .all     — no auto-context. The gardener picks soil/sun/moisture/
+//                pH manually as additional filter chips.
 
 public enum PickerMode: String, CaseIterable, Identifiable {
     case matched, all
     public var id: String { rawValue }
+}
+
+// MARK: - HeightBand
+//
+// User-friendly grouping of mature heights so a gardener can ask for
+// "just dwarf bedding" or "only climbers". Bands map to heightCm ranges
+// derived from the library's heightCm field plus a few special-case
+// rules for shrubs and climbers (which are tagged by type).
+
+public enum HeightBand: String, CaseIterable, Identifiable {
+    case dwarf      // < 30 cm — alpines, low edging
+    case medium     // 30–80 cm — most bedding + perennials
+    case tall       // 80–180 cm — back-of-border
+    case shrub      // anything tagged type==shrub
+    case climber    // ≥ 180 cm OR climber families (Clematis, Wisteria, Lonicera, Passiflora, Hedera, Humulus, Vitis)
+
+    public var id: String { rawValue }
     public var label: String {
         switch self {
-        case .matched: return "Matched to garden"
-        case .all:     return "All plants"
+        case .dwarf:   return "Dwarf"
+        case .medium:  return "Medium"
+        case .tall:    return "Tall"
+        case .shrub:   return "Shrub"
+        case .climber: return "Climber"
+        }
+    }
+    public var emoji: String {
+        switch self {
+        case .dwarf:   return "🌱"
+        case .medium:  return "🌼"
+        case .tall:    return "🌻"
+        case .shrub:   return "🪴"
+        case .climber: return "🪜"
+        }
+    }
+    fileprivate func matches(_ p: Plant) -> Bool {
+        switch self {
+        case .shrub:   return p.type == .shrub
+        case .climber:
+            let climberGenera: Set<String> = [
+                "Clematis","Wisteria","Lonicera","Passiflora","Hedera",
+                "Humulus","Vitis","Jasminum","Akebia","Lathyrus","Cobaea",
+                "Ipomoea","Thunbergia","Pyrostegia","Bougainvillea",
+            ]
+            let genus = p.latin.split(separator: " ").first.map(String.init) ?? ""
+            if climberGenera.contains(genus) { return true }
+            return (p.heightCm ?? 0) >= 180 && p.type != .shrub
+        case .dwarf:   return (p.heightCm ?? 0) > 0 && (p.heightCm ?? 0) < 30 && p.type != .shrub
+        case .medium:  return (p.heightCm ?? 0) >= 30 && (p.heightCm ?? 0) < 80 && p.type != .shrub
+        case .tall:    return (p.heightCm ?? 0) >= 80 && (p.heightCm ?? 0) < 180 && p.type != .shrub
+        }
+    }
+}
+
+// MARK: - LifecycleFilter
+//
+// Annual / Perennial / All. Maps loosely onto PlantType — biennials count
+// as perennials for filter purposes (more useful to a gardener than
+// surfacing the rare biennial-only chip).
+
+public enum LifecycleFilter: String, CaseIterable, Identifiable {
+    case perennial, annual, all
+    public var id: String { rawValue }
+    public var label: String {
+        switch self {
+        case .perennial: return "Perennials"
+        case .annual:    return "Annuals"
+        case .all:       return "All"
+        }
+    }
+    fileprivate func matches(_ p: Plant) -> Bool {
+        switch self {
+        case .all: return true
+        case .annual:
+            return p.type == .annual
+        case .perennial:
+            return p.type == .perennial || p.type == .biennial
+                || p.type == .bulb || p.type == .shrub
         }
     }
 }
@@ -34,113 +107,319 @@ public struct PlantPickerMonthView: View {
 
     @State private var months: Set<Int> = [Calendar.current.component(.month, from: Date())]
     @State private var mode: PickerMode = .matched
+    @State private var filtersExpanded: Bool = true
 
     // Manual refinements — only relevant when `mode == .all`.
     @State private var sunFilter: Sunlight?
     @State private var soilFilter: SoilType?
-    @State private var minHeightCm: Int = 0
+    @State private var wetFilter: Wetness?
+    @State private var acidityFilter: SoilAcidity?
 
     // Cross-mode filters
-    @State private var acidityFilter: SoilAcidity?
-    @State private var colorFilter:   BloomColor?
+    /// Empty set means "any colour" — the filter is inert.
+    @State private var colorFilter:   Set<BloomColor> = []
+    @State private var typeFilter:    PlantGroup?
+    @State private var heightBand:    HeightBand?
+    @State private var lifecycle:     LifecycleFilter = .all
 
     public init() {}
 
     public var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
-                modeToggle
-                if mode == .matched { matchedContextCard }
-                targetMonthsSection
-                bloomColourSection
-                if mode == .all { manualFiltersSection }
-                viewPlantsButton
+            VStack(spacing: 12) {
+                tabBar
+                    .padding(.horizontal, 16)
+                if mode == .matched {
+                    matchedContextCard
+                        .padding(.horizontal, 16)
+                }
+                filtersCard
+                    .padding(.horizontal, 16)
+                if mode == .all {
+                    manualFiltersSection
+                        .padding(.horizontal, 16)
+                }
+                inlineGallery
+                    .padding(.top, 4)
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 18)
+            .padding(.vertical, 14)
         }
         .bmFloralBackdrop()
         .bmNavTitle("Plant picker", icon: "🌷")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                ContextualHelpButton(topic: .plantPicker)
+            }
+        }
     }
 
-    // MARK: - Bloom colour filter (cross-mode)
+    // MARK: - Tab bar
+    //
+    // Two top-level tabs (Matched / All Plants). Replaces the old "Matched
+    // to garden" segmented control. Label flips between "Matched to my Bed"
+    // (Pro with a bed selected) and "Matched to my Garden" otherwise.
 
-    private var bloomColourSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                SectionLabel("Bloom colour", icon: "🎨")
+    private var tabBar: some View {
+        VStack(spacing: 6) {
+            HStack(spacing: 0) {
+                tabButton(.matched, label: matchedTabLabel)
+                tabButton(.all,     label: "All Plants")
+            }
+            .padding(4)
+            .background(Color.bmBgCard)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(RoundedRectangle(cornerRadius: 14)
+                .stroke(Color.bmBorder, lineWidth: 1.5))
+            HStack(spacing: 6) {
+                Tooltip(mode == .matched
+                        ? "Matched plays it safe — only plants happy in your selected bed or garden's soil, sunlight, moisture and pH, AND in your regional growing season."
+                        : "All Plants drops the bed/garden auto-filter so you can browse the whole catalogue. Use the Refine card below to pick conditions manually.")
+                Text(mode == .matched
+                     ? "Plants suited to your conditions"
+                     : "The whole catalogue, refined manually")
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmText3)
                 Spacer()
-                if colorFilter != nil {
-                    Button("Clear") { colorFilter = nil }
-                        .font(.custom("Fredoka-SemiBold", size: 12))
-                        .foregroundStyle(Color.bmText2)
+            }
+            .padding(.horizontal, 4)
+        }
+    }
+
+    private func tabButton(_ m: PickerMode, label: String) -> some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.15)) { mode = m }
+        } label: {
+            Text(label)
+                .font(.custom("Fredoka-SemiBold", size: 13))
+                .foregroundStyle(mode == m ? .white : Color.bmText2)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .background(mode == m ? Color.bmGreen : Color.clear)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+    }
+
+    private var matchedTabLabel: String {
+        if store.user.tier == .pro, store.selectedBed != nil {
+            return "Matched to my Bed"
+        }
+        return "Matched to my Garden"
+    }
+
+    // MARK: - Filters card (months + colour + type + height + lifecycle)
+
+    private var filtersCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            DisclosureGroup(isExpanded: $filtersExpanded) {
+                VStack(alignment: .leading, spacing: 14) {
+                    targetMonthsSection
+                    Divider().padding(.vertical, 2)
+                    bloomColourStrip
+                    typeFilterStrip
+                    heightFilterStrip
+                    lifecycleFilterStrip
+                }
+                .padding(.top, 8)
+            } label: {
+                HStack {
+                    SectionLabel("Filters", icon: "🎛️")
+                    Spacer()
+                    if filtersExpanded { EmptyView() } else { activeFiltersSummary }
                 }
             }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(BloomColor.allCases) { c in
-                        Button {
-                            colorFilter = (colorFilter == c) ? nil : c
-                        } label: {
-                            HStack(spacing: 5) {
-                                Circle()
-                                    .fill(c.swatch)
-                                    .frame(width: 14, height: 14)
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 1.5))
-                                Text(c.label)
-                                    .font(.custom("Nunito-Bold", size: 12))
-                                    .foregroundStyle(colorFilter == c ? .white : Color.bmText2)
-                            }
-                            .padding(.horizontal, 10).padding(.vertical, 6)
-                            .background(colorFilter == c ? Color.bmGreen : Color.bmBgCard)
-                            .clipShape(Capsule())
-                            .overlay(Capsule().stroke(
-                                colorFilter == c ? Color.bmGreen : Color.bmBorder,
-                                lineWidth: 1.5))
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
+            .tint(Color.bmText2)
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
     }
 
-    // MARK: - Mode toggle
+    private var activeFiltersSummary: some View {
+        let parts: [String] = [
+            months.isEmpty ? nil : "\(months.count) month\(months.count == 1 ? "" : "s")",
+            colorFilter.isEmpty ? nil : "\(colorFilter.count) colour\(colorFilter.count == 1 ? "" : "s")",
+            typeFilter?.label,
+            heightBand?.label,
+            lifecycle == .all ? nil : lifecycle.label,
+        ].compactMap { $0 }
+        return Text(parts.isEmpty ? "No filters" : parts.joined(separator: " · "))
+            .font(.custom("Nunito-SemiBold", size: 11))
+            .foregroundStyle(Color.bmText3)
+            .lineLimit(1)
+    }
 
-    private var modeToggle: some View {
-        HStack(spacing: 0) {
-            ForEach(PickerMode.allCases) { m in
-                Button {
-                    withAnimation(.easeInOut(duration: 0.15)) { mode = m }
-                } label: {
-                    Text(m.label)
-                        .font(.custom("Fredoka-SemiBold", size: 13))
-                        .foregroundStyle(mode == m ? .white : Color.bmText2)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 10)
-                        .background(mode == m ? Color.bmGreen : Color.clear)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+    // MARK: - Bloom colour strip (multi-select, with "Any colour")
+
+    private var bloomColourStrip: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Text("Colour")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Tooltip("Multi-select. Tap several colours to build a palette, or tap 'Any colour' to clear. Plants are matched to their nearest three colour bands so pink-purple cultivars surface in both.")
+                Spacer()
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    smallChip(label: "Any colour", isActive: colorFilter.isEmpty) {
+                        colorFilter.removeAll()
+                    }
+                    ForEach(BloomColor.allCases) { c in
+                        Button {
+                            if colorFilter.contains(c) { colorFilter.remove(c) }
+                            else                      { colorFilter.insert(c) }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Circle()
+                                    .fill(c.swatch)
+                                    .frame(width: 12, height: 12)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 1))
+                                Text(c.label)
+                                    .font(.custom("Nunito-Bold", size: 11))
+                                    .foregroundStyle(colorFilter.contains(c) ? .white : Color.bmText2)
+                            }
+                            .padding(.horizontal, 9).padding(.vertical, 5)
+                            .background(colorFilter.contains(c) ? Color.bmGreen : Color.bmBgCard)
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(
+                                colorFilter.contains(c) ? Color.bmGreen : Color.bmBorder,
+                                lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
         }
-        .padding(4)
-        .background(Color.bmBgCard)
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .overlay(RoundedRectangle(cornerRadius: 14)
-            .stroke(Color.bmBorder, lineWidth: 1.5))
+    }
+
+    // MARK: - Type strip
+
+    private var typeFilterStrip: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Text("Type")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Tooltip("Group by Flower / Vegetable / Herb / Fruit. Fruit-pack plants land in Fruit regardless of their botanical type so you can find your blackcurrant.")
+                Spacer()
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    smallChip(label: "Any", isActive: typeFilter == nil) { typeFilter = nil }
+                    ForEach(PlantGroup.allCases) { g in
+                        smallChip(label: "\(g.emoji) \(g.label)",
+                                  isActive: typeFilter == g) {
+                            typeFilter = (typeFilter == g) ? nil : g
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Height strip
+
+    private var heightFilterStrip: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Text("Height")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Tooltip("Dwarf is under 30 cm, Medium 30-80 cm, Tall 80-180 cm. Shrubs and Climbers are flagged by type and genus too — a Clematis counts as a climber regardless of height.")
+                Spacer()
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    smallChip(label: "Any", isActive: heightBand == nil) { heightBand = nil }
+                    ForEach(HeightBand.allCases) { b in
+                        smallChip(label: "\(b.emoji) \(b.label)",
+                                  isActive: heightBand == b) {
+                            heightBand = (heightBand == b) ? nil : b
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Lifecycle strip
+
+    private var lifecycleFilterStrip: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Text("Lifecycle")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Tooltip("Annuals flower for one season and need replanting next year. Perennials (plus biennials, bulbs and shrubs) come back. Tap 'All' to mix both.")
+                Spacer()
+            }
+            HStack(spacing: 6) {
+                ForEach(LifecycleFilter.allCases) { f in
+                    smallChip(label: f.label, isActive: lifecycle == f) {
+                        lifecycle = f
+                    }
+                }
+            }
+        }
+    }
+
+    private func smallChip(label: String,
+                           isActive: Bool,
+                           action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(label)
+                .font(.custom("Nunito-Bold", size: 11))
+                .foregroundStyle(isActive ? .white : Color.bmText2)
+                .padding(.horizontal, 10).padding(.vertical, 6)
+                .background(isActive ? Color.bmGreen : Color.bmBgCard)
+                .clipShape(Capsule())
+                .overlay(Capsule().stroke(
+                    isActive ? Color.bmGreen : Color.bmBorder, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Inline gallery
+
+    private var inlineGallery: some View {
+        PlantPickerGalleryView(months: Array(months).sorted(),
+                               mode: mode,
+                               manualSun: sunFilter,
+                               manualSoil: soilFilter,
+                               manualWet: wetFilter,
+                               colorFilter: colorFilter,
+                               typeFilter: typeFilter,
+                               heightBand: heightBand,
+                               lifecycle: lifecycle,
+                               acidityOverride: acidityFilter)
     }
 
     // MARK: - Matched context
 
     private var matchedContextCard: some View {
         let climate = store.climate
+        let isPro   = store.user.tier == .pro
+        let bed     = isPro ? store.selectedBed : nil
         return VStack(alignment: .leading, spacing: 8) {
             SectionLabel("Filtering for", icon: "🎯")
 
-            if let g = store.selectedGarden {
+            if let bed, let g = store.selectedGarden {
+                // Bed wins on Pro — its effective conditions override the
+                // garden defaults if the gardener has customised them.
+                let soil = bed.effectiveSoil(garden: g)
+                let sun  = bed.effectiveSunlight(garden: g)
+                let wet  = bed.effectiveWetness(garden: g)
+                let acid = bed.effectiveAcidity(garden: g)
+                HStack(spacing: 6) {
+                    miniChip("🌿 \(bed.name)", color: .bmGreen)
+                    miniChip(soil.label, color: .bmGreen)
+                    miniChip(sun.shortLabel, color: .bmAmber)
+                    miniChip(wet.shortLabel, color: .bmSky)
+                    if let a = acid {
+                        miniChip(a.shortLabel, color: .bmLilac)
+                    }
+                }
+            } else if let g = store.selectedGarden {
                 HStack(spacing: 6) {
                     miniChip(g.name, color: .bmText2)
                     miniChip(g.soilType.label, color: .bmGreen)
@@ -178,11 +457,17 @@ public struct PlantPickerMonthView: View {
     }
 
     // MARK: - Target months (multi-select)
+    //
+    // Embedded inside the Filters disclosure now — drop the outer card
+    // chrome so it inherits the disclosure's padding.
 
     private var targetMonthsSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
-                SectionLabel("Target bloom months", icon: "🌸")
+                Text("Bloom months")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Tooltip("Tap one or more months when you'd like flowers. Picking June + September gives a staggered show. Off-season months in Matched mode dim out.")
                 Spacer()
                 if months.count > 1 {
                     Text("\(months.count) selected")
@@ -190,32 +475,28 @@ public struct PlantPickerMonthView: View {
                         .foregroundStyle(Color.bmText3)
                 }
             }
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 6), spacing: 6) {
                 ForEach(1...12, id: \.self) { m in
                     monthChip(m)
                 }
             }
-            HStack(spacing: 12) {
+            HStack(spacing: 10) {
                 Button("Clear")    { months = [] }
-                    .font(.custom("Fredoka-SemiBold", size: 12))
+                    .font(.custom("Fredoka-SemiBold", size: 11))
                     .foregroundStyle(Color.bmText2)
                 Button("All year")  { months = Set(1...12) }
-                    .font(.custom("Fredoka-SemiBold", size: 12))
+                    .font(.custom("Fredoka-SemiBold", size: 11))
                     .foregroundStyle(Color.bmGreen)
                 if mode == .matched {
                     Button("Growing season only") {
                         months = store.climate.growingSeason
                     }
-                    .font(.custom("Fredoka-SemiBold", size: 12))
+                    .font(.custom("Fredoka-SemiBold", size: 11))
                     .foregroundStyle(Color.bmLilac)
                 }
                 Spacer()
             }
-            .padding(.top, 4)
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .bmCard()
     }
 
     @ViewBuilder
@@ -246,10 +527,14 @@ public struct PlantPickerMonthView: View {
     }
 
     // MARK: - Manual filters (only in .all mode)
+    //
+    // Soil / Sun / Moisture / Acidity chip rows. Replace the old min-height
+    // slider with the new HeightBand strip (it lives in the main Filters
+    // card alongside Colour and Type).
 
     private var manualFiltersSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionLabel("Refine", icon: "🔎")
+            SectionLabel("Refine (All Plants)", icon: "🔎")
 
             VStack(alignment: .leading, spacing: 6) {
                 Text("Sun")
@@ -284,49 +569,41 @@ public struct PlantPickerMonthView: View {
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Minimum height: \(minHeightCm) cm")
+                Text("Moisture")
                     .font(.custom("Nunito-Bold", size: 12))
                     .foregroundStyle(Color.bmText2)
-                Slider(value: Binding(get: { Double(minHeightCm) },
-                                      set: { minHeightCm = Int($0) }),
-                       in: 0...200, step: 10)
-                    .tint(Color.bmGreen)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        PillButton("Any", isActive: wetFilter == nil, color: .bmSky) { wetFilter = nil }
+                        ForEach(Wetness.allCases) { w in
+                            PillButton(w.shortLabel, isActive: wetFilter == w, color: .bmSky) {
+                                wetFilter = (wetFilter == w) ? nil : w
+                            }
+                        }
+                    }
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Acidity (pH)")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        PillButton("Any", isActive: acidityFilter == nil, color: .bmLilac) { acidityFilter = nil }
+                        ForEach(SoilAcidity.allCases) { a in
+                            PillButton(a.shortLabel, isActive: acidityFilter == a, color: .bmLilac) {
+                                acidityFilter = (acidityFilter == a) ? nil : a
+                            }
+                        }
+                    }
+                }
             }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
     }
-
-    // MARK: - View plants
-
-    private var viewPlantsButton: some View {
-        NavigationLink {
-            PlantPickerGalleryView(months: Array(months).sorted(),
-                                   mode: mode,
-                                   manualSun: sunFilter,
-                                   manualSoil: soilFilter,
-                                   minHeightCm: minHeightCm,
-                                   colorFilter: colorFilter,
-                                   acidityOverride: acidityFilter)
-        } label: {
-            HStack(spacing: 6) {
-                Image(systemName: "magnifyingglass").font(.system(size: 14, weight: .bold))
-                Text("View plants")
-                    .font(.custom("Fredoka-SemiBold", size: 16))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .background(canSubmit ? Color.bmGreen : Color.bmGreenMid)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-            .shadow(color: Color.bmGreen.opacity(0.25), radius: 6, y: 2)
-        }
-        .disabled(!canSubmit)
-        .padding(.top, 4)
-    }
-
-    private var canSubmit: Bool { !months.isEmpty }
 
     static func monthName(_ m: Int) -> String {
         let f = DateFormatter()
@@ -347,8 +624,11 @@ struct PlantPickerGalleryView: View {
     let mode: PickerMode
     let manualSun: Sunlight?
     let manualSoil: SoilType?
-    let minHeightCm: Int
-    let colorFilter: BloomColor?
+    let manualWet: Wetness?
+    let colorFilter: Set<BloomColor>
+    let typeFilter: PlantGroup?
+    let heightBand: HeightBand?
+    let lifecycle: LifecycleFilter
     /// Explicit acidity filter applied in addition to the matched filter
     /// (e.g. when the user wants to override the garden default for this
     /// one search). nil = don't apply an extra constraint.
@@ -360,61 +640,14 @@ struct PlantPickerGalleryView: View {
     /// Free-text search applied across common + Latin names. Persists
     /// for the lifetime of this gallery view.
     @State private var search: String = ""
-    /// "Suitable for my soil" filter — only meaningful in `.all` mode
-    /// (in `.matched` mode the gardener already gets suitable plants).
-    @State private var soilOnly: Bool = false
-    /// Inline colour / type refinements seeded from the picker setup
-    /// screen so the gardener can adjust without going back.
-    @State private var colorSelection: BloomColor?
-    @State private var typeFilter: PlantGroup?
-
-    init(months: [Int],
-         mode: PickerMode,
-         manualSun: Sunlight?,
-         manualSoil: SoilType?,
-         minHeightCm: Int,
-         colorFilter: BloomColor?,
-         acidityOverride: SoilAcidity?) {
-        self.months = months
-        self.mode = mode
-        self.manualSun = manualSun
-        self.manualSoil = manualSoil
-        self.minHeightCm = minHeightCm
-        self.colorFilter = colorFilter
-        self.acidityOverride = acidityOverride
-        _colorSelection = State(initialValue: colorFilter)
-    }
 
     var body: some View {
-        ScrollView {
+        VStack(spacing: 12) {
             if case .failed(let msg) = library.status {
                 offlineBanner(msg)
             }
-            VStack(spacing: 12) {
-                PlantSearchBar(text: $search)
-                colorFilterStrip
-                typeFilterStrip
-                if mode == .all {
-                    Toggle(isOn: $soilOnly) {
-                        HStack(spacing: 6) {
-                            Image(systemName: "leaf.fill")
-                                .font(.system(size: 12, weight: .semibold))
-                                .foregroundStyle(soilOnly ? Color.bmGreen : Color.bmText3)
-                            Text("Suitable for my soil & conditions")
-                                .font(.custom("Nunito-Bold", size: 13))
-                                .foregroundStyle(Color.bmText1)
-                        }
-                    }
-                    .tint(Color.bmGreen)
-                    .padding(.horizontal, 12).padding(.vertical, 8)
-                    .background(Color.bmBgSoft)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay(RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.bmBorder, lineWidth: 1.2))
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 12)
+            PlantSearchBar(text: $search)
+                .padding(.horizontal, 16)
 
             if grouped.allSatisfy({ $0.plants.isEmpty }) {
                 emptyState
@@ -424,105 +657,10 @@ struct PlantPickerGalleryView: View {
                         section(for: group)
                     }
                 }
-                .padding(20)
+                .padding(.horizontal, 16)
             }
         }
-        .bmFloralBackdrop()
-        .bmNavTitle(months.count == 1
-                    ? "\(PlantPickerMonthView.monthName(months[0])) bloom"
-                    : "\(months.count)-month bloom",
-                    icon: "🌸")
         .task { await library.loadIfNeeded() }
-    }
-
-    // MARK: - Inline filter strips
-
-    private var colorFilterStrip: some View {
-        HStack(spacing: 8) {
-            Text("Colour")
-                .font(.custom("Nunito-Bold", size: 12))
-                .foregroundStyle(Color.bmText2)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
-                    inlineFilterChip(label: "Any",
-                                     isActive: colorSelection == nil) {
-                        colorSelection = nil
-                    }
-                    ForEach(BloomColor.allCases) { c in
-                        Button {
-                            colorSelection = (colorSelection == c) ? nil : c
-                        } label: {
-                            HStack(spacing: 4) {
-                                Circle()
-                                    .fill(c.swatch)
-                                    .frame(width: 12, height: 12)
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 1))
-                                Text(c.label)
-                                    .font(.custom("Nunito-Bold", size: 11))
-                                    .foregroundStyle(colorSelection == c ? .white : Color.bmText2)
-                            }
-                            .padding(.horizontal, 9).padding(.vertical, 5)
-                            .background(colorSelection == c ? Color.bmGreen : Color.bmBgCard)
-                            .clipShape(Capsule())
-                            .overlay(Capsule().stroke(
-                                colorSelection == c ? Color.bmGreen : Color.bmBorder,
-                                lineWidth: 1))
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
-        }
-    }
-
-    private var typeFilterStrip: some View {
-        HStack(spacing: 8) {
-            Text("Type")
-                .font(.custom("Nunito-Bold", size: 12))
-                .foregroundStyle(Color.bmText2)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
-                    inlineFilterChip(label: "Any",
-                                     isActive: typeFilter == nil) {
-                        typeFilter = nil
-                    }
-                    ForEach(PlantGroup.allCases) { g in
-                        Button {
-                            typeFilter = (typeFilter == g) ? nil : g
-                        } label: {
-                            HStack(spacing: 4) {
-                                Text(g.emoji)
-                                Text(g.label)
-                                    .font(.custom("Nunito-Bold", size: 11))
-                                    .foregroundStyle(typeFilter == g ? .white : Color.bmText2)
-                            }
-                            .padding(.horizontal, 9).padding(.vertical, 5)
-                            .background(typeFilter == g ? Color.bmGreen : Color.bmBgCard)
-                            .clipShape(Capsule())
-                            .overlay(Capsule().stroke(
-                                typeFilter == g ? Color.bmGreen : Color.bmBorder,
-                                lineWidth: 1))
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
-        }
-    }
-
-    private func inlineFilterChip(label: String,
-                                  isActive: Bool,
-                                  action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(label)
-                .font(.custom("Nunito-Bold", size: 11))
-                .foregroundStyle(isActive ? .white : Color.bmText2)
-                .padding(.horizontal, 9).padding(.vertical, 5)
-                .background(isActive ? Color.bmGreen : Color.bmBgCard)
-                .clipShape(Capsule())
-                .overlay(Capsule().stroke(isActive ? Color.bmGreen : Color.bmBorder, lineWidth: 1))
-        }
-        .buttonStyle(.plain)
     }
 
     // MARK: - Filter pipeline
@@ -535,48 +673,64 @@ struct PlantPickerGalleryView: View {
     private var grouped: [MonthGroup] {
         let entitled = library.plants
         let climate = store.climate
+        // Matched-tab context: prefer bed-level effective conditions (Pro
+        // with a bed selected), otherwise the garden's defaults.
+        let bedEff: (soil: SoilType, sun: Sunlight, wet: Wetness, acid: SoilAcidity?)? = {
+            guard store.user.tier == .pro,
+                  let bed = store.selectedBed,
+                  let g   = store.selectedGarden else { return nil }
+            return (bed.effectiveSoil(garden: g),
+                    bed.effectiveSunlight(garden: g),
+                    bed.effectiveWetness(garden: g),
+                    bed.effectiveAcidity(garden: g))
+        }()
 
-        // Pre-compute the garden-condition filter once. Sunlight + acidity
-        // use soft matching (see `sunlightCompatible` / `acidityCompatible`)
-        // so a sunny_am garden doesn't accidentally exclude every plant
-        // listed as sunny_always, and a mildly_alkaline garden still suits
-        // plants happy in neutral or very_alkaline soil.
-        func suitsGarden(_ p: Plant) -> Bool {
-            guard let g = store.selectedGarden else { return true }
-            let soilOk = p.preferredSoil.isEmpty || p.preferredSoil.contains(g.soilType)
-            let sunOk  = sunlightCompatible(garden: g.sunlight,
-                                            plantPrefers: p.preferredSunlight)
-            let acidOk: Bool
-            if let gAcid = g.acidity {
-                acidOk = acidityCompatible(garden: gAcid,
-                                           plantPrefers: p.preferredAcidity ?? [])
+        func suitsContext(_ p: Plant) -> Bool {
+            let soil:  SoilType?
+            let sun:   Sunlight?
+            let wet:   Wetness?
+            let acid:  SoilAcidity?
+            if let e = bedEff {
+                soil = e.soil; sun = e.sun; wet = e.wet; acid = e.acid
+            } else if let g = store.selectedGarden {
+                soil = g.soilType; sun = g.sunlight; wet = g.wetness; acid = g.acidity
             } else {
-                acidOk = true
+                return true
             }
-            let wetOk: Bool
-            if let wetnesses = p.preferredWetness, !wetnesses.isEmpty {
-                wetOk = wetnesses.contains(g.wetness)
-            } else {
-                wetOk = true
-            }
+            let soilOk = soil.map { p.preferredSoil.isEmpty || p.preferredSoil.contains($0) } ?? true
+            let sunOk  = sun.map { sunlightCompatible(garden: $0, plantPrefers: p.preferredSunlight) } ?? true
+            let acidOk = acid.map { acidityCompatible(garden: $0, plantPrefers: p.preferredAcidity ?? []) } ?? true
+            let wetOk: Bool = {
+                guard let w = wet, let prefs = p.preferredWetness, !prefs.isEmpty else { return true }
+                return prefs.contains(w)
+            }()
             return soilOk && sunOk && acidOk && wetOk
         }
 
         func suitsColor(_ p: Plant) -> Bool {
-            guard let want = colorSelection else { return true }
-            return BloomColor.nearestBands(forHex: p.colorHex).contains(want)
+            guard !colorFilter.isEmpty else { return true }
+            let plantBands = BloomColor.nearestBands(forHex: p.colorHex)
+            return !colorFilter.isDisjoint(with: plantBands)
         }
-
         func suitsType(_ p: Plant) -> Bool {
             guard let want = typeFilter else { return true }
             return PlantGroup.group(for: p) == want
+        }
+        func suitsHeight(_ p: Plant) -> Bool {
+            guard let band = heightBand else { return true }
+            return band.matches(p)
+        }
+        func suitsLifecycle(_ p: Plant) -> Bool {
+            lifecycle.matches(p)
         }
 
         return months.map { m in
             let plants = entitled.filter { p in
                 guard p.blooms(in: m) else { return false }
-                guard suitsColor(p) else { return false }
-                guard suitsType(p) else { return false }
+                guard suitsColor(p)     else { return false }
+                guard suitsType(p)      else { return false }
+                guard suitsHeight(p)    else { return false }
+                guard suitsLifecycle(p) else { return false }
                 if let a = acidityOverride,
                    let acids = p.preferredAcidity, !acids.isEmpty,
                    !acids.contains(a) {
@@ -584,18 +738,18 @@ struct PlantPickerGalleryView: View {
                 }
                 switch mode {
                 case .matched:
-                    guard suitsGarden(p) else { return false }
+                    guard suitsContext(p) else { return false }
                     guard climate.suits(p) else { return false }
                     return true
                 case .all:
-                    if let s = manualSun, !p.preferredSunlight.contains(s)  { return false }
+                    if let s = manualSun,  !p.preferredSunlight.contains(s) { return false }
                     if let s = manualSoil, !p.preferredSoil.contains(s)     { return false }
-                    if let h = p.heightCm, h < minHeightCm                  { return false }
-                    if soilOnly, !suitsGarden(p)                            { return false }
+                    if let w = manualWet,
+                       let prefs = p.preferredWetness, !prefs.isEmpty,
+                       !prefs.contains(w) { return false }
                     return true
                 }
             }
-            // Search + free text — applied across both modes.
             let searched = PlantSectioning.filter(plants, search: search)
             return MonthGroup(month: m, plants: searched)
         }
@@ -1342,12 +1496,21 @@ struct PlantDetailView: View {
                 }
             }
 
-            Text("Bloom months — tap to stagger across the season")
-                .font(.custom("Nunito-Bold", size: 12))
-                .foregroundStyle(Color.bmText2)
+            HStack(spacing: 6) {
+                Text("Bloom months — tap to stagger across the season")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Tooltip("Only this plant's actual bloom window is shown here — plus any months you've already saved. Pick several to stagger the show across the season.")
+                Spacer()
+            }
 
+            // Limit the month grid to this plant's actual bloom window so
+            // a June-July rose doesn't offer January as a choice. Already-
+            // committed picks outside the window are still surfaced so an
+            // existing schedule doesn't silently disappear, and a plant
+            // without recorded bloomMonths falls back to the full year.
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
-                ForEach(1...12, id: \.self) { m in
+                ForEach(availableMonths(for: p), id: \.self) { m in
                     monthPickChip(month: m)
                 }
             }
@@ -1363,6 +1526,14 @@ struct PlantDetailView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
+    }
+
+    private func availableMonths(for p: Plant) -> [Int] {
+        let bloomSet: Set<Int> = p.bloomMonths.isEmpty
+            ? Set(1...12)
+            : Set(p.bloomMonths)
+        let pickedSet: Set<Int> = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
+        return bloomSet.union(pickedSet).sorted()
     }
 
     private func monthPickChip(month m: Int) -> some View {

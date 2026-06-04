@@ -187,6 +187,74 @@ public struct ContextualHelpButton: View {
     }
 }
 
+// MARK: - Tooltip
+//
+// Small info-button that pops a brief explanation half-sheet. Inline
+// alternative to ContextualHelpButton — use for per-feature explanations
+// next to filter labels, switches, and other granular controls instead of
+// covering it all in the screen-level HelpSheet.
+
+public struct Tooltip: View {
+
+    let text: String
+    @State private var showing = false
+
+    public init(_ text: String) { self.text = text }
+
+    public var body: some View {
+        Button {
+            showing = true
+        } label: {
+            Image(systemName: "info.circle")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(Color.bmText3)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("More info")
+        .sheet(isPresented: $showing) {
+            TooltipSheet(text: text)
+                .presentationDetents([.fraction(0.32)])
+                .presentationDragIndicator(.visible)
+        }
+    }
+}
+
+private struct TooltipSheet: View {
+    let text: String
+    @SwiftUI.Environment(\.dismiss) private var dismiss
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 8) {
+                Image(systemName: "info.circle.fill")
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.bmGreen)
+                Text("Quick info")
+                    .font(.custom("Fredoka-SemiBold", size: 14))
+                    .foregroundStyle(Color.bmText1)
+                Spacer()
+            }
+            Text(text)
+                .font(.custom("Nunito-SemiBold", size: 14))
+                .foregroundStyle(Color.bmText1)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer()
+            Button {
+                dismiss()
+            } label: {
+                Text("Got it")
+                    .font(.custom("Fredoka-SemiBold", size: 14))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(Color.bmGreen)
+                    .clipShape(Capsule())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(20)
+    }
+}
+
 // MARK: - HelpSheet
 
 struct HelpSheet: View {

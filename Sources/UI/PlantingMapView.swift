@@ -306,18 +306,37 @@ struct BedPlantingMapDetailView: View {
     }
 
     private func shareButton(bed: Bed, garden: Garden) -> some View {
-        Button(action: { exportPDF(bed: bed, garden: garden) }) {
-            HStack(spacing: 8) {
-                Image(systemName: "square.and.arrow.up")
-                    .font(.system(size: 14, weight: .semibold))
-                Text("Share as A4 PDF")
-                    .font(.custom("Fredoka-SemiBold", size: 14))
+        HStack(spacing: 8) {
+            NavigationLink {
+                BedMapEditorView(bedId: bed.id)
+                    .environmentObject(store)
+                    .environmentObject(library)
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "pencil")
+                        .font(.system(size: 13, weight: .semibold))
+                    Text("Edit layout")
+                        .font(.custom("Fredoka-SemiBold", size: 13))
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(Color.bmLilac)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(Color.bmGreen)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            Button(action: { exportPDF(bed: bed, garden: garden) }) {
+                HStack(spacing: 6) {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 13, weight: .semibold))
+                    Text("Share as PDF")
+                        .font(.custom("Fredoka-SemiBold", size: 13))
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(Color.bmGreen)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
         }
     }
 

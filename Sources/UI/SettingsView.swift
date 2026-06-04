@@ -50,6 +50,20 @@ public struct SettingsView: View {
     @State private var passwordResetMessage: String = ""
     @State private var showingStore = false
 
+    // Concertina expansion state — Gardens & beds opens by default since
+    // that's the most-trafficked section once Beds left the home grid.
+    @State private var expandedPreferences  = false
+    @State private var expandedGardensBeds  = true
+    @State private var expandedGardenDef    = false
+    @State private var expandedNotifications = false
+    @State private var expandedAccount      = false
+    @State private var expandedAbout        = false
+
+    // Garden / bed sheets surfaced from inside the Gardens & beds concertina.
+    @State private var showingAddGarden  = false
+    @State private var showingManageGardens = false
+    @State private var addBedForGardenId: UUID?
+
     public init(user: UserModel, onLogout: @escaping () -> Void = {}) {
         self.user = user
         self.onLogout = onLogout
@@ -57,47 +71,238 @@ public struct SettingsView: View {
 
     public var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 16) {
+            settingsContent
+                .bmSheetBackdrop()
+                .bmNavTitle("Settings", icon: "⚙️")
+                .toolbar { settingsToolbar }
+                .modifier(SettingsSheetsModifier(
+                    showingAddGarden: $showingAddGarden,
+                    showingManageGardens: $showingManageGardens,
+                    addBedForGardenId: $addBedForGardenId,
+                    showingStore: $showingStore,
+                    store: store))
+                .alert("Cancel Pro membership?",
+                       isPresented: $showCancelProConfirm) {
+                    Button("Cancel membership", role: .destructive) { confirmCancelPro() }
+                    Button("Keep Pro", role: .cancel) {}
+                } message: {
+                    Text("You will lose access to all Pro features and content. Your subscription is billed by the App Store — we'll open Apple's subscription page to finish cancelling.")
+                }
+                .alert("Reset password",
+                       isPresented: $showResetPasswordSent) {
+                    Button("OK", role: .cancel) {}
+                } message: {
+                    Text(passwordResetMessage)
+                }
+        }
+    }
+
+    private var settingsContent: some View {
+        ScrollView {
+            VStack(spacing: 14) {
+                concertina("Gardens & beds", icon: "🌿", expanded: $expandedGardensBeds) {
+                    gardensBedsSection
+                }
+                concertina("Preferences", icon: "⚙️", expanded: $expandedPreferences) {
                     preferencesSection
-                    // Free tier still benefits from editing the (single)
-                    // garden's defaults here — the section was previously
-                    // gated to Pro, which made the Settings screen feel
-                    // half-empty for Free users.
+                }
+                concertina("Garden defaults", icon: "🌿", expanded: $expandedGardenDef) {
                     gardenDefaultsSection
+                }
+                concertina("Notifications", icon: "🔔", expanded: $expandedNotifications) {
                     notificationsSection
+                }
+                concertina("Account", icon: "👤", expanded: $expandedAccount) {
                     accountSection
+                }
+                concertina("About", icon: "ℹ️", expanded: $expandedAbout) {
                     aboutSection
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 16)
             }
-            .bmSheetBackdrop()
-            .bmNavTitle("Settings", icon: "⚙️")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Back") { dismiss() }
-                        .foregroundStyle(Color.bmText2)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var settingsToolbar: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button("Back") { dismiss() }
+                .foregroundStyle(Color.bmText2)
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            ContextualHelpButton(topic: .settings)
+        }
+    }
+
+    // MARK: - Sheets + navigation modifier
+    //
+    // Pulled into its own ViewModifier so the body's modifier chain stays
+    // small enough for Swift's type checker — four sheets + one
+    // navigationDestination + alerts inline tripped the 30 s budget.
+
+    private struct SettingsSheetsModifier: ViewModifier {
+        @Binding var showingAddGarden: Bool
+        @Binding var showingManageGardens: Bool
+        @Binding var addBedForGardenId: UUID?
+        @Binding var showingStore: Bool
+        let store: GardenStore
+
+        func body(content: Content) -> some View {
+            content
+                .sheet(isPresented: $showingAddGarden) {
+                    CreateGardenView { garden in
+                        store.addGarden(garden)
+                        showingAddGarden = false
+                    }
+                    .environmentObject(store)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    ContextualHelpButton(topic: .settings)
+                .sheet(isPresented: $showingManageGardens) {
+                    ManageGardensView().environmentObject(store)
                 }
+                .sheet(item: Binding(
+                    get: { addBedForGardenId.map(IdHolder.init) },
+                    set: { addBedForGardenId = $0?.id })) { holder in
+                    AddBedView()
+                        .environmentObject(store)
+                        .onAppear { store.selectedGardenId = holder.id }
+                }
+                .sheet(isPresented: $showingStore) {
+                    StoreSheet()
+                }
+        }
+    }
+
+    // MARK: - Concertina helper
+
+    @ViewBuilder
+    private func concertina<Content: View>(_ label: String,
+                                           icon: String,
+                                           expanded: Binding<Bool>,
+                                           @ViewBuilder content: @escaping () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            DisclosureGroup(isExpanded: expanded) {
+                content()
+                    .padding(.top, 8)
+            } label: {
+                SectionLabel(label, icon: icon)
             }
-            .alert("Cancel Pro membership?",
-                   isPresented: $showCancelProConfirm) {
-                Button("Cancel membership", role: .destructive) { confirmCancelPro() }
-                Button("Keep Pro", role: .cancel) {}
-            } message: {
-                Text("You will lose access to all Pro features and content. Your subscription is billed by the App Store — we'll open Apple's subscription page to finish cancelling.")
+            .tint(Color.bmText2)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    // Holder type so we can drive sheet/navigation off an optional UUID
+    // (UUID itself isn't Identifiable).
+    fileprivate struct IdHolder: Identifiable, Hashable { let id: UUID }
+
+    // MARK: - Gardens & beds
+    //
+    // New for Phase E: Garden + Bed management lives here instead of on the
+    // home tile grid. Free users see their one garden + its beds. Pro users
+    // get an extra "Manage gardens" link to add/rename/delete multiple
+    // gardens via the existing ManageGardensView sheet.
+
+    @ViewBuilder
+    private var gardensBedsSection: some View {
+        let isPro = user.tier == .pro
+        VStack(alignment: .leading, spacing: 12) {
+            ForEach(store.gardens) { garden in
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text("🌷 \(garden.name)")
+                            .font(.custom("Nunito-Bold", size: 14))
+                            .foregroundStyle(Color.bmText1)
+                        Spacer()
+                        if isPro {
+                            Button {
+                                store.selectedGardenId = garden.id
+                                showingManageGardens = true
+                            } label: {
+                                Text("Edit")
+                                    .font(.custom("Fredoka-SemiBold", size: 11))
+                                    .foregroundStyle(Color.bmGreen)
+                            }
+                        }
+                    }
+                    let beds = store.beds(in: garden.id)
+                    if beds.isEmpty {
+                        Text("No beds yet — add one to start planning.")
+                            .font(.custom("Nunito-SemiBold", size: 11))
+                            .foregroundStyle(Color.bmText3)
+                    } else {
+                        ForEach(beds) { bed in
+                            NavigationLink {
+                                BedDetailView(bedId: bed.id)
+                                    .environmentObject(store)
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "rectangle.fill")
+                                        .font(.system(size: 11))
+                                        .foregroundStyle(Color.bmGreenMid)
+                                    Text(bed.name)
+                                        .font(.custom("Nunito-SemiBold", size: 13))
+                                        .foregroundStyle(Color.bmText1)
+                                    Spacer()
+                                    Text("\(bed.widthCm)×\(bed.lengthCm) cm")
+                                        .font(.custom("Nunito-Bold", size: 10))
+                                        .foregroundStyle(Color.bmText3)
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 10, weight: .semibold))
+                                        .foregroundStyle(Color.bmText3)
+                                }
+                                .padding(.horizontal, 10).padding(.vertical, 8)
+                                .background(Color.bmBgSoft)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            .simultaneousGesture(TapGesture().onEnded {
+                                store.selectedGardenId = garden.id
+                                store.selectedBedId = bed.id
+                            })
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    Button {
+                        addBedForGardenId = garden.id
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 10, weight: .bold))
+                            Text("Add a bed")
+                                .font(.custom("Fredoka-SemiBold", size: 11))
+                        }
+                        .foregroundStyle(Color.bmGreen)
+                        .padding(.horizontal, 10).padding(.vertical, 5)
+                        .overlay(Capsule().stroke(Color.bmGreen, lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.vertical, 4)
+                if garden.id != store.gardens.last?.id { Divider() }
             }
-            .alert("Reset password",
-                   isPresented: $showResetPasswordSent) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(passwordResetMessage)
-            }
-            .sheet(isPresented: $showingStore) {
-                StoreSheet()
+
+            if isPro {
+                Button {
+                    showingAddGarden = true
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 13))
+                        Text("Add another garden")
+                            .font(.custom("Fredoka-SemiBold", size: 13))
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 14).padding(.vertical, 8)
+                    .background(Color.bmGreen)
+                    .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            } else {
+                Text("Add more gardens by upgrading to Pro.")
+                    .font(.custom("Nunito-SemiBold", size: 11))
+                    .foregroundStyle(Color.bmText3)
             }
         }
     }
@@ -106,8 +311,6 @@ public struct SettingsView: View {
 
     private var preferencesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionLabel("Preferences", icon: "⚙️")
-
             HStack {
                 Text("Units")
                     .font(.custom("Nunito-Bold", size: 13))
@@ -162,9 +365,6 @@ public struct SettingsView: View {
                         .stroke(Color.bmBorder, lineWidth: 1))
             }
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .bmCard()
     }
 
     // MARK: - Garden defaults (Pro only)
@@ -173,7 +373,13 @@ public struct SettingsView: View {
     private var gardenDefaultsSection: some View {
         if let garden = store.selectedGarden {
             VStack(alignment: .leading, spacing: 12) {
-                SectionLabel("Garden defaults — \(garden.name)", icon: "🌿")
+                HStack(spacing: 6) {
+                    Text(garden.name)
+                        .font(.custom("Nunito-Bold", size: 12))
+                        .foregroundStyle(Color.bmText3)
+                    Tooltip("These apply to every bed in this garden unless the bed overrides them. Bed-level settings always win when present.")
+                    Spacer()
+                }
 
                 gardenPicker(title: "Soil",
                              selection: gardenBinding(\.soilType, in: garden),
@@ -200,9 +406,6 @@ public struct SettingsView: View {
                     .foregroundStyle(Color.bmText3)
                     .padding(.top, 2)
             }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .bmCard()
         }
     }
 
@@ -250,8 +453,6 @@ public struct SettingsView: View {
 
     private var notificationsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionLabel("Notifications", icon: "🔔")
-
             Toggle(isOn: $remindersOn) {
                 Text("In-app reminders")
                     .font(.custom("Nunito-Bold", size: 13))
@@ -300,17 +501,12 @@ public struct SettingsView: View {
                 Task { await handleICalToggle(newValue) }
             }
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .bmCard()
     }
 
     // MARK: - Account
 
     private var accountSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionLabel("Account", icon: "👤")
-
             row(label: "Signed in as", value: user.firstName.isEmpty ? "Gardener" : user.firstName)
             row(label: "Tier", value: user.tier.rawValue.capitalized)
 
@@ -347,9 +543,6 @@ public struct SettingsView: View {
                 .buttonStyle(.plain)
             }
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .bmCard()
     }
 
     private func accountRowLabel(_ title: String, icon: String, destructive: Bool = false) -> some View {
@@ -394,7 +587,6 @@ public struct SettingsView: View {
 
     private var aboutSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionLabel("About", icon: "ℹ️")
             row(label: "Version", value: appVersion)
             HStack(spacing: 16) {
                 Button("Privacy") {}
@@ -406,9 +598,6 @@ public struct SettingsView: View {
             }
             .padding(.top, 4)
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .bmCard()
     }
 
     private func row(label: String, value: String) -> some View {

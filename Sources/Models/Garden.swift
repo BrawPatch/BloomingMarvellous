@@ -209,6 +209,12 @@ public struct Bed: Identifiable, Codable, Equatable {
     /// last year" badge in the bed crops list (Phase 5). Cleared when
     /// the species is removed from the bed.
     public var carriedOver: [String]
+    /// Explicit (x, y) positions inside the bed for each placed plant.
+    /// One PlantPlacement per individual specimen (so 3 lavenders generate
+    /// 3 placements). Used by the drag-to-arrange Planting Map editor and
+    /// is what the PDF print routes off when present. Empty array on
+    /// older persisted beds.
+    public var placements: [PlantPlacement]
 
     public init(id: UUID = UUID(),
                 gardenId: UUID,
@@ -223,7 +229,8 @@ public struct Bed: Identifiable, Codable, Equatable {
                 acidityOverride: SoilAcidity? = nil,
                 plantCounts: [String: Int] = [:],
                 perennials: [String] = [],
-                carriedOver: [String] = []) {
+                carriedOver: [String] = [],
+                placements: [PlantPlacement] = []) {
         self.id = id
         self.gardenId = gardenId
         self.name = name
@@ -238,18 +245,19 @@ public struct Bed: Identifiable, Codable, Equatable {
         self.plantCounts = plantCounts
         self.perennials = perennials
         self.carriedOver = carriedOver
+        self.placements = placements
     }
 
     private enum CodingKeys: String, CodingKey {
         case id, gardenId, name, widthCm, lengthCm, status
         case soilTypeOverride, wetnessOverride, exposureOverride, sunlightOverride, acidityOverride
-        case plantCounts, perennials, carriedOver
+        case plantCounts, perennials, carriedOver, placements
     }
 
     /// Custom decode so existing persisted beds (which predate the
-    /// `plantCounts` / `perennials` fields) keep loading cleanly. The
-    /// synthesised init(from:) treats missing required fields as fatal —
-    /// not what we want for an additive schema bump.
+    /// `plantCounts` / `perennials` / `placements` fields) keep loading
+    /// cleanly. The synthesised init(from:) treats missing required
+    /// fields as fatal — not what we want for an additive schema bump.
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         id               = try c.decode(UUID.self, forKey: .id)
@@ -266,6 +274,7 @@ public struct Bed: Identifiable, Codable, Equatable {
         plantCounts      = try c.decodeIfPresent([String: Int].self, forKey: .plantCounts) ?? [:]
         perennials       = try c.decodeIfPresent([String].self, forKey: .perennials) ?? []
         carriedOver      = try c.decodeIfPresent([String].self, forKey: .carriedOver) ?? []
+        placements       = try c.decodeIfPresent([PlantPlacement].self, forKey: .placements) ?? []
     }
 
     public var overridesGarden: Bool {
@@ -289,5 +298,38 @@ public struct Bed: Identifiable, Codable, Equatable {
     /// through the user's preference yet.
     public func dimensionLabel(unit: LengthUnit) -> String {
         LengthFormat.dimensions(widthCm: widthCm, lengthCm: lengthCm, unit: unit)
+    }
+}
+
+// MARK: - PlantPlacement
+//
+// One specimen positioned inside a Bed. Three lavenders in a row are three
+// PlantPlacement values, each with its own (xCm, yCm) in bed-local
+// coordinates (origin top-left, x right, y down). Persists across seasons
+// when `isPerennial == true`; annual placements clear out on
+// startNewSeason. `plantedYear` is the calendar year the placement was
+// originally created so the Planting Map can show "2nd year" badges and
+// the season-rotation helper can age placements correctly.
+
+public struct PlantPlacement: Identifiable, Codable, Equatable, Hashable {
+    public var id: UUID
+    public var plantId: String
+    public var xCm: Double
+    public var yCm: Double
+    public var isPerennial: Bool
+    public var plantedYear: Int
+
+    public init(id: UUID = UUID(),
+                plantId: String,
+                xCm: Double,
+                yCm: Double,
+                isPerennial: Bool = false,
+                plantedYear: Int = Calendar.current.component(.year, from: Date())) {
+        self.id = id
+        self.plantId = plantId
+        self.xCm = xCm
+        self.yCm = yCm
+        self.isPerennial = isPerennial
+        self.plantedYear = plantedYear
     }
 }

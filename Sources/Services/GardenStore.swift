@@ -330,7 +330,49 @@ public final class GardenStore: ObservableObject {
         nextCarried = nextCarried.intersection(nextCounts.keys)
         b.plantCounts = nextCounts
         b.carriedOver = Array(nextCarried).sorted()
+        // Planting Map placements also carry over: keep every placement
+        // whose plant is still in `nextCounts` AND is flagged perennial.
+        // Annual placements clear out — the editor will repopulate next
+        // season as the gardener picks new ones.
+        b.placements = b.placements.filter { placement in
+            nextCounts[placement.plantId] != nil && placement.isPerennial
+        }
         beds[idx] = b
+    }
+
+    // MARK: - Planting Map placements
+
+    /// Replace every placement on the bed in one go. Used by the editor's
+    /// "Save layout" flow — it computes the new arrangement client-side
+    /// (after collision checks) and hands the whole set back.
+    public func setPlacements(_ placements: [PlantPlacement], in bedId: UUID) {
+        guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
+        beds[idx].placements = placements
+    }
+
+    /// Add a single placement (e.g. the gardener tapped a tray chip to
+    /// drop a new plant). Marks it perennial automatically if the species
+    /// is already in `bed.perennials` so multi-year layout persistence
+    /// works without an extra step.
+    public func addPlacement(_ placement: PlantPlacement, in bedId: UUID) {
+        guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
+        var p = placement
+        if beds[idx].perennials.contains(p.plantId) { p.isPerennial = true }
+        beds[idx].placements.append(p)
+    }
+
+    public func removePlacement(id: UUID, in bedId: UUID) {
+        guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
+        beds[idx].placements.removeAll { $0.id == id }
+    }
+
+    /// Move an existing placement to a new (xCm, yCm) — used by the drag
+    /// gesture on commit.
+    public func movePlacement(id: UUID, to position: CGPoint, in bedId: UUID) {
+        guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
+        guard let pIdx = beds[idx].placements.firstIndex(where: { $0.id == id }) else { return }
+        beds[idx].placements[pIdx].xCm = Double(position.x)
+        beds[idx].placements[pIdx].yCm = Double(position.y)
     }
 
     /// Drop the "carried over from last year" marker without removing the
