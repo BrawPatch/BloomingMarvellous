@@ -880,11 +880,13 @@ for (const [parentLatin, info] of Object.entries(BEDDING_PARENTS)) {
     const fullLatin = `${parentLatin} '${cv.name}'`;
     const id = slugify(`${parentLatin}-${cv.name}`);
     if (existingIds.has(id)) { skipped++; continue; }
-    const commonStem = info.common.split(/\s+/)[0];
+    // Use the FULL parent common name as prefix — splitting on the first
+    // word produced "Garden 'Obsession Burgundy'" instead of the proper
+    // "Garden Verbena 'Obsession Burgundy'".
     const row = {
       ...parent,
       id,
-      name: `${commonStem} '${cv.name}'`,
+      name: `${info.common} '${cv.name}'`,
       latin: fullLatin,
       heightCm: cv.h,
       spreadCm: cv.s,
@@ -892,7 +894,9 @@ for (const [parentLatin, info] of Object.entries(BEDDING_PARENTS)) {
       description: `${info.common} cultivar — ${cv.name}.`,
       access: info.freeTier ? "free" : "pro",
     };
-    delete row.imageUrl; // cultivar-specific image not available; fall back to colour swatch.
+    // Inherit the parent species' imageUrl so cultivars get a real
+    // colour photo instead of the generic emoji placeholder. We don't
+    // have cultivar-level photography for these named varieties.
     items.push(row);
     existingIds.add(id);
     addedCultivars++;

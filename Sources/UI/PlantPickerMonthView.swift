@@ -400,18 +400,31 @@ public struct PlantPickerMonthView: View {
         let climate = store.climate
         let isPro   = store.user.tier == .pro
         let bed     = isPro ? store.selectedBed : nil
-        return VStack(alignment: .leading, spacing: 8) {
-            SectionLabel("Filtering for", icon: "🎯")
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 6) {
+                SectionLabel("Filtering for", icon: "🎯")
+                Tooltip("Tap the chips to switch which bed or garden the Matched results are filtered against.")
+                Spacer()
+            }
+
+            // Garden + Bed selectors. Replaces the previous read-only chip
+            // strip so the gardener can switch context without leaving
+            // the picker — fixes the original gap where you'd have to
+            // back out to BedDetail or Settings to swap.
+            HStack(spacing: 8) {
+                gardenSelector
+                if isPro {
+                    bedSelector
+                }
+                Spacer()
+            }
 
             if let bed, let g = store.selectedGarden {
-                // Bed wins on Pro — its effective conditions override the
-                // garden defaults if the gardener has customised them.
                 let soil = bed.effectiveSoil(garden: g)
                 let sun  = bed.effectiveSunlight(garden: g)
                 let wet  = bed.effectiveWetness(garden: g)
                 let acid = bed.effectiveAcidity(garden: g)
                 HStack(spacing: 6) {
-                    miniChip("🌿 \(bed.name)", color: .bmGreen)
                     miniChip(soil.label, color: .bmGreen)
                     miniChip(sun.shortLabel, color: .bmAmber)
                     miniChip(wet.shortLabel, color: .bmSky)
@@ -421,7 +434,6 @@ public struct PlantPickerMonthView: View {
                 }
             } else if let g = store.selectedGarden {
                 HStack(spacing: 6) {
-                    miniChip(g.name, color: .bmText2)
                     miniChip(g.soilType.label, color: .bmGreen)
                     miniChip(g.sunlight.shortLabel, color: .bmAmber)
                     miniChip(g.wetness.shortLabel, color: .bmSky)
@@ -445,6 +457,102 @@ public struct PlantPickerMonthView: View {
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
+    }
+
+    // MARK: - Selectors
+
+    @ViewBuilder
+    private var gardenSelector: some View {
+        let isPro = store.user.tier == .pro
+        if !isPro || store.gardens.count <= 1 {
+            // Free tier or single garden — just a read-only label.
+            selectorChip(icon: "🌷",
+                         text: store.selectedGarden?.name ?? "Garden",
+                         disabled: true)
+        } else {
+            Menu {
+                ForEach(store.gardens) { g in
+                    Button {
+                        store.selectedGardenId = g.id
+                        // Keep the bed selection consistent: drop into the
+                        // first bed of the newly chosen garden so the
+                        // Matched filter doesn't fall back to a bed in the
+                        // other garden.
+                        store.selectedBedId = store.beds(in: g.id).first?.id
+                    } label: {
+                        HStack {
+                            Text(g.name)
+                            if store.selectedGardenId == g.id {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                selectorChip(icon: "🌷",
+                             text: store.selectedGarden?.name ?? "Pick a garden",
+                             disabled: false)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var bedSelector: some View {
+        let beds = store.selectedGarden.map { store.beds(in: $0.id) } ?? []
+        if beds.isEmpty {
+            selectorChip(icon: "🌿",
+                         text: "No beds",
+                         disabled: true)
+        } else if beds.count == 1, let only = beds.first {
+            selectorChip(icon: "🌿", text: only.name, disabled: true)
+        } else {
+            Menu {
+                Button {
+                    store.selectedBedId = nil
+                } label: {
+                    HStack {
+                        Text("Whole garden")
+                        if store.selectedBedId == nil {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+                ForEach(beds) { b in
+                    Button {
+                        store.selectedBedId = b.id
+                    } label: {
+                        HStack {
+                            Text(b.name)
+                            if store.selectedBedId == b.id {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                selectorChip(icon: "🌿",
+                             text: store.selectedBed?.name ?? "Whole garden",
+                             disabled: false)
+            }
+        }
+    }
+
+    private func selectorChip(icon: String, text: String, disabled: Bool) -> some View {
+        HStack(spacing: 5) {
+            Text(icon).font(.system(size: 12))
+            Text(text)
+                .font(.custom("Fredoka-SemiBold", size: 12))
+                .foregroundStyle(Color.bmText1)
+            if !disabled {
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundStyle(Color.bmText3)
+            }
+        }
+        .padding(.horizontal, 10).padding(.vertical, 5)
+        .background(Color.bmBgSoft)
+        .clipShape(Capsule())
+        .overlay(Capsule().stroke(Color.bmBorder, lineWidth: 1))
     }
 
     private func miniChip(_ text: String, color: Color) -> some View {
