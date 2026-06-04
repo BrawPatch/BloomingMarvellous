@@ -9,7 +9,6 @@ public struct GardenBedsView: View {
     @EnvironmentObject private var store: GardenStore
     @AppStorage(LengthUnit.storageKey) private var lengthUnitRaw: String = LengthUnit.metres.rawValue
     private var lengthUnit: LengthUnit { LengthUnit(rawValue: lengthUnitRaw) ?? .metres }
-    @State private var search: String = ""
     @State private var statusFilter: BedStatus?
     @State private var sunFilter: Sunlight?
     @State private var soilFilter: SoilType?
@@ -66,19 +65,9 @@ public struct GardenBedsView: View {
 
     private var searchAndFilters: some View {
         VStack(spacing: 8) {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(Color.bmText3)
-                TextField("Search beds", text: $search)
-                    .font(.custom("Nunito-SemiBold", size: 14))
-                    .autocorrectionDisabled(true)
-                    .textInputAutocapitalization(.never)
-            }
-            .padding(.horizontal, 14).padding(.vertical, 10)
-            .background(Color.bmBgSoft)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.bmBorder, lineWidth: 1.5))
+            // Search bar dropped — Plant Library pages are the only place
+            // search is offered now. Filter pills below are enough to
+            // narrow a bed list to a manageable size in practice.
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
@@ -249,10 +238,6 @@ public struct GardenBedsView: View {
             list = list.filter { b in
                 store.effectiveConditions(forBed: b)?.0 == soil
             }
-        }
-        let needle = search.trimmingCharacters(in: .whitespaces).lowercased()
-        if !needle.isEmpty {
-            list = list.filter { $0.name.lowercased().contains(needle) }
         }
         return list
     }

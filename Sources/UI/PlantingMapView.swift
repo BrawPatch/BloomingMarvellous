@@ -36,7 +36,7 @@ public struct PlantingMapView: View {
             .padding(.vertical, 16)
         }
         .bmFloralBackdrop()
-        .bmNavTitle("Planting Map", icon: "🗺️")
+        .bmNavTitle("Bedding Map Tool", icon: "🗺️")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 ContextualHelpButton(topic: .plantingMap)

@@ -18,6 +18,7 @@ public struct HomeView: View {
     @State private var showingTasks = false
     @State private var showingBeds = false
     @State private var showingPlantingMap = false
+    @State private var showingBloomSchedule = false
     @State private var showingStore = false
     @State private var toast: ToastBanner.Message?
 
@@ -92,6 +93,10 @@ public struct HomeView: View {
         }
         .navigationDestination(isPresented: $showingPlantingMap) {
             PlantingMapView()
+                .environmentObject(store)
+        }
+        .navigationDestination(isPresented: $showingBloomSchedule) {
+            BloomScheduleView()
                 .environmentObject(store)
         }
         .safeAreaInset(edge: .top, spacing: 0) {
@@ -174,10 +179,11 @@ public struct HomeView: View {
 
     // MARK: - Tile grid
     //
-    // Three primary entry points: Pick your plants → catalogue + picker;
-    // Bloom Schedule → seasonal planner; Planting Schedule → sow/transplant/
-    // harvest calendar. Beds + Planting Map have moved into Settings and the
-    // Planting Map screen respectively.
+    // Four primary entry points: Pick your plants → catalogue + picker;
+    // Bloom Schedule → seasonal planner; Planting Schedule → sow /
+    // transplant / harvest calendar; Bedding Map Tool → bed layouts and
+    // drag-to-arrange editor. Pick + Planting still swap to their bottom
+    // tabs; Bloom + Bedding Map push (their tabs no longer exist).
 
     private var tileGrid: some View {
         let columns = [
@@ -193,12 +199,17 @@ public struct HomeView: View {
             tile(title: "Bloom Schedule",
                  subtitle: "Plan your seasonal colour",
                  icon: "🌸",
-                 tint: .bmLilac) { onSelectTab(.bloom) }
+                 tint: .bmLilac) { showingBloomSchedule = true }
 
             tile(title: "Planting Schedule",
                  subtitle: "Sow · Transplant · Harvest",
                  icon: "📅",
                  tint: .bmSky) { onSelectTab(.planting) }
+
+            tile(title: "Bedding Map Tool",
+                 subtitle: "Arrange + print your bed layouts",
+                 icon: "🗺️",
+                 tint: .bmLeafSage) { showingPlantingMap = true }
         }
         .padding(.horizontal, 20)
     }

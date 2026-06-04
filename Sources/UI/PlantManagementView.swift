@@ -18,15 +18,15 @@ public struct PlantManagementView: View {
     @EnvironmentObject private var store: GardenStore
     @EnvironmentObject private var library: LibraryStore
     @State private var filters = ScheduleFilters()
-    @State private var search: String = ""
 
     public init() {}
 
     public var body: some View {
         ScrollView {
             VStack(spacing: 14) {
-                PlantSearchBar(text: $search)
-                    .padding(.horizontal, 4)
+                // Search bar dropped here — only the Plant Library
+                // (Picker) offers free-text search now. Use the filter
+                // chips below to narrow by garden / bed.
                 ScheduleFilterBar(filters: $filters,
                                   gardens: store.gardens,
                                   beds: store.beds,
@@ -236,16 +236,7 @@ public struct PlantManagementView: View {
                                 plant: plant,
                                 placements: placements.sorted { $0.bedName < $1.bedName })
         }
-        // Apply the shared search filter (common name + Latin).
-        let searched: [SpeciesGroup] = {
-            let q = search.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-            guard !q.isEmpty else { return all }
-            return all.filter { g in
-                g.plant.name.lowercased().contains(q) ||
-                g.plant.latin.lowercased().contains(q)
-            }
-        }()
-        return searched.sorted { lhs, rhs in
+        return all.sorted { lhs, rhs in
             let lg = PlantSectioning.genus(of: lhs.plant)
             let rg = PlantSectioning.genus(of: rhs.plant)
             if lg != rg { return lg < rg }

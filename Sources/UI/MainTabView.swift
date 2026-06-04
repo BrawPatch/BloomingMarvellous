@@ -4,15 +4,13 @@ import BloomingMarvellous
 
 // MARK: - MainTabView
 //
-// Authenticated root. Hosts:
-//   - 4 bottom tabs from the wireframe (Soil, Plant Picker, Bloom, Planting)
-//   - A shared GardenStore exposed via @StateObject and an .environmentObject
-//     so every tab + push + sheet sees the same state.
-//   - A header overlay on tab 0 (Home dashboard) reached via the synthesised
-//     "Home" landing card; the 4 functional tabs are at the bottom.
-//
-// This keeps the tab bar identical to the wireframe while letting Home,
-// Settings, Tasks, Manage Gardens etc. live above it.
+// Authenticated root. The bottom bar carries just three tabs now:
+// Home, Plants and Planting. Bloom and Soil were dropped from the tab
+// bar — Bloom Schedule has its own tile on the dashboard (the tab was a
+// duplicate), and Soil settings only make sense inside a Bed or Garden
+// context, which is reached from Settings → Gardens & beds.
+// A shared GardenStore exposed via @StateObject + .environmentObject so
+// every tab + push + sheet sees the same state.
 
 public struct MainTabView: View {
 
@@ -88,22 +86,10 @@ public struct MainTabView: View {
             .tag(AppTab.home)
 
             NavigationStack {
-                SoilView()
-            }
-            .tabItem { Label("Soil", systemImage: "leaf.fill") }
-            .tag(AppTab.soil)
-
-            NavigationStack {
                 PlantPickerMonthView()
             }
             .tabItem { Label("Plants", systemImage: "magnifyingglass") }
             .tag(AppTab.picker)
-
-            NavigationStack {
-                BloomScheduleView()
-            }
-            .tabItem { Label("Bloom", systemImage: "sparkles") }
-            .tag(AppTab.bloom)
 
             NavigationStack {
                 PlantingScheduleView()
@@ -117,6 +103,9 @@ public struct MainTabView: View {
     }
 }
 
+// Cases kept for back-compat with home tile actions even when the tab
+// itself no longer exists on the bar (HomeView pushes the screen via a
+// NavigationLink in that case).
 public enum AppTab: Hashable {
     case home, soil, picker, bloom, planting
 }
