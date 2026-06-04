@@ -1146,6 +1146,8 @@ const EDIBLE_GENUS_TYPE = {
 const SPECIES_TYPE = {
   "Salvia officinalis": "herb",
   "Salvia rosmarinus": "herb",
+  "Salvia splendens": "annual", // bedding scarlet sage
+  "Salvia farinacea": "annual", // bedding mealy-cup sage
   "Solanum lycopersicum": "vegetable",
   "Solanum tuberosum": "vegetable",
   "Solanum melongena": "vegetable",
