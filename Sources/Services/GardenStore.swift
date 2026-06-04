@@ -52,6 +52,11 @@ public final class GardenStore: ObservableObject {
     /// persists across launches so reminders stay quiet.
     @Published public private(set) var completedTaskIds: Set<String> = [] { didSet { persist() } }
 
+    /// Gardener-authored reminders added from the Bloom Planner. Surface
+    /// on Home's Today's Tasks card alongside the generated tasks and use
+    /// the same `completedTaskIds` set for tick-off state.
+    @Published public private(set) var customReminders: [CustomReminder] = [] { didSet { persist() } }
+
     public let user: UserModel
 
     /// Reflects the postcode in a coarse climate bucket. Recomputed when
@@ -97,6 +102,7 @@ public final class GardenStore: ObservableObject {
             postcode         = snap.postcode
             country          = snap.country
             completedTaskIds = snap.completedTaskIds
+            customReminders  = snap.customReminders
         } else if seedFirstGarden {
             // Legacy default — kept so existing callers that don't go through
             // the Setup wizard still get a usable garden to render against.
@@ -122,13 +128,15 @@ public final class GardenStore: ObservableObject {
         var postcode: String = ""
         var country:  String = "GB"
         var completedTaskIds: Set<String> = []
+        var customReminders: [CustomReminder] = []
 
         init(gardens: [Garden], beds: [Bed],
              selectedGardenId: UUID?, selectedBedId: UUID?,
              bloomPicks: [UUID: [Int: [String]]],
              bedPicks: [UUID: [Int: [String]]],
              postcode: String, country: String,
-             completedTaskIds: Set<String>) {
+             completedTaskIds: Set<String>,
+             customReminders: [CustomReminder]) {
             self.gardens = gardens
             self.beds = beds
             self.selectedGardenId = selectedGardenId
@@ -138,6 +146,7 @@ public final class GardenStore: ObservableObject {
             self.postcode = postcode
             self.country = country
             self.completedTaskIds = completedTaskIds
+            self.customReminders = customReminders
         }
 
         // Custom decoder so snapshots written before `bedPicks` / `selectedBedId`
@@ -154,6 +163,7 @@ public final class GardenStore: ObservableObject {
             postcode         = (try? c.decode(String.self, forKey: .postcode)) ?? ""
             country          = (try? c.decode(String.self, forKey: .country))  ?? "GB"
             completedTaskIds = (try? c.decode(Set<String>.self, forKey: .completedTaskIds)) ?? []
+            customReminders  = (try? c.decode([CustomReminder].self, forKey: .customReminders)) ?? []
         }
     }
 
@@ -172,7 +182,8 @@ public final class GardenStore: ObservableObject {
                             bedPicks: bedPicks,
                             postcode: postcode,
                             country: country,
-                            completedTaskIds: completedTaskIds)
+                            completedTaskIds: completedTaskIds,
+                            customReminders: customReminders)
         guard let data = try? JSONEncoder().encode(snap) else { return }
         defaults.set(data, forKey: storageKey)
     }
@@ -428,6 +439,34 @@ public final class GardenStore: ObservableObject {
 
     public func markTaskNotDone(id: String) {
         completedTaskIds.remove(id)
+    }
+
+    // MARK: - Custom reminders
+
+    /// Append a gardener-authored reminder. Surfaces in Today's Tasks
+    /// and on the Bloom Planner for the matching month.
+    public func addReminder(_ reminder: CustomReminder) {
+        customReminders.append(reminder)
+    }
+
+    public func deleteReminder(id: UUID) {
+        customReminders.removeAll { $0.id == id }
+        // Clean up the done-set so we don't accumulate dead ids.
+        completedTaskIds.remove("reminder|\(id.uuidString)")
+    }
+
+    public func updateReminder(_ reminder: CustomReminder) {
+        if let idx = customReminders.firstIndex(where: { $0.id == reminder.id }) {
+            customReminders[idx] = reminder
+        }
+    }
+
+    /// Reminders whose date falls in the given calendar month.
+    public func reminders(forMonth month: Int) -> [CustomReminder] {
+        let cal = Calendar.current
+        return customReminders
+            .filter { cal.component(.month, from: $0.date) == month }
+            .sorted { $0.date < $1.date }
     }
 
     public func bed(id: UUID) -> Bed? {

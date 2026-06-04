@@ -9,13 +9,14 @@ import BloomingMarvellous
 // public type so PlantManagementView (Phase 7 surface) can share it.
 
 public enum ScheduleTaskKind: String, CaseIterable, Hashable, Identifiable {
-    case sow, transplant, harvest
+    case sow, transplant, harvest, reminder
     public var id: String { rawValue }
     public var label: String {
         switch self {
         case .sow:        return "Sow"
         case .transplant: return "Transplant"
         case .harvest:    return "Harvest"
+        case .reminder:   return "Reminder"
         }
     }
     public var emoji: String {
@@ -23,6 +24,7 @@ public enum ScheduleTaskKind: String, CaseIterable, Hashable, Identifiable {
         case .sow:        return "🌱"
         case .transplant: return "🪴"
         case .harvest:    return "🧺"
+        case .reminder:   return "🔔"
         }
     }
     public var color: Color {
@@ -30,6 +32,7 @@ public enum ScheduleTaskKind: String, CaseIterable, Hashable, Identifiable {
         case .sow:        return .bmGreen
         case .transplant: return .bmLilac
         case .harvest:    return .bmPeach
+        case .reminder:   return .bmAmber
         }
     }
 }

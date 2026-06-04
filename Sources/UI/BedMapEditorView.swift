@@ -34,6 +34,24 @@ public struct BedMapEditorView: View {
     @State private var didSeed: Bool = false
     @State private var lastSaved: Date?
     @State private var isFullscreen: Bool = false
+    /// When the user taps a placement on the canvas it becomes "selected"
+    /// — a delete badge appears on the circle so removing a plant is
+    /// discoverable without relying on the long-press gesture.
+    @State private var selectedPlacementId: UUID?
+    /// Held while we wait for the gardener to confirm a drop that lands
+    /// on top of an existing placement (or a reserved zone).
+    @State private var pendingReplaceDrop: PendingDrop?
+
+    /// Drop intent staged for confirmation. `displaced` is the set of
+    /// placements the new drop would land on top of; if the user
+    /// confirms, those are removed and the new placement is added.
+    /// Auto-relocation tries to re-drop displaced perennials into the
+    /// nearest free slot so the gardener doesn't lose them.
+    fileprivate struct PendingDrop: Equatable {
+        let plantId: String
+        let position: CGPoint
+        let displaced: [PlantPlacement]
+    }
 
     public init(bedId: UUID) { self.bedId = bedId }
 
@@ -53,6 +71,20 @@ public struct BedMapEditorView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 ContextualHelpButton(topic: .plantingMap)
             }
+        }
+        .alert("Replace the plant(s) in this spot?",
+               isPresented: replacePromptIsPresented) {
+            Button("Replace", role: .destructive) {
+                if let drop = pendingReplaceDrop {
+                    confirmReplace(drop)
+                }
+                pendingReplaceDrop = nil
+            }
+            Button("Cancel", role: .cancel) {
+                pendingReplaceDrop = nil
+            }
+        } message: {
+            Text(replacePromptMessage)
         }
         .fullScreenCover(isPresented: $isFullscreen) {
             if let bed = store.bed(id: bedId) {
@@ -130,12 +162,12 @@ public struct BedMapEditorView: View {
             Image(systemName: "hand.tap.fill")
                 .font(.system(size: 14))
                 .foregroundStyle(Color.bmGreen)
-            Text("Drag a plant from the tray onto the bed, drag placed circles to arrange, long-press to remove.")
+            Text("Drag from the tray onto the bed, tap a circle to remove it, drag to arrange. Dropping onto an existing plant offers to swap them.")
                 .font(.custom("Nunito-SemiBold", size: 12))
                 .foregroundStyle(Color.bmText2)
                 .multilineTextAlignment(.leading)
             Spacer()
-            Tooltip("Each circle is the plant's spread zone (radius = spread/2). Drop where you like — there's no automatic 'tallest-at-the-back' layout. Faded grey footprints mark last year's annuals so you remember which spots to leave free.")
+            Tooltip("Each circle is the plant's spread zone (radius = spread/2). Drop where you like — there's no automatic 'tallest-at-the-back' layout. Faded grey footprints mark last year's annuals so you remember which spots to leave free. When you drop on top of an existing plant we'll ask before swapping, and try to re-home the displaced plant in any free space.")
         }
         .padding(12)
         .bmCard()
@@ -228,8 +260,9 @@ public struct BedMapEditorView: View {
     }
 
     /// Tray-drop handler. Validates the candidate position against the
-    /// bed + existing placements + reserved zones, then commits a new
-    /// placement if it fits.
+    /// bed + existing placements + reserved zones, then either commits a
+    /// new placement (if the spot is free) or stages a `PendingDrop` so
+    /// the user can confirm a replace-and-displace.
     private func dropFromTray(plantId: String,
                               at position: CGPoint,
                               bed: Bed,
@@ -239,23 +272,135 @@ public struct BedMapEditorView: View {
         let clampedX = max(r, min(Double(bed.widthCm)  - r, Double(position.x)))
         let clampedY = max(r, min(Double(bed.lengthCm) - r, Double(position.y)))
         let candidate = CGPoint(x: clampedX, y: clampedY)
-        if overlapsSomething(plantId: plantId,
-                             placementId: UUID(),
-                             at: candidate,
-                             radiusCm: r,
-                             plants: plants) { return }
+
+        // Reserved zones from last year's annuals are inviolate — we
+        // don't even offer to replace those.
         if overlapsReserved(at: candidate, radiusCm: r,
                             bed: bed, plants: plants) { return }
+
         // Cap: don't drop more than the gardener intended via plantCounts.
         let alreadyPlaced = draftPlacements.filter { $0.plantId == plantId }.count
         let allowed = bed.plantCounts[plantId] ?? 0
         if alreadyPlaced >= allowed { return }
+
+        let displaced = placementsAt(candidate, radiusCm: r,
+                                     ignoring: nil, plants: plants)
+        if displaced.isEmpty {
+            // Free spot — drop straight in.
+            commitDrop(plantId: plantId, at: candidate, bed: bed)
+        } else {
+            // Stage for confirmation so the gardener gets a chance to
+            // back out before squashing what's already there.
+            pendingReplaceDrop = PendingDrop(
+                plantId: plantId,
+                position: candidate,
+                displaced: displaced
+            )
+        }
+    }
+
+    private func commitDrop(plantId: String,
+                            at candidate: CGPoint,
+                            bed: Bed) {
         let isPerennial = bed.perennials.contains(plantId)
         draftPlacements.append(PlantPlacement(
             plantId: plantId,
-            xCm: clampedX,
-            yCm: clampedY,
+            xCm: Double(candidate.x),
+            yCm: Double(candidate.y),
             isPerennial: isPerennial))
+    }
+
+    /// Confirm a replace-prompt. Removes the displaced placements first,
+    /// then tries to slot them back into the nearest free spot so the
+    /// gardener doesn't lose the displaced plants — only if they can't
+    /// be re-placed does the species count drop back into the tray.
+    private func confirmReplace(_ drop: PendingDrop) {
+        guard let bed = store.bed(id: bedId) else { return }
+        let plants = resolvedPlants(bed: bed)
+        // Remove the overlapped placements.
+        let toRemoveIds = Set(drop.displaced.map(\.id))
+        draftPlacements.removeAll { toRemoveIds.contains($0.id) }
+        // Drop the new one.
+        commitDrop(plantId: drop.plantId, at: drop.position, bed: bed)
+        // Auto-relocate the displaced plants into the first free slot
+        // we can find — preserves the layout intent rather than losing
+        // their occupancy.
+        for displaced in drop.displaced {
+            guard let plant = plants[displaced.plantId] else { continue }
+            let r = Double(plant.spreadCm ?? 30) / 2.0
+            if let newSpot = firstFreeSlot(forRadius: r, bed: bed, plants: plants) {
+                draftPlacements.append(PlantPlacement(
+                    plantId: displaced.plantId,
+                    xCm: Double(newSpot.x),
+                    yCm: Double(newSpot.y),
+                    isPerennial: displaced.isPerennial))
+            }
+            // If nothing fits, the species just becomes available in the
+            // tray again — the gardener can decide what to do.
+        }
+    }
+
+    /// Every placement whose spread circle overlaps `candidate` (radius
+    /// `radiusCm`). Used both for the drop-on-occupied detection and the
+    /// "what gets displaced" calculation.
+    private func placementsAt(_ candidate: CGPoint,
+                              radiusCm: Double,
+                              ignoring: UUID?,
+                              plants: [String: Plant]) -> [PlantPlacement] {
+        var out: [PlantPlacement] = []
+        for other in draftPlacements where other.id != ignoring {
+            let otherR = Double(plants[other.plantId]?.spreadCm ?? 30) / 2.0
+            let dx = Double(candidate.x) - other.xCm
+            let dy = Double(candidate.y) - other.yCm
+            if (dx * dx + dy * dy).squareRoot() < (radiusCm + otherR) {
+                out.append(other)
+            }
+        }
+        return out
+    }
+
+    /// 10cm-step search for the first slot in the bed that doesn't
+    /// collide with anything (existing placements, reserved zones).
+    private func firstFreeSlot(forRadius r: Double,
+                               bed: Bed,
+                               plants: [String: Plant]) -> CGPoint? {
+        let step = 10.0
+        var y = r
+        while y <= Double(bed.lengthCm) - r {
+            var x = r
+            while x <= Double(bed.widthCm) - r {
+                let c = CGPoint(x: x, y: y)
+                if placementsAt(c, radiusCm: r, ignoring: nil, plants: plants).isEmpty
+                    && !overlapsReserved(at: c, radiusCm: r, bed: bed, plants: plants) {
+                    return c
+                }
+                x += step
+            }
+            y += step
+        }
+        return nil
+    }
+
+    // MARK: - Alert helpers
+
+    private var replacePromptIsPresented: Binding<Bool> {
+        Binding(
+            get: { pendingReplaceDrop != nil },
+            set: { isOn in if !isOn { pendingReplaceDrop = nil } }
+        )
+    }
+
+    private var replacePromptMessage: String {
+        guard let drop = pendingReplaceDrop,
+              let bed = store.bed(id: bedId) else { return "" }
+        let plants = resolvedPlants(bed: bed)
+        let names = drop.displaced.compactMap { plants[$0.plantId]?.name }
+        let unique = Array(Set(names)).sorted()
+        let newName = plants[drop.plantId]?.name ?? drop.plantId
+        if unique.isEmpty {
+            return "Replace what's there with \(newName)?"
+        }
+        return "Dropping \(newName) here will displace \(unique.joined(separator: ", ")). We'll try to find new homes for them in any free space."
     }
 
     private func overlapsReserved(at candidate: CGPoint,
@@ -322,6 +467,7 @@ public struct BedMapEditorView: View {
             let spreadCm = Double(plant.spreadCm ?? 30)
             let diameter = CGFloat(spreadCm) * scale
             let dragging = (draggingId == placement.id)
+            let isSelected = (selectedPlacementId == placement.id)
             let baseX = CGFloat(placement.xCm) * scale
             let baseY = CGFloat(placement.yCm) * scale
             let dx = dragging ? dragOffset.width  : 0
@@ -330,21 +476,44 @@ public struct BedMapEditorView: View {
             let colour = Color(hex: palette[plant.id] ?? "#88aa88")
             ZStack {
                 Circle()
-                    .fill(colour.opacity(dragging ? 0.85 : 0.55))
+                    .fill(colour.opacity(dragging || isSelected ? 0.85 : 0.55))
                 Circle()
-                    .stroke(Color.white, lineWidth: 2)
+                    .stroke(isSelected ? Color.bmRed : Color.white,
+                            lineWidth: isSelected ? 3 : 2)
                 Text(letter)
                     .font(.custom("Fredoka-SemiBold", size: 11))
                     .foregroundStyle(.white)
+                if isSelected {
+                    // Discoverable remove button: tap the plant to select,
+                    // tap this badge to send it back to the tray.
+                    Button {
+                        draftPlacements.removeAll { $0.id == placement.id }
+                        selectedPlacementId = nil
+                    } label: {
+                        Image(systemName: "minus.circle.fill")
+                            .font(.system(size: max(14, diameter * 0.35), weight: .bold))
+                            .foregroundStyle(.white, Color.bmRed)
+                            .background(Circle().fill(Color.white).padding(2))
+                    }
+                    .buttonStyle(.plain)
+                    .offset(x: diameter * 0.32, y: -diameter * 0.32)
+                    .accessibilityLabel("Remove \(plant.name) from bed")
+                }
             }
             .frame(width: diameter, height: diameter)
             .position(x: baseX + dx, y: baseY + dy)
             .accessibilityLabel("\(plant.name) at \(Int(placement.xCm)), \(Int(placement.yCm))")
+            .onTapGesture {
+                selectedPlacementId = (selectedPlacementId == placement.id)
+                    ? nil
+                    : placement.id
+            }
             .gesture(
                 DragGesture()
                     .onChanged { value in
                         if draggingId != placement.id { draggingId = placement.id }
                         dragOffset = value.translation
+                        if selectedPlacementId != nil { selectedPlacementId = nil }
                     }
                     .onEnded { value in
                         let newXCm = placement.xCm + Double(value.translation.width / scale)
@@ -359,6 +528,7 @@ public struct BedMapEditorView: View {
             )
             .onLongPressGesture(minimumDuration: 0.45) {
                 draftPlacements.removeAll { $0.id == placement.id }
+                if selectedPlacementId == placement.id { selectedPlacementId = nil }
             }
         }
     }

@@ -16,12 +16,15 @@ public struct BloomScheduleView: View {
     @EnvironmentObject private var library: LibraryStore
 
     @State private var sheetMonth: ScheduleMonth?
+    @State private var showingAddReminder: Bool = false
+    @State private var editingReminderId: UUID?
 
     public init() {}
 
     public var body: some View {
         ScrollView {
             VStack(spacing: 18) {
+                remindersCard
                 let cal = Calendar.current
                 let now = Date()
                 let thisYear = cal.component(.year, from: now)
@@ -39,7 +42,102 @@ public struct BloomScheduleView: View {
                 .environmentObject(store)
                 .environmentObject(library)
         }
+        .sheet(isPresented: $showingAddReminder) {
+            AddReminderSheet(editingReminderId: nil)
+                .environmentObject(store)
+        }
+        .sheet(item: Binding(
+            get: { editingReminderId.map(ReminderIdHolder.init) },
+            set: { editingReminderId = $0?.id })) { holder in
+            AddReminderSheet(editingReminderId: holder.id)
+                .environmentObject(store)
+        }
     }
+
+    // MARK: - Reminders card
+
+    private var remindersCard: some View {
+        let upcoming = store.customReminders
+            .sorted { $0.date < $1.date }
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 6) {
+                SectionLabel("My reminders", icon: "🔔")
+                Tooltip("Reminders you've added here show up in the matching month below AND on the Home screen's Today's Tasks panel, so you can tick them off from either place.")
+                Spacer()
+                Button {
+                    showingAddReminder = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 10, weight: .bold))
+                        Text("Add")
+                            .font(.custom("Fredoka-SemiBold", size: 12))
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 10).padding(.vertical, 5)
+                    .background(Color.bmGreen)
+                    .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+            if upcoming.isEmpty {
+                Text("No reminders yet. Tap + Add to drop one on the calendar.")
+                    .font(.custom("Nunito-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText3)
+            } else {
+                ForEach(upcoming) { reminder in
+                    reminderRow(reminder: reminder)
+                }
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func reminderRow(reminder: CustomReminder) -> some View {
+        let done = store.isTaskDone(id: reminder.taskId)
+        return HStack(spacing: 10) {
+            Button {
+                if done { store.markTaskNotDone(id: reminder.taskId) }
+                else    { store.markTaskDone(id: reminder.taskId) }
+            } label: {
+                Image(systemName: done ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(done ? Color.bmGreen : Color.bmText3)
+            }
+            .buttonStyle(.plain)
+            Button {
+                editingReminderId = reminder.id
+            } label: {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(reminder.title)
+                        .font(.custom("Nunito-Bold", size: 13))
+                        .foregroundStyle(done ? Color.bmText3 : Color.bmText1)
+                        .strikethrough(done, color: Color.bmText3)
+                    Text(reminder.date, style: .date)
+                        .font(.custom("Nunito-SemiBold", size: 10))
+                        .foregroundStyle(Color.bmText3)
+                }
+            }
+            .buttonStyle(.plain)
+            Spacer()
+            Button {
+                store.deleteReminder(id: reminder.id)
+            } label: {
+                Image(systemName: "trash")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.bmRed)
+                    .padding(6)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(10)
+        .background(Color.bmBgSoft)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
+    fileprivate struct ReminderIdHolder: Identifiable, Hashable { let id: UUID }
 
     // MARK: - Year section
 
@@ -287,6 +385,132 @@ struct BloomMonthSheet: View {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
         return f.monthSymbols[m - 1]
+    }
+}
+
+// MARK: - AddReminderSheet
+//
+// Compact form for adding or editing a gardener-authored reminder.
+// Reminders are stored on GardenStore.customReminders and surfaced on
+// Home's Today's Tasks card (current-month only) plus the Bloom Planner
+// (always).
+
+struct AddReminderSheet: View {
+    let editingReminderId: UUID?
+
+    @EnvironmentObject private var store: GardenStore
+    @SwiftUI.Environment(\.dismiss) private var dismiss
+
+    @State private var title: String = ""
+    @State private var date: Date = Date()
+    @State private var bedScope: BedScope = .anyGarden
+
+    enum BedScope: Hashable {
+        case anyGarden
+        case bed(UUID)
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("What's the reminder?")
+                            .font(.custom("Nunito-Bold", size: 13))
+                            .foregroundStyle(Color.bmText1)
+                        TextField("Net the brassicas", text: $title)
+                            .font(.custom("Nunito-SemiBold", size: 14))
+                            .padding(.horizontal, 12).padding(.vertical, 10)
+                            .background(Color.bmBgSoft)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.bmBorder, lineWidth: 1))
+                    }
+
+                    DatePicker("When", selection: $date,
+                               displayedComponents: .date)
+                        .font(.custom("Nunito-Bold", size: 13))
+                        .foregroundStyle(Color.bmText1)
+                        .tint(Color.bmGreen)
+
+                    if !store.beds.isEmpty {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Pin to a bed (optional)")
+                                .font(.custom("Nunito-Bold", size: 13))
+                                .foregroundStyle(Color.bmText1)
+                            Picker("Bed", selection: $bedScope) {
+                                Text("All gardens").tag(BedScope.anyGarden)
+                                ForEach(store.beds) { bed in
+                                    Text("\(bed.name) (\(store.garden(id: bed.gardenId)?.name ?? ""))")
+                                        .tag(BedScope.bed(bed.id))
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .tint(Color.bmGreen)
+                        }
+                    }
+
+                    Button {
+                        save()
+                    } label: {
+                        Text(editingReminderId == nil ? "Add reminder" : "Save changes")
+                            .font(.custom("Fredoka-SemiBold", size: 14))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(canSave ? Color.bmGreen : Color.bmGreenMid)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(!canSave)
+                }
+                .padding(20)
+            }
+            .bmSheetBackdrop()
+            .bmNavTitle(editingReminderId == nil ? "New reminder" : "Edit reminder", icon: "🔔")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") { dismiss() }
+                        .foregroundStyle(Color.bmText2)
+                }
+            }
+            .onAppear { loadIfEditing() }
+        }
+    }
+
+    private var canSave: Bool {
+        !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func loadIfEditing() {
+        guard let id = editingReminderId,
+              let existing = store.customReminders.first(where: { $0.id == id }) else { return }
+        title = existing.title
+        date = existing.date
+        bedScope = existing.bedId.map(BedScope.bed) ?? .anyGarden
+    }
+
+    private func save() {
+        let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let bedId: UUID? = {
+            if case .bed(let id) = bedScope { return id }
+            return nil
+        }()
+        if let id = editingReminderId,
+           let existing = store.customReminders.first(where: { $0.id == id }) {
+            var updated = existing
+            updated.title = trimmed
+            updated.date = date
+            updated.bedId = bedId
+            store.updateReminder(updated)
+        } else {
+            store.addReminder(CustomReminder(
+                title: trimmed,
+                date: date,
+                bedId: bedId
+            ))
+        }
+        dismiss()
     }
 }
 #endif

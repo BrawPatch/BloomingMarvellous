@@ -319,6 +319,39 @@ public struct Bed: Identifiable, Codable, Equatable {
 // originally created so the Planting Map can show "2nd year" badges and
 // the season-rotation helper can age placements correctly.
 
+// MARK: - CustomReminder
+//
+// Gardener-authored to-do that lives alongside the auto-generated
+// sow/transplant/harvest tasks. Surfaced on Home's "Today's Tasks"
+// panel and on the Bloom Planner calendar for the matching month, with
+// the same checkbox machinery (id-keyed completion state on
+// GardenStore). Optional `bedId` lets the gardener pin a reminder to a
+// specific bed; optional `plantId` links it to a plant page.
+
+public struct CustomReminder: Identifiable, Codable, Equatable, Hashable {
+    public var id: UUID
+    public var title: String
+    public var date: Date
+    public var bedId: UUID?
+    public var plantId: String?
+
+    public init(id: UUID = UUID(),
+                title: String,
+                date: Date,
+                bedId: UUID? = nil,
+                plantId: String? = nil) {
+        self.id = id
+        self.title = title
+        self.date = date
+        self.bedId = bedId
+        self.plantId = plantId
+    }
+
+    /// Stable id used by GardenStore.completedTaskIds so a reminder's
+    /// done-state is in the same set as the generated sow/etc tasks.
+    public var taskId: String { "reminder|\(id.uuidString)" }
+}
+
 // MARK: - SeasonSnapshot
 //
 // Frozen record of a bed at the end of a planting season — written by

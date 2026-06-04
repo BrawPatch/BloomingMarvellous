@@ -29,12 +29,43 @@ public enum TaskScheduler {
         public let bedName: String?
     }
 
-    /// All events across every garden / bed for the user's current picks.
+    /// All events across every garden / bed for the user's current picks,
+    /// plus any gardener-authored reminders.
     public static func allEvents(store: GardenStore,
                                  plantLookup: (String) -> Plant?) -> [Event] {
+        let generated: [Event]
         switch store.user.tier {
-        case .free: return freeTierEvents(store: store, plantLookup: plantLookup)
-        case .pro:  return proTierEvents(store: store, plantLookup: plantLookup)
+        case .free: generated = freeTierEvents(store: store, plantLookup: plantLookup)
+        case .pro:  generated = proTierEvents(store: store, plantLookup: plantLookup)
+        }
+        let reminders = reminderEvents(store: store)
+        return generated + reminders
+    }
+
+    private static func reminderEvents(store: GardenStore) -> [Event] {
+        let cal = Calendar.current
+        // Reminders are scoped to a specific (bed?, garden) so the filter
+        // bar plays nicely. Use the bed's garden if a bedId is set,
+        // otherwise the first garden as a stand-in for "global".
+        return store.customReminders.compactMap { reminder -> Event? in
+            let month = cal.component(.month, from: reminder.date)
+            let day   = cal.component(.day,   from: reminder.date)
+            let bed: Bed? = reminder.bedId.flatMap { store.bed(id: $0) }
+            let garden: Garden? = bed.flatMap { store.garden(id: $0.gardenId) }
+                                ?? store.gardens.first
+            guard let garden else { return nil }
+            return Event(
+                id: reminder.taskId,
+                kind: .reminder,
+                month: month, day: day,
+                plantId: reminder.plantId ?? "",
+                plantName: reminder.title,
+                bloomMonth: month,
+                gardenId: garden.id,
+                gardenName: garden.name,
+                bedId: bed?.id,
+                bedName: bed?.name
+            )
         }
     }
 
@@ -62,6 +93,7 @@ public enum TaskScheduler {
 
     private static func kindOrder(_ k: ScheduleTaskKind) -> Int {
         switch k {
+        case .reminder:   return -1
         case .sow:        return 0
         case .transplant: return 1
         case .harvest:    return 2
