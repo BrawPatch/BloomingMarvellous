@@ -33,6 +33,7 @@ public struct BedMapEditorView: View {
     @State private var dragOffset: CGSize = .zero
     @State private var didSeed: Bool = false
     @State private var lastSaved: Date?
+    @State private var isFullscreen: Bool = false
 
     public init(bedId: UUID) { self.bedId = bedId }
 
@@ -53,6 +54,32 @@ public struct BedMapEditorView: View {
                 ContextualHelpButton(topic: .plantingMap)
             }
         }
+        .fullScreenCover(isPresented: $isFullscreen) {
+            if let bed = store.bed(id: bedId) {
+                BedMapFullscreenView(
+                    bed: bed,
+                    plants: resolvedPlants(bed: bed),
+                    palette: paletteByPlant(bed: bed, plants: resolvedPlants(bed: bed)),
+                    placements: $draftPlacements,
+                    draggingId: $draggingId,
+                    dragOffset: $dragOffset,
+                    letterFor: { pid in
+                        letterForPlant(pid, plants: resolvedPlants(bed: bed), bed: bed)
+                    },
+                    onCommitDrag: { id, pos in
+                        commitDrag(placementId: id, to: pos, bed: bed,
+                                   plants: resolvedPlants(bed: bed))
+                    },
+                    onRemove: { id in
+                        draftPlacements.removeAll { $0.id == id }
+                    },
+                    onSave: {
+                        store.setPlacements(draftPlacements, in: bedId)
+                        lastSaved = Date()
+                    }
+                )
+            }
+        }
     }
 
     // MARK: - Content
@@ -64,15 +91,38 @@ public struct BedMapEditorView: View {
         ScrollView {
             VStack(spacing: 14) {
                 helpCard
+                    .padding(.horizontal, 16)
+                // Canvas goes edge-to-edge so it fills the full screen
+                // width — the cards above and below keep their margins.
                 bedCanvas(bed: bed, plants: plants, palette: palette)
+                    .overlay(alignment: .topTrailing) {
+                        fullscreenButton
+                            .padding(8)
+                    }
                 trayCard(bed: bed, plants: plants, palette: palette)
+                    .padding(.horizontal, 16)
                 keyCard(plants: plants, palette: palette)
+                    .padding(.horizontal, 16)
                 saveButton(bed: bed)
+                    .padding(.horizontal, 16)
             }
-            .padding(.horizontal, 16)
             .padding(.vertical, 14)
         }
         .onAppear { seedDraftIfNeeded(bed: bed) }
+    }
+
+    private var fullscreenButton: some View {
+        Button {
+            isFullscreen = true
+        } label: {
+            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(Color.bmText1)
+                .padding(8)
+                .background(Circle().fill(Color.white.opacity(0.92)))
+                .shadow(color: .black.opacity(0.12), radius: 3, y: 1)
+        }
+        .accessibilityLabel("Open fullscreen bed map")
     }
 
     private var helpCard: some View {
@@ -536,6 +586,179 @@ public struct BedMapEditorView: View {
             }
         }
         return out
+    }
+}
+
+// MARK: - BedMapFullscreenView
+//
+// Aspect-fit, edge-to-edge bed canvas with the same drag-to-arrange
+// interactions as the inline editor. Presented via .fullScreenCover so
+// it covers tabs + nav bar; supports portrait and landscape on iPhone
+// (both already listed in the project's UISupportedInterfaceOrientations).
+//
+// State (placements / draggingId / dragOffset) is shared with the parent
+// editor via @Binding so any drag commits propagate back when the cover
+// dismisses. Save and remove are routed through closures so the parent
+// keeps ownership of GardenStore mutations.
+
+struct BedMapFullscreenView: View {
+
+    let bed: Bed
+    let plants: [String: Plant]
+    let palette: [String: String]
+    @Binding var placements: [PlantPlacement]
+    @Binding var draggingId: UUID?
+    @Binding var dragOffset: CGSize
+    let letterFor: (String) -> String
+    let onCommitDrag: (UUID, CGPoint) -> Void
+    let onRemove: (UUID) -> Void
+    let onSave: () -> Void
+
+    @SwiftUI.Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            Color.bmBgSoft.ignoresSafeArea()
+            GeometryReader { geo in
+                // Aspect-fit: scale by whichever dimension is the binding
+                // constraint, so the whole bed always fits on screen and
+                // automatically grows when the user rotates to landscape.
+                let scaleW = geo.size.width  / CGFloat(bed.widthCm)
+                let scaleH = geo.size.height / CGFloat(bed.lengthCm)
+                let scale  = min(scaleW, scaleH)
+                let canvasW = CGFloat(bed.widthCm) * scale
+                let canvasH = CGFloat(bed.lengthCm) * scale
+                let originX = (geo.size.width  - canvasW) / 2
+                let originY = (geo.size.height - canvasH) / 2
+                ZStack(alignment: .topLeading) {
+                    Rectangle()
+                        .fill(Color.bmBgSoft)
+                    Rectangle()
+                        .stroke(Color.bmGreenMid, lineWidth: 2)
+                    FullscreenGrid(scale: scale)
+                    ForEach(placements) { placement in
+                        circle(for: placement, scale: scale)
+                    }
+                    Text("Front of bed →")
+                        .font(.custom("Nunito-Bold", size: 11))
+                        .foregroundStyle(Color.bmText3)
+                        .padding(.horizontal, 8).padding(.vertical, 3)
+                        .background(Capsule().fill(Color.white.opacity(0.9)))
+                        .padding(8)
+                }
+                .frame(width: canvasW, height: canvasH)
+                .offset(x: originX, y: originY)
+            }
+            controls
+        }
+    }
+
+    private var controls: some View {
+        HStack(spacing: 10) {
+            Spacer()
+            Button {
+                onSave()
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 13, weight: .bold))
+                    Text("Save")
+                        .font(.custom("Fredoka-SemiBold", size: 13))
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 14).padding(.vertical, 9)
+                .background(Color.bmGreen)
+                .clipShape(Capsule())
+            }
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(Color.bmText1)
+                    .padding(10)
+                    .background(Circle().fill(Color.white))
+                    .shadow(color: .black.opacity(0.12), radius: 3, y: 1)
+            }
+            .accessibilityLabel("Close fullscreen map")
+        }
+        .padding(.horizontal, 12)
+        .padding(.top, 12)
+    }
+
+    @ViewBuilder
+    private func circle(for placement: PlantPlacement, scale: CGFloat) -> some View {
+        if let plant = plants[placement.plantId] {
+            let spreadCm = Double(plant.spreadCm ?? 30)
+            let diameter = CGFloat(spreadCm) * scale
+            let dragging = (draggingId == placement.id)
+            let baseX = CGFloat(placement.xCm) * scale
+            let baseY = CGFloat(placement.yCm) * scale
+            let dx = dragging ? dragOffset.width  : 0
+            let dy = dragging ? dragOffset.height : 0
+            let letter = letterFor(plant.id)
+            let colour = Color(hex: palette[plant.id] ?? "#88aa88")
+            ZStack {
+                Circle()
+                    .fill(colour.opacity(dragging ? 0.85 : 0.55))
+                Circle()
+                    .stroke(Color.white, lineWidth: 2)
+                Text(letter)
+                    .font(.custom("Fredoka-SemiBold", size: max(11, diameter * 0.32)))
+                    .foregroundStyle(.white)
+            }
+            .frame(width: diameter, height: diameter)
+            .position(x: baseX + dx, y: baseY + dy)
+            .accessibilityLabel("\(plant.name) at \(Int(placement.xCm)), \(Int(placement.yCm))")
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        if draggingId != placement.id { draggingId = placement.id }
+                        dragOffset = value.translation
+                    }
+                    .onEnded { value in
+                        let newXCm = placement.xCm + Double(value.translation.width / scale)
+                        let newYCm = placement.yCm + Double(value.translation.height / scale)
+                        onCommitDrag(placement.id, CGPoint(x: newXCm, y: newYCm))
+                        draggingId = nil
+                        dragOffset = .zero
+                    }
+            )
+            .onLongPressGesture(minimumDuration: 0.45) {
+                onRemove(placement.id)
+            }
+        }
+    }
+}
+
+private struct FullscreenGrid: View {
+    let scale: CGFloat
+    var body: some View {
+        Canvas { context, size in
+            let step: CGFloat = 10 * scale
+            var x: CGFloat = step
+            while x < size.width {
+                context.stroke(
+                    Path { p in
+                        p.move(to: CGPoint(x: x, y: 0))
+                        p.addLine(to: CGPoint(x: x, y: size.height))
+                    },
+                    with: .color(Color.bmBorder.opacity(0.3)),
+                    lineWidth: 0.5)
+                x += step
+            }
+            var y: CGFloat = step
+            while y < size.height {
+                context.stroke(
+                    Path { p in
+                        p.move(to: CGPoint(x: 0, y: y))
+                        p.addLine(to: CGPoint(x: size.width, y: y))
+                    },
+                    with: .color(Color.bmBorder.opacity(0.3)),
+                    lineWidth: 0.5)
+                y += step
+            }
+        }
     }
 }
 #endif
