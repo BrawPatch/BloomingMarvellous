@@ -934,13 +934,12 @@ struct PlantPickerGalleryView: View {
 
     @ViewBuilder
     private func typeSubsection(_ section: PlantSection) -> some View {
-        // Within each PlantGroup (Flowers / Vegetables / Herbs / Fruit)
-        // sub-group plants by series — every "French Marigold" cultivar
-        // lands under one "French Marigolds (N)" header, every Petunia
-        // under "Petunias (N)", etc. Plants with no cultivar siblings
-        // render inline without a header so single entries don't waste
-        // a line.
-        let buckets = seriesBuckets(plants: section.plants)
+        // Three-level drill-down: one tile per genus ("Begonias") in
+        // each PlantGroup (Flowers / Vegetables / Herbs / Fruit). Tap a
+        // genus → species list ("Wax Begonia", "Tuberous Begonia"). Tap
+        // a species → cultivar grid. Cuts a month with 30+ marigold
+        // cultivars down to a single "Marigolds" tile at the top level.
+        let buckets = GalleryDrillDown.genusBuckets(plants: section.plants)
         return VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 6) {
                 Text(section.group.emoji)
@@ -949,13 +948,32 @@ struct PlantPickerGalleryView: View {
                     .foregroundStyle(Color.bmText2)
                     .kerning(0.6)
                 Spacer()
-                Text("\(section.plants.count)")
+                Text("\(section.plants.count) total")
                     .font(.custom("Nunito-Bold", size: 10))
                     .foregroundStyle(Color.bmText3)
             }
             .padding(.top, 4)
-            ForEach(buckets, id: \.label) { bucket in
-                seriesBucketView(bucket)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 2),
+                      spacing: 12) {
+                ForEach(buckets, id: \.label) { bucket in
+                    NavigationLink {
+                        if bucket.plants.count == 1, let only = bucket.plants.first {
+                            // Single plant in the bucket → skip the
+                            // species list and go straight to the leaf.
+                            PlantDetailView(plantId: only.id)
+                                .environmentObject(store)
+                                .environmentObject(library)
+                        } else {
+                            GalleryGenusDetailView(genusLabel: bucket.label,
+                                                   plants: bucket.plants)
+                                .environmentObject(store)
+                                .environmentObject(library)
+                        }
+                    } label: {
+                        GalleryGenusTile(label: bucket.label, plants: bucket.plants)
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
     }
@@ -991,15 +1009,11 @@ struct PlantPickerGalleryView: View {
         return multi
     }
 
-    /// "French Marigold 'Boy Spry'" → "French Marigold". "Petunia
-    /// 'Surfinia Purple'" → "Petunia". A species without a cultivar
-    /// suffix returns its full common name.
+    /// Shim forwarding to the shared `GalleryDrillDown.seriesLabel` so
+    /// the gallery's helpers and the drill-down screens compute the
+    /// same series boundary.
     static func seriesLabel(plant: Plant) -> String {
-        let name = plant.name
-        if let r = name.range(of: " '") ?? name.range(of: " ‘") {
-            return String(name[..<r.lowerBound])
-        }
-        return name
+        GalleryDrillDown.seriesLabel(plant: plant)
     }
 
     private func pluralise(_ singular: String) -> String {
