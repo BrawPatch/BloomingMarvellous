@@ -934,7 +934,14 @@ struct PlantPickerGalleryView: View {
 
     @ViewBuilder
     private func typeSubsection(_ section: PlantSection) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        // Within each PlantGroup (Flowers / Vegetables / Herbs / Fruit)
+        // sub-group plants by series — every "French Marigold" cultivar
+        // lands under one "French Marigolds (N)" header, every Petunia
+        // under "Petunias (N)", etc. Plants with no cultivar siblings
+        // render inline without a header so single entries don't waste
+        // a line.
+        let buckets = seriesBuckets(plants: section.plants)
+        return VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 6) {
                 Text(section.group.emoji)
                 Text(section.group.label.uppercased())
@@ -947,9 +954,85 @@ struct PlantPickerGalleryView: View {
                     .foregroundStyle(Color.bmText3)
             }
             .padding(.top, 4)
+            ForEach(buckets, id: \.label) { bucket in
+                seriesBucketView(bucket)
+            }
+        }
+    }
+
+    private struct SeriesBucket {
+        let label: String
+        let plants: [Plant]
+    }
+
+    /// Group plants by series (the part of `plant.name` before the
+    /// cultivar epithet). Single-cultivar buckets are merged into a
+    /// catch-all "Other" bucket at the end so the gallery still groups
+    /// runs of related plants without floating 1-of-each rows.
+    private func seriesBuckets(plants: [Plant]) -> [SeriesBucket] {
+        let bySeries = Dictionary(grouping: plants) { Self.seriesLabel(plant: $0) }
+        var multi: [SeriesBucket] = []
+        var loners: [Plant] = []
+        for (series, list) in bySeries {
+            if list.count >= 2 {
+                multi.append(SeriesBucket(label: series, plants: list.sorted { $0.name < $1.name }))
+            } else {
+                loners.append(contentsOf: list)
+            }
+        }
+        multi.sort { (a, b) in
+            if a.plants.count != b.plants.count { return a.plants.count > b.plants.count }
+            return a.label.localizedCompare(b.label) == .orderedAscending
+        }
+        if !loners.isEmpty {
+            multi.append(SeriesBucket(label: "Other",
+                                      plants: loners.sorted { $0.name < $1.name }))
+        }
+        return multi
+    }
+
+    /// "French Marigold 'Boy Spry'" → "French Marigold". "Petunia
+    /// 'Surfinia Purple'" → "Petunia". A species without a cultivar
+    /// suffix returns its full common name.
+    static func seriesLabel(plant: Plant) -> String {
+        let name = plant.name
+        if let r = name.range(of: " '") ?? name.range(of: " ‘") {
+            return String(name[..<r.lowerBound])
+        }
+        return name
+    }
+
+    private func pluralise(_ singular: String) -> String {
+        let lower = singular.lowercased()
+        if lower.hasSuffix("s") || lower.hasSuffix("y")
+            || lower.hasSuffix("ies") || lower.hasSuffix("z") { return singular }
+        return singular + "s"
+    }
+
+    private func seriesBucketView(_ bucket: SeriesBucket) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if bucket.label != "Other" {
+                HStack(spacing: 6) {
+                    Text(pluralise(bucket.label))
+                        .font(.custom("Fredoka-SemiBold", size: 13))
+                        .foregroundStyle(Color.bmText1)
+                    Text("·")
+                        .foregroundStyle(Color.bmText3)
+                    Text("\(bucket.plants.count) cultivar\(bucket.plants.count == 1 ? "" : "s")")
+                        .font(.custom("Nunito-SemiBold", size: 10))
+                        .foregroundStyle(Color.bmText3)
+                    Spacer()
+                }
+                .padding(.top, 2)
+            } else if bucket.plants.count > 1 {
+                Text("Other")
+                    .font(.custom("Fredoka-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                    .padding(.top, 2)
+            }
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 2),
                       spacing: 12) {
-                ForEach(section.plants) { p in
+                ForEach(bucket.plants) { p in
                     NavigationLink {
                         PlantDetailView(plantId: p.id)
                             .environmentObject(store)

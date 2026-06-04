@@ -23,6 +23,7 @@ public struct HomeView: View {
     @State private var showingSettings = false
     @State private var showingTasks = false
     @State private var showingBeds = false
+    @State private var showingMyBeds = false
     @State private var showingPlantingMap = false
     @State private var showingBloomSchedule = false
     @State private var showingStore = false
@@ -47,6 +48,7 @@ public struct HomeView: View {
         showingSettings      = false
         showingTasks         = false
         showingBeds          = false
+        showingMyBeds        = false
         showingPlantingMap   = false
         showingBloomSchedule = false
         showingStore         = false
@@ -119,6 +121,11 @@ public struct HomeView: View {
         .navigationDestination(isPresented: $showingPlantingMap) {
             PlantingMapView()
                 .environmentObject(store)
+        }
+        .navigationDestination(isPresented: $showingMyBeds) {
+            MyBedsView()
+                .environmentObject(store)
+                .environmentObject(library)
         }
         .navigationDestination(isPresented: $showingBloomSchedule) {
             BloomScheduleView()
@@ -235,10 +242,10 @@ public struct HomeView: View {
                  icon: "📅",
                  tint: .bmSky) { onSelectTab(.planting) }
 
-            tile(title: "Bedding Map Tool",
-                 subtitle: "Arrange + print your bed layouts",
-                 icon: "🗺️",
-                 tint: .bmLeafSage) { showingPlantingMap = true }
+            tile(title: "My Beds",
+                 subtitle: "Edit a bed or open its map",
+                 icon: "🪴",
+                 tint: .bmLeafSage) { showingMyBeds = true }
         }
         .padding(.horizontal, 20)
     }
