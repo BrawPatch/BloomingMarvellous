@@ -363,6 +363,27 @@ struct PlantPickerGalleryView: View {
     /// "Suitable for my soil" filter — only meaningful in `.all` mode
     /// (in `.matched` mode the gardener already gets suitable plants).
     @State private var soilOnly: Bool = false
+    /// Inline colour / type refinements seeded from the picker setup
+    /// screen so the gardener can adjust without going back.
+    @State private var colorSelection: BloomColor?
+    @State private var typeFilter: PlantGroup?
+
+    init(months: [Int],
+         mode: PickerMode,
+         manualSun: Sunlight?,
+         manualSoil: SoilType?,
+         minHeightCm: Int,
+         colorFilter: BloomColor?,
+         acidityOverride: SoilAcidity?) {
+        self.months = months
+        self.mode = mode
+        self.manualSun = manualSun
+        self.manualSoil = manualSoil
+        self.minHeightCm = minHeightCm
+        self.colorFilter = colorFilter
+        self.acidityOverride = acidityOverride
+        _colorSelection = State(initialValue: colorFilter)
+    }
 
     var body: some View {
         ScrollView {
@@ -371,6 +392,8 @@ struct PlantPickerGalleryView: View {
             }
             VStack(spacing: 12) {
                 PlantSearchBar(text: $search)
+                colorFilterStrip
+                typeFilterStrip
                 if mode == .all {
                     Toggle(isOn: $soilOnly) {
                         HStack(spacing: 6) {
@@ -412,6 +435,96 @@ struct PlantPickerGalleryView: View {
         .task { await library.loadIfNeeded() }
     }
 
+    // MARK: - Inline filter strips
+
+    private var colorFilterStrip: some View {
+        HStack(spacing: 8) {
+            Text("Colour")
+                .font(.custom("Nunito-Bold", size: 12))
+                .foregroundStyle(Color.bmText2)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    inlineFilterChip(label: "Any",
+                                     isActive: colorSelection == nil) {
+                        colorSelection = nil
+                    }
+                    ForEach(BloomColor.allCases) { c in
+                        Button {
+                            colorSelection = (colorSelection == c) ? nil : c
+                        } label: {
+                            HStack(spacing: 4) {
+                                Circle()
+                                    .fill(c.swatch)
+                                    .frame(width: 12, height: 12)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 1))
+                                Text(c.label)
+                                    .font(.custom("Nunito-Bold", size: 11))
+                                    .foregroundStyle(colorSelection == c ? .white : Color.bmText2)
+                            }
+                            .padding(.horizontal, 9).padding(.vertical, 5)
+                            .background(colorSelection == c ? Color.bmGreen : Color.bmBgCard)
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(
+                                colorSelection == c ? Color.bmGreen : Color.bmBorder,
+                                lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+        }
+    }
+
+    private var typeFilterStrip: some View {
+        HStack(spacing: 8) {
+            Text("Type")
+                .font(.custom("Nunito-Bold", size: 12))
+                .foregroundStyle(Color.bmText2)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    inlineFilterChip(label: "Any",
+                                     isActive: typeFilter == nil) {
+                        typeFilter = nil
+                    }
+                    ForEach(PlantGroup.allCases) { g in
+                        Button {
+                            typeFilter = (typeFilter == g) ? nil : g
+                        } label: {
+                            HStack(spacing: 4) {
+                                Text(g.emoji)
+                                Text(g.label)
+                                    .font(.custom("Nunito-Bold", size: 11))
+                                    .foregroundStyle(typeFilter == g ? .white : Color.bmText2)
+                            }
+                            .padding(.horizontal, 9).padding(.vertical, 5)
+                            .background(typeFilter == g ? Color.bmGreen : Color.bmBgCard)
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(
+                                typeFilter == g ? Color.bmGreen : Color.bmBorder,
+                                lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+        }
+    }
+
+    private func inlineFilterChip(label: String,
+                                  isActive: Bool,
+                                  action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(label)
+                .font(.custom("Nunito-Bold", size: 11))
+                .foregroundStyle(isActive ? .white : Color.bmText2)
+                .padding(.horizontal, 9).padding(.vertical, 5)
+                .background(isActive ? Color.bmGreen : Color.bmBgCard)
+                .clipShape(Capsule())
+                .overlay(Capsule().stroke(isActive ? Color.bmGreen : Color.bmBorder, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+    }
+
     // MARK: - Filter pipeline
 
     private struct MonthGroup {
@@ -450,14 +563,20 @@ struct PlantPickerGalleryView: View {
         }
 
         func suitsColor(_ p: Plant) -> Bool {
-            guard let want = colorFilter else { return true }
+            guard let want = colorSelection else { return true }
             return BloomColor.nearestBands(forHex: p.colorHex).contains(want)
+        }
+
+        func suitsType(_ p: Plant) -> Bool {
+            guard let want = typeFilter else { return true }
+            return PlantGroup.group(for: p) == want
         }
 
         return months.map { m in
             let plants = entitled.filter { p in
                 guard p.blooms(in: m) else { return false }
                 guard suitsColor(p) else { return false }
+                guard suitsType(p) else { return false }
                 if let a = acidityOverride,
                    let acids = p.preferredAcidity, !acids.isEmpty,
                    !acids.contains(a) {

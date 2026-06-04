@@ -45,6 +45,7 @@ import {
   scryptSync,
   timingSafeEqual,
 } from "node:crypto";
+import { gzipSync } from "node:zlib";
 
 const region = process.env.AWS_REGION_VAR ?? "us-east-1";
 const dynamo = new DynamoDBClient({ region });
@@ -77,6 +78,23 @@ function respond(statusCode, body, extraHeaders = {}) {
     statusCode,
     headers: { ...SECURITY_HEADERS, ...extraHeaders },
     body: typeof body === "string" ? body : JSON.stringify(body),
+  };
+}
+
+// Gzip + base64-encode large JSON responses so they fit under API Gateway's
+// 6 MB sync payload cap. The full Pro+all-packs library is ~11 MB raw / ~1.6 MB
+// gzipped. URLSession on iOS decodes Content-Encoding: gzip transparently.
+function respondGzipJSON(statusCode, value) {
+  const json = JSON.stringify(value);
+  const gz   = gzipSync(json);
+  return {
+    statusCode,
+    headers: {
+      ...SECURITY_HEADERS,
+      "Content-Encoding": "gzip",
+    },
+    isBase64Encoded: true,
+    body: gz.toString("base64"),
   };
 }
 
@@ -317,7 +335,7 @@ async function handleLibrary(event) {
   }
 
   const filtered = filterByEntitlements(parsed.items, session.tier, session.purchasedPacks);
-  return respond(200, filtered);
+  return respondGzipJSON(200, filtered);
 }
 
 // ── Router ───────────────────────────────────────────────────────────────────

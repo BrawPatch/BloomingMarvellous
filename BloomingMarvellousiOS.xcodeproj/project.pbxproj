@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A175BCE2FCE4BCC00DE73CF /* Assets 2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A175BCD2FCE4BCC00DE73CF /* Assets 2.xcassets */; };
 		8A5841D12FC7207900C0549A /* BloomingMarvellousiOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5841D02FC7207900C0549A /* BloomingMarvellousiOSApp.swift */; };
 		8A95B7F82FC66D3900ECF1B6 /* BloomingMarvellousUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8A95B7F72FC66D3900ECF1B6 /* BloomingMarvellousUI */; };
 		8ADE5FE82FC6623B004F1ABB /* BloomingMarvellousUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8ADE5FE72FC6623B004F1ABB /* BloomingMarvellousUI */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A175BCD2FCE4BCC00DE73CF /* Assets 2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets 2.xcassets"; sourceTree = "<group>"; };
 		8A5841D02FC7207900C0549A /* BloomingMarvellousiOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloomingMarvellousiOSApp.swift; sourceTree = "<group>"; };
 		8ADE5FBC2FC6617B004F1ABB /* BloomingMarvellousiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BloomingMarvellousiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ADE5FC92FC6617C004F1ABB /* BloomingMarvellousiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BloomingMarvellousiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +93,7 @@
 				8ADE5FD62FC6617C004F1ABB /* BloomingMarvellousiOSUITests */,
 				8ADE5FBD2FC6617B004F1ABB /* Products */,
 				8A5841D02FC7207900C0549A /* BloomingMarvellousiOSApp.swift */,
+				8A175BCD2FCE4BCC00DE73CF /* Assets 2.xcassets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -230,6 +233,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A175BCE2FCE4BCC00DE73CF /* Assets 2.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
