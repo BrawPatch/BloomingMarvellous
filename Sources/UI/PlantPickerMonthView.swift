@@ -1545,7 +1545,16 @@ struct PlantDetailView: View {
     }
 
     private func syncPendingFromStore(_ p: Plant) {
-        pending = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
+        var committed = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
+        // Inherit any bloom-month context the gardener carried in from
+        // the Bloom Schedule (Edit Bed → Add Plant → Plant Detail flow).
+        // Restricted to this plant's actual bloom window so we don't
+        // suggest a January selection on a June-only rose.
+        let bloomSet: Set<Int> = p.bloomMonths.isEmpty
+            ? Set(1...12)
+            : Set(p.bloomMonths)
+        committed.formUnion(store.contextBloomMonths.intersection(bloomSet))
+        pending = committed
         didSeed = true
     }
 
@@ -1868,6 +1877,9 @@ struct PlantDetailView: View {
         let toRemove = committed.subtracting(pending)
         for m in toAdd    { store.togglePick(plantId: p.id, month: m) }
         for m in toRemove { store.togglePick(plantId: p.id, month: m) }
+        // Clear the carried Bloom-Schedule context now that the picks
+        // it suggested have been committed (or explicitly cleared).
+        store.contextBloomMonths = []
         let count = pending.count
         let summary: String
         if count == 0 {

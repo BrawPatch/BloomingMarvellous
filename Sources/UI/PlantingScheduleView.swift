@@ -23,6 +23,12 @@ public struct PlantingScheduleView: View {
 
     @State private var displayedMonth: Date = Calendar.current.startOfMonth(for: Date())
     @State private var filters = ScheduleFilters()
+    @State private var selectedDay: DayPickToken?
+
+    fileprivate struct DayPickToken: Identifiable {
+        let date: Date
+        var id: TimeInterval { date.timeIntervalSinceReferenceDate }
+    }
 
     @AppStorage("bm.notif.pushOn")          private var pushNotificationsOn: Bool = false
     @AppStorage("bm.notif.icalOn")          private var icalCalendarOn: Bool = false
@@ -77,6 +83,24 @@ public struct PlantingScheduleView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 ContextualHelpButton(topic: .plantingSchedule)
             }
+        }
+        .sheet(item: $selectedDay) { token in
+            DayDetailSheet(day: token.date,
+                           events: events(on: token.date),
+                           reminders: store.customReminders.filter {
+                               Calendar.current.isDate($0.date, inSameDayAs: token.date)
+                           })
+                .environmentObject(store)
+                .environmentObject(library)
+        }
+    }
+
+    fileprivate func events(on day: Date) -> [ScheduledEvent] {
+        let cal = Calendar.current
+        let m = cal.component(.month, from: day)
+        let d = cal.component(.day, from: day)
+        return generatedEvents.filter {
+            $0.month == m && $0.day == d && passes($0)
         }
     }
 
@@ -237,8 +261,13 @@ public struct PlantingScheduleView: View {
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: 7), spacing: 4) {
                 ForEach(days, id: \.self) { day in
-                    dayCell(day: day, monthMatch: cal.component(.month, from: day) == m,
-                            events: eventsByDay[cal.component(.day, from: day)] ?? [])
+                    Button {
+                        selectedDay = DayPickToken(date: day)
+                    } label: {
+                        dayCell(day: day, monthMatch: cal.component(.month, from: day) == m,
+                                events: eventsByDay[cal.component(.day, from: day)] ?? [])
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }
@@ -293,7 +322,7 @@ public struct PlantingScheduleView: View {
     // (`bedPicks`). The struct carries gardenId / bedId so the filter
     // bar can scope freely.
 
-    fileprivate struct ScheduledEvent: Identifiable, Hashable {
+    struct ScheduledEvent: Identifiable, Hashable {
         let id: String
         let kind: ScheduleTaskKind
         let month: Int          // 1-12
@@ -457,6 +486,218 @@ private extension Calendar {
         let offset = ((weekday - cal.firstWeekday) + 7) % 7
         guard let gridStart = cal.date(byAdding: .day, value: -offset, to: startOfMonth) else { return [] }
         return (0..<42).compactMap { cal.date(byAdding: .day, value: $0, to: gridStart) }
+    }
+}
+
+// MARK: - DayDetailSheet
+//
+// Opened by tapping a day cell on the Planting Schedule calendar. Lists
+// the day's auto-generated sow/transplant/harvest tasks alongside any
+// custom reminders the gardener has set for that date, and offers a "+
+// Add reminder" button that pre-fills the date in AddReminderSheet so
+// the gardener doesn't have to re-pick it.
+
+struct DayDetailSheet: View {
+    let day: Date
+    let events: [PlantingScheduleView.ScheduledEvent]
+    let reminders: [CustomReminder]
+
+    @EnvironmentObject private var store: GardenStore
+    @EnvironmentObject private var library: LibraryStore
+    @SwiftUI.Environment(\.dismiss) private var dismiss
+
+    @State private var showingAddReminder: Bool = false
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 14) {
+                    header
+                    if events.isEmpty && reminders.isEmpty {
+                        emptyState
+                    } else {
+                        if !reminders.isEmpty {
+                            remindersSection
+                        }
+                        if !events.isEmpty {
+                            eventsSection
+                        }
+                    }
+                    addReminderButton
+                }
+                .padding(20)
+            }
+            .bmSheetBackdrop()
+            .bmNavTitle(headerTitle, icon: "🗓")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Close") { dismiss() }
+                        .foregroundStyle(Color.bmText2)
+                }
+            }
+            .sheet(isPresented: $showingAddReminder) {
+                AddReminderSheet(editingReminderId: nil, initialDate: day)
+                    .environmentObject(store)
+            }
+        }
+    }
+
+    private var headerTitle: String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "EEEE d MMMM"
+        return f.string(from: day)
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(headerTitle)
+                .font(.custom("Fredoka-SemiBold", size: 18))
+                .foregroundStyle(Color.bmText1)
+            Text(eventsSummary)
+                .font(.custom("Nunito-SemiBold", size: 12))
+                .foregroundStyle(Color.bmText3)
+        }
+    }
+
+    private var eventsSummary: String {
+        let total = events.count + reminders.count
+        if total == 0 { return "No tasks scheduled. Add one below." }
+        if total == 1 { return "1 task on this day." }
+        return "\(total) tasks on this day."
+    }
+
+    private var emptyState: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Nothing scheduled for this day yet.")
+                .font(.custom("Nunito-SemiBold", size: 13))
+                .foregroundStyle(Color.bmText2)
+            Text("Tap +Add reminder below to drop one on this date.")
+                .font(.custom("Nunito-SemiBold", size: 12))
+                .foregroundStyle(Color.bmText3)
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private var remindersSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SectionLabel("My reminders", icon: "🔔")
+            ForEach(reminders) { reminder in
+                reminderRow(reminder: reminder)
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func reminderRow(reminder: CustomReminder) -> some View {
+        let done = store.isTaskDone(id: reminder.taskId)
+        return HStack(spacing: 10) {
+            Button {
+                if done { store.markTaskNotDone(id: reminder.taskId) }
+                else    { store.markTaskDone(id: reminder.taskId) }
+            } label: {
+                Image(systemName: done ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(done ? Color.bmGreen : Color.bmText3)
+            }
+            .buttonStyle(.plain)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(reminder.title)
+                    .font(.custom("Nunito-Bold", size: 13))
+                    .foregroundStyle(done ? Color.bmText3 : Color.bmText1)
+                    .strikethrough(done, color: Color.bmText3)
+                if let bedId = reminder.bedId,
+                   let bed = store.bed(id: bedId),
+                   let garden = store.garden(id: bed.gardenId) {
+                    Text("\(garden.name) · \(bed.name)")
+                        .font(.custom("Nunito-SemiBold", size: 10))
+                        .foregroundStyle(Color.bmText3)
+                }
+            }
+            Spacer()
+            Button {
+                store.deleteReminder(id: reminder.id)
+            } label: {
+                Image(systemName: "trash")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.bmRed)
+                    .padding(6)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(10)
+        .background(Color.bmBgSoft)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
+    private var eventsSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SectionLabel("Scheduled tasks", icon: "🌱")
+            ForEach(events) { event in
+                eventRow(event: event)
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func eventRow(event: PlantingScheduleView.ScheduledEvent) -> some View {
+        let done = store.isTaskDone(id: event.id)
+        return Button {
+            if done { store.markTaskNotDone(id: event.id) }
+            else    { store.markTaskDone(id: event.id) }
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: done ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(done ? Color.bmGreen : Color.bmText3)
+                VStack(alignment: .leading, spacing: 1) {
+                    HStack(spacing: 4) {
+                        Text(event.kind.emoji)
+                        Text(event.kind.label.uppercased())
+                            .font(.custom("Fredoka-SemiBold", size: 10))
+                            .foregroundStyle(Color.bmText2)
+                            .kerning(0.4)
+                    }
+                    Text(event.plantName)
+                        .font(.custom("Nunito-Bold", size: 13))
+                        .foregroundStyle(done ? Color.bmText3 : Color.bmText1)
+                        .strikethrough(done, color: Color.bmText3)
+                    Text(event.bedName.map { "\(event.gardenName) · \($0)" } ?? event.gardenName)
+                        .font(.custom("Nunito-SemiBold", size: 10))
+                        .foregroundStyle(Color.bmText3)
+                }
+                Spacer()
+            }
+            .padding(10)
+            .background(Color.bmBgSoft)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var addReminderButton: some View {
+        Button {
+            showingAddReminder = true
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "plus.circle.fill")
+                    .font(.system(size: 14, weight: .bold))
+                Text("Add reminder for this day")
+                    .font(.custom("Fredoka-SemiBold", size: 14))
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(Color.bmGreen)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
     }
 }
 #endif

@@ -57,6 +57,14 @@ public final class GardenStore: ObservableObject {
     /// the same `completedTaskIds` set for tick-off state.
     @Published public private(set) var customReminders: [CustomReminder] = [] { didSet { persist() } }
 
+    /// Transient context — months the gardener pre-selected on the Bloom
+    /// Schedule before navigating into the bed-edit → add-plant → Plant
+    /// Detail flow. PlantDetailView seeds its `pending` set from this so
+    /// the gardener can tap Save immediately instead of having to pick
+    /// the bloom months again. Cleared by callers when the flow ends.
+    /// Not persisted — purely a navigation hint.
+    @Published public var contextBloomMonths: Set<Int> = []
+
     public let user: UserModel
 
     /// Reflects the postcode in a coarse climate bucket. Recomputed when

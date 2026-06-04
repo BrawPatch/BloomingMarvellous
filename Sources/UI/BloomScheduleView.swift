@@ -289,6 +289,13 @@ struct BloomMonthSheet: View {
                     .clipShape(Capsule())
                 }
                 .buttonStyle(.plain)
+                // Stash the bloom-month context so when the gardener
+                // drills Edit Bed → Add Plant → Plant Detail, the
+                // Add-to-Plan card pre-fills with this month. The user
+                // can save straight away without re-picking months.
+                .simultaneousGesture(TapGesture().onEnded {
+                    store.contextBloomMonths = [month]
+                })
             }
             if plants.isEmpty {
                 Text("No picks for this bed in \(monthName(month)).")
@@ -397,6 +404,10 @@ struct BloomMonthSheet: View {
 
 struct AddReminderSheet: View {
     let editingReminderId: UUID?
+    /// Optional date to pre-fill — used by PlantingScheduleView's
+    /// DayDetailSheet so tapping a calendar day and then "Add reminder"
+    /// drops the gardener straight on that date instead of "today".
+    let initialDate: Date?
 
     @EnvironmentObject private var store: GardenStore
     @SwiftUI.Environment(\.dismiss) private var dismiss
@@ -404,6 +415,11 @@ struct AddReminderSheet: View {
     @State private var title: String = ""
     @State private var date: Date = Date()
     @State private var bedScope: BedScope = .anyGarden
+
+    init(editingReminderId: UUID?, initialDate: Date? = nil) {
+        self.editingReminderId = editingReminderId
+        self.initialDate = initialDate
+    }
 
     enum BedScope: Hashable {
         case anyGarden
@@ -483,11 +499,15 @@ struct AddReminderSheet: View {
     }
 
     private func loadIfEditing() {
-        guard let id = editingReminderId,
-              let existing = store.customReminders.first(where: { $0.id == id }) else { return }
-        title = existing.title
-        date = existing.date
-        bedScope = existing.bedId.map(BedScope.bed) ?? .anyGarden
+        if let id = editingReminderId,
+           let existing = store.customReminders.first(where: { $0.id == id }) {
+            title = existing.title
+            date = existing.date
+            bedScope = existing.bedId.map(BedScope.bed) ?? .anyGarden
+        } else if let seed = initialDate {
+            // Fresh-create with a pre-filled date (DayDetailSheet path).
+            date = seed
+        }
     }
 
     private func save() {
