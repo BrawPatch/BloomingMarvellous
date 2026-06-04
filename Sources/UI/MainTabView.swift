@@ -19,6 +19,11 @@ public struct MainTabView: View {
     private let user: UserModel
     private let onLogout: () -> Void
     @State private var selection: AppTab = .home
+    /// Bumped every time the user taps the Home tab (including re-taps
+    /// while already on Home). HomeView observes this token and uses it
+    /// to dismiss any open sheets / popovers / pushed screens so the
+    /// gardener gets a clean dashboard view every time.
+    @State private var homeResetToken: Int = 0
     /// Splash gate. True once the user has tapped through SplashView's
     /// "Enter the garden" CTA. Stays in @State (not @AppStorage) so the
     /// splash + Pro CTA shows every session — matches the brief.
@@ -76,11 +81,24 @@ public struct MainTabView: View {
     }
 
     private var tabsBody: some View {
-        TabView(selection: $selection) {
+        // Intercept every selection change. When the gardener taps the
+        // Home tab — whether they were on another tab or already on Home
+        // — we bump `homeResetToken` so HomeView can dismiss any sheets
+        // or pop any pushed screens. Mirrors the standard "tap a tab to
+        // pop to root" iOS pattern.
+        let selectionBinding = Binding<AppTab>(
+            get: { selection },
+            set: { newValue in
+                if newValue == .home { homeResetToken &+= 1 }
+                selection = newValue
+            }
+        )
+        return TabView(selection: selectionBinding) {
             NavigationStack {
                 HomeView(user: user,
                          onLogout: onLogout,
-                         onSelectTab: { selection = $0 })
+                         onSelectTab: { selection = $0 },
+                         resetToken: homeResetToken)
             }
             .tabItem { Label("Home", systemImage: "house.fill") }
             .tag(AppTab.home)

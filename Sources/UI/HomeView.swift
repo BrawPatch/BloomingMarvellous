@@ -9,6 +9,11 @@ public struct HomeView: View {
     private let user: UserModel
     private let onLogout: () -> Void
     private let onSelectTab: (AppTab) -> Void
+    /// Bumped by MainTabView when the Home tab is tapped (including
+    /// re-taps). HomeView watches this and dismisses every open
+    /// sheet/popover and pops every pushed destination so the gardener
+    /// always lands on a clean dashboard.
+    private let resetToken: Int
 
     @EnvironmentObject private var store: GardenStore
     @State private var showingGardenPicker = false
@@ -24,10 +29,26 @@ public struct HomeView: View {
 
     public init(user: UserModel,
                 onLogout: @escaping () -> Void,
-                onSelectTab: @escaping (AppTab) -> Void = { _ in }) {
+                onSelectTab: @escaping (AppTab) -> Void = { _ in },
+                resetToken: Int = 0) {
         self.user = user
         self.onLogout = onLogout
         self.onSelectTab = onSelectTab
+        self.resetToken = resetToken
+    }
+
+    /// Close every sheet + pop every pushed destination. Called whenever
+    /// the gardener taps the Home tab.
+    private func resetAllPresentations() {
+        showingGardenPicker  = false
+        showingCreateGarden  = false
+        showingManageGardens = false
+        showingSettings      = false
+        showingTasks         = false
+        showingBeds          = false
+        showingPlantingMap   = false
+        showingBloomSchedule = false
+        showingStore         = false
     }
 
     public var body: some View {
@@ -98,6 +119,10 @@ public struct HomeView: View {
         .navigationDestination(isPresented: $showingBloomSchedule) {
             BloomScheduleView()
                 .environmentObject(store)
+        }
+        .onChange(of: resetToken) { _ in
+            // Home tab was tapped — close anything the gardener had open.
+            resetAllPresentations()
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             HStack(spacing: 8) {
