@@ -16,6 +16,7 @@ public struct HomeView: View {
     private let resetToken: Int
 
     @EnvironmentObject private var store: GardenStore
+    @EnvironmentObject private var library: LibraryStore
     @State private var showingGardenPicker = false
     @State private var showingCreateGarden = false
     @State private var showingManageGardens = false
@@ -68,6 +69,9 @@ public struct HomeView: View {
                     )
 
                     tileGrid
+
+                    todaysTasksCard
+                        .padding(.horizontal, 20)
 
                     Spacer(minLength: 12)
                 }
@@ -237,6 +241,102 @@ public struct HomeView: View {
                  tint: .bmLeafSage) { showingPlantingMap = true }
         }
         .padding(.horizontal, 20)
+    }
+
+    // MARK: - Today's Tasks card
+    //
+    // Surfaces outstanding planting tasks scheduled for the current
+    // calendar month — sow / transplant / harvest jobs derived from the
+    // gardener's bloom picks. Tapping the checkbox toggles task
+    // completion via `GardenStore.markTaskDone`, which the Planting
+    // Schedule tab also reads, so the two stay in lockstep.
+
+    @ViewBuilder
+    private var todaysTasksCard: some View {
+        let month = Calendar.current.component(.month, from: Date())
+        let outstanding = TaskScheduler.outstandingEvents(
+            forMonth: month,
+            store: store,
+            plantLookup: { library.plant(id: $0) }
+        )
+        let shown = Array(outstanding.prefix(6))
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 6) {
+                SectionLabel("Today's tasks", icon: "✅")
+                Tooltip("Outstanding sow, transplant and harvest jobs for the current month. Ticking one here also ticks it off in the Planting Schedule.")
+                Spacer()
+                if outstanding.count > shown.count {
+                    Text("\(outstanding.count) outstanding")
+                        .font(.custom("Nunito-Bold", size: 10))
+                        .foregroundStyle(Color.bmText3)
+                }
+            }
+            if outstanding.isEmpty {
+                Text("Nothing scheduled for this month. Pop some bloom picks into the Plant Picker and they'll appear here.")
+                    .font(.custom("Nunito-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+            } else {
+                ForEach(shown) { event in
+                    todaysTaskRow(event: event)
+                }
+                if outstanding.count > shown.count {
+                    Button {
+                        onSelectTab(.planting)
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text("View all in Planting Schedule")
+                                .font(.custom("Fredoka-SemiBold", size: 12))
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 10, weight: .bold))
+                        }
+                        .foregroundStyle(Color.bmGreen)
+                    }
+                    .padding(.top, 4)
+                }
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .bmCard()
+    }
+
+    private func todaysTaskRow(event: TaskScheduler.Event) -> some View {
+        let done = store.isTaskDone(id: event.id)
+        return Button {
+            withAnimation(.easeInOut(duration: 0.15)) {
+                if done { store.markTaskNotDone(id: event.id) }
+                else    { store.markTaskDone(id: event.id) }
+            }
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: done ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(done ? Color.bmGreen : Color.bmText3)
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 4) {
+                        Text(event.kind.emoji)
+                            .font(.system(size: 13))
+                        Text(event.kind.label)
+                            .font(.custom("Fredoka-SemiBold", size: 11))
+                            .foregroundStyle(Color.bmText2)
+                            .kerning(0.4)
+                        Spacer()
+                    }
+                    Text(event.plantName)
+                        .font(.custom("Nunito-Bold", size: 13))
+                        .foregroundStyle(done ? Color.bmText3 : Color.bmText1)
+                        .strikethrough(done, color: Color.bmText3)
+                    Text(event.bedName.map { "\(event.gardenName) · \($0)" } ?? event.gardenName)
+                        .font(.custom("Nunito-SemiBold", size: 10))
+                        .foregroundStyle(Color.bmText3)
+                }
+                Spacer()
+            }
+            .padding(10)
+            .background(Color.bmBgSoft)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+        .buttonStyle(.plain)
     }
 
     private func tile(title: String,

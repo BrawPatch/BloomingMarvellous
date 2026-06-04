@@ -319,25 +319,56 @@ public final class GardenStore: ObservableObject {
     public func startNewSeason(bedId: UUID) {
         guard let idx = beds.firstIndex(where: { $0.id == bedId }) else { return }
         var b = beds[idx]
+
+        // 1. Archive the current season into history BEFORE we mutate
+        //    anything — annuals included with their counts and exact
+        //    placements (item 1: persist counts, not just presence).
+        let snapshot = SeasonSnapshot(
+            year: Calendar.current.component(.year, from: Date()),
+            endedOn: Date(),
+            plantCounts: b.plantCounts,
+            perennials: b.perennials,
+            carriedOver: b.carriedOver,
+            placements: b.placements
+        )
+        b.history.insert(snapshot, at: 0)
+        // Cap at 10 years of history — the Bloom Planner shows a
+        // per-year selector and 10 seasons is comfortably more than
+        // any UI needs to scroll through.
+        if b.history.count > 10 {
+            b.history = Array(b.history.prefix(10))
+        }
+
+        // 2. Roll the bed forward. Only perennials keep their counts.
         var nextCounts: [String: Int] = [:]
         var nextCarried: Set<String> = Set(b.carriedOver)
         for (pid, count) in b.plantCounts where b.perennials.contains(pid) {
             nextCounts[pid] = count
             nextCarried.insert(pid)
         }
-        // Drop carried-over markers for anything that didn't survive
-        // the rollover (e.g. user toggled the perennial flag off).
         nextCarried = nextCarried.intersection(nextCounts.keys)
         b.plantCounts = nextCounts
         b.carriedOver = Array(nextCarried).sorted()
-        // Planting Map placements also carry over: keep every placement
-        // whose plant is still in `nextCounts` AND is flagged perennial.
-        // Annual placements clear out — the editor will repopulate next
-        // season as the gardener picks new ones.
+        // Planting Map placements: keep perennials at their saved spots.
+        // Annual placements clear out — the editor surfaces last year's
+        // annual positions as ghost reserved zones via `history` so the
+        // gardener can plan around them.
         b.placements = b.placements.filter { placement in
             nextCounts[placement.plantId] != nil && placement.isPerennial
         }
         beds[idx] = b
+    }
+
+    /// Read-only access to the latest archived season for a bed (the
+    /// snapshot written by the most recent `startNewSeason` call).
+    /// Returns nil for beds that haven't been rolled over yet.
+    public func lastSeasonSnapshot(bedId: UUID) -> SeasonSnapshot? {
+        bed(id: bedId)?.history.first
+    }
+
+    /// All historic snapshots for a bed, newest-first.
+    public func seasonHistory(bedId: UUID) -> [SeasonSnapshot] {
+        bed(id: bedId)?.history ?? []
     }
 
     // MARK: - Planting Map placements

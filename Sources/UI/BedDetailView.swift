@@ -399,10 +399,99 @@ public struct BedDetailView: View {
                 }
             }
             .padding(.top, 4)
+
+            if !bed.history.isEmpty {
+                seasonHistorySection(bed: bed)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
+    }
+
+    // MARK: - Season history
+
+    @ViewBuilder
+    private func seasonHistorySection(bed: Bed) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(bed.history) { snapshot in
+                    snapshotRow(snapshot: snapshot)
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "clock.arrow.circlepath")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(Color.bmText2)
+                Text("Previous seasons (\(bed.history.count))")
+                    .font(.custom("Fredoka-SemiBold", size: 12))
+                    .foregroundStyle(Color.bmText2)
+                Tooltip("Read-only snapshots of what was planted in this bed in past seasons. Annuals are stored with their counts so you can replicate a successful year.")
+            }
+        }
+        .tint(Color.bmText2)
+        .padding(.top, 8)
+    }
+
+    private func snapshotRow(snapshot: SeasonSnapshot) -> some View {
+        let totalPlants = snapshot.plantCounts.values.reduce(0, +)
+        let perennialIds = Set(snapshot.perennials)
+        let annualsCount = snapshot.plantCounts
+            .filter { !perennialIds.contains($0.key) }
+            .values.reduce(0, +)
+        return VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("\(snapshot.year) season")
+                    .font(.custom("Nunito-Bold", size: 12))
+                    .foregroundStyle(Color.bmText1)
+                Spacer()
+                Text(snapshot.endedOn, style: .date)
+                    .font(.custom("Nunito-SemiBold", size: 10))
+                    .foregroundStyle(Color.bmText3)
+            }
+            HStack(spacing: 8) {
+                miniSnapshotChip(label: "\(totalPlants) plants total", color: .bmGreen)
+                miniSnapshotChip(label: "\(annualsCount) annual\(annualsCount == 1 ? "" : "s")", color: .bmPeach)
+                miniSnapshotChip(label: "\(snapshot.perennials.count) perennial\(snapshot.perennials.count == 1 ? "" : "s")", color: .bmLilac)
+            }
+            ForEach(Array(snapshot.plantCounts).sorted { $0.key < $1.key }, id: \.key) { pid, count in
+                if let plant = library.plant(id: pid) {
+                    HStack(spacing: 6) {
+                        Text("•")
+                            .foregroundStyle(Color.bmText3)
+                        Text(plant.name)
+                            .font(.custom("Nunito-SemiBold", size: 11))
+                            .foregroundStyle(Color.bmText2)
+                        Spacer()
+                        Text("×\(count)")
+                            .font(.custom("Nunito-Bold", size: 11))
+                            .foregroundStyle(Color.bmText1)
+                        if perennialIds.contains(pid) {
+                            Text("perennial")
+                                .font(.custom("Fredoka-SemiBold", size: 8))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 5).padding(.vertical, 2)
+                                .background(Color.bmLilac)
+                                .clipShape(Capsule())
+                        }
+                    }
+                }
+            }
+        }
+        .padding(10)
+        .background(Color.bmBgSoft)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func miniSnapshotChip(label: String, color: Color) -> some View {
+        Text(label)
+            .font(.custom("Nunito-Bold", size: 9))
+            .foregroundStyle(color)
+            .padding(.horizontal, 6).padding(.vertical, 3)
+            .background(color.opacity(0.15))
+            .clipShape(Capsule())
     }
 
     /// All species the Plant layout card should render a stepper for —

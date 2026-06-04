@@ -42,6 +42,14 @@ public struct Plant: Identifiable, Codable, Equatable {
     /// a per-bed cap for this species.
     public var spreadCm: Int?
     public var colorHex: String?
+    /// Additional bloom colours this cultivar / series is sold in beyond
+    /// the primary `colorHex`. Many bedding plants — Begonia 'Cocktail',
+    /// Pelargonium 'Rocky Mountain', Viola 'Matrix' — come in a palette;
+    /// the picker's colour filter matches against this array as well as
+    /// `colorHex`, which is why a "white" search may legitimately surface
+    /// a primarily-pink cultivar that's also available in white.
+    /// Hex strings ("#rrggbb"). Optional / nil on most species.
+    public var availableColours: [String]?
 
     // Bloom + lifecycle windows (1-indexed months)
     public var bloomMonths:       [Int]
@@ -96,6 +104,7 @@ public struct Plant: Identifiable, Codable, Equatable {
                 heightCm: Int? = nil,
                 spreadCm: Int? = nil,
                 colorHex: String? = nil,
+                availableColours: [String]? = nil,
                 bloomMonths: [Int] = [],
                 sowIndoorMonths: [Int] = [],
                 sowDirectMonths: [Int] = [],
@@ -123,6 +132,7 @@ public struct Plant: Identifiable, Codable, Equatable {
         self.heightCm = heightCm
         self.spreadCm = spreadCm
         self.colorHex = colorHex
+        self.availableColours = availableColours
         self.bloomMonths = bloomMonths
         self.sowIndoorMonths = sowIndoorMonths
         self.sowDirectMonths = sowDirectMonths

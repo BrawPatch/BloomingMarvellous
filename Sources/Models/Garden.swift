@@ -215,6 +215,11 @@ public struct Bed: Identifiable, Codable, Equatable {
     /// is what the PDF print routes off when present. Empty array on
     /// older persisted beds.
     public var placements: [PlantPlacement]
+    /// Archived snapshots of the bed at the end of each previous season,
+    /// written by `startNewSeason`. The Bloom Planner / Bed Detail can
+    /// scroll back through these read-only so the gardener remembers
+    /// what they planted last year. Ordered newest-first.
+    public var history: [SeasonSnapshot]
 
     public init(id: UUID = UUID(),
                 gardenId: UUID,
@@ -230,7 +235,8 @@ public struct Bed: Identifiable, Codable, Equatable {
                 plantCounts: [String: Int] = [:],
                 perennials: [String] = [],
                 carriedOver: [String] = [],
-                placements: [PlantPlacement] = []) {
+                placements: [PlantPlacement] = [],
+                history: [SeasonSnapshot] = []) {
         self.id = id
         self.gardenId = gardenId
         self.name = name
@@ -246,12 +252,13 @@ public struct Bed: Identifiable, Codable, Equatable {
         self.perennials = perennials
         self.carriedOver = carriedOver
         self.placements = placements
+        self.history = history
     }
 
     private enum CodingKeys: String, CodingKey {
         case id, gardenId, name, widthCm, lengthCm, status
         case soilTypeOverride, wetnessOverride, exposureOverride, sunlightOverride, acidityOverride
-        case plantCounts, perennials, carriedOver, placements
+        case plantCounts, perennials, carriedOver, placements, history
     }
 
     /// Custom decode so existing persisted beds (which predate the
@@ -275,6 +282,7 @@ public struct Bed: Identifiable, Codable, Equatable {
         perennials       = try c.decodeIfPresent([String].self, forKey: .perennials) ?? []
         carriedOver      = try c.decodeIfPresent([String].self, forKey: .carriedOver) ?? []
         placements       = try c.decodeIfPresent([PlantPlacement].self, forKey: .placements) ?? []
+        history          = try c.decodeIfPresent([SeasonSnapshot].self, forKey: .history) ?? []
     }
 
     public var overridesGarden: Bool {
@@ -310,6 +318,55 @@ public struct Bed: Identifiable, Codable, Equatable {
 // startNewSeason. `plantedYear` is the calendar year the placement was
 // originally created so the Planting Map can show "2nd year" badges and
 // the season-rotation helper can age placements correctly.
+
+// MARK: - SeasonSnapshot
+//
+// Frozen record of a bed at the end of a planting season — written by
+// `GardenStore.startNewSeason` before annuals are stripped from the
+// active state. Lets the gardener scroll back through prior years on
+// the Bloom Planner and Bed Detail to remember what they planted.
+//
+// `year` and `endedOn` together identify the snapshot. `plantCounts`,
+// `perennials`, `carriedOver` and `placements` mirror the matching
+// fields on Bed at the moment the season ended — including counts
+// (item 1: persist the NUMBER of each annual, not just the species).
+//
+// Stored newest-first; `endedOn` orders entries within the same year.
+
+public struct SeasonSnapshot: Identifiable, Codable, Equatable, Hashable {
+    public var id: UUID
+    public var year: Int
+    public var endedOn: Date
+    public var plantCounts: [String: Int]
+    public var perennials: [String]
+    public var carriedOver: [String]
+    public var placements: [PlantPlacement]
+
+    public init(id: UUID = UUID(),
+                year: Int,
+                endedOn: Date,
+                plantCounts: [String: Int],
+                perennials: [String],
+                carriedOver: [String],
+                placements: [PlantPlacement]) {
+        self.id = id
+        self.year = year
+        self.endedOn = endedOn
+        self.plantCounts = plantCounts
+        self.perennials = perennials
+        self.carriedOver = carriedOver
+        self.placements = placements
+    }
+
+    /// IDs of annual placements specifically (perennials carry forward
+    /// into the new season, so a layout editor doesn't need to "reserve"
+    /// their spots — they ARE still there). Item 6 uses this to ghost
+    /// last year's annual footprints as locked reserved zones until the
+    /// gardener clears them or replants on top.
+    public var annualPlacements: [PlantPlacement] {
+        placements.filter { !$0.isPerennial }
+    }
+}
 
 public struct PlantPlacement: Identifiable, Codable, Equatable, Hashable {
     public var id: UUID

@@ -4,15 +4,18 @@ import BloomingMarvellous
 
 // MARK: - PickerMode
 //
-// Two top-level tabs on the picker:
+// Three top-level tabs on the picker:
 //   • .matched — pre-filters the catalogue against the active bed (Pro)
 //                or garden (Free) — soil, sunlight, wetness, acidity,
 //                plus the regional growing season from the postcode.
 //   • .all     — no auto-context. The gardener picks soil/sun/moisture/
 //                pH manually as additional filter chips.
+//   • .browse  — hierarchical drill-down (Group → Genus → Species →
+//                Cultivars) so the gardener can navigate the catalogue
+//                taxonomically without scrolling through 6,000 thumbnails.
 
 public enum PickerMode: String, CaseIterable, Identifiable {
-    case matched, all
+    case matched, all, browse
     public var id: String { rawValue }
 }
 
@@ -133,14 +136,19 @@ public struct PlantPickerMonthView: View {
                     matchedContextCard
                         .padding(.horizontal, 16)
                 }
-                filtersCard
-                    .padding(.horizontal, 16)
-                if mode == .all {
-                    manualFiltersSection
+                if mode != .browse {
+                    filtersCard
+                        .padding(.horizontal, 16)
+                    if mode == .all {
+                        manualFiltersSection
+                            .padding(.horizontal, 16)
+                    }
+                    inlineGallery
+                        .padding(.top, 4)
+                } else {
+                    PlantBrowseView()
                         .padding(.horizontal, 16)
                 }
-                inlineGallery
-                    .padding(.top, 4)
             }
             .padding(.vertical, 14)
         }
@@ -164,6 +172,7 @@ public struct PlantPickerMonthView: View {
             HStack(spacing: 0) {
                 tabButton(.matched, label: matchedTabLabel)
                 tabButton(.all,     label: "All Plants")
+                tabButton(.browse,  label: "Browse")
             }
             .padding(4)
             .background(Color.bmBgCard)
@@ -171,12 +180,8 @@ public struct PlantPickerMonthView: View {
             .overlay(RoundedRectangle(cornerRadius: 14)
                 .stroke(Color.bmBorder, lineWidth: 1.5))
             HStack(spacing: 6) {
-                Tooltip(mode == .matched
-                        ? "Matched plays it safe — only plants happy in your selected bed or garden's soil, sunlight, moisture and pH, AND in your regional growing season."
-                        : "All Plants drops the bed/garden auto-filter so you can browse the whole catalogue. Use the Refine card below to pick conditions manually.")
-                Text(mode == .matched
-                     ? "Plants suited to your conditions"
-                     : "The whole catalogue, refined manually")
+                Tooltip(tabHelpText)
+                Text(tabSubLabel)
                     .font(.custom("Nunito-SemiBold", size: 11))
                     .foregroundStyle(Color.bmText3)
                 Spacer()
@@ -204,6 +209,25 @@ public struct PlantPickerMonthView: View {
             return "Matched to my Bed"
         }
         return "Matched to my Garden"
+    }
+
+    private var tabHelpText: String {
+        switch mode {
+        case .matched:
+            return "Matched plays it safe — only plants happy in your selected bed or garden's soil, sunlight, moisture and pH, AND in your regional growing season."
+        case .all:
+            return "All Plants drops the bed/garden auto-filter so you can browse the whole catalogue. Use the Refine card below to pick conditions manually."
+        case .browse:
+            return "Browse drills down by botany — pick a category, then a genus, then a species, then a cultivar. Avoids the 6,000-thumbnail wall."
+        }
+    }
+
+    private var tabSubLabel: String {
+        switch mode {
+        case .matched: return "Plants suited to your conditions"
+        case .all:     return "The whole catalogue, refined manually"
+        case .browse:  return "Drill down: Group → Genus → Species → Cultivars"
+        }
     }
 
     // MARK: - Filters card (months + colour + type + height + lifecycle)
@@ -817,8 +841,15 @@ struct PlantPickerGalleryView: View {
 
         func suitsColor(_ p: Plant) -> Bool {
             guard !colorFilter.isEmpty else { return true }
-            let plantBands = BloomColor.nearestBands(forHex: p.colorHex)
-            return !colorFilter.isDisjoint(with: plantBands)
+            // Match against the primary swatch AND any additional cultivar
+            // palette colours, so a "white" search legitimately surfaces a
+            // primarily-pink Wax Begonia 'Cocktail' series that also comes
+            // in white.
+            var allBands = BloomColor.nearestBands(forHex: p.colorHex)
+            for hex in p.availableColours ?? [] {
+                allBands.formUnion(BloomColor.nearestBands(forHex: hex))
+            }
+            return !colorFilter.isDisjoint(with: allBands)
         }
         func suitsType(_ p: Plant) -> Bool {
             guard let want = typeFilter else { return true }
@@ -855,6 +886,11 @@ struct PlantPickerGalleryView: View {
                     if let w = manualWet,
                        let prefs = p.preferredWetness, !prefs.isEmpty,
                        !prefs.contains(w) { return false }
+                    return true
+                case .browse:
+                    // Gallery isn't rendered in browse mode (the parent
+                    // swaps to PlantBrowseView); fall through accepting
+                    // everything so this code path is harmless if reached.
                     return true
                 }
             }
@@ -1191,6 +1227,7 @@ struct PlantDetailView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
                         hero(p)
+                        availableColoursSection(p)
                         descriptionSection(p)
                         details(p)
                         suitableForSection(p)
@@ -1238,6 +1275,38 @@ struct PlantDetailView: View {
                 .font(.custom("Nunito-SemiBold", size: 12))
                 .foregroundStyle(Color.bmText2)
                 .italic()
+        }
+    }
+
+    @ViewBuilder
+    private func availableColoursSection(_ p: Plant) -> some View {
+        let palette = ([p.colorHex].compactMap { $0 } + (p.availableColours ?? []))
+            // Deduplicate case-insensitively while preserving the primary
+            // colour at the front.
+            .reduce(into: [String]()) { acc, hex in
+                let norm = hex.lowercased()
+                if !acc.contains(where: { $0.lowercased() == norm }) { acc.append(hex) }
+            }
+        if palette.count > 1 {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 6) {
+                    SectionLabel("Available colours", icon: "🎨")
+                    Tooltip("Cultivars in this series are sold in several colours. Searching for any of them surfaces this plant — that's why a 'white' search might land on a primarily-pink series.")
+                    Spacer()
+                }
+                HStack(spacing: 8) {
+                    ForEach(palette, id: \.self) { hex in
+                        Circle()
+                            .fill(Color(hex: hex))
+                            .frame(width: 22, height: 22)
+                            .overlay(Circle().stroke(Color.white, lineWidth: 1.5))
+                            .overlay(Circle().stroke(Color.bmBorder.opacity(0.6), lineWidth: 0.5))
+                    }
+                }
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .bmCard()
         }
     }
 

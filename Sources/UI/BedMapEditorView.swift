@@ -130,12 +130,12 @@ public struct BedMapEditorView: View {
             Image(systemName: "hand.tap.fill")
                 .font(.system(size: 14))
                 .foregroundStyle(Color.bmGreen)
-            Text("Tap a plant below to drop it in, drag to arrange, long-press to remove.")
+            Text("Drag a plant from the tray onto the bed, drag placed circles to arrange, long-press to remove.")
                 .font(.custom("Nunito-SemiBold", size: 12))
                 .foregroundStyle(Color.bmText2)
                 .multilineTextAlignment(.leading)
             Spacer()
-            Tooltip("Each circle is the plant's spread zone (radius = spread/2). The editor snaps a placement back if you drop it overlapping a neighbour. Mark a species perennial to keep its layout across seasons.")
+            Tooltip("Each circle is the plant's spread zone (radius = spread/2). Drop where you like — there's no automatic 'tallest-at-the-back' layout. Faded grey footprints mark last year's annuals so you remember which spots to leave free.")
         }
         .padding(12)
         .bmCard()
@@ -158,6 +158,11 @@ public struct BedMapEditorView: View {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color.bmGreenMid, lineWidth: 1.5)
                 gridOverlay(scale: scale)
+                ForEach(reservedZones(bed: bed), id: \.id) { reserved in
+                    reservedZoneCircle(reserved,
+                                       plants: plants,
+                                       scale: scale)
+                }
                 ForEach(draftPlacements) { placement in
                     placementCircle(placement,
                                     bed: bed,
@@ -174,8 +179,98 @@ public struct BedMapEditorView: View {
                     .padding(6)
             }
             .frame(width: geo.size.width, height: viewHeight)
+            // Accept drag from the tray. The drop delegate converts the
+            // local drop point back to bed-local cm, then drops a new
+            // placement at that spot (clamped + collision-checked).
+            .onDrop(of: ["public.text"],
+                    delegate: BedMapDropDelegate(
+                        bed: bed,
+                        plants: plants,
+                        scale: scale,
+                        commitDrop: { plantId, position in
+                            dropFromTray(plantId: plantId,
+                                         at: position,
+                                         bed: bed,
+                                         plants: plants)
+                        }))
         }
         .frame(height: bedCanvasHeight(bed: bed))
+    }
+
+    private func reservedZones(bed: Bed) -> [PlantPlacement] {
+        // Last year's annual placements — show as ghosted "do not plant"
+        // markers so the gardener remembers what was there. Perennials
+        // already carry across as live placements; we don't double up.
+        guard let snapshot = bed.history.first else { return [] }
+        return snapshot.annualPlacements
+    }
+
+    @ViewBuilder
+    private func reservedZoneCircle(_ placement: PlantPlacement,
+                                    plants: [String: Plant],
+                                    scale: CGFloat) -> some View {
+        let spread = Double(plants[placement.plantId]?.spreadCm ?? 30)
+        let diameter = CGFloat(spread) * scale
+        ZStack {
+            Circle()
+                .fill(Color.bmText3.opacity(0.18))
+            Circle()
+                .strokeBorder(style: StrokeStyle(lineWidth: 1.5, dash: [4, 3]))
+                .foregroundStyle(Color.bmText3.opacity(0.6))
+            Image(systemName: "lock.fill")
+                .font(.system(size: max(8, diameter * 0.22), weight: .bold))
+                .foregroundStyle(Color.bmText3.opacity(0.7))
+        }
+        .frame(width: diameter, height: diameter)
+        .position(x: CGFloat(placement.xCm) * scale,
+                  y: CGFloat(placement.yCm) * scale)
+        .accessibilityLabel("Reserved: last year's \(plants[placement.plantId]?.name ?? "annual")")
+    }
+
+    /// Tray-drop handler. Validates the candidate position against the
+    /// bed + existing placements + reserved zones, then commits a new
+    /// placement if it fits.
+    private func dropFromTray(plantId: String,
+                              at position: CGPoint,
+                              bed: Bed,
+                              plants: [String: Plant]) {
+        guard let plant = plants[plantId] else { return }
+        let r = Double(plant.spreadCm ?? 30) / 2.0
+        let clampedX = max(r, min(Double(bed.widthCm)  - r, Double(position.x)))
+        let clampedY = max(r, min(Double(bed.lengthCm) - r, Double(position.y)))
+        let candidate = CGPoint(x: clampedX, y: clampedY)
+        if overlapsSomething(plantId: plantId,
+                             placementId: UUID(),
+                             at: candidate,
+                             radiusCm: r,
+                             plants: plants) { return }
+        if overlapsReserved(at: candidate, radiusCm: r,
+                            bed: bed, plants: plants) { return }
+        // Cap: don't drop more than the gardener intended via plantCounts.
+        let alreadyPlaced = draftPlacements.filter { $0.plantId == plantId }.count
+        let allowed = bed.plantCounts[plantId] ?? 0
+        if alreadyPlaced >= allowed { return }
+        let isPerennial = bed.perennials.contains(plantId)
+        draftPlacements.append(PlantPlacement(
+            plantId: plantId,
+            xCm: clampedX,
+            yCm: clampedY,
+            isPerennial: isPerennial))
+    }
+
+    private func overlapsReserved(at candidate: CGPoint,
+                                  radiusCm: Double,
+                                  bed: Bed,
+                                  plants: [String: Plant]) -> Bool {
+        for reserved in reservedZones(bed: bed) {
+            let otherR = Double(plants[reserved.plantId]?.spreadCm ?? 30) / 2.0
+            let dx = Double(candidate.x) - reserved.xCm
+            let dy = Double(candidate.y) - reserved.yCm
+            if (dx * dx + dy * dy).squareRoot() < (radiusCm + otherR) {
+                return true
+            }
+        }
+        return false
     }
 
     private func bedCanvasHeight(bed: Bed) -> CGFloat {
@@ -320,6 +415,9 @@ public struct BedMapEditorView: View {
                           bed: Bed,
                           plants: [String: Plant]) -> some View {
         Button {
+            // Single-tap still places at the first non-overlapping slot
+            // (handy on smaller phones where a drag is fiddly). The drag
+            // gesture below is the main interaction model now.
             placeOne(plant: plant, bed: bed, plants: plants)
         } label: {
             VStack(spacing: 4) {
@@ -346,6 +444,12 @@ public struct BedMapEditorView: View {
                 .stroke(Color.bmBorder, lineWidth: 1))
         }
         .buttonStyle(.plain)
+        // Drag the chip onto the bed canvas. We carry just the plant id
+        // as plain text; BedMapDropDelegate resolves it back to a Plant
+        // record on commit.
+        .onDrag {
+            NSItemProvider(object: plant.id as NSString)
+        }
     }
 
     // MARK: - Key (symbol legend)
@@ -444,8 +548,11 @@ public struct BedMapEditorView: View {
                              at: candidate,
                              radiusCm: r,
                              plants: plants) {
-            // Snap back — don't update position.
-            return
+            return // snap back — overlap with another live placement
+        }
+        if overlapsReserved(at: candidate, radiusCm: r,
+                            bed: bed, plants: plants) {
+            return // snap back — last year's reserved annual zone
         }
         draftPlacements[idx].xCm = clampedX
         draftPlacements[idx].yCm = clampedY
@@ -518,11 +625,11 @@ public struct BedMapEditorView: View {
     }
 
     private func sortedPlants(in dict: [String: Plant]) -> [Plant] {
+        // No automatic "tallest at the back" rule any more — layout is
+        // the gardener's prerogative. Sort alphabetically by display name
+        // so the key + tray are stable across renders.
         Array(dict.values).sorted { lhs, rhs in
-            let lh = lhs.heightCm ?? 0
-            let rh = rhs.heightCm ?? 0
-            if lh != rh { return lh > rh }
-            return lhs.name < rhs.name
+            lhs.name.localizedCompare(rhs.name) == .orderedAscending
         }
     }
 
@@ -558,15 +665,24 @@ public struct BedMapEditorView: View {
 
     private func seedFromCounts(bed: Bed) -> [PlantPlacement] {
         let plants = resolvedPlants(bed: bed)
-        let entries = BedLayoutKey.entries(bed: bed, plants: plants)
+        // No automatic "tallest at the back" — iterate the gardener's
+        // plantCounts in alphabetical order so the seed layout is stable
+        // but doesn't impose a row hierarchy. The gardener will drag to
+        // arrange anyway; this just gives them a tidy starting point.
+        let ordered = bed.plantCounts.keys.sorted { lhs, rhs in
+            (plants[lhs]?.name ?? lhs).localizedCompare(plants[rhs]?.name ?? rhs)
+                == .orderedAscending
+        }
         var out: [PlantPlacement] = []
         var cursorX: Double = 0
         var cursorY: Double = 0
         var rowMaxR: Double = 0
-        for entry in entries {
-            let spread = Double(entry.plant.spreadCm ?? 30)
+        for pid in ordered {
+            guard let plant = plants[pid] else { continue }
+            let count = bed.plantCounts[pid] ?? 0
+            let spread = Double(plant.spreadCm ?? 30)
             let r = spread / 2.0
-            for _ in 0..<entry.count {
+            for _ in 0..<count {
                 if cursorX + spread > Double(bed.widthCm) {
                     cursorX = 0
                     cursorY += rowMaxR * 2
@@ -576,16 +692,45 @@ public struct BedMapEditorView: View {
                 let y = cursorY + r
                 if y + r > Double(bed.lengthCm) { return out } // ran out of space
                 out.append(PlantPlacement(
-                    plantId: entry.plant.id,
+                    plantId: pid,
                     xCm: x,
                     yCm: y,
-                    isPerennial: bed.perennials.contains(entry.plant.id)
+                    isPerennial: bed.perennials.contains(pid)
                 ))
                 cursorX += spread
                 if r > rowMaxR { rowMaxR = r }
             }
         }
         return out
+    }
+}
+
+// MARK: - BedMapDropDelegate
+//
+// Receives a tray-drag NSItemProvider on the bed canvas, resolves the
+// plain-text plant id, and translates the local drop CGPoint into bed-
+// local centimetres before handing it back to the editor. SwiftUI's
+// onDrop with a DropDelegate gives us the per-drop CGPoint we need
+// (the closure-based onDrop doesn't surface a position).
+
+private struct BedMapDropDelegate: DropDelegate {
+    let bed: Bed
+    let plants: [String: Plant]
+    let scale: CGFloat
+    let commitDrop: (String, CGPoint) -> Void
+
+    func performDrop(info: DropInfo) -> Bool {
+        guard let provider = info.itemProviders(for: ["public.text"]).first else { return false }
+        let dropPoint = info.location
+        provider.loadObject(ofClass: NSString.self) { object, _ in
+            guard let plantId = object as? String else { return }
+            Task { @MainActor in
+                let xCm = Double(dropPoint.x / scale)
+                let yCm = Double(dropPoint.y / scale)
+                commitDrop(plantId, CGPoint(x: xCm, y: yCm))
+            }
+        }
+        return true
     }
 }
 
