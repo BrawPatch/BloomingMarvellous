@@ -863,8 +863,13 @@ struct PlantPickerGalleryView: View {
             lifecycle.matches(p)
         }
 
+        let blocked = store.wontGrowAgainIds
         return months.map { m in
             let plants = entitled.filter { p in
+                // "Won't grow again" plants are filtered out everywhere
+                // until the gardener unticks them from the My Plants
+                // screen.
+                guard !blocked.contains(p.id) else { return false }
                 guard p.blooms(in: m) else { return false }
                 guard suitsColor(p)     else { return false }
                 guard suitsType(p)      else { return false }
@@ -1120,6 +1125,11 @@ struct PlantPickerGalleryView: View {
                         .accessibilityLabel("Already in your plan")
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
+                // Heart toggle sits bottom-right so it doesn't clash with
+                // the topRight acidity badge or the topLeft picked tick.
+                HeartToggle(plantId: p.id)
+                    .padding(6)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
             }
             Text(p.name)
                 .font(.custom("Nunito-Bold", size: 14))
@@ -1363,7 +1373,11 @@ struct PlantDetailView: View {
 
     private func hero(_ p: Plant) -> some View {
         VStack(spacing: 4) {
-            BMPlantImage(plant: p, height: 180, cornerRadius: 18)
+            ZStack(alignment: .topTrailing) {
+                BMPlantImage(plant: p, height: 180, cornerRadius: 18)
+                HeartToggle(plantId: p.id)
+                    .padding(10)
+            }
             Text(p.name)
                 .font(.custom("Fredoka-SemiBold", size: 18))
                 .foregroundStyle(Color.bmText1)

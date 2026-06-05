@@ -319,6 +319,23 @@ public struct Bed: Identifiable, Codable, Equatable {
 // originally created so the Planting Map can show "2nd year" badges and
 // the season-rotation helper can age placements correctly.
 
+// MARK: - PlantNotes
+//
+// Per-plant gardener-authored annotations: free-text notes ("loved
+// these last year", "got nibbled by slugs"), plus the "won't grow
+// again" flag that excludes the plant from future picker results until
+// the gardener un-checks it from the My Plants screen.
+
+public struct PlantNotes: Codable, Equatable, Hashable {
+    public var notes: String
+    public var wontGrowAgain: Bool
+
+    public init(notes: String = "", wontGrowAgain: Bool = false) {
+        self.notes = notes
+        self.wontGrowAgain = wontGrowAgain
+    }
+}
+
 // MARK: - CustomReminder
 //
 // Gardener-authored to-do that lives alongside the auto-generated

@@ -4,13 +4,13 @@ import BloomingMarvellous
 
 // MARK: - MainTabView
 //
-// Authenticated root. The bottom bar carries just three tabs now:
-// Home, Plants and Planting. Bloom and Soil were dropped from the tab
-// bar — Bloom Schedule has its own tile on the dashboard (the tab was a
-// duplicate), and Soil settings only make sense inside a Bed or Garden
-// context, which is reached from Settings → Gardens & beds.
-// A shared GardenStore exposed via @StateObject + .environmentObject so
-// every tab + push + sheet sees the same state.
+// Authenticated root. The bottom bar now carries five tabs: Home,
+// Plants, Planting, Wishlist and My plants. Wishlist surfaces every
+// plant the gardener has heart-toggled; My plants splits the rest of
+// the catalogue into Current (in active beds + perennials + upcoming
+// picks) and Past (rolled-over annuals from season history). Bloom and
+// Soil remain off the bar — Bloom Schedule lives on the Home grid and
+// Soil settings only make sense inside a Bed or Garden context.
 
 public struct MainTabView: View {
 
@@ -114,6 +114,18 @@ public struct MainTabView: View {
             }
             .tabItem { Label("Planting", systemImage: "calendar") }
             .tag(AppTab.planting)
+
+            NavigationStack {
+                PlantWishlistView()
+            }
+            .tabItem { Label("Wishlist", systemImage: "heart.fill") }
+            .tag(AppTab.wishlist)
+
+            NavigationStack {
+                MyCurrentPlantsView()
+            }
+            .tabItem { Label("My plants", systemImage: "leaf.fill") }
+            .tag(AppTab.myPlants)
         }
         .tint(Color.bmGreen)
         .environmentObject(store)
@@ -125,6 +137,6 @@ public struct MainTabView: View {
 // itself no longer exists on the bar (HomeView pushes the screen via a
 // NavigationLink in that case).
 public enum AppTab: Hashable {
-    case home, soil, picker, bloom, planting
+    case home, soil, picker, bloom, planting, wishlist, myPlants
 }
 #endif

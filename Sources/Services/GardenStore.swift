@@ -57,6 +57,15 @@ public final class GardenStore: ObservableObject {
     /// the same `completedTaskIds` set for tick-off state.
     @Published public private(set) var customReminders: [CustomReminder] = [] { didSet { persist() } }
 
+    /// Plant IDs the gardener has favourited. Powers the Wishlist tab in
+    /// the bottom bar and the heart toggle on every plant tile.
+    @Published public private(set) var wishlistedIds: Set<String> = [] { didSet { persist() } }
+
+    /// Free-text notes + "won't grow again" flag per plant — surfaced on
+    /// the My Plants screen and read by PlantPickerGalleryView's filter
+    /// pipeline to skip flagged plants in search results.
+    @Published public private(set) var plantNotes: [String: PlantNotes] = [:] { didSet { persist() } }
+
     /// Transient context — months the gardener pre-selected on the Bloom
     /// Schedule before navigating into the bed-edit → add-plant → Plant
     /// Detail flow. PlantDetailView seeds its `pending` set from this so
@@ -111,6 +120,8 @@ public final class GardenStore: ObservableObject {
             country          = snap.country
             completedTaskIds = snap.completedTaskIds
             customReminders  = snap.customReminders
+            wishlistedIds    = snap.wishlistedIds
+            plantNotes       = snap.plantNotes
         } else if seedFirstGarden {
             // Legacy default — kept so existing callers that don't go through
             // the Setup wizard still get a usable garden to render against.
@@ -137,6 +148,8 @@ public final class GardenStore: ObservableObject {
         var country:  String = "GB"
         var completedTaskIds: Set<String> = []
         var customReminders: [CustomReminder] = []
+        var wishlistedIds: Set<String> = []
+        var plantNotes: [String: PlantNotes] = [:]
 
         init(gardens: [Garden], beds: [Bed],
              selectedGardenId: UUID?, selectedBedId: UUID?,
@@ -144,7 +157,9 @@ public final class GardenStore: ObservableObject {
              bedPicks: [UUID: [Int: [String]]],
              postcode: String, country: String,
              completedTaskIds: Set<String>,
-             customReminders: [CustomReminder]) {
+             customReminders: [CustomReminder],
+             wishlistedIds: Set<String>,
+             plantNotes: [String: PlantNotes]) {
             self.gardens = gardens
             self.beds = beds
             self.selectedGardenId = selectedGardenId
@@ -155,6 +170,8 @@ public final class GardenStore: ObservableObject {
             self.country = country
             self.completedTaskIds = completedTaskIds
             self.customReminders = customReminders
+            self.wishlistedIds = wishlistedIds
+            self.plantNotes = plantNotes
         }
 
         // Custom decoder so snapshots written before `bedPicks` / `selectedBedId`
@@ -172,6 +189,8 @@ public final class GardenStore: ObservableObject {
             country          = (try? c.decode(String.self, forKey: .country))  ?? "GB"
             completedTaskIds = (try? c.decode(Set<String>.self, forKey: .completedTaskIds)) ?? []
             customReminders  = (try? c.decode([CustomReminder].self, forKey: .customReminders)) ?? []
+            wishlistedIds    = (try? c.decode(Set<String>.self, forKey: .wishlistedIds)) ?? []
+            plantNotes       = (try? c.decode([String: PlantNotes].self, forKey: .plantNotes)) ?? [:]
         }
     }
 
@@ -191,7 +210,9 @@ public final class GardenStore: ObservableObject {
                             postcode: postcode,
                             country: country,
                             completedTaskIds: completedTaskIds,
-                            customReminders: customReminders)
+                            customReminders: customReminders,
+                            wishlistedIds: wishlistedIds,
+                            plantNotes: plantNotes)
         guard let data = try? JSONEncoder().encode(snap) else { return }
         defaults.set(data, forKey: storageKey)
     }
@@ -475,6 +496,83 @@ public final class GardenStore: ObservableObject {
         return customReminders
             .filter { cal.component(.month, from: $0.date) == month }
             .sorted { $0.date < $1.date }
+    }
+
+    // MARK: - Wishlist
+
+    public func isWishlisted(_ plantId: String) -> Bool {
+        wishlistedIds.contains(plantId)
+    }
+
+    public func toggleWishlist(_ plantId: String) {
+        if wishlistedIds.contains(plantId) {
+            wishlistedIds.remove(plantId)
+        } else {
+            wishlistedIds.insert(plantId)
+        }
+    }
+
+    // MARK: - Plant notes + won't-grow-again
+
+    public func notes(for plantId: String) -> PlantNotes {
+        plantNotes[plantId] ?? PlantNotes()
+    }
+
+    public func setNotes(_ text: String, for plantId: String) {
+        var n = plantNotes[plantId] ?? PlantNotes()
+        n.notes = text
+        plantNotes[plantId] = n
+    }
+
+    public func setWontGrowAgain(_ flag: Bool, for plantId: String) {
+        var n = plantNotes[plantId] ?? PlantNotes()
+        n.wontGrowAgain = flag
+        plantNotes[plantId] = n
+    }
+
+    public func wontGrowAgain(_ plantId: String) -> Bool {
+        plantNotes[plantId]?.wontGrowAgain ?? false
+    }
+
+    public var wontGrowAgainIds: Set<String> {
+        Set(plantNotes.compactMap { $0.value.wontGrowAgain ? $0.key : nil })
+    }
+
+    // MARK: - Current & past plant rosters
+
+    /// Plants the gardener has currently in play across every garden +
+    /// bed: anything in `plantCounts`, anything flagged as a perennial,
+    /// and anything picked for the current or any upcoming month.
+    /// Powers the "Current" section of the My Plants screen.
+    public var currentPlantIds: Set<String> {
+        var ids: Set<String> = []
+        let now = Calendar.current.component(.month, from: Date())
+        for bed in beds {
+            ids.formUnion(bed.plantCounts.keys)
+            ids.formUnion(bed.perennials)
+            for m in now...12 {
+                ids.formUnion(picks(month: m, bedId: bed.id))
+            }
+        }
+        for garden in gardens {
+            for m in now...12 {
+                ids.formUnion(picks(month: m, gardenId: garden.id))
+            }
+        }
+        return ids
+    }
+
+    /// Plants that have appeared in any prior season's snapshot but are
+    /// no longer in the current roster. Used by the My Plants screen's
+    /// "Past" section.
+    public var pastPlantIds: Set<String> {
+        var past: Set<String> = []
+        for bed in beds {
+            for snap in bed.history {
+                past.formUnion(snap.plantCounts.keys)
+            }
+        }
+        return past.subtracting(currentPlantIds)
     }
 
     public func bed(id: UUID) -> Bed? {
