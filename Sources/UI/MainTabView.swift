@@ -4,13 +4,12 @@ import BloomingMarvellous
 
 // MARK: - MainTabView
 //
-// Authenticated root. The bottom bar now carries five tabs: Home,
-// Plants, Planting, Wishlist and My plants. Wishlist surfaces every
-// plant the gardener has heart-toggled; My plants splits the rest of
-// the catalogue into Current (in active beds + perennials + upcoming
-// picks) and Past (rolled-over annuals from season history). Bloom and
-// Soil remain off the bar — Bloom Schedule lives on the Home grid and
-// Soil settings only make sense inside a Bed or Garden context.
+// Authenticated root. The bottom bar now carries just three tabs:
+// Home, Wishlist and My plants. Plants (search) and Planting (schedule)
+// were removed from the bar — both already have dedicated home tiles
+// ("Pick your plants" / "Planting Schedule"), and the home tiles now
+// push their destinations via NavigationLink so the back button works
+// naturally.
 
 public struct MainTabView: View {
 
@@ -102,18 +101,6 @@ public struct MainTabView: View {
             }
             .tabItem { Label("Home", systemImage: "house.fill") }
             .tag(AppTab.home)
-
-            NavigationStack {
-                PlantPickerMonthView()
-            }
-            .tabItem { Label("Plants", systemImage: "magnifyingglass") }
-            .tag(AppTab.picker)
-
-            NavigationStack {
-                PlantingScheduleView()
-            }
-            .tabItem { Label("Planting", systemImage: "calendar") }
-            .tag(AppTab.planting)
 
             NavigationStack {
                 PlantWishlistView()

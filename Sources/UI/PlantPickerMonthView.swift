@@ -159,6 +159,16 @@ public struct PlantPickerMonthView: View {
                 ContextualHelpButton(topic: .plantPicker)
             }
         }
+        .onAppear {
+            // When the gardener arrives from a Bloom Schedule month sheet
+            // (via Edit bed → Add plant), seed the months filter with the
+            // chosen month so the gallery is pre-narrowed to what blooms
+            // then. Plant Detail's quick-add still commits the plant's
+            // full bloom window, not just this single month.
+            if !store.contextBloomMonths.isEmpty {
+                months = store.contextBloomMonths
+            }
+        }
     }
 
     // MARK: - Tab bar
@@ -1793,122 +1803,151 @@ struct PlantDetailView: View {
                 }
             }
 
+            // Bloom-window preview — replaces the old month grid. The
+            // gardener no longer has to pick months by hand: tapping
+            // "Add" commits picks for the plant's full bloom window so
+            // it appears in the Bloom Schedule for every month it'll
+            // actually flower.
             HStack(spacing: 6) {
-                Text("Bloom months — tap to stagger across the season")
-                    .font(.custom("Nunito-Bold", size: 12))
-                    .foregroundStyle(Color.bmText2)
-                Tooltip("Only this plant's actual bloom window is shown here — plus any months you've already saved. Pick several to stagger the show across the season.")
+                Image(systemName: "calendar")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(Color.bmLilac)
+                Text(bloomWindowLabel(p))
+                    .font(.custom("Nunito-Bold", size: 13))
+                    .foregroundStyle(Color.bmText1)
+                Tooltip("Adding the plant drops it into the Bloom Schedule for every month it flowers. If it blooms April to July, it'll show in your bed for that whole window. No need to tick months by hand.")
                 Spacer()
             }
 
-            // Limit the month grid to this plant's actual bloom window so
-            // a June-July rose doesn't offer January as a choice. Already-
-            // committed picks outside the window are still surfaced so an
-            // existing schedule doesn't silently disappear, and a plant
-            // without recorded bloomMonths falls back to the full year.
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
-                ForEach(availableMonths(for: p), id: \.self) { m in
-                    monthPickChip(month: m)
-                }
-            }
-
-            if !pending.isEmpty {
-                Text("Selected \(pending.count) month\(pending.count == 1 ? "" : "s") — tap Save below to add them to your bloom schedule.")
-                    .font(.custom("Nunito-SemiBold", size: 11))
-                    .foregroundStyle(Color.bmText3)
-            }
-
-            savePickButton(plant: p)
+            quickAddButton(plant: p)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .bmCard()
     }
 
-    private func availableMonths(for p: Plant) -> [Int] {
-        let bloomSet: Set<Int> = p.bloomMonths.isEmpty
-            ? Set(1...12)
-            : Set(p.bloomMonths)
-        let pickedSet: Set<Int> = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
-        return bloomSet.union(pickedSet).sorted()
-    }
-
-    private func monthPickChip(month m: Int) -> some View {
-        let selected = pending.contains(m)
-        return Button {
-            if selected { pending.remove(m) } else { pending.insert(m) }
-        } label: {
-            VStack(spacing: 2) {
-                Text(PlantPickerMonthView.monthName(m))
-                    .font(.custom("Nunito-Bold", size: 12))
-                    .foregroundStyle(selected ? .white : Color.bmText1)
-                if selected {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundStyle(.white)
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .background(selected ? Color.bmGreen : Color.bmBgSoft)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10)
-                .stroke(selected ? Color.bmGreen : Color.bmBorder, lineWidth: 1.5))
+    private func bloomWindowLabel(_ p: Plant) -> String {
+        let months = p.bloomMonths.sorted()
+        guard !months.isEmpty else {
+            return "Bloom window not on file — Add still saves the plant."
         }
-        .buttonStyle(.plain)
+        if months.count == 1 {
+            return "Blooms in \(PlantPickerMonthView.monthName(months[0]))"
+        }
+        let isContiguous = zip(months, months.dropFirst()).allSatisfy { $0 + 1 == $1 }
+        if isContiguous {
+            return "Blooms \(PlantPickerMonthView.monthName(months.first!)) – \(PlantPickerMonthView.monthName(months.last!))"
+        }
+        return "Blooms in " + months.map(PlantPickerMonthView.monthName).joined(separator: ", ")
     }
 
     @ViewBuilder
-    private func savePickButton(plant p: Plant) -> some View {
+    private func quickAddButton(plant p: Plant) -> some View {
+        // Months we'd commit: the plant's bloom window. Falls back to
+        // the current month if the plant has no recorded bloomMonths so
+        // adding always does *something*.
+        let intendedMonths: Set<Int> = {
+            if p.bloomMonths.isEmpty { return [Calendar.current.component(.month, from: Date())] }
+            return Set(p.bloomMonths)
+        }()
         let committed = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
-        let hasDiff = pending != committed
-        Button {
-            commitPicks(plant: p, committed: committed)
-        } label: {
-            Text(savePickButtonLabel(committed: committed))
-                .font(.custom("Fredoka-SemiBold", size: 15))
+        let alreadyHasAllIntended = intendedMonths.isSubset(of: committed)
+        let primaryLabel: String = {
+            let scope = quickAddScopeLabel()
+            if alreadyHasAllIntended {
+                return "Already in \(scope) ✓"
+            }
+            return "Add to \(scope)"
+        }()
+        VStack(spacing: 6) {
+            Button {
+                quickAdd(plant: p, intendedMonths: intendedMonths)
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: alreadyHasAllIntended ? "checkmark.circle.fill" : "plus.circle.fill")
+                        .font(.system(size: 14, weight: .bold))
+                    Text(primaryLabel)
+                        .font(.custom("Fredoka-SemiBold", size: 15))
+                }
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 13)
-                .background(hasDiff ? Color.bmGreen : Color.bmGreenMid)
+                .background(alreadyHasAllIntended ? Color.bmGreenMid : Color.bmGreen)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .shadow(color: hasDiff ? Color.bmGreen.opacity(0.25) : .clear, radius: 5, y: 2)
+                .shadow(color: Color.bmGreen.opacity(alreadyHasAllIntended ? 0 : 0.25), radius: 5, y: 2)
+            }
+            .buttonStyle(.plain)
+            .disabled(alreadyHasAllIntended)
+            if !committed.isEmpty {
+                Button {
+                    removeAllPicks(plant: p)
+                } label: {
+                    Text("Remove from bloom schedule")
+                        .font(.custom("Fredoka-SemiBold", size: 12))
+                        .foregroundStyle(Color.bmRed)
+                }
+                .buttonStyle(.plain)
+            }
+            Text(multiAddHint)
+                .font(.custom("Nunito-SemiBold", size: 10))
+                .foregroundStyle(Color.bmText3)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .disabled(!hasDiff)
-        .padding(.top, 4)
     }
 
-    private func savePickButtonLabel(committed: Set<Int>) -> String {
-        if pending.isEmpty && committed.isEmpty { return "Pick a month" }
-        if pending == committed { return "Saved ✓" }
-        if pending.isEmpty       { return "Remove from schedule" }
-        if committed.isEmpty     { return "Add \(pending.count) to bloom schedule" }
-        return "Update bloom schedule (\(pending.count))"
+    /// Label fragment used by the quick-add button: "Bed 1" for Pro
+    /// with a bed selected, otherwise the garden's name.
+    private func quickAddScopeLabel() -> String {
+        if store.user.tier == .pro, let bed = store.selectedBed {
+            return bed.name
+        }
+        return store.selectedGarden?.name ?? "garden"
     }
 
-    private func commitPicks(plant p: Plant, committed: Set<Int>) {
-        let toAdd    = pending.subtracting(committed)
-        let toRemove = committed.subtracting(pending)
-        for m in toAdd    { store.togglePick(plantId: p.id, month: m) }
-        for m in toRemove { store.togglePick(plantId: p.id, month: m) }
-        // Clear the carried Bloom-Schedule context now that the picks
-        // it suggested have been committed (or explicitly cleared).
-        store.contextBloomMonths = []
-        let count = pending.count
-        let summary: String
-        if count == 0 {
-            summary = "Removed from schedule"
-        } else if count == 1 {
-            summary = "Added to 1 month ✓"
-        } else {
-            summary = "Added to \(count) months ✓"
+    private var multiAddHint: String {
+        if store.user.tier == .pro {
+            return "Want to drop it in another bed too? Change the bed above and tap Add again — the screen stays open."
         }
+        return "Want to drop it in another garden? Change the garden above and tap Add again — the screen stays open."
+    }
+
+    /// Commit picks for the plant's bloom window without dismissing the
+    /// view, so the gardener can re-target a different bed / garden and
+    /// add the plant again.
+    private func quickAdd(plant p: Plant, intendedMonths: Set<Int>) {
+        let committed = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
+        let toAdd = intendedMonths.subtracting(committed)
+        for m in toAdd { store.togglePick(plantId: p.id, month: m) }
+        pending = committed.union(intendedMonths)
+        let scope = quickAddScopeLabel()
+        let summary: String = {
+            if toAdd.isEmpty { return "Already in \(scope)" }
+            if toAdd.count == 1 { return "Added to \(scope) for 1 month ✓" }
+            return "Added to \(scope) for \(toAdd.count) months ✓"
+        }()
         withAnimation(.spring(response: 0.3)) { savedToast = summary }
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 1_400_000_000)
             withAnimation { savedToast = nil }
         }
+        // Clear any carry-over context from the Bloom Schedule once
+        // the gardener has committed the add.
+        store.contextBloomMonths = []
     }
+
+    private func removeAllPicks(plant p: Plant) {
+        let committed = Set((1...12).filter { store.isPicked(plantId: p.id, month: $0) })
+        for m in committed { store.togglePick(plantId: p.id, month: m) }
+        pending = []
+        let scope = quickAddScopeLabel()
+        withAnimation(.spring(response: 0.3)) { savedToast = "Removed from \(scope)" }
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 1_400_000_000)
+            withAnimation { savedToast = nil }
+        }
+    }
+
 }
 
 // MARK: - Matched-filter compatibility helpers

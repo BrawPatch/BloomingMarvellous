@@ -26,6 +26,8 @@ public struct HomeView: View {
     @State private var showingMyBeds = false
     @State private var showingPlantingMap = false
     @State private var showingBloomSchedule = false
+    @State private var showingPlantPicker = false
+    @State private var showingPlantingSchedule = false
     @State private var showingStore = false
     @State private var toast: ToastBanner.Message?
 
@@ -42,16 +44,18 @@ public struct HomeView: View {
     /// Close every sheet + pop every pushed destination. Called whenever
     /// the gardener taps the Home tab.
     private func resetAllPresentations() {
-        showingGardenPicker  = false
-        showingCreateGarden  = false
-        showingManageGardens = false
-        showingSettings      = false
-        showingTasks         = false
-        showingBeds          = false
-        showingMyBeds        = false
-        showingPlantingMap   = false
-        showingBloomSchedule = false
-        showingStore         = false
+        showingGardenPicker     = false
+        showingCreateGarden     = false
+        showingManageGardens    = false
+        showingSettings         = false
+        showingTasks            = false
+        showingBeds             = false
+        showingMyBeds           = false
+        showingPlantingMap      = false
+        showingBloomSchedule    = false
+        showingPlantPicker      = false
+        showingPlantingSchedule = false
+        showingStore            = false
     }
 
     public var body: some View {
@@ -130,6 +134,17 @@ public struct HomeView: View {
         .navigationDestination(isPresented: $showingBloomSchedule) {
             BloomScheduleView()
                 .environmentObject(store)
+                .environmentObject(library)
+        }
+        .navigationDestination(isPresented: $showingPlantPicker) {
+            PlantPickerMonthView()
+                .environmentObject(store)
+                .environmentObject(library)
+        }
+        .navigationDestination(isPresented: $showingPlantingSchedule) {
+            PlantingScheduleView()
+                .environmentObject(store)
+                .environmentObject(library)
         }
         .onChange(of: resetToken) { _ in
             // Home tab was tapped — close anything the gardener had open.
@@ -230,7 +245,7 @@ public struct HomeView: View {
             tile(title: "Pick your plants",
                  subtitle: "Browse + match to your beds",
                  icon: "🌷",
-                 tint: .bmPeach) { onSelectTab(.picker) }
+                 tint: .bmPeach) { showingPlantPicker = true }
 
             tile(title: "Bloom Schedule",
                  subtitle: "Plan your seasonal colour",
@@ -240,7 +255,7 @@ public struct HomeView: View {
             tile(title: "Planting Schedule",
                  subtitle: "Sow · Transplant · Harvest",
                  icon: "📅",
-                 tint: .bmSky) { onSelectTab(.planting) }
+                 tint: .bmSky) { showingPlantingSchedule = true }
 
             tile(title: "My Beds",
                  subtitle: "Edit a bed or open its map",
